@@ -1,0 +1,42 @@
+[
+  {
+    "step_type_id": "MECH",
+    "name": "Preparazione meccanica"
+  },
+  {
+    "step_type_id": "PRIM",
+    "name": "Primer / Consolidamento"
+  },
+  {
+    "step_type_id": "REPR",
+    "name": "Riparazione / Cucitura"
+  },
+  {
+    "step_type_id": "WPRO",
+    "name": "Impermeabilizzazione"
+  },
+  {
+    "step_type_id": "STRC",
+    "name": "Fondo strutturale"
+  },
+  {
+    "step_type_id": "ARMR",
+    "name": "Armatura / Rete"
+  },
+  {
+    "step_type_id": "ADDV",
+    "name": "Additivi"
+  },
+  {
+    "step_type_id": "WAIT",
+    "name": "Attese / Tempi"
+  },
+  {
+    "step_type_id": "GATE",
+    "name": "Gateway / Rimandi"
+  },
+  {
+    "step_type_id": "NOTE",
+    "name": "Istruzioni operative"
+  }
+]

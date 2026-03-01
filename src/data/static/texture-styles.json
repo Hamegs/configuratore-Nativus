@@ -1,0 +1,30 @@
+[
+  {
+    "style_id": "CHROMO",
+    "name": "CHROMO",
+    "passes_total": 3,
+    "color_roles": "BASE,BASE,BASE",
+    "rules": "monocolore"
+  },
+  {
+    "style_id": "ALIZEE_EVIDENCE_4",
+    "name": "Alizeè/EVIDENCE (4 passaggi)",
+    "passes_total": 4,
+    "color_roles": "BASE,BASE,BASE,CONTRAST",
+    "rules": "ultimo passaggio a contrasto; bicolore"
+  },
+  {
+    "style_id": "COR_CHROMO",
+    "name": "CORLITE CHROMO",
+    "passes_total": 1,
+    "color_roles": "BASE",
+    "rules": "colata unica monocolore"
+  },
+  {
+    "style_id": "COR_EVIDENCE",
+    "name": "CORLITE EVIDENCE",
+    "passes_total": 2,
+    "color_roles": "BASE,CONTRAST",
+    "rules": "a fresco entro 15–20 min; colori diversi obbligatori"
+  }
+]

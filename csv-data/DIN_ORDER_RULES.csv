@@ -1,0 +1,8 @@
+rule_id,applies_if,product_id,calc,notes
+DIN_MS_PROSEALER_1X_DOCCIA,din=1,MS_PROSEALER,qty = DIN_DOCCE_PZ,1 cartuccia per doccia
+DIN_BBCORNER_IN,din=1,BB_CORNER_IN,qty = DIN_BBCORNER_IN_PZ,
+DIN_BBCORNER_OUT,din=1,BB_CORNER_OUT,qty = DIN_BBCORNER_OUT_PZ,
+DIN_BBPASS,din=1,BB_PASS,qty = DIN_BBPASS_PZ,Dopo MS Prosealer
+DIN_BBDRAIN,din=1,BB_DRAIN,qty = DIN_BBDRAIN_PZ,Dopo MS Prosealer
+DIN_BBTAPE_PACK,din=1,BB_TAPE_50M,rolls = ceil(DIN_BBTAPE_ML / 50),Rotolo 50 ml
+DIN_NORPHEN_PACK_0_5,din=1,NORPHEN_FONDO_IGRO_0_5,kg = (DIN_NORPHEN_ML * 5) / 1000 ; packs = ceil(kg / 0.5) = ceil(DIN_NORPHEN_ML/100),"Standard 5 g/ml (fascia 5 cm); solo Germania; confezione 0,5 kg"

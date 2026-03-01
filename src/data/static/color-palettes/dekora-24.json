@@ -1,0 +1,194 @@
+[
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CACHEMIRE_M1",
+    "label": "CACHEMIRE M1",
+    "family": "CACHEMIRE",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CACHEMIRE_M2",
+    "label": "CACHEMIRE M2",
+    "family": "CACHEMIRE",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CACHEMIRE_M3",
+    "label": "CACHEMIRE M3",
+    "family": "CACHEMIRE",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CENERE_M1",
+    "label": "CENERE M1",
+    "family": "CENERE",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CENERE_M2",
+    "label": "CENERE M2",
+    "family": "CENERE",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CENERE_M3",
+    "label": "CENERE M3",
+    "family": "CENERE",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_CIPRIA_M",
+    "label": "CIPRIA M",
+    "family": "CIPRIA",
+    "shade": "M",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_COTONE_M",
+    "label": "COTONE M",
+    "family": "COTONE",
+    "shade": "M",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_LINO_M1",
+    "label": "LINO M1",
+    "family": "LINO",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_LINO_M2",
+    "label": "LINO M2",
+    "family": "LINO",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_LINO_M3",
+    "label": "LINO M3",
+    "family": "LINO",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_PERLA_M1",
+    "label": "PERLA M1",
+    "family": "PERLA",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_PERLA_M2",
+    "label": "PERLA M2",
+    "family": "PERLA",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_PERLA_M3",
+    "label": "PERLA M3",
+    "family": "PERLA",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_POLVERE_M1",
+    "label": "POLVERE M1",
+    "family": "POLVERE",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_POLVERE_M2",
+    "label": "POLVERE M2",
+    "family": "POLVERE",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_POLVERE_M3",
+    "label": "POLVERE M3",
+    "family": "POLVERE",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_ROSA_M",
+    "label": "ROSA M",
+    "family": "ROSA",
+    "shade": "M",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SABBIA_M1",
+    "label": "SABBIA M1",
+    "family": "SABBIA",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SABBIA_M2",
+    "label": "SABBIA M2",
+    "family": "SABBIA",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SABBIA_M3",
+    "label": "SABBIA M3",
+    "family": "SABBIA",
+    "shade": "M3",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SETA_M1",
+    "label": "SETA M1",
+    "family": "SETA",
+    "shade": "M1",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SETA_M2",
+    "label": "SETA M2",
+    "family": "SETA",
+    "shade": "M2",
+    "is_active": true
+  },
+  {
+    "palette_id": "DEKORA_24",
+    "color_id": "DEKORA_24_SETA_M3",
+    "label": "SETA M3",
+    "family": "SETA",
+    "shade": "M3",
+    "is_active": true
+  }
+]

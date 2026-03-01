@@ -1,0 +1,74 @@
+[
+  {
+    "rule_id": "NAT_CHROMO_COLORABILE_MINPACK",
+    "line_id": "NATURAL",
+    "mode": "COLORABILE",
+    "style_id": "CHROMO",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 FONDO10+COL_FONDO10(base)+FIN10+COL_FIN10(base) + n2 KIT2+COL_KIT2(base)"
+  },
+  {
+    "rule_id": "NAT_ALIZEE_EVIDENCE_COLORABILE_MINPACK",
+    "line_id": "NATURAL",
+    "mode": "COLORABILE",
+    "style_id": "ALIZEE_EVIDENCE_4",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 FONDO10+COL_FONDO10(base) + 2*n10 FIN10 + COL_FIN10(base)*n10 + COL_FIN10(contrast)*n10 + n2 KIT2 + COL_KIT2(color1=base,color2=contrast)"
+  },
+  {
+    "rule_id": "SENSE_COLORABILE_MINPACK",
+    "line_id": "SENSE",
+    "mode": "COLORABILE",
+    "style_id": "",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 FONDO10+COL_FONDO10+FIN10+COL_FIN10 + n2 KIT2+COL_KIT2"
+  },
+  {
+    "rule_id": "DEKORA_COLORABILE_MINPACK",
+    "line_id": "DEKORA",
+    "mode": "COLORABILE",
+    "style_id": "",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 FONDO10+COL_FONDO10+FIN10+COL_FIN10 + n2 KIT2+COL_KIT2; DOC=NO"
+  },
+  {
+    "rule_id": "LAMINE_PATTERN_MINPACK",
+    "line_id": "LAMINE",
+    "mode": "PATTERN",
+    "style_id": "",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 FONDO10(pattern)+MAIN10(pattern)+n2 KIT2(pattern)"
+  },
+  {
+    "rule_id": "CORLITE_CHROMO_MINPACK",
+    "line_id": "CORLITE",
+    "mode": "CUSTOM_FEE0",
+    "style_id": "COR_CHROMO",
+    "pack_policy": "4+1_min",
+    "logic": "n4=floor(A/4); n1=A-4*n4; add n4 KIT4_CHROMO + n1 KIT1_CHROMO"
+  },
+  {
+    "rule_id": "CORLITE_EVIDENCE_MINPACK",
+    "line_id": "CORLITE",
+    "mode": "CUSTOM_FEE0",
+    "style_id": "COR_EVIDENCE",
+    "pack_policy": "4+1_min",
+    "logic": "n4=floor(A/4); n1=A-4*n4; add n4 KIT4_EVIDENCE + n1 KIT1_EVIDENCE; constraint color2!=color1"
+  },
+  {
+    "rule_id": "MATERIAL_NEUTRO_MINPACK",
+    "line_id": "MATERIAL",
+    "mode": "NEUTRO",
+    "style_id": "",
+    "pack_policy": "10+2_min",
+    "logic": "n10=floor(A/10); n2=ceil((A-10*n10)/2) if A-10*n10>0 else 0; add n10 MAIN10 + n2 KIT2; DOC=NO"
+  },
+  {
+    "rule_id": "MATERIAL_SURFACE_COLOR_1KG",
+    "line_id": "MATERIAL",
+    "mode": "SURFACE_COLOR",
+    "style_id": "",
+    "pack_policy": "1kg",
+    "logic": "kg=A*0.25; n1kg=ceil(kg/1); add n1kg COLOR_1KG; note SUPERFICIALE"
+  }
+]

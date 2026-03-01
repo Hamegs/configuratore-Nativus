@@ -1,0 +1,50 @@
+[
+  {
+    "pattern_id": "LAM_CARRARA_MARBLE_FL",
+    "name": "CARRARA MARBLE FL"
+  },
+  {
+    "pattern_id": "LAM_CINDER_FL",
+    "name": "CINDER FL"
+  },
+  {
+    "pattern_id": "LAM_FLORENCE_TZ",
+    "name": "FLORENCE TZ"
+  },
+  {
+    "pattern_id": "LAM_GRAINED_CARRARA_MARBLE_FL",
+    "name": "GRAINED CARRARA MARBLE FL"
+  },
+  {
+    "pattern_id": "LAM_GREECE_TZ",
+    "name": "GREECE TZ"
+  },
+  {
+    "pattern_id": "LAM_GREY_SANDSTONE_FL",
+    "name": "GREY SANDSTONE FL"
+  },
+  {
+    "pattern_id": "LAM_PARIS_TZ",
+    "name": "PARIS TZ"
+  },
+  {
+    "pattern_id": "LAM_ROME_TZ",
+    "name": "ROME TZ"
+  },
+  {
+    "pattern_id": "LAM_SLATE_GRANITE_FL",
+    "name": "SLATE GRANITE FL"
+  },
+  {
+    "pattern_id": "LAM_TURQUIOISE_SHADE_FL",
+    "name": "TURQUIOISE SHADE FL"
+  },
+  {
+    "pattern_id": "LAM_VENICE_TZ",
+    "name": "VENICE TZ"
+  },
+  {
+    "pattern_id": "LAM_WARM_GREY_GRANITE_FL",
+    "name": "WARM GREY GRANITE FL"
+  }
+]

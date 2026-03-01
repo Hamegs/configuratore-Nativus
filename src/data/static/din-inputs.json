@@ -1,0 +1,65 @@
+[
+  {
+    "input_id": "DIN_DOCCE_PZ",
+    "label": "Numero docce",
+    "driver": "PIECE",
+    "unit": "pz",
+    "default": "1",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_BBCORNER_IN_PZ",
+    "label": "Angoli interni (BBcorner IN)",
+    "driver": "PIECE",
+    "unit": "pz",
+    "default": "0",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_BBCORNER_OUT_PZ",
+    "label": "Angoli esterni (BBcorner OUT)",
+    "driver": "PIECE",
+    "unit": "pz",
+    "default": "0",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_BBPASS_PZ",
+    "label": "Raccordi idraulici standard (BBpass)",
+    "driver": "PIECE",
+    "unit": "pz",
+    "default": "0",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_BBDRAIN_PZ",
+    "label": "Raccordi grandi/scarichi (BBdrain)",
+    "driver": "PIECE",
+    "unit": "pz",
+    "default": "0",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_BBTAPE_ML",
+    "label": "Metri lineari BBtape (rotolo 50 ml)",
+    "driver": "LINEAR_M",
+    "unit": "ml",
+    "default": "",
+    "required": "1",
+    "applies_if": "din=1"
+  },
+  {
+    "input_id": "DIN_NORPHEN_ML",
+    "label": "Metri lineari sigillature Norphen (perimetrali+scassi)",
+    "driver": "LINEAR_M",
+    "unit": "ml",
+    "default": "",
+    "required": "1",
+    "applies_if": "din=1"
+  }
+]

@@ -1,0 +1,418 @@
+[
+  {
+    "step_id": "S_F_MAS_SAND_3640",
+    "step_type_id": "MECH",
+    "name": "Carteggiatura grana 36/40 + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_F_DIAMOND",
+    "step_type_id": "MECH",
+    "name": "Levigatura a diamante + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_F_DIAMOND_FUGA",
+    "step_type_id": "MECH",
+    "name": "Levigatura a diamante a filo fuga + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_W_SAND",
+    "step_type_id": "MECH",
+    "name": "Carteggiatura + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_W_REMOVE_TO_SOLID",
+    "step_type_id": "MECH",
+    "name": "Fresatura/diamante fino a supporto solido + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_W_VAC_ONLY",
+    "step_type_id": "MECH",
+    "name": "Aspirazione (no carteggiatura)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_PR_SW_150",
+    "step_type_id": "PRIM",
+    "name": "Primer SW",
+    "product_id": "PR_SW",
+    "qty": 150,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_PR_SW_200",
+    "step_type_id": "PRIM",
+    "name": "Primer SW",
+    "product_id": "PR_SW",
+    "qty": 200,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_PR_SW_250",
+    "step_type_id": "PRIM",
+    "name": "Primer SW",
+    "product_id": "PR_SW",
+    "qty": 250,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_PR_BOND_100",
+    "step_type_id": "PRIM",
+    "name": "Primer Bond SW",
+    "product_id": "PR_BOND_SW",
+    "qty": 100,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_RAS_BASE_1_5",
+    "step_type_id": "STRC",
+    "name": "Rasante Base",
+    "product_id": "RAS_BASE",
+    "qty": 1.5,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_RAS_BQ_2_0",
+    "step_type_id": "STRC",
+    "name": "Rasante Base Quarzo",
+    "product_id": "RAS_BASE_Q",
+    "qty": 2,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_RAS_BQ_2_2",
+    "step_type_id": "STRC",
+    "name": "Rasante Base Quarzo (sopra massetto epossidico)",
+    "product_id": "RAS_BASE_Q",
+    "qty": 2.2,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_RAS_2K_1_5",
+    "step_type_id": "STRC",
+    "name": "Rasante 2K",
+    "product_id": "RAS_2K",
+    "qty": 1.5,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_ARM_75",
+    "step_type_id": "ARMR",
+    "name": "Armatura rete 75",
+    "product_id": "RETE_75",
+    "qty": 75,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_ARM_160",
+    "step_type_id": "ARMR",
+    "name": "Armatura rete 160",
+    "product_id": "RETE_160",
+    "qty": 160,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WPRO_BARR_PR_100",
+    "step_type_id": "PRIM",
+    "name": "Primer barriera vapore",
+    "product_id": "BARR_VAP_4_PR",
+    "qty": 100,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WPRO_BARR_1_5",
+    "step_type_id": "WPRO",
+    "name": "Barriera Vapore 4.0",
+    "product_id": "BARR_VAP_4",
+    "qty": 1.5,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_NOTE_CORAZZ_CAR_3640",
+    "step_type_id": "NOTE",
+    "name": "Carteggiatura 36/40 + aspirazione del fondo corazzante",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_REP_CRACK_BARS",
+    "step_type_id": "REPR",
+    "name": "Cucitura crepe: barre Ø8 mm (30 cm ogni 30 cm) + scassi",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_REP_STUCCO_75",
+    "step_type_id": "REPR",
+    "name": "Stucco epossidico su crepe",
+    "product_id": "STUCCO_EPO",
+    "qty": 75,
+    "unit": "g/ml"
+  },
+  {
+    "step_id": "S_COMP_AS_PRECOAT",
+    "step_type_id": "PRIM",
+    "name": "Fondo Base caricato + spolvero (pre-AS)",
+    "product_id": "FONDO_BASE",
+    "qty": 350,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_COMP_MASEP_PRIMER_150",
+    "step_type_id": "PRIM",
+    "name": "Primer Fondo Base a rullo",
+    "product_id": "FONDO_BASE",
+    "qty": 150,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_COMP_MASEP_18",
+    "step_type_id": "STRC",
+    "name": "Massetto epossidico",
+    "product_id": "MAS_EP",
+    "qty": 18,
+    "unit": "kg/m²/cm"
+  },
+  {
+    "step_id": "S_TR_OPEN_WET",
+    "step_type_id": "NOTE",
+    "name": "Bagnare supporto (tracce aperte)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_TR_FILL_1_6",
+    "step_type_id": "STRC",
+    "name": "Rasante Fondo Fino",
+    "product_id": "RAS_FONDO_FINO",
+    "qty": 1.6,
+    "unit": "kg/m²/mm"
+  },
+  {
+    "step_id": "S_WAIT_TR",
+    "step_type_id": "WAIT",
+    "name": "Attesa: sottile = giorno seguente; fino 5 cm = 6/7 giorni",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_SHW_SCASSI",
+    "step_type_id": "NOTE",
+    "name": "Creare scassi perimetrali e su raccordi idraulici",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_SHW_NORPHEN",
+    "step_type_id": "PRIM",
+    "name": "Norphen Fondo Igro a pennello",
+    "product_id": "NORPHEN_IGRO",
+    "qty": null,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WAIT_10MIN",
+    "step_type_id": "WAIT",
+    "name": "Attendere ~10 minuti",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_SHW_MS",
+    "step_type_id": "WPRO",
+    "name": "Sigillatura con MS Prosealer",
+    "product_id": "MS_PRO",
+    "qty": null,
+    "unit": "ml/ml"
+  },
+  {
+    "step_id": "S_DIN_BANDELLE",
+    "step_type_id": "WPRO",
+    "name": "Bandelle perimetrali incollate con Guaina Base",
+    "product_id": "BAND_GUAINA",
+    "qty": null,
+    "unit": "m"
+  },
+  {
+    "step_id": "S_DIN_GUAINA_2",
+    "step_type_id": "WPRO",
+    "name": "Guaina Base 2 mani consecutive",
+    "product_id": "GUAINA_BASE",
+    "qty": 2,
+    "unit": "mani"
+  },
+  {
+    "step_id": "S_GATE_SUPPORT_UNDER",
+    "step_type_id": "GATE",
+    "name": "Identificare supporto sottostante e applicare regole relative",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_BLOCK_ASSIST",
+    "step_type_id": "GATE",
+    "name": "Contattare Assistenza Tecnica",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_PAR_REMOVE",
+    "step_type_id": "MECH",
+    "name": "Rimozione totale parquet + smaltimento (a regola d’arte)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_PAR_REMOVE_GLUE",
+    "step_type_id": "MECH",
+    "name": "Rimozione collanti/residui fino a supporto pulito + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_COMP_AS_POUR",
+    "step_type_id": "STRC",
+    "name": "Autolivellante AS (spessore variabile) – applicazione secondo scheda tecnica",
+    "product_id": "AUTO_AS",
+    "qty": null,
+    "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_WAIT_AS_7D",
+    "step_type_id": "WAIT",
+    "name": "Attesa stagionatura Autolivellante AS: minimo 7–8 giorni (in funzione spessore/condizioni)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_ZMX_ASPIRA",
+    "step_type_id": "MECH",
+    "name": "Aspirazione iniziale (nessuna levigatura o carteggiatura)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_ZMX_FONDO_150",
+    "step_type_id": "STRC",
+    "name": "Fondo Base a rullo pelo medio",
+    "product_id": "FONDO_BASE",
+    "qty": 150,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WAIT_12H",
+    "step_type_id": "WAIT",
+    "name": "Attesa minima 12 ore",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_ZMX_LAMBDA_1",
+    "step_type_id": "REPR",
+    "name": "Stucco Lambda 1° pass.: chiusura fresate + appoggio/fissaggio rete 160 g/m² (pot-life 30 min)",
+    "product_id": "STUCCO_LAMBDA",
+    "qty": 1500,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WAIT_24H",
+    "step_type_id": "WAIT",
+    "name": "Attesa giorno seguente (min. 24 ore)",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_ZMX_LAMBDA_2",
+    "step_type_id": "STRC",
+    "name": "Stucco Lambda 2° pass.: rasatura completa — VIETATO carteggiare (pot-life 30 min)",
+    "product_id": "STUCCO_LAMBDA",
+    "qty": 1500,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_WAIT_24H_NO_CART",
+    "step_type_id": "WAIT",
+    "name": "Attesa giorno seguente — VIETATO carteggiare Stucco Lambda",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  },
+  {
+    "step_id": "S_ZMX_CORAZZANTE",
+    "step_type_id": "STRC",
+    "name": "Strato corazzante: Fondo Base 0,85 kg/m² caricato quarzo (mix 30/40/30)",
+    "product_id": "FONDO_BASE",
+    "qty": 850,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_ZMX_Q_FINE",
+    "step_type_id": "ADDV",
+    "name": "Quarzo fine 0,1-0,3 — carica (30%)",
+    "product_id": "QUARZO_0_1_0_3",
+    "qty": 255,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_ZMX_Q_MED",
+    "step_type_id": "ADDV",
+    "name": "Quarzo medio 0,3-0,9 — carica (40%)",
+    "product_id": "QUARZO_0_3_0_9",
+    "qty": 340,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_ZMX_Q_GROSS",
+    "step_type_id": "ADDV",
+    "name": "Quarzo grosso 0,7-1,2 — carica (30%)",
+    "product_id": "QUARZO_0_7_1_2",
+    "qty": 255,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_ZMX_SPOLVERO",
+    "step_type_id": "NOTE",
+    "name": "Spolvero quarzo a rifiuto 0,1-0,6 o 0,3-0,8 a fresco sul corazzante",
+    "product_id": "QUARZO_0_1_0_5",
+    "qty": 200,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_FRES_DIAMANTE",
+    "step_type_id": "MECH",
+    "name": "Fresatura / levigatura a diamante fino a strato solido + aspirazione",
+    "product_id": null,
+    "qty": null,
+    "unit": null
+  }
+]

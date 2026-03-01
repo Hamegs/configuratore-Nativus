@@ -1,0 +1,133 @@
+{
+  "op_params": [
+    {
+      "protettivo": "PROTEGGO Fix S",
+      "line_id": "NATURAL,SENSE",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "60",
+      "diluizione_percent": "0",
+      "pot_life_min": "",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "Base solvente, 1 mano"
+    },
+    {
+      "protettivo": "PROTEGGO Fix S",
+      "line_id": "DEKORA",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0",
+      "pot_life_min": "",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "Base solvente, 1 mano"
+    },
+    {
+      "protettivo": "PROTEGGO Lucido S",
+      "line_id": "NATURAL,SENSE,DEKORA",
+      "passaggi": "2",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0|0",
+      "pot_life_min": "120",
+      "t_min_h": "8",
+      "t_max_h": "24",
+      "note": "Mai diluito. Ricopertura min 8h max 24h."
+    },
+    {
+      "protettivo": "PROTEGGO Opaco S",
+      "line_id": "NATURAL,SENSE,DEKORA,CORLITE",
+      "passaggi": "2",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0|0",
+      "pot_life_min": "120",
+      "t_min_h": "6",
+      "t_max_h": "72",
+      "note": "Ricopertura min 6h max 72h."
+    },
+    {
+      "protettivo": "PROTEGGO Lucido S (LAMINE spatola)",
+      "line_id": "LAMINE",
+      "passaggi": "2",
+      "consumo_g_m2_per_passaggio": "250|150",
+      "diluizione_percent": "0|0",
+      "pot_life_min": "120",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "2 mani spatola non diluite"
+    },
+    {
+      "protettivo": "PROTEGGO Opaco S (LAMINE finitura)",
+      "line_id": "LAMINE",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0",
+      "pot_life_min": "120",
+      "t_min_h": "6",
+      "t_max_h": "72",
+      "note": "1 mano a rullo"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "S_FIX_NAT_SEN",
+      "line_id": "NATURAL,SENSE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Base: PROTEGGO Fix S 1 mano, consumo 60 g/m². Poi finitura OPACO S o LUCIDO S."
+    },
+    {
+      "rule_id": "S_FIX_DEK",
+      "line_id": "DEKORA",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Base: PROTEGGO Fix S 1 mano, consumo 80 g/m². Poi finitura OPACO S o LUCIDO S."
+    },
+    {
+      "rule_id": "S_LAMINE",
+      "line_id": "LAMINE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "LAMINE solvente: si parte sempre con PROTEGGO Lucido S a spatola, 2 mani non diluite: 250 g/m² + 150 g/m². Se finitura opaca: 1 mano PROTEGGO Opaco S 80 g/m² a rullo."
+    },
+    {
+      "rule_id": "S_CORLITE",
+      "line_id": "CORLITE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "CORLITE solvente: solo OPACO S. 2 mani, 80 g/m² per mano. Nessuna cera a solvente."
+    },
+    {
+      "rule_id": "S_OPACO_COLORATO_PREMIX",
+      "line_id": "NATURAL,SENSE,DEKORA,LAMINE,CORLITE,CHROMO",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Se OPACO S colorato = SI: aggiungere premix colore a listino in base alla pezzatura Opaco S (1,88 kg o 6 kg)."
+    }
+  ],
+  "note_operative": [
+    {
+      "voce": "PROTEGGO Fix S",
+      "dato": "NATURAL/SENSE: 1 mano 60 g/m². DEKORA: 1 mano 80 g/m². MATERIAL escluso (solo H2O)."
+    },
+    {
+      "voce": "PROTEGGO Lucido S",
+      "dato": "2 mani, 80 g/m² per mano, mai diluito. Pot-life 2 ore. Ricopertura: min 8 ore, max 24 ore."
+    },
+    {
+      "voce": "PROTEGGO Opaco S",
+      "dato": "2 mani, 80 g/m² per mano. Pot-life 2 ore. Ricopertura: min 6 ore, max 72 ore."
+    },
+    {
+      "voce": "LAMINE solvente",
+      "dato": "Lucido S a spatola 2 mani: 250 + 150 g/m². Se opaco: 1 mano Opaco S 80 g/m²."
+    },
+    {
+      "voce": "CORLITE solvente",
+      "dato": "Solo opaco: 2 mani Opaco S 80 g/m². Nessuna cera a solvente."
+    },
+    {
+      "voce": "Opaco S colorato",
+      "dato": "Non esiste PROTEGGO Color S. Colore ottenuto con premix colore a listino, in base alla pezzatura Opaco S (1,88 o 6 kg)."
+    }
+  ]
+}

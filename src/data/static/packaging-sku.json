@@ -1,0 +1,929 @@
+[
+  {
+    "sku_id": "STRIPPER_1LT",
+    "product_id": "STRIPPER",
+    "descrizione_sku": "Stripper",
+    "pack_size": 1,
+    "pack_unit": "lt",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "AUTO_AS_25KG",
+    "product_id": "AUTO_AS",
+    "descrizione_sku": "Autolivellante AS",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "GUAINA_BASE_21KG",
+    "product_id": "GUAINA_BASE",
+    "descrizione_sku": "Guaina base",
+    "pack_size": 21,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBCORNER_IN_1PZ",
+    "product_id": "BBCORNER_IN",
+    "descrizione_sku": "BBCorner IN",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBCORNER_OUT_1PZ",
+    "product_id": "BBCORNER_OUT",
+    "descrizione_sku": "BBCorner Out",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBTAPE_50M",
+    "product_id": "BBTAPE",
+    "descrizione_sku": "BBTape",
+    "pack_size": 50,
+    "pack_unit": "m",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBPASS_120X120_1PZ",
+    "product_id": "BBPASS_120X120",
+    "descrizione_sku": "BBPass (120x120)",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_BASE_ESTIVO_3KG",
+    "product_id": "FONDO_BASE_ESTIVO",
+    "descrizione_sku": "Fondo base estivo",
+    "pack_size": 3,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_BASE_ESTIVO_2_12KG",
+    "product_id": "FONDO_BASE_ESTIVO_2",
+    "descrizione_sku": "Fondo base estivo",
+    "pack_size": 12,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_7_1_2_25KG",
+    "product_id": "QUARZO_0_7_1_2",
+    "descrizione_sku": "Quarzo 0,7-1,2",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO_0_5KG",
+    "product_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO",
+    "descrizione_sku": "MS Pro Sealer - Norphen Fondo Igro",
+    "pack_size": 0.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_IN_CARTUCCIA_1CART",
+    "product_id": "MS_PRO_SEALER_IN_CARTUCCIA",
+    "descrizione_sku": "MS Pro Sealer in cartuccia",
+    "pack_size": 1,
+    "pack_unit": "cart",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_PRIMER_0_5KG",
+    "product_id": "MS_PRO_SEALER_PRIMER",
+    "descrizione_sku": "MS Pro sealer Primer",
+    "pack_size": 0.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PRIMER_BOND_SW_ADDITIVO_PLUS_0_2KG",
+    "product_id": "PRIMER_BOND_SW_ADDITIVO_PLUS",
+    "descrizione_sku": "Primer Bond Sw - ADDITIVO PLUS",
+    "pack_size": 0.2,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PR_BOND_SW_2KG",
+    "product_id": "PR_BOND_SW",
+    "descrizione_sku": "Primer Bond Sw",
+    "pack_size": 2,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PRIMER_BOND_SW_SQ_2KG",
+    "product_id": "PRIMER_BOND_SW_SQ",
+    "descrizione_sku": "Primer Bond Sw SQ",
+    "pack_size": 2,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PR_SW_3KG",
+    "product_id": "PR_SW",
+    "descrizione_sku": "Primer Sw",
+    "pack_size": 3,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ_0_54KG",
+    "product_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ",
+    "descrizione_sku": "Barriera Vapore 4.0 Primer kit 12mq",
+    "pack_size": 0.54,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ_18KG",
+    "product_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ",
+    "descrizione_sku": "Barriera Vapore 4.0 Rasante kit 12 mq",
+    "pack_size": 18,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_DA_SPOLVERO_0_1_0_5_KIT_12_MQ_50KG",
+    "product_id": "QUARZO_DA_SPOLVERO_0_1_0_5_KIT_12_MQ",
+    "descrizione_sku": "Quarzo da spolvero 0,1-0,5 kit 12 mq",
+    "pack_size": 50,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RASANTE_FONDO_10KG",
+    "product_id": "RASANTE_FONDO",
+    "descrizione_sku": "Rasante Fondo",
+    "pack_size": 10,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_2K_32_5KG",
+    "product_id": "RAS_2K",
+    "descrizione_sku": "Rasante 2k",
+    "pack_size": 32.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_3KG",
+    "product_id": "RAS_BASE",
+    "descrizione_sku": "Rasante base",
+    "pack_size": 3,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_15KG",
+    "product_id": "RAS_BASE",
+    "descrizione_sku": "Rasante base",
+    "pack_size": 15,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_Q_2_73KG",
+    "product_id": "RAS_BASE_Q",
+    "descrizione_sku": "Rasante Base Quarzo",
+    "pack_size": 2.73,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_Q_14_56KG",
+    "product_id": "RAS_BASE_Q",
+    "descrizione_sku": "Rasante Base Quarzo",
+    "pack_size": 14.56,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "STUCCO_EPO_2KG",
+    "product_id": "STUCCO_EPO",
+    "descrizione_sku": "Stucco epossidico",
+    "pack_size": 2,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "STUCCO_LAMBDA_23_1KG",
+    "product_id": "STUCCO_LAMBDA",
+    "descrizione_sku": "Stucco Lambda",
+    "pack_size": 23.1,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_1_0_3_25KG",
+    "product_id": "QUARZO_0_1_0_3",
+    "descrizione_sku": "Quarzo 0,1-0,3",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_1_0_5_25KG",
+    "product_id": "QUARZO_0_1_0_5",
+    "descrizione_sku": "Quarzo 0,1-0,5",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_3_0_9_25KG",
+    "product_id": "QUARZO_0_3_0_9",
+    "descrizione_sku": "Quarzo 0,3-0,9",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_7_1_2_2_25KG",
+    "product_id": "QUARZO_0_7_1_2_2",
+    "descrizione_sku": "Quarzo 0,7-1,2",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RETE_DI_VETRO_DA_160_G_MQ_50M",
+    "product_id": "RETE_DI_VETRO_DA_160_G_MQ",
+    "descrizione_sku": "Rete di vetro da 160 g/mq",
+    "pack_size": 50,
+    "pack_unit": "m",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RETE_DI_VETRO_DA_75_G_MQ_100M",
+    "product_id": "RETE_DI_VETRO_DA_75_G_MQ",
+    "descrizione_sku": "Rete di vetro da 75 g/mq",
+    "pack_size": 100,
+    "pack_unit": "m",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_COLORABILE_NATURAL_CHROMO_2M2",
+    "product_id": "KIT_2_MQ_COLORABILE_NATURAL_CHROMO",
+    "descrizione_sku": "KIT 2 mq colorabile Natural CHROMO",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_KIT_2_MQ_NATURAL_CHROMO_2M2",
+    "product_id": "COLORE_PER_KIT_2_MQ_NATURAL_CHROMO",
+    "descrizione_sku": "COLORE per KIT 2 mq NATURAL CHROMO",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_COLORABILE_10M2",
+    "product_id": "FONDO_NATURAL_COLORABILE",
+    "descrizione_sku": "FONDO NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_10M2",
+    "product_id": "COLORE_PER_FONDO_NATURAL_COLORABILE",
+    "descrizione_sku": "COLORE per FONDO NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_COLORABILE_10M2",
+    "product_id": "FINITURA_NATURAL_COLORABILE",
+    "descrizione_sku": "FINITURA NATURAL  colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_10M2",
+    "product_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE",
+    "descrizione_sku": "COLORE per FINITURA NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_NATURAL_COLORABILE_EFFETTO_ALIZ_2M2",
+    "product_id": "KIT_2_MQ_NATURAL_COLORABILE_EFFETTO_ALIZ",
+    "descrizione_sku": "KIT 2 mq NATURAL COLORABILE effetto ALIZEE O EVIDENCE",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_KIT_2_MQ_NATURAL_EFFETTO_ALIZ_2M2",
+    "product_id": "COLORE_PER_KIT_2_MQ_NATURAL_EFFETTO_ALIZ",
+    "descrizione_sku": "COLORE per KIT 2 mq NATURAL effetto ALIZEE O EVIDENCE",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_COLORABILE_2_10M2",
+    "product_id": "FONDO_NATURAL_COLORABILE_2",
+    "descrizione_sku": "FONDO NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_2_10M2",
+    "product_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_2",
+    "descrizione_sku": "COLORE per FONDO NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_COLORABILE_2_10M2",
+    "product_id": "FINITURA_NATURAL_COLORABILE_2",
+    "descrizione_sku": "FINITURA NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_2_10M2",
+    "product_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_2",
+    "descrizione_sku": "COLORE per FINITURA NATURAL colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_COLORATO_NATURAL_CHROMO_2M2",
+    "product_id": "KIT_2_MQ_COLORATO_NATURAL_CHROMO",
+    "descrizione_sku": "KIT 2 mq COLORATO  NATURAL CHROMO",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_10_MQ_COLORATO_10M2",
+    "product_id": "FONDO_NATURAL_10_MQ_COLORATO",
+    "descrizione_sku": "FONDO NATURAL 10 mq colorato",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_10M2",
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO",
+    "descrizione_sku": "FINITURA NATURAL 10 mq colorato",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PERSONALIZZAZIONE_COLORE_NATURAL_CHROMO_",
+    "product_id": "PERSONALIZZAZIONE_COLORE_NATURAL_CHROMO",
+    "descrizione_sku": "PERSONALIZZAZIONE COLORE NATURAL CHROMO",
+    "pack_size": null,
+    "pack_unit": "",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_NATURAL_COLORATO_EFFETTO_ALIZEE_2M2",
+    "product_id": "KIT_2_MQ_NATURAL_COLORATO_EFFETTO_ALIZEE",
+    "descrizione_sku": "KIT 2 mq NATURAL COLORATO effetto ALIZEE O EVIDENCE",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_10_MQ_COLORATO_2_10M2",
+    "product_id": "FONDO_NATURAL_10_MQ_COLORATO_2",
+    "descrizione_sku": "FONDO NATURAL 10 mq colorato",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_2_10M2",
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO_2",
+    "descrizione_sku": "FINITURA NATURAL 10 mq colorato",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_3_10M2",
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO_3",
+    "descrizione_sku": "FINITURA NATURAL 10 mq colorato",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PERSONALIZZAZIONE_NATURAL_COLORE_ALIZEE_",
+    "product_id": "PERSONALIZZAZIONE_NATURAL_COLORE_ALIZEE",
+    "descrizione_sku": "PERSONALIZZAZIONE NATURAL COLORE ALIZEE EVIDENCE",
+    "pack_size": null,
+    "pack_unit": "",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_SENSE_COLORABILE_CON_POLVERI_2M2",
+    "product_id": "KIT_2_MQ_SENSE_COLORABILE_CON_POLVERI",
+    "descrizione_sku": "KIT 2 mq SENSE COLORABILE con polveri",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_KIT_2_MQ_2M2",
+    "product_id": "COLORE_SENSE_PER_KIT_2_MQ",
+    "descrizione_sku": "COLORE SENSE per KIT 2 mq",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_SENSE_COLORABILE_10M2",
+    "product_id": "FONDO_SENSE_COLORABILE",
+    "descrizione_sku": "FONDO SENSE colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_FONDO_COLORABILE_10M2",
+    "product_id": "COLORE_SENSE_PER_FONDO_COLORABILE",
+    "descrizione_sku": "COLORE SENSE per FONDO colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_SENSE_COLORABILE_10M2",
+    "product_id": "FINITURA_SENSE_COLORABILE",
+    "descrizione_sku": "FINITURA SENSE colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_FINITURA_COLORABILE_10M2",
+    "product_id": "COLORE_SENSE_PER_FINITURA_COLORABILE",
+    "descrizione_sku": "COLORE SENSE per FINITURA colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_DEKORA_COLORABILE_CON_POLVERI_2M2",
+    "product_id": "KIT_2_MQ_DEKORA_COLORABILE_CON_POLVERI",
+    "descrizione_sku": "KIT 2 mq DEKORA COLORABILE con polveri",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_KIT_2_MQ_2M2",
+    "product_id": "COLORE_DEKORA_PER_KIT_2_MQ",
+    "descrizione_sku": "COLORE DEKORA per KIT 2 mq",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_DEKORA_COLORABILE_10M2",
+    "product_id": "FONDO_DEKORA_COLORABILE",
+    "descrizione_sku": "FONDO DEKORA colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_FONDO_COLORABILE_10M2",
+    "product_id": "COLORE_DEKORA_PER_FONDO_COLORABILE",
+    "descrizione_sku": "COLORE DEKORA per FONDO colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_DEKORA_COLORABILE_10M2",
+    "product_id": "FINITURA_DEKORA_COLORABILE",
+    "descrizione_sku": "FINITURA DEKORA colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_FINITURA_COLORABILE_10M2",
+    "product_id": "COLORE_DEKORA_PER_FINITURA_COLORABILE",
+    "descrizione_sku": "COLORE DEKORA per FINITURA colorabile",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_LAMINE_2_MQ_2M2",
+    "product_id": "KIT_LAMINE_2_MQ",
+    "descrizione_sku": "KIT LAMINE 2 mq",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "LAMINE_FONDO_10_MQ_10M2",
+    "product_id": "LAMINE_FONDO_10_MQ",
+    "descrizione_sku": "LAMINE FONDO 10 mq",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "LAMINE_10_MQ_10M2",
+    "product_id": "LAMINE_10_MQ",
+    "descrizione_sku": "LAMINE 10 mq",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_1_MQ_COLORATO_CORLITE_CHROMO_1M2",
+    "product_id": "KIT_1_MQ_COLORATO_CORLITE_CHROMO",
+    "descrizione_sku": "KIT 1 mq colorato CORLITE CHROMO",
+    "pack_size": 1,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_4_MQ_COLORATO_CORLITE_CHROMO_4M2",
+    "product_id": "KIT_4_MQ_COLORATO_CORLITE_CHROMO",
+    "descrizione_sku": "KIT 4 mq colorato CORLITE CHROMO",
+    "pack_size": 4,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_1_MQ_COLORATO_CORLITE_EVIDENCE_BICOL_1M2",
+    "product_id": "KIT_1_MQ_COLORATO_CORLITE_EVIDENCE_BICOL",
+    "descrizione_sku": "KIT 1 mq colorato CORLITE EVIDENCE (BICOLORE)",
+    "pack_size": 1,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_4_MQ_COLORATO_CORLITE_EVIDENCE_BICOL_4M2",
+    "product_id": "KIT_4_MQ_COLORATO_CORLITE_EVIDENCE_BICOL",
+    "descrizione_sku": "KIT 4 mq colorato CORLITE EVIDENCE (BICOLORE)",
+    "pack_size": 4,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_MATERIAL_2_MQ_5KG_2M2",
+    "product_id": "KIT_MATERIAL_2_MQ_5KG",
+    "descrizione_sku": "KIT MATERIAL 2 mq ( 5kg)",
+    "pack_size": 2,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_MATERIAL_10_MQ_20_KG_10M2",
+    "product_id": "KIT_MATERIAL_10_MQ_20_KG",
+    "descrizione_sku": "KIT MATERIAL 10 mq (20 kg)",
+    "pack_size": 10,
+    "pack_unit": "m2",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "NORDCOLOR_ART_NCS_RAL_1KG_1KG",
+    "product_id": "NORDCOLOR_ART_NCS_RAL_1KG",
+    "descrizione_sku": "Nordcolor art (NCS-Ral 1kg)",
+    "pack_size": 1,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "DEKOR_ART_W_1_KG_1KG",
+    "product_id": "DEKOR_ART_W_1_KG",
+    "descrizione_sku": "Dekor Art W (1 kg)",
+    "pack_size": 1,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_3_7_25KG",
+    "product_id": "CRYSTEPO_3",
+    "descrizione_sku": "Crystepo 3",
+    "pack_size": 7.25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_50_4_4KG",
+    "product_id": "CRYSTEPO_50",
+    "descrizione_sku": "Crystepo 50",
+    "pack_size": 4.4,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_V_6KG",
+    "product_id": "CRYSTEPO_V",
+    "descrizione_sku": "Crystepo V",
+    "pack_size": 6,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_H2O_1LITRO",
+    "product_id": "PROTEGGO_FIX_H2O",
+    "descrizione_sku": "PROTEGGO FIX H2O",
+    "pack_size": 1,
+    "pack_unit": "litro",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_H2O_2_5LT",
+    "product_id": "PROTEGGO_FIX_H2O_2",
+    "descrizione_sku": "PROTEGGO FIX H2O",
+    "pack_size": 5,
+    "pack_unit": "lt",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_H20_1_1KG",
+    "product_id": "PROTEGGO_OPACO_H20",
+    "descrizione_sku": "PROTEGGO OPACO H20",
+    "pack_size": 1.1,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_H20_2_5_5KG",
+    "product_id": "PROTEGGO_OPACO_H20_2",
+    "descrizione_sku": "PROTEGGO OPACO H20",
+    "pack_size": 5.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_H20_1_35KG",
+    "product_id": "PROTEGGO_LUCIDO_H20",
+    "descrizione_sku": "PROTEGGO LUCIDO H20",
+    "pack_size": 1.35,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_H20_2_4_5KG",
+    "product_id": "PROTEGGO_LUCIDO_H20_2",
+    "descrizione_sku": "PROTEGGO LUCIDO H20",
+    "pack_size": 4.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_S_1_1KG",
+    "product_id": "PROTEGGO_FIX_S",
+    "descrizione_sku": "PROTEGGO FIX S",
+    "pack_size": 1.1,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_S_2_4_95KG",
+    "product_id": "PROTEGGO_FIX_S_2",
+    "descrizione_sku": "PROTEGGO FIX S",
+    "pack_size": 4.95,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_S_4_5KG",
+    "product_id": "PROTEGGO_LUCIDO_S",
+    "descrizione_sku": "PROTEGGO LUCIDO S",
+    "pack_size": 4.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_S_1_88KG",
+    "product_id": "PROTEGGO_OPACO_S",
+    "descrizione_sku": "PROTEGGO OPACO S",
+    "pack_size": 1.88,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_S_2_6KG",
+    "product_id": "PROTEGGO_OPACO_S_2",
+    "descrizione_sku": "PROTEGGO OPACO S",
+    "pack_size": 6,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_0_9KG",
+    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL",
+    "descrizione_sku": "PROTEGGO COLOR OPACO H20 COLORE NATURAL",
+    "pack_size": 0.9,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2_4_5KG",
+    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2",
+    "descrizione_sku": "PROTEGGO COLOR OPACO H20 COLORE NATURAL",
+    "pack_size": 4.5,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PREMIX_COLORE_OPACO_S_1_88_0_14KG",
+    "product_id": "PREMIX_COLORE_OPACO_S_1_88",
+    "descrizione_sku": "Premix colore per PROTEGGO Opaco S da 1,88 kg",
+    "pack_size": 0.14,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "Peso premix: 140 g"
+  },
+  {
+    "sku_id": "PREMIX_COLORE_OPACO_S_6_PZ",
+    "product_id": "PREMIX_COLORE_OPACO_S_6",
+    "descrizione_sku": "Premix colore per PROTEGGO Opaco S da 6 kg",
+    "pack_size": 0.436,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "Peso premix: 436 g"
+  },
+  {
+    "sku_id": "ADD_PLUS_0_2KG",
+    "product_id": "ADD_PLUS",
+    "descrizione_sku": "Additivo Plus",
+    "pack_size": 0.2,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "Bustina 200 g"
+  },
+  {
+    "sku_id": "SPOLVERO_Q_25KG",
+    "product_id": "SPOLVERO_Q",
+    "descrizione_sku": "Spolvero quarzo",
+    "pack_size": 25,
+    "pack_unit": "kg",
+    "componenti": "",
+    "note_packaging": "Quarzo 25 kg"
+  },
+  {
+    "sku_id": "BB_TAPE_50M_ROLLO",
+    "product_id": "BB_TAPE_50M",
+    "descrizione_sku": "BBTAPE - Rotolo H=12 cm L=50 m",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "Rotolo da 50 m"
+  },
+  {
+    "sku_id": "BB_CORNER_IN_PZ",
+    "product_id": "BB_CORNER_IN",
+    "descrizione_sku": "BBCORNER IN (140+140 mm)",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "Accessorio a pezzo"
+  },
+  {
+    "sku_id": "BB_CORNER_OUT_PZ",
+    "product_id": "BB_CORNER_OUT",
+    "descrizione_sku": "BBCORNER OUT (140+140 mm)",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "Accessorio a pezzo"
+  },
+  {
+    "sku_id": "BB_DRAIN_PZ",
+    "product_id": "BB_DRAIN",
+    "descrizione_sku": "BBDRAIN (400x400 mm)",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "Accessorio a pezzo - quantità da raccordi"
+  },
+  {
+    "sku_id": "BB_PASS_PZ",
+    "product_id": "BB_PASS",
+    "descrizione_sku": "BBPASS (120x120 mm)",
+    "pack_size": 1,
+    "pack_unit": "pz",
+    "componenti": "",
+    "note_packaging": "Accessorio a pezzo - quantità da raccordi"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "macro_id": "FLOOR",
+    "name": "Pavimento"
+  },
+  {
+    "macro_id": "WALL",
+    "name": "Parete"
+  }
+]

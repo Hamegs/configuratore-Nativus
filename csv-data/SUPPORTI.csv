@@ -1,0 +1,24 @@
+support_id,macro_id,name
+F_MAS,FLOOR,Massetto cementizio
+F_CLS,FLOOR,CLS elicotterato
+F_TILE,FLOOR,Piastrelle
+F_COT,FLOOR,Cotto
+F_SLEV,FLOOR,Autolivellante esistente
+F_MAR,FLOOR,Marmo
+F_TV,FLOOR,Terrazzo alla veneziana
+F_ZMX,FLOOR,Sistema fresato tipo Zeromax
+F_PAR_RM,FLOOR,Parquet (rimozione totale)
+F_COMP,FLOOR,Compensazione quota (layer)
+W_INT_G,WALL,Intonaco grezzo
+W_INT_C,WALL,Intonaco civile (malta fine)
+W_COAT,WALL,Pitture / Smalti / Calce (da rimuovere)
+W_GYP,WALL,Cartongesso
+W_FIB,WALL,Aquapanel / Fermacell
+W_TILE,WALL,Piastrelle a parete
+W_MOS,WALL,Mosaico a parete
+W_TR_OPEN,WALL,Tracce aperte (riempimento)
+W_TR_CLOSED,WALL,Tracce chiuse (intonaco ≥7 gg)
+W_SHW_MOD,WALL,Modulo Zona Doccia (logica)
+W_DIN,WALL,DIN 18534 (modulo)
+F_PAR_AS,FLOOR,Parquet: rimozione totale + compensazione quota con Autolivellante AS
+F_PAR_EP,FLOOR,Parquet: rimozione totale + compensazione quota con massetto epossidico

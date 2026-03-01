@@ -1,0 +1,40 @@
+step_id,step_type_id,name,product_id,qty,unit
+S_F_MAS_SAND_3640,MECH,Carteggiatura grana 36/40 + aspirazione,,,
+S_F_DIAMOND,MECH,Levigatura a diamante + aspirazione,,,
+S_F_DIAMOND_FUGA,MECH,Levigatura a diamante a filo fuga + aspirazione,,,
+S_W_SAND,MECH,Carteggiatura + aspirazione,,,
+S_W_REMOVE_TO_SOLID,MECH,Fresatura/diamante fino a supporto solido + aspirazione,,,
+S_W_VAC_ONLY,MECH,Aspirazione (no carteggiatura),,,
+S_PR_SW_150,PRIM,Primer SW,PR_SW,150.0,g/m²
+S_PR_SW_200,PRIM,Primer SW,PR_SW,200.0,g/m²
+S_PR_SW_250,PRIM,Primer SW,PR_SW,250.0,g/m²
+S_PR_BOND_100,PRIM,Primer Bond SW,PR_BOND_SW,100.0,g/m²
+S_RAS_BASE_1_5,STRC,Rasante Base,RAS_BASE,1.5,kg/m²
+S_RAS_BQ_2_0,STRC,Rasante Base Quarzo,RAS_BASE_Q,2.0,kg/m²
+S_RAS_BQ_2_2,STRC,Rasante Base Quarzo (sopra massetto epossidico),RAS_BASE_Q,2.2,kg/m²
+S_RAS_2K_1_5,STRC,Rasante 2K,RAS_2K,1.5,kg/m²
+S_ARM_75,ARMR,Armatura rete 75,RETE_75,75.0,g/m²
+S_ARM_160,ARMR,Armatura rete 160,RETE_160,160.0,g/m²
+S_WPRO_BARR_PR_100,PRIM,Primer barriera vapore,BARR_VAP_4_PR,100.0,g/m²
+S_WPRO_BARR_1_5,WPRO,Barriera Vapore 4.0,BARR_VAP_4,1.5,kg/m²
+S_NOTE_CORAZZ_CAR_3640,NOTE,Carteggiatura 36/40 + aspirazione del fondo corazzante,,,
+S_REP_CRACK_BARS,REPR,Cucitura crepe: barre Ø8 mm (30 cm ogni 30 cm) + scassi,,,
+S_REP_STUCCO_75,REPR,Stucco epossidico su crepe,STUCCO_EPO,75.0,g/ml
+S_COMP_AS_PRECOAT,PRIM,Fondo Base caricato + spolvero (pre-AS),FONDO_BASE,350.0,g/m²
+S_COMP_MASEP_PRIMER_150,PRIM,Primer Fondo Base a rullo,FONDO_BASE,150.0,g/m²
+S_COMP_MASEP_18,STRC,Massetto epossidico,MAS_EP,18.0,kg/m²/cm
+S_TR_OPEN_WET,NOTE,Bagnare supporto (tracce aperte),,,
+S_TR_FILL_1_6,STRC,Rasante Fondo Fino,RAS_FONDO_FINO,1.6,kg/m²/mm
+S_WAIT_TR,WAIT,Attesa: sottile = giorno seguente; fino 5 cm = 6/7 giorni,,,
+S_SHW_SCASSI,NOTE,Creare scassi perimetrali e su raccordi idraulici,,,
+S_SHW_NORPHEN,PRIM,Norphen Fondo Igro a pennello,NORPHEN_IGRO,,g/m²
+S_WAIT_10MIN,WAIT,Attendere ~10 minuti,,,
+S_SHW_MS,WPRO,Sigillatura con MS Prosealer,MS_PRO,,ml/ml
+S_DIN_BANDELLE,WPRO,Bandelle perimetrali incollate con Guaina Base,BAND_GUAINA,,m
+S_DIN_GUAINA_2,WPRO,Guaina Base 2 mani consecutive,GUAINA_BASE,2.0,mani
+S_GATE_SUPPORT_UNDER,GATE,Identificare supporto sottostante e applicare regole relative,,,
+S_BLOCK_ASSIST,GATE,Contattare Assistenza Tecnica,,,
+S_PAR_REMOVE,MECH,Rimozione totale parquet + smaltimento (a regola d’arte),,,
+S_PAR_REMOVE_GLUE,MECH,Rimozione collanti/residui fino a supporto pulito + aspirazione,,,
+S_COMP_AS_POUR,STRC,Autolivellante AS (spessore variabile) – applicazione secondo scheda tecnica,AUTO_AS,,kg/m²
+S_WAIT_AS_7D,WAIT,Attesa stagionatura Autolivellante AS: minimo 7–8 giorni (in funzione spessore/condizioni),,,

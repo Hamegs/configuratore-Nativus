@@ -1,0 +1,74 @@
+[
+  {
+    "driver": "protezione_base",
+    "label_it": "Sistema protettivo",
+    "unit": "",
+    "default": "H2O",
+    "required": "YES",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,MATERIAL,LAMINE,CORLITE,CHROMO)",
+    "notes": "Selezione famiglia: H2O (base acqua) o S (solvente). In questa release: solo H2O."
+  },
+  {
+    "driver": "finitura",
+    "label_it": "Finitura protettiva",
+    "unit": "",
+    "default": "OPACO",
+    "required": "YES",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,MATERIAL,LAMINE,CORLITE,CHROMO)",
+    "notes": "Per NATURAL/SENSE/DEKORA/MATERIAL/LAMINE: OPACO o LUCIDO. Per CORLITE: OPACO o CERA_LUCIDA. Opzione aggiuntiva: PROTEGGO_COLOR_OPACO_H2O (solo linee ammesse)."
+  },
+  {
+    "driver": "n_mani_protettivo",
+    "label_it": "Numero mani protettivo",
+    "unit": "passaggi",
+    "default": "AUTO",
+    "required": "NO",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,MATERIAL,LAMINE,CORLITE,CHROMO)",
+    "notes": "AUTO: regole specifiche per linea/uso (vedi NOTE_OPERATIVE). PROTEGGO Color: sempre 3 passaggi."
+  },
+  {
+    "driver": "uso_superficie",
+    "label_it": "Dove si applica",
+    "unit": "",
+    "default": "PAVIMENTO",
+    "required": "YES",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,MATERIAL,LAMINE,CORLITE)",
+    "notes": "PAVIMENTO / PARETE_FUORI_BAGNO / BAGNO_DOCIA. Serve per impostare numero passaggi."
+  },
+  {
+    "driver": "protettivo_finitura",
+    "label_it": "Finitura protettiva (dettaglio)",
+    "unit": "",
+    "default": "OPACO_H2O",
+    "required": "NO",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,MATERIAL,LAMINE,CORLITE,CHROMO)",
+    "notes": "Valori ammessi: OPACO_H2O, LUCIDO_H2O, CERA_LUCIDA (solo CORLITE), PROTEGGO_COLOR_OPACO_H2O (solo NATURAL, SENSE, MATERIAL, CHROMO)."
+  },
+  {
+    "driver": "colore_superficiale",
+    "label_it": "Sorgente colore (solo PROTEGGO Color)",
+    "unit": "",
+    "default": "NATURAL_24",
+    "required": "YES",
+    "applies_if": "protettivo_finitura = PROTEGGO_COLOR_OPACO_H2O",
+    "notes": "Scegli: NATURAL_24 oppure RAL oppure NCS oppure PANTONE."
+  },
+  {
+    "driver": "codice_colore",
+    "label_it": "Codice colore (solo PROTEGGO Color)",
+    "unit": "",
+    "default": "",
+    "required": "YES",
+    "applies_if": "protettivo_finitura = PROTEGGO_COLOR_OPACO_H2O",
+    "notes": "Inserisci il codice colore della sorgente scelta (es. CACHEMIRE N1 / RAL 9010 / NCS S 0502-Y / Pantone 123 C)."
+  },
+  {
+    "driver": "trasparente_post_color",
+    "label_it": "Trasparente finale dopo PROTEGGO Color (obbligatorio)",
+    "unit": "",
+    "default": "OPACO_H2O",
+    "required": "YES",
+    "applies_if": "protettivo_finitura = PROTEGGO_COLOR_OPACO_H2O",
+    "notes": "Scegli: PROTEGGO Opaco H2O oppure PROTEGGO Lucido H2O. Sempre 1 mano. Se lucido: diluizione 30%."
+  }
+]

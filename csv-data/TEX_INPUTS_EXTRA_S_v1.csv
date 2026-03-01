@@ -1,0 +1,7 @@
+driver,label_it,unit,default,required,applies_if,notes
+sistema_protettivo,Sistema protettivo,,H2O,YES,"line_id in (NATURAL,SENSE,DEKORA,LAMINE,CORLITE,CHROMO)",Scelta tra H2O (base acqua) e S (solvente). MATERIAL escluso: solo H2O.
+finitura_S,Finitura protettiva (solvente),,OPACO_S,YES,sistema_protettivo = S,OPACO_S oppure LUCIDO_S. (CORLITE: solo OPACO_S. LAMINE: base lucido a spatola).
+uso_superficie,Dove si applica,,PAVIMENTO,YES,sistema_protettivo = S,PAVIMENTO / PARETE_FUORI_BAGNO / BAGNO_DOCIA. (Attualmente: lucido/opaco S non cambiano numero mani in base a uso).
+opaco_S_colore,Opaco S colorato,,NO,NO,sistema_protettivo = S and finitura_S = OPACO_S,"Se SI: aggiunge premix colore in base alla pezzatura Opaco S (1,88 o 6). Ottimizzazione pezzature: nel motore packaging."
+sorgente_colore_S,Sorgente colore (opaco S colorato),,NATURAL_24,YES,opaco_S_colore = SI,NATURAL_24 oppure RAL oppure NCS oppure PANTONE.
+codice_colore_S,Codice colore (opaco S colorato),,,YES,opaco_S_colore = SI,Inserisci codice (es. CACHEMIRE N1 / RAL 9010 / NCS S 0502-Y / Pantone 123 C).

@@ -1,0 +1,1130 @@
+[
+  {
+    "ral_id": "RAL_1000",
+    "ral_code": "1000",
+    "ral_label": "RAL 1000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1001",
+    "ral_code": "1001",
+    "ral_label": "RAL 1001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1002",
+    "ral_code": "1002",
+    "ral_label": "RAL 1002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1003",
+    "ral_code": "1003",
+    "ral_label": "RAL 1003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1004",
+    "ral_code": "1004",
+    "ral_label": "RAL 1004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1005",
+    "ral_code": "1005",
+    "ral_label": "RAL 1005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1006",
+    "ral_code": "1006",
+    "ral_label": "RAL 1006",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1007",
+    "ral_code": "1007",
+    "ral_label": "RAL 1007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1011",
+    "ral_code": "1011",
+    "ral_label": "RAL 1011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1012",
+    "ral_code": "1012",
+    "ral_label": "RAL 1012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1013",
+    "ral_code": "1013",
+    "ral_label": "RAL 1013",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1014",
+    "ral_code": "1014",
+    "ral_label": "RAL 1014",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1015",
+    "ral_code": "1015",
+    "ral_label": "RAL 1015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1016",
+    "ral_code": "1016",
+    "ral_label": "RAL 1016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1017",
+    "ral_code": "1017",
+    "ral_label": "RAL 1017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1018",
+    "ral_code": "1018",
+    "ral_label": "RAL 1018",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1019",
+    "ral_code": "1019",
+    "ral_label": "RAL 1019",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1020",
+    "ral_code": "1020",
+    "ral_label": "RAL 1020",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1021",
+    "ral_code": "1021",
+    "ral_label": "RAL 1021",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1023",
+    "ral_code": "1023",
+    "ral_label": "RAL 1023",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1024",
+    "ral_code": "1024",
+    "ral_label": "RAL 1024",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1026",
+    "ral_code": "1026",
+    "ral_label": "RAL 1026",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1027",
+    "ral_code": "1027",
+    "ral_label": "RAL 1027",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1032",
+    "ral_code": "1032",
+    "ral_label": "RAL 1032",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1033",
+    "ral_code": "1033",
+    "ral_label": "RAL 1033",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_1034",
+    "ral_code": "1034",
+    "ral_label": "RAL 1034",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2000",
+    "ral_code": "2000",
+    "ral_label": "RAL 2000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2001",
+    "ral_code": "2001",
+    "ral_label": "RAL 2001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2002",
+    "ral_code": "2002",
+    "ral_label": "RAL 2002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2003",
+    "ral_code": "2003",
+    "ral_label": "RAL 2003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2004",
+    "ral_code": "2004",
+    "ral_label": "RAL 2004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2005",
+    "ral_code": "2005",
+    "ral_label": "RAL 2005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2007",
+    "ral_code": "2007",
+    "ral_label": "RAL 2007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2008",
+    "ral_code": "2008",
+    "ral_label": "RAL 2008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2009",
+    "ral_code": "2009",
+    "ral_label": "RAL 2009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2010",
+    "ral_code": "2010",
+    "ral_label": "RAL 2010",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2011",
+    "ral_code": "2011",
+    "ral_label": "RAL 2011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_2012",
+    "ral_code": "2012",
+    "ral_label": "RAL 2012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3000",
+    "ral_code": "3000",
+    "ral_label": "RAL 3000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3001",
+    "ral_code": "3001",
+    "ral_label": "RAL 3001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3002",
+    "ral_code": "3002",
+    "ral_label": "RAL 3002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3003",
+    "ral_code": "3003",
+    "ral_label": "RAL 3003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3004",
+    "ral_code": "3004",
+    "ral_label": "RAL 3004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3005",
+    "ral_code": "3005",
+    "ral_label": "RAL 3005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3007",
+    "ral_code": "3007",
+    "ral_label": "RAL 3007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3009",
+    "ral_code": "3009",
+    "ral_label": "RAL 3009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3011",
+    "ral_code": "3011",
+    "ral_label": "RAL 3011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3012",
+    "ral_code": "3012",
+    "ral_label": "RAL 3012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3013",
+    "ral_code": "3013",
+    "ral_label": "RAL 3013",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3014",
+    "ral_code": "3014",
+    "ral_label": "RAL 3014",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3015",
+    "ral_code": "3015",
+    "ral_label": "RAL 3015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3016",
+    "ral_code": "3016",
+    "ral_label": "RAL 3016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3017",
+    "ral_code": "3017",
+    "ral_label": "RAL 3017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3018",
+    "ral_code": "3018",
+    "ral_label": "RAL 3018",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3020",
+    "ral_code": "3020",
+    "ral_label": "RAL 3020",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3022",
+    "ral_code": "3022",
+    "ral_label": "RAL 3022",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3027",
+    "ral_code": "3027",
+    "ral_label": "RAL 3027",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_3031",
+    "ral_code": "3031",
+    "ral_label": "RAL 3031",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4001",
+    "ral_code": "4001",
+    "ral_label": "RAL 4001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4002",
+    "ral_code": "4002",
+    "ral_label": "RAL 4002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4003",
+    "ral_code": "4003",
+    "ral_label": "RAL 4003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4004",
+    "ral_code": "4004",
+    "ral_label": "RAL 4004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4005",
+    "ral_code": "4005",
+    "ral_label": "RAL 4005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4006",
+    "ral_code": "4006",
+    "ral_label": "RAL 4006",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4007",
+    "ral_code": "4007",
+    "ral_label": "RAL 4007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4008",
+    "ral_code": "4008",
+    "ral_label": "RAL 4008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_4009",
+    "ral_code": "4009",
+    "ral_label": "RAL 4009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5000",
+    "ral_code": "5000",
+    "ral_label": "RAL 5000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5001",
+    "ral_code": "5001",
+    "ral_label": "RAL 5001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5002",
+    "ral_code": "5002",
+    "ral_label": "RAL 5002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5003",
+    "ral_code": "5003",
+    "ral_label": "RAL 5003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5004",
+    "ral_code": "5004",
+    "ral_label": "RAL 5004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5005",
+    "ral_code": "5005",
+    "ral_label": "RAL 5005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5007",
+    "ral_code": "5007",
+    "ral_label": "RAL 5007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5008",
+    "ral_code": "5008",
+    "ral_label": "RAL 5008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5009",
+    "ral_code": "5009",
+    "ral_label": "RAL 5009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5010",
+    "ral_code": "5010",
+    "ral_label": "RAL 5010",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5011",
+    "ral_code": "5011",
+    "ral_label": "RAL 5011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5012",
+    "ral_code": "5012",
+    "ral_label": "RAL 5012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5013",
+    "ral_code": "5013",
+    "ral_label": "RAL 5013",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5014",
+    "ral_code": "5014",
+    "ral_label": "RAL 5014",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5015",
+    "ral_code": "5015",
+    "ral_label": "RAL 5015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5017",
+    "ral_code": "5017",
+    "ral_label": "RAL 5017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5018",
+    "ral_code": "5018",
+    "ral_label": "RAL 5018",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5019",
+    "ral_code": "5019",
+    "ral_label": "RAL 5019",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5020",
+    "ral_code": "5020",
+    "ral_label": "RAL 5020",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5021",
+    "ral_code": "5021",
+    "ral_label": "RAL 5021",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5022",
+    "ral_code": "5022",
+    "ral_label": "RAL 5022",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5023",
+    "ral_code": "5023",
+    "ral_label": "RAL 5023",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_5024",
+    "ral_code": "5024",
+    "ral_label": "RAL 5024",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6000",
+    "ral_code": "6000",
+    "ral_label": "RAL 6000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6003",
+    "ral_code": "6003",
+    "ral_label": "RAL 6003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6004",
+    "ral_code": "6004",
+    "ral_label": "RAL 6004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6005",
+    "ral_code": "6005",
+    "ral_label": "RAL 6005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6006",
+    "ral_code": "6006",
+    "ral_label": "RAL 6006",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6007",
+    "ral_code": "6007",
+    "ral_label": "RAL 6007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6008",
+    "ral_code": "6008",
+    "ral_label": "RAL 6008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6009",
+    "ral_code": "6009",
+    "ral_label": "RAL 6009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6010",
+    "ral_code": "6010",
+    "ral_label": "RAL 6010",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6011",
+    "ral_code": "6011",
+    "ral_label": "RAL 6011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6012",
+    "ral_code": "6012",
+    "ral_label": "RAL 6012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6013",
+    "ral_code": "6013",
+    "ral_label": "RAL 6013",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6014",
+    "ral_code": "6014",
+    "ral_label": "RAL 6014",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6015",
+    "ral_code": "6015",
+    "ral_label": "RAL 6015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6016",
+    "ral_code": "6016",
+    "ral_label": "RAL 6016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6017",
+    "ral_code": "6017",
+    "ral_label": "RAL 6017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6018",
+    "ral_code": "6018",
+    "ral_label": "RAL 6018",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6019",
+    "ral_code": "6019",
+    "ral_label": "RAL 6019",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6020",
+    "ral_code": "6020",
+    "ral_label": "RAL 6020",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6021",
+    "ral_code": "6021",
+    "ral_label": "RAL 6021",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6022",
+    "ral_code": "6022",
+    "ral_label": "RAL 6022",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6024",
+    "ral_code": "6024",
+    "ral_label": "RAL 6024",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6025",
+    "ral_code": "6025",
+    "ral_label": "RAL 6025",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6026",
+    "ral_code": "6026",
+    "ral_label": "RAL 6026",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6027",
+    "ral_code": "6027",
+    "ral_label": "RAL 6027",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6028",
+    "ral_code": "6028",
+    "ral_label": "RAL 6028",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6029",
+    "ral_code": "6029",
+    "ral_label": "RAL 6029",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6032",
+    "ral_code": "6032",
+    "ral_label": "RAL 6032",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6033",
+    "ral_code": "6033",
+    "ral_label": "RAL 6033",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_6034",
+    "ral_code": "6034",
+    "ral_label": "RAL 6034",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7000",
+    "ral_code": "7000",
+    "ral_label": "RAL 7000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7001",
+    "ral_code": "7001",
+    "ral_label": "RAL 7001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7002",
+    "ral_code": "7002",
+    "ral_label": "RAL 7002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7003",
+    "ral_code": "7003",
+    "ral_label": "RAL 7003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7004",
+    "ral_code": "7004",
+    "ral_label": "RAL 7004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7005",
+    "ral_code": "7005",
+    "ral_label": "RAL 7005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7006",
+    "ral_code": "7006",
+    "ral_label": "RAL 7006",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7008",
+    "ral_code": "7008",
+    "ral_label": "RAL 7008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7009",
+    "ral_code": "7009",
+    "ral_label": "RAL 7009",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7010",
+    "ral_code": "7010",
+    "ral_label": "RAL 7010",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7011",
+    "ral_code": "7011",
+    "ral_label": "RAL 7011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7012",
+    "ral_code": "7012",
+    "ral_label": "RAL 7012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7013",
+    "ral_code": "7013",
+    "ral_label": "RAL 7013",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7015",
+    "ral_code": "7015",
+    "ral_label": "RAL 7015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7016",
+    "ral_code": "7016",
+    "ral_label": "RAL 7016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7021",
+    "ral_code": "7021",
+    "ral_label": "RAL 7021",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7022",
+    "ral_code": "7022",
+    "ral_label": "RAL 7022",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7023",
+    "ral_code": "7023",
+    "ral_label": "RAL 7023",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7024",
+    "ral_code": "7024",
+    "ral_label": "RAL 7024",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7026",
+    "ral_code": "7026",
+    "ral_label": "RAL 7026",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7030",
+    "ral_code": "7030",
+    "ral_label": "RAL 7030",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7031",
+    "ral_code": "7031",
+    "ral_label": "RAL 7031",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7032",
+    "ral_code": "7032",
+    "ral_label": "RAL 7032",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7033",
+    "ral_code": "7033",
+    "ral_label": "RAL 7033",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7034",
+    "ral_code": "7034",
+    "ral_label": "RAL 7034",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7035",
+    "ral_code": "7035",
+    "ral_label": "RAL 7035",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7036",
+    "ral_code": "7036",
+    "ral_label": "RAL 7036",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7037",
+    "ral_code": "7037",
+    "ral_label": "RAL 7037",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7038",
+    "ral_code": "7038",
+    "ral_label": "RAL 7038",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7039",
+    "ral_code": "7039",
+    "ral_label": "RAL 7039",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7040",
+    "ral_code": "7040",
+    "ral_label": "RAL 7040",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7042",
+    "ral_code": "7042",
+    "ral_label": "RAL 7042",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7043",
+    "ral_code": "7043",
+    "ral_label": "RAL 7043",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7044",
+    "ral_code": "7044",
+    "ral_label": "RAL 7044",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7045",
+    "ral_code": "7045",
+    "ral_label": "RAL 7045",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7046",
+    "ral_code": "7046",
+    "ral_label": "RAL 7046",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_7047",
+    "ral_code": "7047",
+    "ral_label": "RAL 7047",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8000",
+    "ral_code": "8000",
+    "ral_label": "RAL 8000",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8001",
+    "ral_code": "8001",
+    "ral_label": "RAL 8001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8002",
+    "ral_code": "8002",
+    "ral_label": "RAL 8002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8003",
+    "ral_code": "8003",
+    "ral_label": "RAL 8003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8004",
+    "ral_code": "8004",
+    "ral_label": "RAL 8004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8007",
+    "ral_code": "8007",
+    "ral_label": "RAL 8007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8008",
+    "ral_code": "8008",
+    "ral_label": "RAL 8008",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8011",
+    "ral_code": "8011",
+    "ral_label": "RAL 8011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8012",
+    "ral_code": "8012",
+    "ral_label": "RAL 8012",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8014",
+    "ral_code": "8014",
+    "ral_label": "RAL 8014",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8015",
+    "ral_code": "8015",
+    "ral_label": "RAL 8015",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8016",
+    "ral_code": "8016",
+    "ral_label": "RAL 8016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8017",
+    "ral_code": "8017",
+    "ral_label": "RAL 8017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8019",
+    "ral_code": "8019",
+    "ral_label": "RAL 8019",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8022",
+    "ral_code": "8022",
+    "ral_label": "RAL 8022",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8023",
+    "ral_code": "8023",
+    "ral_label": "RAL 8023",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8024",
+    "ral_code": "8024",
+    "ral_label": "RAL 8024",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8025",
+    "ral_code": "8025",
+    "ral_label": "RAL 8025",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_8028",
+    "ral_code": "8028",
+    "ral_label": "RAL 8028",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9001",
+    "ral_code": "9001",
+    "ral_label": "RAL 9001",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9002",
+    "ral_code": "9002",
+    "ral_label": "RAL 9002",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9003",
+    "ral_code": "9003",
+    "ral_label": "RAL 9003",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9004",
+    "ral_code": "9004",
+    "ral_label": "RAL 9004",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9005",
+    "ral_code": "9005",
+    "ral_label": "RAL 9005",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9006",
+    "ral_code": "9006",
+    "ral_label": "RAL 9006",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9007",
+    "ral_code": "9007",
+    "ral_label": "RAL 9007",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9010",
+    "ral_code": "9010",
+    "ral_label": "RAL 9010",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9011",
+    "ral_code": "9011",
+    "ral_label": "RAL 9011",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9016",
+    "ral_code": "9016",
+    "ral_label": "RAL 9016",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9017",
+    "ral_code": "9017",
+    "ral_label": "RAL 9017",
+    "is_active": true
+  },
+  {
+    "ral_id": "RAL_9018",
+    "ral_code": "9018",
+    "ral_label": "RAL 9018",
+    "is_active": true
+  }
+]

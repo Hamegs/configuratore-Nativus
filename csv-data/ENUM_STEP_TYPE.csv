@@ -1,0 +1,11 @@
+step_type_id,name
+MECH,Preparazione meccanica
+PRIM,Primer / Consolidamento
+REPR,Riparazione / Cucitura
+WPRO,Impermeabilizzazione
+STRC,Fondo strutturale
+ARMR,Armatura / Rete
+ADDV,Additivi
+WAIT,Attese / Tempi
+GATE,Gateway / Rimandi
+NOTE,Istruzioni operative

@@ -1,0 +1,56 @@
+[
+  {
+    "driver": "sistema_protettivo",
+    "label_it": "Sistema protettivo",
+    "unit": "",
+    "default": "H2O",
+    "required": "YES",
+    "applies_if": "line_id in (NATURAL,SENSE,DEKORA,LAMINE,CORLITE,CHROMO)",
+    "notes": "Scelta tra H2O (base acqua) e S (solvente). MATERIAL escluso: solo H2O."
+  },
+  {
+    "driver": "finitura_S",
+    "label_it": "Finitura protettiva (solvente)",
+    "unit": "",
+    "default": "OPACO_S",
+    "required": "YES",
+    "applies_if": "sistema_protettivo = S",
+    "notes": "OPACO_S oppure LUCIDO_S. (CORLITE: solo OPACO_S. LAMINE: base lucido a spatola)."
+  },
+  {
+    "driver": "uso_superficie",
+    "label_it": "Dove si applica",
+    "unit": "",
+    "default": "PAVIMENTO",
+    "required": "YES",
+    "applies_if": "sistema_protettivo = S",
+    "notes": "PAVIMENTO / PARETE_FUORI_BAGNO / BAGNO_DOCIA. (Attualmente: lucido/opaco S non cambiano numero mani in base a uso)."
+  },
+  {
+    "driver": "opaco_S_colore",
+    "label_it": "Opaco S colorato",
+    "unit": "",
+    "default": "NO",
+    "required": "NO",
+    "applies_if": "sistema_protettivo = S and finitura_S = OPACO_S",
+    "notes": "Se SI: aggiunge premix colore in base alla pezzatura Opaco S (1,88 o 6). Ottimizzazione pezzature: nel motore packaging."
+  },
+  {
+    "driver": "sorgente_colore_S",
+    "label_it": "Sorgente colore (opaco S colorato)",
+    "unit": "",
+    "default": "NATURAL_24",
+    "required": "YES",
+    "applies_if": "opaco_S_colore = SI",
+    "notes": "NATURAL_24 oppure RAL oppure NCS oppure PANTONE."
+  },
+  {
+    "driver": "codice_colore_S",
+    "label_it": "Codice colore (opaco S colorato)",
+    "unit": "",
+    "default": "",
+    "required": "YES",
+    "applies_if": "opaco_S_colore = SI",
+    "notes": "Inserisci codice (es. CACHEMIRE N1 / RAL 9010 / NCS S 0502-Y / Pantone 123 C)."
+  }
+]

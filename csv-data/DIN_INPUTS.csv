@@ -1,0 +1,8 @@
+input_id,label,driver,unit,default,required,applies_if
+DIN_DOCCE_PZ,Numero docce,PIECE,pz,1,1,din=1
+DIN_BBCORNER_IN_PZ,Angoli interni (BBcorner IN),PIECE,pz,0,1,din=1
+DIN_BBCORNER_OUT_PZ,Angoli esterni (BBcorner OUT),PIECE,pz,0,1,din=1
+DIN_BBPASS_PZ,Raccordi idraulici standard (BBpass),PIECE,pz,0,1,din=1
+DIN_BBDRAIN_PZ,Raccordi grandi/scarichi (BBdrain),PIECE,pz,0,1,din=1
+DIN_BBTAPE_ML,Metri lineari BBtape (rotolo 50 ml),LINEAR_M,ml,,1,din=1
+DIN_NORPHEN_ML,Metri lineari sigillature Norphen (perimetrali+scassi),LINEAR_M,ml,,1,din=1

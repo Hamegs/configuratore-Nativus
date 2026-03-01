@@ -1,0 +1,6 @@
+rule_id,line_id,style_id,mode,protettivo_default_sku_id,protettivo_opaco_sku_id,protettivo_lucido_sku_id,allowed_sku_ids_csv,note
+S_FIX_NAT_SEN,"NATURAL,SENSE",,ALL,,,,,"Base: PROTEGGO Fix S 1 mano, consumo 60 g/m². Poi finitura OPACO S o LUCIDO S."
+S_FIX_DEK,DEKORA,,ALL,,,,,"Base: PROTEGGO Fix S 1 mano, consumo 80 g/m². Poi finitura OPACO S o LUCIDO S."
+S_LAMINE,LAMINE,,ALL,,,,,"LAMINE solvente: si parte sempre con PROTEGGO Lucido S a spatola, 2 mani non diluite: 250 g/m² + 150 g/m². Se finitura opaca: 1 mano PROTEGGO Opaco S 80 g/m² a rullo."
+S_CORLITE,CORLITE,,ALL,,,,,"CORLITE solvente: solo OPACO S. 2 mani, 80 g/m² per mano. Nessuna cera a solvente."
+S_OPACO_COLORATO_PREMIX,"NATURAL,SENSE,DEKORA,LAMINE,CORLITE,CHROMO",,ALL,,,,,"Se OPACO S colorato = SI: aggiungere premix colore a listino in base alla pezzatura Opaco S (1,88 kg o 6 kg)."

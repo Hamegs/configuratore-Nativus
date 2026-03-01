@@ -1,0 +1,12 @@
+protettivo,line_id,passaggi,consumo_g_m2_per_passaggio,diluizione_percent,pot_life_min,t_min_h,t_max_h,note
+PROTEGGO Fix H2O,"NATURAL,SENSE",1,50,0,,,,monocomponente; nessun tempo massimo
+PROTEGGO Fix H2O,"DEKORA,MATERIAL",1,100,0,,,,monocomponente; nessun tempo massimo
+PROTEGGO Opaco H2O,ALL,AUTO,80,0,30,3-4,24,bicomponente; rullo microfibra 10-12mm
+PROTEGGO Lucido H2O,ALL,3,50,50|30|30,40,4-6,24,bicomponente; 1a mano 50% poi 30% Numero mani: sempre 3 (anche pareti fuori bagno).
+PROTEGGO Lucido H2O (LAMINE spatola),LAMINE,2,250|150,0|0,40,,,2 mani a spatola non diluite
+PROTEGGO Lucido H2O (LAMINE finitura rullo),LAMINE,1,50,30,40,4-6,24,finitura lucida a rullo
+PROTEGGO Opaco H2O (LAMINE finitura),LAMINE,1,80,0,30,3-4,24,finitura opaca a rullo
+SEAL WAX Lucida,CORLITE,2,30,0,,,,2 mani con vello spandicera
+PROTEGGO Color Opaco H2O,"NATURAL,SENSE,MATERIAL,CHROMO",3,100,9|5|5,30,2-3,24,dopo: trasparente obbligatorio (opaco o lucido) 1 mano Applicabile su pareti/pavimenti/docce.
+TRASPARENTE DOPO PROTEGGO COLOR - OPACO,"NATURAL,SENSE,MATERIAL,CHROMO",1,80,0,30,3-4,24,scelta utente; 1 mano Opaco: mai diluito.
+TRASPARENTE DOPO PROTEGGO COLOR - LUCIDO,"NATURAL,SENSE,MATERIAL,CHROMO",1,50,30,40,4-6,24,scelta utente; 1 mano al 30%

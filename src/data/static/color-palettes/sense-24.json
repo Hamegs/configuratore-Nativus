@@ -1,0 +1,194 @@
+[
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CACHEMIRE_S1",
+    "label": "CACHEMIRE S1",
+    "family": "CACHEMIRE",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CACHEMIRE_S2",
+    "label": "CACHEMIRE S2",
+    "family": "CACHEMIRE",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CACHEMIRE_S3",
+    "label": "CACHEMIRE S3",
+    "family": "CACHEMIRE",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CENERE_S1",
+    "label": "CENERE S1",
+    "family": "CENERE",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CENERE_S2",
+    "label": "CENERE S2",
+    "family": "CENERE",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CENERE_S3",
+    "label": "CENERE S3",
+    "family": "CENERE",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_CIPRIA_S",
+    "label": "CIPRIA S",
+    "family": "CIPRIA",
+    "shade": "S",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_COTONE_S",
+    "label": "COTONE S",
+    "family": "COTONE",
+    "shade": "S",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_LINO_S1",
+    "label": "LINO S1",
+    "family": "LINO",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_LINO_S2",
+    "label": "LINO S2",
+    "family": "LINO",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_LINO_S3",
+    "label": "LINO S3",
+    "family": "LINO",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_PERLA_S1",
+    "label": "PERLA S1",
+    "family": "PERLA",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_PERLA_S2",
+    "label": "PERLA S2",
+    "family": "PERLA",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_PERLA_S3",
+    "label": "PERLA S3",
+    "family": "PERLA",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_POLVERE_S1",
+    "label": "POLVERE S1",
+    "family": "POLVERE",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_POLVERE_S2",
+    "label": "POLVERE S2",
+    "family": "POLVERE",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_POLVERE_S3",
+    "label": "POLVERE S3",
+    "family": "POLVERE",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_ROSA_S",
+    "label": "ROSA S",
+    "family": "ROSA",
+    "shade": "S",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SABBIA_S1",
+    "label": "SABBIA S1",
+    "family": "SABBIA",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SABBIA_S2",
+    "label": "SABBIA S2",
+    "family": "SABBIA",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SABBIA_S3",
+    "label": "SABBIA S3",
+    "family": "SABBIA",
+    "shade": "S3",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SETA_S1",
+    "label": "SETA S1",
+    "family": "SETA",
+    "shade": "S1",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SETA_S2",
+    "label": "SETA S2",
+    "family": "SETA",
+    "shade": "S2",
+    "is_active": true
+  },
+  {
+    "palette_id": "SENSE_24",
+    "color_id": "SENSE_24_SETA_S3",
+    "label": "SETA S3",
+    "family": "SETA",
+    "shade": "S3",
+    "is_active": true
+  }
+]

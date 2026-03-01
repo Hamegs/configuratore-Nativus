@@ -1,0 +1,194 @@
+[
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CACHEMIRE_N1",
+    "label": "CACHEMIRE N1",
+    "family": "CACHEMIRE",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CACHEMIRE_N2",
+    "label": "CACHEMIRE N2",
+    "family": "CACHEMIRE",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CACHEMIRE_N3",
+    "label": "CACHEMIRE N3",
+    "family": "CACHEMIRE",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CENERE_N1",
+    "label": "CENERE N1",
+    "family": "CENERE",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CENERE_N2",
+    "label": "CENERE N2",
+    "family": "CENERE",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CENERE_N3",
+    "label": "CENERE N3",
+    "family": "CENERE",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_CIPRIA_N",
+    "label": "CIPRIA N",
+    "family": "CIPRIA",
+    "shade": "N",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_COTONE_N",
+    "label": "COTONE N",
+    "family": "COTONE",
+    "shade": "N",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_LINO_N1",
+    "label": "LINO N1",
+    "family": "LINO",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_LINO_N2",
+    "label": "LINO N2",
+    "family": "LINO",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_LINO_N3",
+    "label": "LINO N3",
+    "family": "LINO",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_PERLA_N1",
+    "label": "PERLA N1",
+    "family": "PERLA",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_PERLA_N2",
+    "label": "PERLA N2",
+    "family": "PERLA",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_PERLA_N3",
+    "label": "PERLA N3",
+    "family": "PERLA",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_POLVERE_N1",
+    "label": "POLVERE N1",
+    "family": "POLVERE",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_POLVERE_N2",
+    "label": "POLVERE N2",
+    "family": "POLVERE",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_POLVERE_N3",
+    "label": "POLVERE N3",
+    "family": "POLVERE",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_ROSA_N",
+    "label": "ROSA N",
+    "family": "ROSA",
+    "shade": "N",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SABBIA_N1",
+    "label": "SABBIA N1",
+    "family": "SABBIA",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SABBIA_N2",
+    "label": "SABBIA N2",
+    "family": "SABBIA",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SABBIA_N3",
+    "label": "SABBIA N3",
+    "family": "SABBIA",
+    "shade": "N3",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SETA_N1",
+    "label": "SETA N1",
+    "family": "SETA",
+    "shade": "N1",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SETA_N2",
+    "label": "SETA N2",
+    "family": "SETA",
+    "shade": "N2",
+    "is_active": true
+  },
+  {
+    "palette_id": "NATURAL_24",
+    "color_id": "NATURAL_24_SETA_N3",
+    "label": "SETA N3",
+    "family": "SETA",
+    "shade": "N3",
+    "is_active": true
+  }
+]

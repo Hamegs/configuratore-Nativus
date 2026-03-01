@@ -1,0 +1,279 @@
+{
+  "op_params": [
+    {
+      "protettivo": "PROTEGGO Fix H2O",
+      "line_id": "NATURAL,SENSE",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "50",
+      "diluizione_percent": "0",
+      "pot_life_min": "",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "monocomponente; nessun tempo massimo"
+    },
+    {
+      "protettivo": "PROTEGGO Fix H2O",
+      "line_id": "DEKORA,MATERIAL",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "100",
+      "diluizione_percent": "0",
+      "pot_life_min": "",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "monocomponente; nessun tempo massimo"
+    },
+    {
+      "protettivo": "PROTEGGO Opaco H2O",
+      "line_id": "ALL",
+      "passaggi": "AUTO",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0",
+      "pot_life_min": "30",
+      "t_min_h": "3-4",
+      "t_max_h": "24",
+      "note": "bicomponente; rullo microfibra 10-12mm"
+    },
+    {
+      "protettivo": "PROTEGGO Lucido H2O",
+      "line_id": "ALL",
+      "passaggi": "3",
+      "consumo_g_m2_per_passaggio": "50",
+      "diluizione_percent": "50|30|30",
+      "pot_life_min": "40",
+      "t_min_h": "4-6",
+      "t_max_h": "24",
+      "note": "bicomponente; 1a mano 50% poi 30% Numero mani: sempre 3 (anche pareti fuori bagno)."
+    },
+    {
+      "protettivo": "PROTEGGO Lucido H2O (LAMINE spatola)",
+      "line_id": "LAMINE",
+      "passaggi": "2",
+      "consumo_g_m2_per_passaggio": "250|150",
+      "diluizione_percent": "0|0",
+      "pot_life_min": "40",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "2 mani a spatola non diluite"
+    },
+    {
+      "protettivo": "PROTEGGO Lucido H2O (LAMINE finitura rullo)",
+      "line_id": "LAMINE",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "50",
+      "diluizione_percent": "30",
+      "pot_life_min": "40",
+      "t_min_h": "4-6",
+      "t_max_h": "24",
+      "note": "finitura lucida a rullo"
+    },
+    {
+      "protettivo": "PROTEGGO Opaco H2O (LAMINE finitura)",
+      "line_id": "LAMINE",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0",
+      "pot_life_min": "30",
+      "t_min_h": "3-4",
+      "t_max_h": "24",
+      "note": "finitura opaca a rullo"
+    },
+    {
+      "protettivo": "SEAL WAX Lucida",
+      "line_id": "CORLITE",
+      "passaggi": "2",
+      "consumo_g_m2_per_passaggio": "30",
+      "diluizione_percent": "0",
+      "pot_life_min": "",
+      "t_min_h": "",
+      "t_max_h": "",
+      "note": "2 mani con vello spandicera"
+    },
+    {
+      "protettivo": "PROTEGGO Color Opaco H2O",
+      "line_id": "NATURAL,SENSE,MATERIAL,CHROMO",
+      "passaggi": "3",
+      "consumo_g_m2_per_passaggio": "100",
+      "diluizione_percent": "9|5|5",
+      "pot_life_min": "30",
+      "t_min_h": "2-3",
+      "t_max_h": "24",
+      "note": "dopo: trasparente obbligatorio (opaco o lucido) 1 mano Applicabile su pareti/pavimenti/docce."
+    },
+    {
+      "protettivo": "TRASPARENTE DOPO PROTEGGO COLOR - OPACO",
+      "line_id": "NATURAL,SENSE,MATERIAL,CHROMO",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "80",
+      "diluizione_percent": "0",
+      "pot_life_min": "30",
+      "t_min_h": "3-4",
+      "t_max_h": "24",
+      "note": "scelta utente; 1 mano Opaco: mai diluito."
+    },
+    {
+      "protettivo": "TRASPARENTE DOPO PROTEGGO COLOR - LUCIDO",
+      "line_id": "NATURAL,SENSE,MATERIAL,CHROMO",
+      "passaggi": "1",
+      "consumo_g_m2_per_passaggio": "50",
+      "diluizione_percent": "30",
+      "pot_life_min": "40",
+      "t_min_h": "4-6",
+      "t_max_h": "24",
+      "note": "scelta utente; 1 mano al 30%"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "H2O_FIX_BASE_NAT_SEN",
+      "line_id": "NATURAL,SENSE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Sempre Fix H2O come primo passaggio. Consumo 50 g/m². Poi finitura OPACO o LUCIDO H2O."
+    },
+    {
+      "rule_id": "H2O_FIX_BASE_DEK_MAT",
+      "line_id": "DEKORA,MATERIAL",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Sempre Fix H2O come primo passaggio. Consumo 100 g/m². Poi finitura OPACO o LUCIDO H2O."
+    },
+    {
+      "rule_id": "H2O_LAMINE_BASE",
+      "line_id": "LAMINE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "LAMINE: si parte sempre con PROTEGGO Lucido H2O spatola (2 mani): 1ª 250 g/m², 2ª 150 g/m². Se finitura LUCIDO FINITO: 3ª mano a rullo dil. 30%, consumo 50 g/m² (prodotto puro). Se finitura OPACO: 1 mano PROTEGGO Opaco H2O 70–80 g/m² a rullo."
+    },
+    {
+      "rule_id": "H2O_CORLITE_OPACO",
+      "line_id": "CORLITE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "CORLITE: PROTEGGO Lucido H2O non si applica mai. Se OPACO: 2 passaggi PROTEGGO Opaco H2O 70–80 g/m² per passaggio a rullo."
+    },
+    {
+      "rule_id": "WAX_CORLITE_LUCIDO",
+      "line_id": "CORLITE",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "CORLITE: per effetto LUCIDO si usano 2 passaggi di cera SEAL WAX Lucida 25–30 g/m² per passaggio con vello spandicera."
+    },
+    {
+      "rule_id": "H2O_PROTEGGO_COLOR_OPACO",
+      "line_id": "NATURAL,SENSE,MATERIAL,CHROMO",
+      "style_id": "",
+      "mode": "ALL",
+      "note": "Compatibile su pareti, pavimenti e docce. PROTEGGO Color Opaco H2O: finitura colorata. 3 passaggi a rullo poliammide sintetico pelo medio. Consumo 100 g/m² per passaggio (valore calcolo prudenziale). Diluizione: 1ª mano 9%, 2ª e 3ª mano 5%. Pot-life 30 min. Ricopertura: minimo 2–3 h; massimo 24 h (oltre: carteggiare). Dopo PROTEGGO Color è obbligatorio finire con un trasparente (scelta utente: opaco o lucido): PROTEGGO Opaco H2O o PROTEGGO Lucido H2O. Trasparente finale: 1 mano obbligatoria (scelta utente: opaco o lucido H2O)."
+    }
+  ],
+  "note_operative": [
+    {
+      "voce": "PROTEGGO Fix H2O",
+      "dato": "Monocomponente; pot-life infinito; nessun tempo massimo di sovraverniciatura"
+    },
+    {
+      "voce": "PROTEGGO Fix H2O",
+      "dato": "Linee: NATURAL/SENSE/DEKORA/MATERIAL; consumo: 50 g/m² (NATURAL,SENSE) - 100 g/m² (DEKORA,MATERIAL)"
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O",
+      "dato": "Bicomponente; 3 passaggi; 1° passaggio diluizione 50%; 2° e 3° passaggio diluizione 30%"
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O",
+      "dato": "Consumo indicativo: 50 g/m² per passaggio di prodotto puro; pot-life 40 min"
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O",
+      "dato": "Ricopertura: min 4–6 h; max 24 h (oltre: carteggiare 150/180)"
+    },
+    {
+      "voce": "PROTEGGO Opaco H2O",
+      "dato": "Bicomponente; 3 passaggi; nessuna diluizione; pot-life 30 min"
+    },
+    {
+      "voce": "PROTEGGO Opaco H2O",
+      "dato": "Ricopertura: min 3–4 h; max 24 h (oltre: carteggiare)"
+    },
+    {
+      "voce": "Applicazione",
+      "dato": "Rullo microfibra pelo medio 10–12 mm"
+    },
+    {
+      "voce": "Numero mani",
+      "dato": "Pavimenti/docce/bagni: 3 mani (lucido o opaco). Pareti fuori bagno: 2 mani possibili"
+    },
+    {
+      "voce": "Consumo opaco parete",
+      "dato": "70–80 g/m² per passaggio (opaco)"
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O (LAMINE)",
+      "dato": "LAMINE: 2 mani a spatola non diluite: 250 g/m² + 150 g/m²"
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O (LAMINE)",
+      "dato": "LAMINE: per lucido finito: 3ª mano a rullo diluita 30%, consumo 50 g/m² di prodotto puro"
+    },
+    {
+      "voce": "PROTEGGO Opaco H2O (LAMINE)",
+      "dato": "LAMINE: finitura opaca: 1 mano a rullo 70–80 g/m²"
+    },
+    {
+      "voce": "CORLITE",
+      "dato": "Mai PROTEGGO Lucido H2O. Opaco: 2 mani PROTEGGO Opaco H2O 70–80 g/m² per passaggio"
+    },
+    {
+      "voce": "CORLITE lucido",
+      "dato": "Lucido: 2 mani SEAL WAX Lucida 25–30 g/m² per passaggio con vello spandicera"
+    },
+    {
+      "voce": "Applicazione rullo",
+      "dato": "PROTEGGO (lucido/opaco): rullo microfibra pelo medio 10–12 mm"
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O",
+      "dato": "Compatibile: NATURAL, SENSE, MATERIAL, CHROMO. Colore da NATURAL_24 o RAL o NCS o Pantone."
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O",
+      "dato": "3 passaggi rullo poliammide sintetico pelo medio. Consumo 100 g/m² per passaggio (prudenziale)."
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O",
+      "dato": "Diluizione: 1ª mano 9%; 2ª e 3ª mano 5%."
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O",
+      "dato": "Pot-life 30 min. Ricopertura: min 2–3 h; max 24 h (oltre: carteggiare)."
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O",
+      "dato": "Consigliato finire con trasparente: PROTEGGO Opaco H2O oppure PROTEGGO Lucido H2O."
+    },
+    {
+      "voce": "Trasparente dopo PROTEGGO Color",
+      "dato": "Obbligatorio: scelta utente tra PROTEGGO Opaco H2O o PROTEGGO Lucido H2O. Sempre 1 mano."
+    },
+    {
+      "voce": "Trasparente dopo PROTEGGO Color (lucido)",
+      "dato": "Se scelto lucido: 1 mano a rullo diluita 30% (consumo 50 g/m² di prodotto puro)."
+    },
+    {
+      "voce": "Trasparente dopo PROTEGGO Color (opaco)",
+      "dato": "Se scelto opaco: 1 mano a rullo (consumo 80 g/m²)."
+    },
+    {
+      "voce": "PROTEGGO Color Opaco H2O – utilizzo",
+      "dato": "Applicabile su pareti, pavimenti e docce. Dopo: 1 mano obbligatoria di PROTEGGO Opaco H2O oppure PROTEGGO Lucido H2O."
+    },
+    {
+      "voce": "Trasparente post PROTEGGO Color (opaco)",
+      "dato": "Opaco H2O: 1 mano a rullo, mai diluito."
+    },
+    {
+      "voce": "PROTEGGO Lucido H2O – numero mani",
+      "dato": "Sempre 3 mani (anche su pareti fuori bagno). Diluizioni 50% / 30% / 30%."
+    }
+  ]
+}

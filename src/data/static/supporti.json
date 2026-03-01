@@ -1,0 +1,117 @@
+[
+  {
+    "support_id": "F_MAS",
+    "macro_id": "FLOOR",
+    "name": "Massetto cementizio"
+  },
+  {
+    "support_id": "F_CLS",
+    "macro_id": "FLOOR",
+    "name": "CLS elicotterato"
+  },
+  {
+    "support_id": "F_TILE",
+    "macro_id": "FLOOR",
+    "name": "Piastrelle"
+  },
+  {
+    "support_id": "F_COT",
+    "macro_id": "FLOOR",
+    "name": "Cotto"
+  },
+  {
+    "support_id": "F_SLEV",
+    "macro_id": "FLOOR",
+    "name": "Autolivellante esistente"
+  },
+  {
+    "support_id": "F_MAR",
+    "macro_id": "FLOOR",
+    "name": "Marmo"
+  },
+  {
+    "support_id": "F_TV",
+    "macro_id": "FLOOR",
+    "name": "Terrazzo alla veneziana"
+  },
+  {
+    "support_id": "F_ZMX",
+    "macro_id": "FLOOR",
+    "name": "Sistema fresato tipo Zeromax"
+  },
+  {
+    "support_id": "F_PAR_RM",
+    "macro_id": "FLOOR",
+    "name": "Parquet (rimozione totale)"
+  },
+  {
+    "support_id": "F_COMP",
+    "macro_id": "FLOOR",
+    "name": "Compensazione quota (layer)"
+  },
+  {
+    "support_id": "W_INT_G",
+    "macro_id": "WALL",
+    "name": "Intonaco grezzo"
+  },
+  {
+    "support_id": "W_INT_C",
+    "macro_id": "WALL",
+    "name": "Intonaco civile (malta fine)"
+  },
+  {
+    "support_id": "W_COAT",
+    "macro_id": "WALL",
+    "name": "Pitture / Smalti / Calce (da rimuovere)"
+  },
+  {
+    "support_id": "W_GYP",
+    "macro_id": "WALL",
+    "name": "Cartongesso"
+  },
+  {
+    "support_id": "W_FIB",
+    "macro_id": "WALL",
+    "name": "Aquapanel / Fermacell"
+  },
+  {
+    "support_id": "W_TILE",
+    "macro_id": "WALL",
+    "name": "Piastrelle a parete"
+  },
+  {
+    "support_id": "W_MOS",
+    "macro_id": "WALL",
+    "name": "Mosaico a parete"
+  },
+  {
+    "support_id": "W_TR_OPEN",
+    "macro_id": "WALL",
+    "name": "Tracce aperte (riempimento)"
+  },
+  {
+    "support_id": "W_TR_CLOSED",
+    "macro_id": "WALL",
+    "name": "Tracce chiuse (intonaco ≥7 gg)"
+  },
+  {
+    "support_id": "W_SHW_MOD",
+    "macro_id": "WALL",
+    "name": "Modulo Zona Doccia (logica)"
+  },
+  {
+    "support_id": "W_DIN",
+    "macro_id": "WALL",
+    "name": "DIN 18534 (modulo)"
+  },
+  {
+    "support_id": "F_PAR_AS",
+    "macro_id": "FLOOR",
+    "name": "Parquet: rimozione totale + compensazione quota con Autolivellante AS"
+  },
+  {
+    "support_id": "F_PAR_EP",
+    "macro_id": "FLOOR",
+    "name": "Parquet: rimozione totale + compensazione quota con massetto epossidico"
+  }
+]

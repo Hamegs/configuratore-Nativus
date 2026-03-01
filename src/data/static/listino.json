@@ -1,0 +1,826 @@
+[
+  {
+    "sku_id": "STRIPPER_1LT",
+    "prezzo_listino": 7.85,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "AUTO_AS_25KG",
+    "prezzo_listino": 44.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "GUAINA_BASE_21KG",
+    "prezzo_listino": 129.15,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBCORNER_IN_1PZ",
+    "prezzo_listino": 7.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBCORNER_OUT_1PZ",
+    "prezzo_listino": 9.58,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBTAPE_50M",
+    "prezzo_listino": 127,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BBPASS_120X120_1PZ",
+    "prezzo_listino": 8.56,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_BASE_ESTIVO_3KG",
+    "prezzo_listino": 82.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_BASE_ESTIVO_2_12KG",
+    "prezzo_listino": 237.6,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_7_1_2_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO_0_5KG",
+    "prezzo_listino": 10.87,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_IN_CARTUCCIA_1CART",
+    "prezzo_listino": 15.2,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "MS_PRO_SEALER_PRIMER_0_5KG",
+    "prezzo_listino": 18.7,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PRIMER_BOND_SW_ADDITIVO_PLUS_0_2KG",
+    "prezzo_listino": 11.37,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PR_BOND_SW_2KG",
+    "prezzo_listino": 42,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PRIMER_BOND_SW_SQ_2KG",
+    "prezzo_listino": 57.4,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PR_SW_3KG",
+    "prezzo_listino": 45,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ_0_54KG",
+    "prezzo_listino": 24.6,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ_18KG",
+    "prezzo_listino": 471.6,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_DA_SPOLVERO_0_1_0_5_KIT_12_MQ_50KG",
+    "prezzo_listino": 80,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RASANTE_FONDO_10KG",
+    "prezzo_listino": 38.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_2K_32_5KG",
+    "prezzo_listino": 159.58,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_3KG",
+    "prezzo_listino": 53.16,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_15KG",
+    "prezzo_listino": 226.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_Q_2_73KG",
+    "prezzo_listino": 84.74,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RAS_BASE_Q_14_56KG",
+    "prezzo_listino": 259.9,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "STUCCO_EPO_2KG",
+    "prezzo_listino": 71.2,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "STUCCO_LAMBDA_23_1KG",
+    "prezzo_listino": 471.47,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_1_0_3_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_1_0_5_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_3_0_9_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "QUARZO_0_7_1_2_2_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RETE_DI_VETRO_DA_160_G_MQ_50M",
+    "prezzo_listino": 184,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "RETE_DI_VETRO_DA_75_G_MQ_100M",
+    "prezzo_listino": 252,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_COLORABILE_NATURAL_CHROMO_2M2",
+    "prezzo_listino": 81.6,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_KIT_2_MQ_NATURAL_CHROMO_2M2",
+    "prezzo_listino": 22.44,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_COLORABILE_10M2",
+    "prezzo_listino": 190.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_10M2",
+    "prezzo_listino": 46.2,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_COLORABILE_10M2",
+    "prezzo_listino": 44.41,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_10M2",
+    "prezzo_listino": 18.49,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_NATURAL_COLORABILE_EFFETTO_ALIZ_2M2",
+    "prezzo_listino": 89.68,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_KIT_2_MQ_NATURAL_EFFETTO_ALIZ_2M2",
+    "prezzo_listino": 25.64,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_COLORABILE_2_10M2",
+    "prezzo_listino": 190.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_2_10M2",
+    "prezzo_listino": 46.2,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_COLORABILE_2_10M2",
+    "prezzo_listino": 44.41,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_2_10M2",
+    "prezzo_listino": 18.49,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_COLORATO_NATURAL_CHROMO_2M2",
+    "prezzo_listino": 84.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_10_MQ_COLORATO_10M2",
+    "prezzo_listino": 242.11,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_10M2",
+    "prezzo_listino": 58.7,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PERSONALIZZAZIONE_COLORE_NATURAL_CHROMO_",
+    "prezzo_listino": 100,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_NATURAL_COLORATO_EFFETTO_ALIZEE_2M2",
+    "prezzo_listino": 96.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_NATURAL_10_MQ_COLORATO_2_10M2",
+    "prezzo_listino": 242.11,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_2_10M2",
+    "prezzo_listino": 58.7,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_NATURAL_10_MQ_COLORATO_3_10M2",
+    "prezzo_listino": 58.7,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PERSONALIZZAZIONE_NATURAL_COLORE_ALIZEE_",
+    "prezzo_listino": 200,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_SENSE_COLORABILE_CON_POLVERI_2M2",
+    "prezzo_listino": 107.22,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_KIT_2_MQ_2M2",
+    "prezzo_listino": 21.1,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_SENSE_COLORABILE_10M2",
+    "prezzo_listino": 156,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_FONDO_COLORABILE_10M2",
+    "prezzo_listino": 18.87,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_SENSE_COLORABILE_10M2",
+    "prezzo_listino": 189,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_SENSE_PER_FINITURA_COLORABILE_10M2",
+    "prezzo_listino": 22.74,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_2_MQ_DEKORA_COLORABILE_CON_POLVERI_2M2",
+    "prezzo_listino": 68,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_KIT_2_MQ_2M2",
+    "prezzo_listino": 21.1,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FONDO_DEKORA_COLORABILE_10M2",
+    "prezzo_listino": 89.3,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_FONDO_COLORABILE_10M2",
+    "prezzo_listino": 29.88,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "FINITURA_DEKORA_COLORABILE_10M2",
+    "prezzo_listino": 65.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "COLORE_DEKORA_PER_FINITURA_COLORABILE_10M2",
+    "prezzo_listino": 32.84,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_LAMINE_2_MQ_2M2",
+    "prezzo_listino": 79.41,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "LAMINE_FONDO_10_MQ_10M2",
+    "prezzo_listino": 109,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "LAMINE_10_MQ_10M2",
+    "prezzo_listino": 193.8,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_1_MQ_COLORATO_CORLITE_CHROMO_1M2",
+    "prezzo_listino": 73.66,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_4_MQ_COLORATO_CORLITE_CHROMO_4M2",
+    "prezzo_listino": 174.64,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_1_MQ_COLORATO_CORLITE_EVIDENCE_BICOL_1M2",
+    "prezzo_listino": 81.86,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_4_MQ_COLORATO_CORLITE_EVIDENCE_BICOL_4M2",
+    "prezzo_listino": 194.04,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_MATERIAL_2_MQ_5KG_2M2",
+    "prezzo_listino": 57.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "KIT_MATERIAL_10_MQ_20_KG_10M2",
+    "prezzo_listino": 175,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "NORDCOLOR_ART_NCS_RAL_1KG_1KG",
+    "prezzo_listino": 21.8,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "DEKOR_ART_W_1_KG_1KG",
+    "prezzo_listino": 78.71,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_3_7_25KG",
+    "prezzo_listino": 261.15,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_50_4_4KG",
+    "prezzo_listino": 158.49,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "CRYSTEPO_V_6KG",
+    "prezzo_listino": 266.64,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_H2O_1LITRO",
+    "prezzo_listino": 28.4,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_H2O_2_5LT",
+    "prezzo_listino": 106.1,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_H20_1_1KG",
+    "prezzo_listino": 54.29,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_H20_2_5_5KG",
+    "prezzo_listino": 222.31,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_H20_1_35KG",
+    "prezzo_listino": 63.2,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_H20_2_4_5KG",
+    "prezzo_listino": 230.57,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_S_1_1KG",
+    "prezzo_listino": 37.18,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_FIX_S_2_4_95KG",
+    "prezzo_listino": 148.5,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_LUCIDO_S_4_5KG",
+    "prezzo_listino": 189,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_S_1_88KG",
+    "prezzo_listino": 63.6,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_OPACO_S_2_6KG",
+    "prezzo_listino": 180.9,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_0_9KG",
+    "prezzo_listino": 64.66,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2_4_5KG",
+    "prezzo_listino": 261,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "DA_LISTINO_XLSX"
+  },
+  {
+    "sku_id": "PREMIX_COLORE_OPACO_S_1_88_0_14KG",
+    "prezzo_listino": 66.36,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Listino per confezione premix 1,88"
+  },
+  {
+    "sku_id": "PREMIX_COLORE_OPACO_S_6_PZ",
+    "prezzo_listino": 53.88,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Listino premix 6 kg (436 g)"
+  },
+  {
+    "sku_id": "ADD_PLUS_0_2KG",
+    "prezzo_listino": 11.37,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da listino (bustina 0,20 kg)"
+  },
+  {
+    "sku_id": "SPOLVERO_Q_25KG",
+    "prezzo_listino": 40,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Sacco 25 kg"
+  },
+  {
+    "sku_id": "BB_TAPE_50M_ROLLO",
+    "prezzo_listino": 127,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da screenshot listino"
+  },
+  {
+    "sku_id": "BB_CORNER_IN_PZ",
+    "prezzo_listino": 7.12,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da screenshot listino"
+  },
+  {
+    "sku_id": "BB_CORNER_OUT_PZ",
+    "prezzo_listino": 6.58,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da screenshot listino"
+  },
+  {
+    "sku_id": "BB_DRAIN_PZ",
+    "prezzo_listino": 29.78,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da screenshot listino"
+  },
+  {
+    "sku_id": "BB_PASS_PZ",
+    "prezzo_listino": 8.59,
+    "valuta": "EUR",
+    "valid_from": "",
+    "valid_to": "",
+    "note_prezzo": "Da screenshot listino"
+  }
+]

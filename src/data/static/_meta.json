@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-03-01T17:44:21.618Z",
+  "hash": "9f51bf03e8d580a2",
+  "csv_source": "csv-data/",
+  "files": {
+    "decision_table_rules": 60,
+    "step_map_entries": 267,
+    "step_library_entries": 39,
+    "prodotti": 112,
+    "packaging_sku": 103,
+    "listino_sku": 103,
+    "supporti": 23,
+    "color_natural_24": 24,
+    "color_sense_24": 24,
+    "color_dekora_24": 24,
+    "color_ral": 188,
+    "color_ncs": 1943,
+    "color_pantone": 2300
+  }
+}

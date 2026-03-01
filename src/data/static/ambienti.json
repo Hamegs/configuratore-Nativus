@@ -1,0 +1,18 @@
+[
+  {
+    "env_id": "ORD",
+    "name": "Soggiorno / Cucina / Camere / Locali ordinari"
+  },
+  {
+    "env_id": "BAG",
+    "name": "Bagno (no doccia)"
+  },
+  {
+    "env_id": "DOC",
+    "name": "Zona doccia"
+  },
+  {
+    "env_id": "DIN",
+    "name": "DIN 18534 (mercato tedesco)"
+  }
+]

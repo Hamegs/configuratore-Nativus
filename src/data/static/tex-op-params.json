@@ -1,0 +1,114 @@
+[
+  {
+    "item": "Primer SW",
+    "potlife_min": "120",
+    "min_overcoat": "2h",
+    "max_overcoat": "12h",
+    "sanding": "oltre 12h grana 80/120"
+  },
+  {
+    "item": "Rasante Base",
+    "potlife_min": "n/a",
+    "min_overcoat": "4-5h",
+    "max_overcoat": "nessuno",
+    "sanding": "operativo grana 40"
+  },
+  {
+    "item": "Rasante Base Quarzo",
+    "potlife_min": "20",
+    "min_overcoat": "6h",
+    "max_overcoat": "6h",
+    "sanding": "oltre 6h grana 40 o diamante; comunque SI"
+  },
+  {
+    "item": "Fondo Base (no spolvero)",
+    "potlife_min": "10 (massa)",
+    "min_overcoat": "12h",
+    "max_overcoat": "24h",
+    "sanding": "oltre 24h grana 40"
+  },
+  {
+    "item": "Fondo Base (con spolvero)",
+    "potlife_min": "10 (massa)",
+    "min_overcoat": "12h",
+    "max_overcoat": "nessuno",
+    "sanding": "sempre grana 36/40"
+  },
+  {
+    "item": "Primer Bond SW",
+    "potlife_min": "n/a",
+    "min_overcoat": "3h / 5-6h con Additivo Plus",
+    "max_overcoat": "nessuno",
+    "sanding": "no"
+  },
+  {
+    "item": "Primer Bond SW SQ",
+    "potlife_min": "n/a",
+    "min_overcoat": "4h / 5-6h con Additivo Plus 10%",
+    "max_overcoat": "nessuno",
+    "sanding": "n/d"
+  },
+  {
+    "item": "BV4",
+    "potlife_min": "primer 120 / rasante 20",
+    "min_overcoat": "rasante stesso giorno del primer",
+    "max_overcoat": "nessuno",
+    "sanding": "sempre 36/40"
+  },
+  {
+    "item": "Massetto epossidico",
+    "potlife_min": "20",
+    "min_overcoat": "4-8h (dopo)",
+    "max_overcoat": "nessuno",
+    "sanding": "sempre grana 40 o diamante; primer FB a fresco"
+  },
+  {
+    "item": "Rasante Fondo Fino",
+    "potlife_min": "n/a",
+    "min_overcoat": "24h (mm) / 7gg (5cm)",
+    "max_overcoat": "n/a",
+    "sanding": "non obbl. 80/120"
+  },
+  {
+    "item": "NATURAL",
+    "potlife_min": "30",
+    "min_overcoat": "4h tra passaggi",
+    "max_overcoat": "nessuno",
+    "sanding": "fondo 80; finitura 120/150; no sanding tra finiture Alizeè/EVIDENCE; post finitura2 150/180"
+  },
+  {
+    "item": "DEKORA",
+    "potlife_min": "120",
+    "min_overcoat": "12h fondo->finitura; finitura2 a fresco ~1h",
+    "max_overcoat": "nessuno",
+    "sanding": "prep 40/80; post 180; 24h"
+  },
+  {
+    "item": "LAMINE",
+    "potlife_min": "20 (fondo)",
+    "min_overcoat": "8h",
+    "max_overcoat": "nessuno",
+    "sanding": "120"
+  },
+  {
+    "item": "CORLITE",
+    "potlife_min": "30",
+    "min_overcoat": "24-36h; EVIDENCE contrasto entro 15-20 min",
+    "max_overcoat": "n/a",
+    "sanding": "180 pre-protettivi"
+  },
+  {
+    "item": "MATERIAL",
+    "potlife_min": "60",
+    "min_overcoat": "12h prima colore superficiale",
+    "max_overcoat": "nessuno",
+    "sanding": "120/150"
+  },
+  {
+    "item": "PROTEGGO Color Opaco H2O",
+    "potlife_min": "30",
+    "min_overcoat": "4h",
+    "max_overcoat": "24h",
+    "sanding": "oltre 24h 120/150; copertura critica 2 o 3 mani"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "line_id": "NATURAL",
+    "name": "NATURAL",
+    "notes": "Texture interni, colorabile cartella NATURAL 24; CHROMO e Alizeè/EVIDENCE; personalizzabile (fee 100€/colore/ordine)"
+  },
+  {
+    "line_id": "SENSE",
+    "name": "SENSE",
+    "notes": "Colorabile cartella SENSE 24; pack 10+2; fondo 10 + finitura 10 (1:1)"
+  },
+  {
+    "line_id": "DEKORA",
+    "name": "DEKORA",
+    "notes": "Identico a SENSE; cartella DEKORA 24; no docce; no workaround colore superficiale"
+  },
+  {
+    "line_id": "LAMINE",
+    "name": "LAMINE",
+    "notes": "Pattern predefiniti; no righe colore; kit 2 + fondo 10 + lamine 10; passaggio unico con spolvero a rifiuto"
+  },
+  {
+    "line_id": "CORLITE",
+    "name": "CORLITE",
+    "notes": "Kit 1 mq e 4 mq; CHROMO monocolore, EVIDENCE bicolore (colori diversi obbligatori); fee 0; colori ammessi NATURAL_24 + RAL + NCS + PANTONE_C + ALTRO"
+  },
+  {
+    "line_id": "MATERIAL",
+    "name": "MATERIAL",
+    "notes": "Solo pareti fuori doccia; passaggio unico a spatola; pack 10+2; opzionale colore superficiale NORDCOLOR ART o DEKOR ART W (250 g/mq, 1kg pack)"
+  }
+]

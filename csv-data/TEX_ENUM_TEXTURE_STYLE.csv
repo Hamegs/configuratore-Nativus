@@ -1,0 +1,5 @@
+style_id,name,passes_total,color_roles,rules
+CHROMO,CHROMO,3,"BASE,BASE,BASE",monocolore
+ALIZEE_EVIDENCE_4,Alizeè/EVIDENCE (4 passaggi),4,"BASE,BASE,BASE,CONTRAST",ultimo passaggio a contrasto; bicolore
+COR_CHROMO,CORLITE CHROMO,1,BASE,colata unica monocolore
+COR_EVIDENCE,CORLITE EVIDENCE,2,"BASE,CONTRAST",a fresco entro 15–20 min; colori diversi obbligatori

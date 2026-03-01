@@ -1,0 +1,7 @@
+protettivo,line_id,passaggi,consumo_g_m2_per_passaggio,diluizione_percent,pot_life_min,t_min_h,t_max_h,note
+PROTEGGO Fix S,"NATURAL,SENSE",1,60,0,,,,"Base solvente, 1 mano"
+PROTEGGO Fix S,DEKORA,1,80,0,,,,"Base solvente, 1 mano"
+PROTEGGO Lucido S,"NATURAL,SENSE,DEKORA",2,80,0|0,120,8,24,Mai diluito. Ricopertura min 8h max 24h.
+PROTEGGO Opaco S,"NATURAL,SENSE,DEKORA,CORLITE",2,80,0|0,120,6,72,Ricopertura min 6h max 72h.
+PROTEGGO Lucido S (LAMINE spatola),LAMINE,2,250|150,0|0,120,,,2 mani spatola non diluite
+PROTEGGO Opaco S (LAMINE finitura),LAMINE,1,80,0,120,6,72,1 mano a rullo

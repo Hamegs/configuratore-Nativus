@@ -1,0 +1,674 @@
+[
+  {
+    "product_id": "PR_SW",
+    "name": "Primer SW",
+    "type": "Primer",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "PR_BOND_SW",
+    "name": "Primer Bond SW",
+    "type": "Primer",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "NORPHEN_IGRO",
+    "name": "Norphen Fondo Igro",
+    "type": "Primer",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "MS_PRO",
+    "name": "MS Prosealer",
+    "type": "Sigillante",
+    "unit": "ml/ml"
+  },
+  {
+    "product_id": "STUCCO_EPO",
+    "name": "Stucco epossidico",
+    "type": "Riparazione",
+    "unit": "g/ml"
+  },
+  {
+    "product_id": "RAS_BASE",
+    "name": "Rasante Base",
+    "type": "Fondo strutturale",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "RAS_BASE_Q",
+    "name": "Rasante Base Quarzo",
+    "type": "Fondo strutturale",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "RAS_2K",
+    "name": "Rasante 2K",
+    "type": "Fondo strutturale",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "RAS_FONDO_FINO",
+    "name": "Rasante Fondo Fino",
+    "type": "Riempimento",
+    "unit": "kg/m²/mm"
+  },
+  {
+    "product_id": "BARR_VAP_4",
+    "name": "Barriera Vapore 4.0",
+    "type": "Impermeabilizzazione",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "BARR_VAP_4_PR",
+    "name": "Primer Barriera Vapore 4.0",
+    "type": "Primer",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "GUAINA_BASE",
+    "name": "Guaina Base",
+    "type": "Impermeabilizzazione",
+    "unit": "mani"
+  },
+  {
+    "product_id": "MAS_EP",
+    "name": "Massetto epossidico",
+    "type": "Strutturale",
+    "unit": "kg/m²/cm"
+  },
+  {
+    "product_id": "FONDO_BASE",
+    "name": "Fondo Base",
+    "type": "Primer/Legante",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "AUTO_AS",
+    "name": "Autolivellante AS",
+    "type": "Compensazione quota",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "RETE_75",
+    "name": "Rete 75",
+    "type": "Armatura",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "RETE_160",
+    "name": "Rete 160",
+    "type": "Armatura",
+    "unit": "g/m²"
+  },
+  {
+    "product_id": "SPOLVERO_Q",
+    "name": "Spolvero quarzo",
+    "type": "Carica",
+    "unit": "kg/m²"
+  },
+  {
+    "product_id": "BAND_GUAINA",
+    "name": "Bandelle perimetrali (Guaina Base)",
+    "type": "Accessorio",
+    "unit": "m"
+  },
+  {
+    "product_id": "ADD_PLUS",
+    "name": "Additivo Plus",
+    "type": "Additivo",
+    "unit": "%"
+  },
+  {
+    "product_id": "BB_CORNER_IN",
+    "name": "BBcorner IN (angolo interno)",
+    "type": "",
+    "unit": "pz"
+  },
+  {
+    "product_id": "BB_CORNER_OUT",
+    "name": "BBcorner OUT (angolo esterno)",
+    "type": "",
+    "unit": "pz"
+  },
+  {
+    "product_id": "BB_PASS",
+    "name": "BBpass (raccordo idraulico standard)",
+    "type": "",
+    "unit": "pz"
+  },
+  {
+    "product_id": "BB_DRAIN",
+    "name": "BBdrain (raccordo grande/scarico)",
+    "type": "",
+    "unit": "pz"
+  },
+  {
+    "product_id": "BB_TAPE_50M",
+    "name": "BBtape (rotolo 50 ml)",
+    "type": "",
+    "unit": "rotolo"
+  },
+  {
+    "product_id": "MS_PROSEALER",
+    "name": "MS Prosealer (cartuccia)",
+    "type": "",
+    "unit": "cartuccia"
+  },
+  {
+    "product_id": "STRIPPER",
+    "name": "Stripper",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BBCORNER_IN",
+    "name": "BBCorner IN",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BBCORNER_OUT",
+    "name": "BBCorner Out",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BBTAPE",
+    "name": "BBTape",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BBPASS_120X120",
+    "name": "BBPass (120x120)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_BASE_ESTIVO",
+    "name": "Fondo base estivo",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_BASE_ESTIVO_2",
+    "name": "Fondo base estivo",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_0_7_1_2",
+    "name": "Quarzo 0,7-1,2",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO",
+    "name": "MS Pro Sealer - Norphen Fondo Igro",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "MS_PRO_SEALER_IN_CARTUCCIA",
+    "name": "MS Pro Sealer in cartuccia",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "MS_PRO_SEALER_PRIMER",
+    "name": "MS Pro sealer Primer",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PRIMER_BOND_SW_ADDITIVO_PLUS",
+    "name": "Primer Bond Sw - ADDITIVO PLUS",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PRIMER_BOND_SW_SQ",
+    "name": "Primer Bond Sw SQ",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ",
+    "name": "Barriera Vapore 4.0 Primer kit 12mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ",
+    "name": "Barriera Vapore 4.0 Rasante kit 12 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_DA_SPOLVERO_0_1_0_5_KIT_12_MQ",
+    "name": "Quarzo da spolvero 0,1-0,5 kit 12 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "RASANTE_FONDO",
+    "name": "Rasante Fondo",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "STUCCO_LAMBDA",
+    "name": "Stucco Lambda",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_0_1_0_3",
+    "name": "Quarzo 0,1-0,3",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_0_1_0_5",
+    "name": "Quarzo 0,1-0,5",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_0_3_0_9",
+    "name": "Quarzo 0,3-0,9",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "QUARZO_0_7_1_2_2",
+    "name": "Quarzo 0,7-1,2",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "RETE_DI_VETRO_DA_160_G_MQ",
+    "name": "Rete di vetro da 160 g/mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "RETE_DI_VETRO_DA_75_G_MQ",
+    "name": "Rete di vetro da 75 g/mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_COLORABILE_NATURAL_CHROMO",
+    "name": "KIT 2 mq colorabile Natural CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_KIT_2_MQ_NATURAL_CHROMO",
+    "name": "COLORE per KIT 2 mq NATURAL CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_NATURAL_COLORABILE",
+    "name": "FONDO NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_FONDO_NATURAL_COLORABILE",
+    "name": "COLORE per FONDO NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_NATURAL_COLORABILE",
+    "name": "FINITURA NATURAL  colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE",
+    "name": "COLORE per FINITURA NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_NATURAL_COLORABILE_EFFETTO_ALIZ",
+    "name": "KIT 2 mq NATURAL COLORABILE effetto ALIZEE O EVIDENCE",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_KIT_2_MQ_NATURAL_EFFETTO_ALIZ",
+    "name": "COLORE per KIT 2 mq NATURAL effetto ALIZEE O EVIDENCE",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_NATURAL_COLORABILE_2",
+    "name": "FONDO NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_FONDO_NATURAL_COLORABILE_2",
+    "name": "COLORE per FONDO NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_NATURAL_COLORABILE_2",
+    "name": "FINITURA NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_PER_FINITURA_NATURAL_COLORABILE_2",
+    "name": "COLORE per FINITURA NATURAL colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_COLORATO_NATURAL_CHROMO",
+    "name": "KIT 2 mq COLORATO  NATURAL CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_NATURAL_10_MQ_COLORATO",
+    "name": "FONDO NATURAL 10 mq colorato",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO",
+    "name": "FINITURA NATURAL 10 mq colorato",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PERSONALIZZAZIONE_COLORE_NATURAL_CHROMO",
+    "name": "PERSONALIZZAZIONE COLORE NATURAL CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_NATURAL_COLORATO_EFFETTO_ALIZEE",
+    "name": "KIT 2 mq NATURAL COLORATO effetto ALIZEE O EVIDENCE",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_NATURAL_10_MQ_COLORATO_2",
+    "name": "FONDO NATURAL 10 mq colorato",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO_2",
+    "name": "FINITURA NATURAL 10 mq colorato",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_NATURAL_10_MQ_COLORATO_3",
+    "name": "FINITURA NATURAL 10 mq colorato",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PERSONALIZZAZIONE_NATURAL_COLORE_ALIZEE",
+    "name": "PERSONALIZZAZIONE NATURAL COLORE ALIZEE EVIDENCE",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_SENSE_COLORABILE_CON_POLVERI",
+    "name": "KIT 2 mq SENSE COLORABILE con polveri",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_SENSE_PER_KIT_2_MQ",
+    "name": "COLORE SENSE per KIT 2 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_SENSE_COLORABILE",
+    "name": "FONDO SENSE colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_SENSE_PER_FONDO_COLORABILE",
+    "name": "COLORE SENSE per FONDO colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_SENSE_COLORABILE",
+    "name": "FINITURA SENSE colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_SENSE_PER_FINITURA_COLORABILE",
+    "name": "COLORE SENSE per FINITURA colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_2_MQ_DEKORA_COLORABILE_CON_POLVERI",
+    "name": "KIT 2 mq DEKORA COLORABILE con polveri",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_DEKORA_PER_KIT_2_MQ",
+    "name": "COLORE DEKORA per KIT 2 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FONDO_DEKORA_COLORABILE",
+    "name": "FONDO DEKORA colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_DEKORA_PER_FONDO_COLORABILE",
+    "name": "COLORE DEKORA per FONDO colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "FINITURA_DEKORA_COLORABILE",
+    "name": "FINITURA DEKORA colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "COLORE_DEKORA_PER_FINITURA_COLORABILE",
+    "name": "COLORE DEKORA per FINITURA colorabile",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_LAMINE_2_MQ",
+    "name": "KIT LAMINE 2 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "LAMINE_FONDO_10_MQ",
+    "name": "LAMINE FONDO 10 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "LAMINE_10_MQ",
+    "name": "LAMINE 10 mq",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_1_MQ_COLORATO_CORLITE_CHROMO",
+    "name": "KIT 1 mq colorato CORLITE CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_4_MQ_COLORATO_CORLITE_CHROMO",
+    "name": "KIT 4 mq colorato CORLITE CHROMO",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_1_MQ_COLORATO_CORLITE_EVIDENCE_BICOL",
+    "name": "KIT 1 mq colorato CORLITE EVIDENCE (BICOLORE)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_4_MQ_COLORATO_CORLITE_EVIDENCE_BICOL",
+    "name": "KIT 4 mq colorato CORLITE EVIDENCE (BICOLORE)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_MATERIAL_2_MQ_5KG",
+    "name": "KIT MATERIAL 2 mq ( 5kg)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "KIT_MATERIAL_10_MQ_20_KG",
+    "name": "KIT MATERIAL 10 mq (20 kg)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "NORDCOLOR_ART_NCS_RAL_1KG",
+    "name": "Nordcolor art (NCS-Ral 1kg)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "DEKOR_ART_W_1_KG",
+    "name": "Dekor Art W (1 kg)",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "CRYSTEPO_3",
+    "name": "Crystepo 3",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "CRYSTEPO_50",
+    "name": "Crystepo 50",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "CRYSTEPO_V",
+    "name": "Crystepo V",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_FIX_H2O",
+    "name": "PROTEGGO FIX H2O",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_FIX_H2O_2",
+    "name": "PROTEGGO FIX H2O",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_OPACO_H20",
+    "name": "PROTEGGO OPACO H20",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_OPACO_H20_2",
+    "name": "PROTEGGO OPACO H20",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_LUCIDO_H20",
+    "name": "PROTEGGO LUCIDO H20",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_LUCIDO_H20_2",
+    "name": "PROTEGGO LUCIDO H20",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_FIX_S",
+    "name": "PROTEGGO FIX S",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_FIX_S_2",
+    "name": "PROTEGGO FIX S",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_LUCIDO_S",
+    "name": "PROTEGGO LUCIDO S",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_OPACO_S",
+    "name": "PROTEGGO OPACO S",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_OPACO_S_2",
+    "name": "PROTEGGO OPACO S",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL",
+    "name": "PROTEGGO COLOR OPACO H20 COLORE NATURAL",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2",
+    "name": "PROTEGGO COLOR OPACO H20 COLORE NATURAL",
+    "type": "",
+    "unit": ""
+  },
+  {
+    "product_id": "PREMIX_COLORE_OPACO_S_1_88",
+    "name": "Premix colore per PROTEGGO Opaco S da 1,88 kg",
+    "type": "Additivo colore (premix) - voce listino separata",
+    "unit": "kg"
+  },
+  {
+    "product_id": "PREMIX_COLORE_OPACO_S_6",
+    "name": "Premix colore per PROTEGGO Opaco S da 6 kg",
+    "type": "Additivo colore (premix) - voce listino separata",
+    "unit": "kg"
+  }
+]
