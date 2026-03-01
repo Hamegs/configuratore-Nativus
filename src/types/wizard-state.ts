@@ -22,11 +22,13 @@ export interface WizardState {
   currentStep: number;
   maxReachedStep: number;
 
-  // Step 1 — Ambiente
+  // Step 0 — Ambiente + Superfici
   ambiente: AmbienteId | null;
+  room_type_display: string | null;   // tipo ambiente UI: 'SOGGIORNO' | 'CUCINA' | 'CAMERA' | 'BAGNO' | 'LAVANDERIA' | 'ALTRO'
   mercato: Mercato;
   mq_pavimento: number;
   mq_pareti: number;
+  superfici_confirmed: boolean;   // gate: abilita i passi successivi
 
   // BAG — flags doccia e mercato tedesco
   presenza_doccia: boolean;

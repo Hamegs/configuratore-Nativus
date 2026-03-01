@@ -21,12 +21,23 @@ export function formatStep(order: number): string {
   return `Step ${order / 10}`;
 }
 
-export function ambienteLabel(envId: string): string {
+export function ambienteLabel(envId: string, roomTypeDisplay?: string | null): string {
+  if (roomTypeDisplay) {
+    const labels: Record<string, string> = {
+      SOGGIORNO: 'Soggiorno',
+      CUCINA: 'Cucina',
+      CAMERA: 'Camera',
+      BAGNO: 'Bagno',
+      LAVANDERIA: 'Lavanderia',
+      ALTRO: 'Altro',
+    };
+    return labels[roomTypeDisplay] ?? roomTypeDisplay;
+  }
   const map: Record<string, string> = {
-    ORD: 'Soggiorno / Cucina / Camere',
-    BAG: 'Bagno (no doccia)',
-    DOC: 'Zona doccia',
-    DIN: 'DIN 18534 (mercato tedesco)',
+    ORD: 'Locale ordinario',
+    BAG: 'Bagno',
+    DOC: 'Bagno con doccia',
+    DIN: 'Bagno con doccia (DIN 18534)',
   };
   return map[envId] ?? envId;
 }

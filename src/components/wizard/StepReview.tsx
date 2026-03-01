@@ -11,9 +11,10 @@ const store = loadDataStore();
 
 interface StepReviewProps {
   onComplete: (result: CartResult) => void;
+  completeLabel?: string;
 }
 
-export function StepReview({ onComplete }: StepReviewProps) {
+export function StepReview({ onComplete, completeLabel = 'Genera ordine' }: StepReviewProps) {
   const state = useWizardStore();
   const { active_blocks, prevStep } = state;
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +46,7 @@ export function StepReview({ onComplete }: StepReviewProps) {
 
       <section className="card p-6 space-y-3">
         <h2 className="font-semibold text-gray-800 mb-4">Scelte configurate</h2>
-        <ReviewRow label="Ambiente" value={state.ambiente ? ambienteLabel(state.ambiente) : '—'} />
+        <ReviewRow label="Ambiente" value={state.ambiente ? ambienteLabel(state.ambiente, state.room_type_display) : '—'} />
         <ReviewRow label="Pavimento" value={state.mq_pavimento > 0 ? `${state.mq_pavimento} m²` : '—'} />
         <ReviewRow label="Pareti" value={state.mq_pareti > 0 ? `${state.mq_pareti} m²` : '—'} />
         {state.supporto_floor && (
@@ -71,7 +72,7 @@ export function StepReview({ onComplete }: StepReviewProps) {
         canContinue={isValid}
         onNext={handleGenerate}
         onPrev={prevStep}
-        nextLabel="Genera ordine"
+        nextLabel={completeLabel}
         isLastStep
       />
     </div>

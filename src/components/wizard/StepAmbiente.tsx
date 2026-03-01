@@ -1,13 +1,9 @@
 import React from 'react';
 import { useWizardStore } from '../../store/wizard-store';
-import type { WizardVisibleAmbiente } from '../../types/enums';
+import { ROOM_TYPES } from '../../types/project';
+import type { AmbienteId } from '../../types/enums';
 
-const AMBIENTI: { id: WizardVisibleAmbiente; label: string; desc: string }[] = [
-  { id: 'ORD', label: 'Soggiorno / Cucina / Camera', desc: 'Locali ordinari asciutti' },
-  { id: 'BAG', label: 'Bagno', desc: 'Bagno, lavanderia, locali umidi' },
-];
-
-// ─── Shared step layout helpers (used by other steps via re-export) ──────────
+// ─── Shared step layout helpers ───────────────────────────────────────────────
 
 interface StepHeaderProps { title: string; subtitle?: string }
 export function StepHeader({ title, subtitle }: StepHeaderProps) {
@@ -19,17 +15,32 @@ export function StepHeader({ title, subtitle }: StepHeaderProps) {
   );
 }
 
-interface StepNavProps { canContinue: boolean; onNext: () => void; onPrev: () => void; nextLabel?: string; isLastStep?: boolean }
-export function StepNavigation({ canContinue, onNext, onPrev, nextLabel = 'Avanti →' }: StepNavProps) {
+interface StepNavProps {
+  canContinue: boolean;
+  onNext: () => void;
+  onPrev: () => void;
+  nextLabel?: string;
+  isLastStep?: boolean;
+  showPrev?: boolean;
+}
+export function StepNavigation({
+  canContinue, onNext, onPrev,
+  nextLabel = 'Avanti →',
+  showPrev = true,
+}: StepNavProps) {
   return (
     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-      <button type="button" className="btn-secondary" onClick={onPrev}>← Indietro</button>
-      <button type="button" className="btn-primary" disabled={!canContinue} onClick={onNext}>{nextLabel}</button>
+      {showPrev
+        ? <button type="button" className="btn-secondary" onClick={onPrev}>← Indietro</button>
+        : <span />}
+      <button type="button" className="btn-primary" disabled={!canContinue} onClick={onNext}>
+        {nextLabel}
+      </button>
     </div>
   );
 }
 
-// ─── NumField helper ─────────────────────────────────────────────────────────
+// ─── Numeric input helper ─────────────────────────────────────────────────────
 
 interface NumFieldProps {
   label: string;
@@ -38,8 +49,9 @@ interface NumFieldProps {
   unit?: string;
   min?: number;
   step?: number;
+  disabled?: boolean;
 }
-function NumField({ label, value, onChange, unit = '', min = 0, step = 0.1 }: NumFieldProps) {
+export function NumField({ label, value, onChange, unit = '', min = 0, step = 0.5, disabled }: NumFieldProps) {
   return (
     <div>
       <label className="label-text">{label}</label>
@@ -48,7 +60,8 @@ function NumField({ label, value, onChange, unit = '', min = 0, step = 0.1 }: Nu
           type="number"
           min={min}
           step={step}
-          className="input-field w-28"
+          disabled={disabled}
+          className={`input-field w-28 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           value={value || ''}
           onChange={e => onChange(parseFloat(e.target.value) || 0)}
         />
@@ -58,9 +71,18 @@ function NumField({ label, value, onChange, unit = '', min = 0, step = 0.1 }: Nu
   );
 }
 
-export function StepAmbiente() {
+// ─── StepAmbiente ─────────────────────────────────────────────────────────────
+
+interface StepAmbienteProps {
+  /** Nasconde il selettore tipo-ambiente (usato in RoomWizardPage dove il tipo è già fissato) */
+  lockedAmbiente?: boolean;
+}
+
+export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
   const {
-    ambiente, mq_pavimento, mq_pareti,
+    ambiente, room_type_display,
+    mq_pavimento, mq_pareti,
+    superfici_confirmed,
     presenza_doccia, mercato_tedesco,
     doccia_larghezza, doccia_lunghezza, doccia_altezza_rivestimento,
     doccia_piatto_type,
@@ -68,7 +90,9 @@ export function StepAmbiente() {
     doccia_bbcorner_in, doccia_bbcorner_out,
     doccia_bbtape_ml, doccia_norphen_ml,
     doccia_nicchie,
-    setAmbiente, setMqPavimento, setMqPareti,
+    setAmbiente, setRoomTypeDisplay,
+    setMqPavimento, setMqPareti,
+    setSuperficiConfirmed,
     setPresenzaDoccia, setMercatoTedesco,
     setDocciaLarghezza, setDocciaLunghezza, setDocciaAltezza,
     setDocciaPiattoType,
@@ -76,98 +100,195 @@ export function StepAmbiente() {
     setDocciaBbcornerIn, setDocciaBbcornerOut,
     setDocciaBbtapeMl, setDocciaNorphenMl,
     setDoccianicchie,
+    nextStep,
   } = useWizardStore();
 
   const isBag = ambiente === 'BAG';
-  const mqDocciaPav = doccia_larghezza * doccia_lunghezza;
-  const mqDocciaPareti = 2 * (doccia_larghezza + doccia_lunghezza) * doccia_altezza_rivestimento;
 
-  return (
-    <div className="space-y-6">
-      {/* Card 1 — Tipo ambiente */}
-      <div className="card p-5">
-        <h2 className="font-semibold text-gray-900 mb-4">Tipo di ambiente</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {AMBIENTI.map(a => (
-            <button
-              key={a.id}
-              type="button"
-              onClick={() => setAmbiente(a.id)}
-              className={`text-left rounded-lg border p-4 transition-colors ${
-                ambiente === a.id
-                  ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
-              }`}
-            >
-              <div className={`font-semibold text-sm ${ambiente === a.id ? 'text-brand-700' : 'text-gray-800'}`}>
-                {a.label}
+  // Deriva il label leggibile dall'ambiente selezionato
+  const displayLabel =
+    ROOM_TYPES.find(t => t.id === room_type_display)?.label ??
+    (ambiente === 'BAG' ? 'Bagno' : ambiente === 'ORD' ? 'Locale' : '—');
+
+  const docciaValid = !presenza_doccia || (
+    !!doccia_piatto_type &&
+    doccia_larghezza > 0 &&
+    doccia_lunghezza > 0 &&
+    doccia_altezza_rivestimento > 0
+  );
+
+  const canConfirm =
+    !!ambiente &&
+    (mq_pavimento > 0 || mq_pareti > 0) &&
+    docciaValid;
+
+  // Quando l'utente seleziona un tipo ambiente
+  function handleSelectRoomType(typeId: string, envDefault: string) {
+    setRoomTypeDisplay(typeId);
+    setAmbiente(envDefault as AmbienteId);
+  }
+
+  function handleConfirm() {
+    setSuperficiConfirmed(true);
+    nextStep();
+  }
+
+  // ── Stato confermato: mostra riepilogo locked ─────────────────────────────
+  if (superfici_confirmed) {
+    return (
+      <div className="space-y-4">
+        <div className="card p-5 border-green-200 bg-green-50">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">
+                Superfici confermate
               </div>
-              <div className="text-xs text-gray-500 mt-0.5">{a.desc}</div>
+              <div className="text-sm font-bold text-gray-900 mb-2">{displayLabel}</div>
+              <div className="flex flex-wrap gap-4 text-sm text-gray-700">
+                {mq_pavimento > 0 && (
+                  <span>Pavimento: <strong>{mq_pavimento} m²</strong></span>
+                )}
+                {mq_pareti > 0 && (
+                  <span>Pareti: <strong>{mq_pareti} m²</strong></span>
+                )}
+                {presenza_doccia && (
+                  <span className="text-blue-700">
+                    Doccia: {doccia_piatto_type === 'NUOVO' ? 'Piatto da realizzare' : 'Piatto esistente'}
+                    {doccia_larghezza > 0 && doccia_lunghezza > 0 &&
+                      ` (${doccia_larghezza}×${doccia_lunghezza} m)`}
+                  </span>
+                )}
+                {mercato_tedesco && presenza_doccia && (
+                  <span className="text-xs font-semibold text-orange-600">DIN 18534 attivo</span>
+                )}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn-secondary text-xs whitespace-nowrap"
+              onClick={() => setSuperficiConfirmed(false)}
+            >
+              Modifica superfici
             </button>
-          ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <button type="button" className="btn-primary" onClick={nextStep}>
+            Avanti →
+          </button>
         </div>
       </div>
+    );
+  }
+
+  // ── Stato non confermato: form inserimento ────────────────────────────────
+  return (
+    <div className="space-y-6">
+
+      {/* Card 1 — Tipo ambiente (nascosta se locked) */}
+      {!lockedAmbiente && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-gray-900 mb-4">Tipo di ambiente</h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {ROOM_TYPES.filter(t => t.id !== 'ALTRO').map(rt => (
+              <button
+                key={rt.id}
+                type="button"
+                onClick={() => handleSelectRoomType(rt.id, rt.env_default)}
+                className={`text-left rounded-lg border p-3 transition-colors ${
+                  room_type_display === rt.id
+                    ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500'
+                    : 'border-gray-200 hover:border-gray-300 bg-white'
+                }`}
+              >
+                <div className="text-2xl mb-1">{rt.icon}</div>
+                <div className={`font-semibold text-sm ${room_type_display === rt.id ? 'text-brand-700' : 'text-gray-800'}`}>
+                  {rt.label}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Intestazione locked-mode */}
+      {lockedAmbiente && ambiente && (
+        <div className="flex items-center gap-3 px-1">
+          <span className="text-2xl">
+            {ROOM_TYPES.find(t => t.id === room_type_display)?.icon ?? '🏠'}
+          </span>
+          <div>
+            <div className="text-xs text-gray-400 uppercase tracking-wide">Ambiente</div>
+            <div className="font-semibold text-gray-900">{displayLabel}</div>
+          </div>
+        </div>
+      )}
 
       {/* Card 2 — Superfici */}
       {ambiente && (
         <div className="card p-5">
-          <h2 className="font-semibold text-gray-900 mb-4">Superfici</h2>
-          <div className="flex flex-wrap gap-6">
-            <NumField label="Pavimento" value={mq_pavimento} onChange={setMqPavimento} unit="m²" step={0.5} />
-            <NumField label="Pareti" value={mq_pareti} onChange={setMqPareti} unit="m²" step={0.5} />
+          <h2 className="font-semibold text-gray-900 mb-1">Superfici da trattare</h2>
+          {isBag && presenza_doccia && (
+            <p className="text-xs text-blue-600 mb-4 bg-blue-50 rounded px-3 py-2 border border-blue-100">
+              Le metrature inserite sono comprensive dell'area doccia.
+              Non aggiungere mq separati per la doccia.
+            </p>
+          )}
+          <div className="flex flex-wrap gap-6 mt-3">
+            <NumField
+              label="Pavimento"
+              value={mq_pavimento}
+              onChange={setMqPavimento}
+              unit="m²"
+            />
+            <NumField
+              label="Pareti"
+              value={mq_pareti}
+              onChange={setMqPareti}
+              unit="m²"
+            />
           </div>
           {mq_pavimento === 0 && mq_pareti === 0 && (
-            <p className="text-xs text-amber-600 mt-2">Inserisci almeno una superficie per proseguire.</p>
+            <p className="text-xs text-amber-600 mt-3">
+              Inserisci almeno una metratura. Se il valore è 0, non verranno generati materiali per quella superficie.
+            </p>
           )}
         </div>
       )}
 
-      {/* Card 3 — Bagno opzioni speciali */}
+      {/* Card 3 — Opzioni Bagno (solo se BAG) */}
       {isBag && (
         <div className="card p-5 space-y-5">
           <h2 className="font-semibold text-gray-900">Bagno — opzioni speciali</h2>
 
-          {/* Toggle Presenza Doccia */}
-          <div className="flex items-start gap-3">
+          {/* Toggle doccia */}
+          <label className="flex items-start gap-3 cursor-pointer">
             <input
-              id="toggle-doccia"
               type="checkbox"
               className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               checked={presenza_doccia}
               onChange={e => setPresenzaDoccia(e.target.checked)}
             />
-            <label htmlFor="toggle-doccia" className="cursor-pointer">
+            <div>
               <div className="text-sm font-medium text-gray-800">Presenza Zona Doccia</div>
-              <div className="text-xs text-gray-500">Abilita la gestione della stratigrafia per la zona doccia</div>
-            </label>
-          </div>
+              <div className="text-xs text-gray-500">
+                Abilita la stratigrafia specifica per la doccia.
+                I mq inseriti sopra includono già la zona doccia.
+              </div>
+            </div>
+          </label>
 
           {/* Sub-sezione doccia */}
           {presenza_doccia && (
             <div className="border border-blue-100 rounded-lg bg-blue-50 p-4 space-y-5">
               <h3 className="text-sm font-semibold text-blue-800">Zona Doccia — dati obbligatori</h3>
 
-              {/* Misure */}
-              <div>
-                <p className="text-xs font-medium text-gray-600 mb-2">Misure area doccia</p>
-                <div className="flex flex-wrap gap-4">
-                  <NumField label="Larghezza" value={doccia_larghezza} onChange={setDocciaLarghezza} unit="m" />
-                  <NumField label="Lunghezza" value={doccia_lunghezza} onChange={setDocciaLunghezza} unit="m" />
-                  <NumField label="Altezza rivestimento" value={doccia_altezza_rivestimento} onChange={setDocciaAltezza} unit="m" />
-                </div>
-                {doccia_larghezza > 0 && doccia_lunghezza > 0 && (
-                  <p className="text-xs text-blue-600 mt-1.5">
-                    Area calc.: pavimento {mqDocciaPav.toFixed(2)} m² · pareti {mqDocciaPareti.toFixed(2)} m²
-                  </p>
-                )}
-              </div>
-
               {/* Tipo piatto */}
               <div>
-                <p className="text-xs font-medium text-gray-600 mb-2">
+                <p className="text-xs font-medium text-gray-700 mb-2">
                   Tipo piatto doccia <span className="text-red-500">*</span>
                 </p>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {(['NUOVO', 'ESISTENTE'] as const).map(t => (
                     <button
                       key={t}
@@ -176,124 +297,125 @@ export function StepAmbiente() {
                       className={`px-4 py-2 rounded-lg border text-xs font-medium transition-colors ${
                         doccia_piatto_type === t
                           ? 'border-blue-500 bg-blue-500 text-white'
-                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                          : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                       }`}
                     >
-                      {t === 'NUOVO' ? 'Creazione piatto doccia' : 'Piatto doccia esistente'}
+                      {t === 'NUOVO' ? 'Piatto da realizzare' : 'Piatto esistente'}
                     </button>
                   ))}
                 </div>
                 {doccia_piatto_type === 'NUOVO' && (
                   <p className="text-xs text-blue-600 mt-1.5">
-                    Verrà inclusa la stratigrafia completa per realizzazione piatto (massetto epossidico + fondi + guaina).
+                    Stratigrafia completa inclusa: massetto epossidico + fondi + impermeabilizzazione.
                   </p>
                 )}
                 {doccia_piatto_type === 'ESISTENTE' && (
                   <p className="text-xs text-blue-600 mt-1.5">
-                    Verranno incluse le lavorazioni di raccordo, sigillatura e impermeabilizzazione su piatto esistente.
+                    Incluse lavorazioni di raccordo, sigillatura e impermeabilizzazione su piatto esistente.
                   </p>
                 )}
               </div>
 
-              {/* Raccordi idraulici */}
+              {/* Misure */}
               <div>
-                <p className="text-xs font-medium text-gray-600 mb-2">Raccordi idraulici</p>
+                <p className="text-xs font-medium text-gray-700 mb-2">
+                  Misure area doccia <span className="text-red-500">*</span>
+                </p>
                 <div className="flex flex-wrap gap-4">
-                  <NumField
-                    label="Standard (BBpass)"
-                    value={doccia_raccordi_standard}
-                    onChange={setDocciaRaccordiStandard}
-                    unit="pz"
-                    step={1}
-                  />
-                  <NumField
-                    label="Grandi / scarichi (BBdrain)"
-                    value={doccia_raccordi_grandi}
-                    onChange={setDocciaRaccordiGrandi}
-                    unit="pz"
-                    step={1}
-                  />
+                  <NumField label="Larghezza" value={doccia_larghezza} onChange={setDocciaLarghezza} unit="m" />
+                  <NumField label="Lunghezza" value={doccia_lunghezza} onChange={setDocciaLunghezza} unit="m" />
+                  <NumField label="H rivestimento" value={doccia_altezza_rivestimento} onChange={setDocciaAltezza} unit="m" />
+                </div>
+                {doccia_larghezza > 0 && doccia_lunghezza > 0 && (
+                  <p className="text-xs text-blue-500 mt-1.5">
+                    Pavimento doccia: {(doccia_larghezza * doccia_lunghezza).toFixed(2)} m² ·
+                    Pareti doccia: {(2 * (doccia_larghezza + doccia_lunghezza) * doccia_altezza_rivestimento).toFixed(2)} m²
+                    <span className="ml-1 text-gray-400">(compresi nei mq totali)</span>
+                  </p>
+                )}
+              </div>
+
+              {/* Raccordi */}
+              <div>
+                <p className="text-xs font-medium text-gray-700 mb-2">Raccordi idraulici</p>
+                <div className="flex flex-wrap gap-4">
+                  <NumField label="Standard (BBpass)" value={doccia_raccordi_standard} onChange={setDocciaRaccordiStandard} unit="pz" step={1} />
+                  <NumField label="Grandi (BBdrain)" value={doccia_raccordi_grandi} onChange={setDocciaRaccordiGrandi} unit="pz" step={1} />
                 </div>
               </div>
 
-              {/* Angoli */}
+              {/* Angoli e sigillature */}
               <div>
-                <p className="text-xs font-medium text-gray-600 mb-2">Angoli</p>
+                <p className="text-xs font-medium text-gray-700 mb-2">Angoli e sigillature</p>
                 <div className="flex flex-wrap gap-4">
-                  <NumField
-                    label="BBcorner interni"
-                    value={doccia_bbcorner_in}
-                    onChange={setDocciaBbcornerIn}
-                    unit="pz"
-                    step={1}
-                  />
-                  <NumField
-                    label="BBcorner esterni"
-                    value={doccia_bbcorner_out}
-                    onChange={setDocciaBbcornerOut}
-                    unit="pz"
-                    step={1}
-                  />
-                </div>
-              </div>
-
-              {/* BBtape + Norphen */}
-              <div>
-                <p className="text-xs font-medium text-gray-600 mb-2">Sigillature</p>
-                <div className="flex flex-wrap gap-4">
-                  <NumField
-                    label="BBtape"
-                    value={doccia_bbtape_ml}
-                    onChange={setDocciaBbtapeMl}
-                    unit="ml"
-                    step={0.5}
-                  />
-                  <NumField
-                    label="Sigillature Norphen (perimetrali + scassi)"
-                    value={doccia_norphen_ml}
-                    onChange={setDocciaNorphenMl}
-                    unit="ml"
-                    step={0.5}
-                  />
+                  <NumField label="BBcorner IN" value={doccia_bbcorner_in} onChange={setDocciaBbcornerIn} unit="pz" step={1} />
+                  <NumField label="BBcorner OUT" value={doccia_bbcorner_out} onChange={setDocciaBbcornerOut} unit="pz" step={1} />
+                  <NumField label="BBtape" value={doccia_bbtape_ml} onChange={setDocciaBbtapeMl} unit="ml" />
+                  <NumField label="Norphen" value={doccia_norphen_ml} onChange={setDocciaNorphenMl} unit="ml" />
                 </div>
               </div>
 
               {/* Nicchie */}
-              <div className="flex items-center gap-2">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
-                  id="toggle-nicchie"
                   type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                  className="h-4 w-4 rounded border-gray-300 text-brand-600"
                   checked={doccia_nicchie}
                   onChange={e => setDoccianicchie(e.target.checked)}
                 />
-                <label htmlFor="toggle-nicchie" className="text-sm text-gray-700">
-                  Presenza nicchie / elementi integrati
-                </label>
-              </div>
+                <span className="text-sm text-gray-700">Presenza nicchie / elementi integrati</span>
+              </label>
             </div>
           )}
 
-          {/* Toggle Mercato Tedesco */}
-          <div className="flex items-start gap-3 pt-1 border-t border-gray-100">
-            <input
-              id="toggle-din"
-              type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
-              checked={mercato_tedesco}
-              onChange={e => setMercatoTedesco(e.target.checked)}
-            />
-            <label htmlFor="toggle-din" className="cursor-pointer">
-              <div className="text-sm font-medium text-gray-800">Mercato Tedesco (DIN 18534)</div>
-              <div className="text-xs text-gray-500">
-                {presenza_doccia
-                  ? 'Attivo insieme alla zona doccia: applica automaticamente le logiche DIN 18534.'
-                  : 'La logica DIN si attiva automaticamente se combinata con la zona doccia.'}
+          {/* Toggle DIN — solo con doccia attiva */}
+          <div className="pt-1 border-t border-gray-100">
+            <label className={`flex items-start gap-3 ${!presenza_doccia ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
+              <input
+                type="checkbox"
+                disabled={!presenza_doccia}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                checked={mercato_tedesco && presenza_doccia}
+                onChange={e => setMercatoTedesco(e.target.checked)}
+              />
+              <div>
+                <div className="text-sm font-medium text-gray-800">Mercato Tedesco (DIN 18534)</div>
+                <div className="text-xs text-gray-500">
+                  {presenza_doccia
+                    ? 'Attivo con zona doccia: applica automaticamente le logiche DIN 18534.'
+                    : 'Disponibile solo in presenza di zona doccia.'}
+                </div>
               </div>
             </label>
           </div>
         </div>
       )}
+
+      {/* Gate: Conferma Superfici */}
+      {ambiente && (
+        <div className="flex flex-col items-end gap-2">
+          {!canConfirm && (
+            <p className="text-xs text-amber-600 text-right">
+              {mq_pavimento === 0 && mq_pareti === 0
+                ? 'Inserisci almeno una metratura (pavimento o pareti).'
+                : isBag && presenza_doccia && !doccia_piatto_type
+                  ? 'Scegli il tipo di piatto doccia per proseguire.'
+                  : isBag && presenza_doccia && (doccia_larghezza === 0 || doccia_lunghezza === 0)
+                    ? 'Inserisci le misure della zona doccia (larghezza e lunghezza).'
+                    : ''}
+            </p>
+          )}
+          <button
+            type="button"
+            disabled={!canConfirm}
+            onClick={handleConfirm}
+            className="btn-primary px-8 py-2.5"
+          >
+            Conferma Superfici →
+          </button>
+        </div>
+      )}
+
     </div>
   );
 }

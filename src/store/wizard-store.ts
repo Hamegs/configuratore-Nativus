@@ -10,9 +10,11 @@ const INITIAL_STATE: WizardState = {
   currentStep: 0,
   maxReachedStep: 0,
   ambiente: null,
+  room_type_display: null,
   mercato: 'IT',
   mq_pavimento: 0,
   mq_pareti: 0,
+  superfici_confirmed: false,
   // BAG flags
   presenza_doccia: false,
   mercato_tedesco: false,
@@ -58,14 +60,17 @@ interface WizardStore extends WizardState {
   prevStep: () => void;
   reset: () => void;
   hydrateFromState: (partial: Partial<WizardState>) => void;
-  // Step 1 — Ambiente
+  // Step 0 — Ambiente
   setAmbiente: (v: AmbienteId) => void;
+  setRoomTypeDisplay: (v: string | null) => void;
   setMercato: (v: Mercato) => void;
   setMqPavimento: (v: number) => void;
   setMqPareti: (v: number) => void;
   // BAG flags
   setPresenzaDoccia: (v: boolean) => void;
   setMercatoTedesco: (v: boolean) => void;
+  // Superfici gate
+  setSuperficiConfirmed: (v: boolean) => void;
   // Doccia details
   setDocciaLarghezza: (v: number) => void;
   setDocciaLunghezza: (v: number) => void;
@@ -150,14 +155,40 @@ export const useWizardStore = create<WizardStore>((set, get) => ({
   setAmbiente: (v) => set(s => {
     const next = {
       ...s, ambiente: v,
+      superfici_confirmed: false,
       presenza_doccia: v !== 'BAG' ? false : s.presenza_doccia,
       mercato_tedesco: v !== 'BAG' ? false : s.mercato_tedesco,
     };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
+  setRoomTypeDisplay: (v) => set({ room_type_display: v }),
   setMercato: (v) => set({ mercato: v }),
   setMqPavimento: (v) => set({ mq_pavimento: v }),
   setMqPareti: (v) => set({ mq_pareti: v }),
+
+  setSuperficiConfirmed: (v) => {
+    if (v) {
+      set({ superfici_confirmed: true });
+    } else {
+      set(s => ({
+        ...s,
+        superfici_confirmed: false,
+        currentStep: 0,
+        supporto_floor: null,
+        supporto_wall: null,
+        sub_answers_floor: {},
+        sub_answers_wall: {},
+        texture_line: null,
+        texture_style: null,
+        color_mode: null,
+        color_primary: null,
+        color_secondary: null,
+        lamine_pattern: null,
+        protettivo: null,
+        active_blocks: [],
+      }));
+    }
+  },
 
   setPresenzaDoccia: (v) => set(s => {
     const next = { ...s, presenza_doccia: v, ...(v ? {} : DOCCIA_RESET) };

@@ -17,6 +17,7 @@ export function RoomWizardPage() {
   const reset = useWizardStore(s => s.reset);
   const hydrateFromState = useWizardStore(s => s.hydrateFromState);
   const setAmbiente = useWizardStore(s => s.setAmbiente);
+  const setRoomTypeDisplay = useWizardStore(s => s.setRoomTypeDisplay);
 
   const room = rooms.find(r => r.id === roomId);
 
@@ -33,6 +34,7 @@ export function RoomWizardPage() {
       if (roomTypeDef?.env_default) {
         setAmbiente(roomTypeDef.env_default as AmbienteId);
       }
+      setRoomTypeDisplay(room.room_type);
     }
   }, [roomId]);
 
@@ -69,7 +71,7 @@ export function RoomWizardPage() {
           )}
         </div>
       </div>
-      <WizardContainer onComplete={handleComplete} />
+      <WizardContainer onComplete={handleComplete} lockedAmbiente={true} />
     </div>
   );
 }

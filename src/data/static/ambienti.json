@@ -1,18 +1,8 @@
 [
-  {
-    "env_id": "ORD",
-    "name": "Soggiorno / Cucina / Camere / Locali ordinari"
-  },
-  {
-    "env_id": "BAG",
-    "name": "Bagno (no doccia)"
-  },
-  {
-    "env_id": "DOC",
-    "name": "Zona doccia"
-  },
-  {
-    "env_id": "DIN",
-    "name": "DIN 18534 (mercato tedesco)"
-  }
+  { "env_id": "SOGGIORNO",  "name": "Soggiorno",   "engine_id": "ORD" },
+  { "env_id": "CUCINA",     "name": "Cucina",       "engine_id": "ORD" },
+  { "env_id": "CAMERA",     "name": "Camera",       "engine_id": "ORD" },
+  { "env_id": "BAGNO",      "name": "Bagno",        "engine_id": "BAG" },
+  { "env_id": "LAVANDERIA", "name": "Lavanderia",   "engine_id": "ORD" },
+  { "env_id": "ALTRO",      "name": "Altro",        "engine_id": "ORD" }
 ]

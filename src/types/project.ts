@@ -2,12 +2,12 @@ import type { WizardState } from './wizard-state';
 import type { CartLine } from './cart';
 
 export const ROOM_TYPES = [
-  { id: 'SOGGIORNO',  label: 'Soggiorno',   env_default: 'ORD' },
-  { id: 'CUCINA',     label: 'Cucina',       env_default: 'ORD' },
-  { id: 'CAMERA',     label: 'Camera',       env_default: 'ORD' },
-  { id: 'BAGNO',      label: 'Bagno',        env_default: 'BAG' },
-  { id: 'LAVANDERIA', label: 'Lavanderia',   env_default: 'ORD' },
-  { id: 'ALTRO',      label: 'Altro',        env_default: ''    },
+  { id: 'SOGGIORNO',  label: 'Soggiorno',   env_default: 'ORD', icon: '🛋️' },
+  { id: 'CUCINA',     label: 'Cucina',       env_default: 'ORD', icon: '🍳' },
+  { id: 'CAMERA',     label: 'Camera',       env_default: 'ORD', icon: '🛏️' },
+  { id: 'BAGNO',      label: 'Bagno',        env_default: 'BAG', icon: '🚿' },
+  { id: 'LAVANDERIA', label: 'Lavanderia',   env_default: 'ORD', icon: '🫧' },
+  { id: 'ALTRO',      label: 'Altro',        env_default: 'ORD', icon: '🏠' },
 ] as const;
 
 export type PackagingStrategy =
