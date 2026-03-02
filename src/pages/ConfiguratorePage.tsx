@@ -1,6 +1,6 @@
 import React from 'react';
-import { WizardContainer } from '../components/wizard/WizardContainer';
+import { Navigate } from 'react-router-dom';
 
 export function ConfiguratorePage() {
-  return <WizardContainer />;
+  return <Navigate to="/progetto" replace />;
 }

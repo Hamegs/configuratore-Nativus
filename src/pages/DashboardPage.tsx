@@ -19,9 +19,9 @@ export function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {(user?.role === 'rivenditore' || user?.role === 'admin' || user?.role === 'applicatore') && (
           <DashCard
-            title="Nuovo Configuratore"
-            description="Configura un ordine completo: fondi, texture, protettivi."
-            to="/configuratore"
+            title="Progetto / Configuratore"
+            description="Aggiungi ambienti, configura supporti e texture, genera il carrello con tutti i materiali."
+            to="/progetto"
             accent="brand"
           />
         )}

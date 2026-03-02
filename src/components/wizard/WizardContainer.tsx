@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useWizardStore } from '../../store/wizard-store';
 import { useAuthStore } from '../../store/auth-store';
+import { useProjectStore } from '../../store/project-store';
 import { StepAmbiente } from './StepAmbiente';
 import { StepSupporto } from './StepSupporto';
 import { StepSupportoRivenditore } from './StepSupportoRivenditore';
 import { StepTexture } from './StepTexture';
 import { StepProtettivi } from './StepProtettivi';
 import { StepReview } from './StepReview';
-import { OrderResultPage } from '../views/OrderResultPage';
+import { loadDataStore } from '../../utils/data-loader';
 import type { CartResult } from '../../engine/cart-calculator';
 
 /**
@@ -29,48 +31,47 @@ interface WizardContainerProps {
 export function WizardContainer({ onComplete, lockedAmbiente = false }: WizardContainerProps) {
   const { currentStep } = useWizardStore();
   const user = useAuthStore(s => s.user);
-  const [cartResult, setCartResult] = useState<CartResult | null>(null);
+  const navigate = useNavigate();
 
   const isRivenditore = user?.role === 'rivenditore';
   const stepLabels = isRivenditore ? STEPS_RIVENDITORE : STEPS_APPLICATORE;
-  const isProjectMode = !!onComplete;
 
   function handleComplete(result: CartResult) {
     if (onComplete) {
       onComplete(result);
     } else {
-      setCartResult(result);
+      // Standalone mode: auto-crea una stanza nel progetto e naviga al carrello
+      const { addRoom, setRoomResult } = useProjectStore.getState();
+      const store = loadDataStore();
+      const wizState = useWizardStore.getState();
+      const ambiente = wizState.ambiente ?? 'ORD';
+      const roomTypeMap: Record<string, string> = { ORD: 'SOGGIORNO', BAG: 'BAGNO', DOC: 'BAGNO', DIN: 'BAGNO' };
+      const roomType = roomTypeMap[ambiente] ?? 'ALTRO';
+      const roomId = addRoom(roomType, '');
+      setRoomResult(roomId, wizState, result.summary.lines, store, result);
+      navigate('/progetto/carrello');
     }
   }
 
-  if (cartResult && !onComplete) {
-    return <OrderResultPage result={cartResult} onReset={() => setCartResult(null)} />;
-  }
-
   const reviewStep = stepLabels.length - 1;
-  const completeLabel = isProjectMode ? 'Aggiungi al carrello per ambiente' : 'Genera ordine';
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
       <StepProgress current={currentStep} labels={stepLabels} />
 
       <div className="mt-8">
-        {/* Step 0 — Superfici (uguale per entrambi i flussi) */}
         {currentStep === 0 && <StepAmbiente lockedAmbiente={lockedAmbiente} />}
 
-        {/* ── Flusso Admin/Applicatore: Supporto → Texture → Protettivi ── */}
         {!isRivenditore && currentStep === 1 && <StepSupporto />}
         {!isRivenditore && currentStep === 2 && <StepTexture />}
         {!isRivenditore && currentStep === 3 && <StepProtettivi />}
 
-        {/* ── Flusso Rivenditore: Texture → Protettivi → Supporto ── */}
         {isRivenditore && currentStep === 1 && <StepTexture />}
         {isRivenditore && currentStep === 2 && <StepProtettivi />}
         {isRivenditore && currentStep === 3 && <StepSupportoRivenditore />}
 
-        {/* Riepilogo — uguale in entrambi */}
         {currentStep === reviewStep && (
-          <StepReview onComplete={handleComplete} completeLabel={completeLabel} />
+          <StepReview onComplete={handleComplete} completeLabel="Aggiungi al carrello" />
         )}
       </div>
     </div>
