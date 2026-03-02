@@ -536,7 +536,7 @@
   },
   {
     "rule_id": "W_TILE_BAG_PERF",
-    "step_order": 20,
+    "step_order": 30,
     "step_id": "S_ARM_75"
   },
   {
@@ -563,11 +563,6 @@
     "rule_id": "W_TILE_DOC_PERF",
     "step_order": 10,
     "step_id": "S_F_DIAMOND"
-  },
-  {
-    "rule_id": "W_TILE_DOC_PERF",
-    "step_order": 20,
-    "step_id": "S_RAS_BQ_2_0"
   },
   {
     "rule_id": "W_TILE_DOC_PERF",
@@ -4353,5 +4348,120 @@
     "rule_id": "W_INTG_BAG",
     "step_order": 25,
     "step_id": "S_RAS_BASE_1_35"
+  },
+  {
+    "rule_id": "W_TILE_BAG_PERF",
+    "step_order": 15,
+    "step_id": "S_PR_BOND_100"
+  },
+  {
+    "rule_id": "W_TILE_BAG_PERF",
+    "step_order": 20,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "W_TILE_BAG_NPERF",
+    "step_order": 25,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "W_TILE_DOC_PERF",
+    "step_order": 15,
+    "step_id": "S_PR_BOND_100"
+  },
+  {
+    "rule_id": "W_TILE_DOC_PERF",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_ORD",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_ORD",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_ORD",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_BAG",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_DOC",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_TRACES_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_ORD",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_ORD",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_ORD",
+    "step_order": 30,
+    "step_id": "S_ARM_75"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_BAG",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_75"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_DOC",
+    "step_order": 10,
+    "step_id": "S_W_VAC_ONLY"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "W_TILE_TRACES_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_75"
   }
 ]

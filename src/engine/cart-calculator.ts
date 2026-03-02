@@ -57,6 +57,9 @@ export function computeFullCart(
     throw new DataError('CART_INCOMPLETE_STATE', 'Stato wizard incompleto per generare il carrello.', {});
   }
 
+  // ─── Piastrella con tracce — riempimento pre-procedura ────────────────────
+  all_lines.push(...computeTracceLines(store, state));
+
   // ─── Risolvi procedura pavimento ──────────────────────────────────────────
   let procedure_floor: import('./step-resolver').ResolvedProcedure | null = null;
   if (state.mq_pavimento > 0 && state.supporto_floor) {
@@ -275,6 +278,34 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
   const prepFloor: TechnicalProduct[] = [];
   const prepWall: TechnicalProduct[] = [];
 
+  // Tracce su pavimento (F_TILE_TRACES) — iniettate con step_order negativo per venire prime
+  if (state.supporto_floor === 'F_TILE_TRACES') {
+    const sub = state.sub_answers_floor;
+    const mq = sub.mq_tracce ?? 0;
+    const spessore = sub.spessore_mm_tracce ?? 0;
+    if (mq > 0 && spessore > 0) {
+      const kgMasEp = ((mq * spessore) / 1000) * 1800;
+      prepFloor.push({ name: `Massetto Epossidico — riempimento tracce (${kgMasEp.toFixed(1)} kg)`, step_order: -20 });
+    }
+  }
+
+  // Tracce su parete (W_TILE_TRACES)
+  if (state.supporto_wall === 'W_TILE_TRACES') {
+    const sub = state.sub_answers_wall;
+    const mq = sub.mq_tracce ?? 0;
+    const spessore = sub.spessore_mm_tracce ?? 0;
+    if (mq > 0 && spessore > 0) {
+      if (sub.tracce_riempimento === 'RAS_FONDO_FINO') {
+        const kgRas = mq * spessore * 1.6;
+        prepWall.push({ name: `Rasante Fondo Fino — riempimento tracce (${kgRas.toFixed(1)} kg)`, step_order: -20 });
+      } else if (sub.tracce_riempimento === 'MALTA_ANTIRITIRO') {
+        prepWall.push({ name: 'NOTA TECNICA: Malta antiritiro strutturale (fornitura a parte)', step_order: -20 });
+      }
+      const kgPr = mq * 0.15;
+      prepWall.push({ name: `Primer SW 150 g/m² — primerizzazione tracce (${kgPr.toFixed(2)} kg)`, step_order: -10 });
+    }
+  }
+
   if (state.mq_pavimento > 0 && state.supporto_floor) {
     const input = buildRuleInputFromWizard(state, 'FLOOR');
     if (input) {
@@ -373,6 +404,75 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
   } catch { /* noop */ }
 
   return { sections, hard_alerts };
+}
+
+// ─── Piastrella con tracce — helper push singola riga ────────────────────────
+function pushLine(
+  store: DataStore,
+  lines: CartLine[],
+  product_id: string,
+  kgTotal: number,
+  section: CartLine['section'],
+): void {
+  if (kgTotal <= 0) return;
+  const skus = store.packagingSku.filter(p => p.product_id === product_id);
+  if (skus.length === 0) return;
+  const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+  const qty = Math.ceil(kgTotal / (best.pack_size ?? 1));
+  const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+  lines.push({
+    sku_id: best.sku_id,
+    descrizione: best.descrizione_sku,
+    qty,
+    prezzo_unitario: price,
+    totale: qty * price,
+    product_id,
+    section,
+    qty_raw: kgTotal,
+    pack_size: best.pack_size,
+    pack_unit: best.pack_unit,
+  });
+}
+
+/**
+ * Calcola le righe extra per i supporti "piastrella con tracce":
+ *  - F_TILE_TRACES (pavimento): massetto epossidico volumetrico
+ *  - W_TILE_TRACES (parete):  rasante fondo fino (se RAS_FONDO_FINO) + primer SW 150 g/m²
+ * Queste righe vengono inserite PRIMA delle procedure standard nel carrello.
+ */
+export function computeTracceLines(store: DataStore, state: WizardState): CartLine[] {
+  const lines: CartLine[] = [];
+
+  // ── Pavimento (F_TILE_TRACES) — massetto epossidico ──────────────────────
+  if (state.supporto_floor === 'F_TILE_TRACES') {
+    const sub = state.sub_answers_floor;
+    const mq = sub.mq_tracce ?? 0;
+    const spessore = sub.spessore_mm_tracce ?? 0;
+    if (mq > 0 && spessore > 0) {
+      const kgMasEp = (mq * spessore / 1000) * 1800;
+      pushLine(store, lines, 'MAS_EP', kgMasEp, 'fondo');
+    }
+  }
+
+  // ── Parete (W_TILE_TRACES) — riempimento + primer ─────────────────────────
+  if (state.supporto_wall === 'W_TILE_TRACES') {
+    const sub = state.sub_answers_wall;
+    const mq = sub.mq_tracce ?? 0;
+    const spessore = sub.spessore_mm_tracce ?? 0;
+    const riempimento = sub.tracce_riempimento;
+    if (mq > 0 && spessore > 0) {
+      if (riempimento === 'RAS_FONDO_FINO') {
+        // kg = mq × spessore_mm × 1,6  (consumo rasante fondo fino)
+        const kgRas = mq * spessore * 1.6;
+        pushLine(store, lines, 'RAS_FONDO_FINO', kgRas, 'fondo');
+      }
+      // malta antiritiro: nessun prodotto, solo nota tecnica in stratigrafia
+      // Primer SW 150 g/m² obbligatorio su area tracce indipendentemente dal riempimento
+      pushLine(store, lines, 'PR_SW', mq * 0.150, 'fondo');
+    }
+  }
+
+  return lines;
 }
 
 // ─── Massetto doccia piatto NUOVO — linee extra nel carrello ─────────────────

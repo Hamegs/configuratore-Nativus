@@ -16,6 +16,10 @@ export interface SubAnswers {
   piatto_doccia?: string;
   fughe_residue?: string;
   parquet_comp?: 'AS' | 'EP';
+  // Piastrella con tracce impianti
+  mq_tracce?: number | null;
+  spessore_mm_tracce?: number | null;
+  tracce_riempimento?: 'RAS_FONDO_FINO' | 'MALTA_ANTIRITIRO' | null;
 }
 
 export interface WizardState {

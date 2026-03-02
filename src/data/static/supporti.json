@@ -113,5 +113,15 @@
     "support_id": "F_PAR_EP",
     "macro_id": "FLOOR",
     "name": "Parquet: rimozione totale + compensazione quota con massetto epossidico"
+  },
+  {
+    "support_id": "F_TILE_TRACES",
+    "macro_id": "FLOOR",
+    "name": "Piastrelle con tracce impianti"
+  },
+  {
+    "support_id": "W_TILE_TRACES",
+    "macro_id": "WALL",
+    "name": "Piastrelle con tracce impianti"
   }
 ]

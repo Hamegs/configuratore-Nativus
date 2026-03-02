@@ -116,6 +116,28 @@ const Q_PARQUET_COMP: SubQuestion = {
   ],
 };
 
+// ── Piastrella con tracce ─────────────────────────────────────────────────────
+const Q_TRACCE_MQ_PAV: SubQuestion = {
+  key: 'mq_tracce', label: 'Superficie tracce pavimento (m²)', type: 'number',
+};
+
+const Q_TRACCE_MQ_PAR: SubQuestion = {
+  key: 'mq_tracce', label: 'Superficie tracce parete (m²)', type: 'number',
+};
+
+const Q_TRACCE_SPESSORE: SubQuestion = {
+  key: 'spessore_mm_tracce', label: 'Spessore medio tracce (mm)', type: 'number',
+};
+
+const Q_TRACCE_RIEMPIMENTO: SubQuestion = {
+  key: 'tracce_riempimento', label: 'Materiale di riempimento tracce', type: 'select',
+  options: [
+    { value: '', label: '— Seleziona —' },
+    { value: 'RAS_FONDO_FINO', label: 'Rasante Fondo Fino (calcolo automatico)' },
+    { value: 'MALTA_ANTIRITIRO', label: 'Malta antiritiro strutturale (solo nota tecnica)' },
+  ],
+};
+
 const Q_FUGHE_RESIDUE: SubQuestion = {
   key: 'fughe_residue', label: 'Fughe residue', type: 'select',
   options: [
@@ -149,11 +171,13 @@ const DEFAULT_FIELD_Q: Record<string, SubQuestion> = {
 // Non-DT extras: fields not in the decision table but needed by the engine
 // (parquet comp uses resolveCompRule; fughe/crepe_ml are for texture calc)
 const SUPPORT_EXTRAS: Record<string, SubQuestion[]> = {
-  F_PAR_RM: [Q_PARQUET_COMP],
-  F_MAS:    [Q_CREPE_ML],
-  F_CLS:    [Q_CREPE_ML],
-  W_TILE:   [Q_FUGHE_RESIDUE],
-  W_MOS:    [Q_FUGHE_RESIDUE],
+  F_PAR_RM:       [Q_PARQUET_COMP],
+  F_MAS:          [Q_CREPE_ML],
+  F_CLS:          [Q_CREPE_ML],
+  W_TILE:         [Q_FUGHE_RESIDUE],
+  W_MOS:          [Q_FUGHE_RESIDUE],
+  F_TILE_TRACES:  [Q_TRACCE_MQ_PAV, Q_TRACCE_SPESSORE],
+  W_TILE_TRACES:  [Q_TRACCE_MQ_PAR, Q_TRACCE_SPESSORE, Q_TRACCE_RIEMPIMENTO],
 };
 
 // DT field scan order (determines question display order)
