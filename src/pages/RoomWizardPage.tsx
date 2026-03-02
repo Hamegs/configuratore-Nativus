@@ -6,6 +6,7 @@ import { ROOM_TYPES } from '../types/project';
 import { WizardContainer } from '../components/wizard/WizardContainer';
 import type { CartResult } from '../engine/cart-calculator';
 import type { AmbienteId } from '../types/enums';
+import { loadDataStore } from '../utils/data-loader';
 
 export function RoomWizardPage() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -13,6 +14,7 @@ export function RoomWizardPage() {
 
   const rooms = useProjectStore(s => s.rooms);
   const setRoomResult = useProjectStore(s => s.setRoomResult);
+  const buildCart = useProjectStore(s => s.buildCart);
 
   const reset = useWizardStore(s => s.reset);
   const hydrateFromState = useWizardStore(s => s.hydrateFromState);
@@ -43,8 +45,12 @@ export function RoomWizardPage() {
   function handleComplete(result: CartResult) {
     if (!roomId) return;
     const wizState = useWizardStore.getState();
+    // Salva il risultato nella stanza
     setRoomResult(roomId, wizState, result.summary.lines, result);
-    navigate('/progetto');
+    // Ricostruisce subito il carrello aggregato e naviga al carrello
+    const store = loadDataStore();
+    buildCart(store);
+    navigate('/progetto/carrello');
   }
 
   const roomLabel = ROOM_TYPES.find(t => t.id === room.room_type)?.label ?? room.room_type;
