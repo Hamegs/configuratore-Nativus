@@ -1,189 +1,183 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useWizardStore } from '../../store/wizard-store';
+import { computeTechnicalSchedule } from '../../engine/cart-calculator';
 import { loadDataStore } from '../../utils/data-loader';
-import { BlockAlerts } from '../shared/BlockAlerts';
-import { StepHeader } from './StepAmbiente';
-import { computeFullCart, computeTechnicalSchedule } from '../../engine/cart-calculator';
-import type { CartResult, TechnicalSchedule } from '../../engine/cart-calculator';
+import { StepHeader, StepNavigation } from './StepAmbiente';
+import type { WizardState } from '../../types/wizard-state';
 
-const store = loadDataStore();
-
-interface StepReviewProps {
-  onComplete: (result: CartResult) => void;
-  completeLabel?: string;
-}
-
-const SECTION_COLORS: Record<string, string> = {
-  'PREPARAZIONE SUPPORTO': 'border-stone-400 bg-stone-50',
-  'TEXTURE': 'border-brand-400 bg-brand-50',
-  'PROTETTIVO': 'border-teal-400 bg-teal-50',
+const TEXTURE_LINE_LABELS: Record<string, string> = {
+  NATURAL: 'Natural', NATURAL_ALIZEE: 'Natural Alizée', SENSE: 'Sense',
+  DEKORA: 'Dekora', LAMINE: 'Lamine', CORLITE_CHROMO: 'Corlite Chromo',
+  CORLITE_EVIDENCE: 'Corlite Evidence', MATERIAL: 'Material',
+};
+const SURFACE_TYPE_LABELS: Record<string, string> = {
+  FLOOR: 'Pavimento', WALL_PART: 'Parete',
 };
 
-const SECTION_ICON: Record<string, string> = {
-  'PREPARAZIONE SUPPORTO': '⚙️',
-  'TEXTURE': '🎨',
-  'PROTETTIVO': '🛡️',
-};
-
-const RAS2K_OPTIONS: { value: 'KEEP' | 'RAS_BASE' | 'RAS_BASE_Q'; label: string; hint: string }[] = [
-  { value: 'KEEP', label: 'Mantieni Rasante 2K', hint: 'Prestazioni elevate, bicomponente' },
-  { value: 'RAS_BASE', label: 'Sostituisci con Rasante Base', hint: '1,35 kg/m² — prestazioni standard' },
-  { value: 'RAS_BASE_Q', label: 'Sostituisci con Rasante Base Quarzo', hint: '2,0 kg/m² — prestazioni superiori' },
+const RAS2K_OPTIONS: { val: WizardState['ras2k_upgrade']; label: string; desc: string }[] = [
+  { val: 'KEEP',       label: 'Rasante 2K',          desc: 'Standard — 32,5 kg · 13 m²/mano' },
+  { val: 'RAS_BASE',   label: 'Rasante Base',         desc: 'Monocomponente pronto all\'uso' },
+  { val: 'RAS_BASE_Q', label: 'Rasante Base Quarzo',  desc: 'Bicomp impermeabile — prestazioni superiori' },
 ];
 
-export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' }: StepReviewProps) {
+export function StepReview() {
   const state = useWizardStore();
-  const { active_blocks, prevStep, ras2k_upgrade, setRas2kUpgrade } = state;
-  const [error, setError] = useState<string | null>(null);
-  const [schedule, setSchedule] = useState<TechnicalSchedule | null>(null);
-  const [scheduleError, setScheduleError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const store = loadDataStore();
+  const { nextStep, ras2k_upgrade, setRas2kUpgrade } = state;
 
-  const hasBlocks = active_blocks.length > 0;
-  const isValid = !hasBlocks;
-
-  useEffect(() => {
-    if (!isValid) return;
-    setScheduleError(null);
-    try {
-      const s = computeTechnicalSchedule(store, state);
-      setSchedule(s);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Errore calcolo procedura';
-      setScheduleError(msg);
-    }
-  }, [state.supporto_floor, state.supporto_wall, state.texture_line, state.texture_style, state.protettivo, state.ras2k_upgrade, isValid]);
-
-  const hasRas2k = schedule?.sections
-    .find(s => s.title === 'PREPARAZIONE SUPPORTO')
-    ?.products.some(p => p.name.toLowerCase().includes('rasante 2k'));
-
-  function handleAddToCart() {
-    setError(null);
-    setLoading(true);
-    try {
-      const result = computeFullCart(store, state);
-      onComplete(result);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Errore sconosciuto';
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
+  let schedule: ReturnType<typeof computeTechnicalSchedule> | null = null;
+  let computeError: string | null = null;
+  try {
+    schedule = computeTechnicalSchedule(store, state);
+  } catch (e) {
+    computeError = e instanceof Error ? e.message : 'Errore calcolo';
   }
+
+  // Sezioni dal TechnicalSchedule
+  const prepSection    = schedule?.sections.find(s => s.title.toUpperCase().includes('PREPARAZIONE'));
+  const protSection    = schedule?.sections.find(s => s.title.toUpperCase().includes('PROTETTIVO'));
+  const hasRas2kAlert  = schedule?.hard_alerts?.some(a => a.includes('RAS') || a.includes('2K'));
+
+  // Superficie per texture display
+  const surfaces     = state.surfaces;
+  const hasSurfaces  = surfaces.length > 0;
 
   return (
     <div className="space-y-6">
       <StepHeader
-        title="Scaletta tecnica"
-        subtitle="Procedura di applicazione. Confezioni e prezzi vengono calcolati nel carrello."
+        title="Riepilogo Tecnico"
+        subtitle="Scaletta operativa completa. Nessun prezzo — solo sequenza di applicazione."
       />
-      <BlockAlerts blocks={active_blocks} />
 
-      {error && (
-        <div className="alert-hard">
-          <strong>Errore motore:</strong> {error}
+      {computeError && <div className="alert-hard">Errore motore: {computeError}</div>}
+      {schedule?.hard_alerts?.map((a, i) => (
+        <div key={i} className="alert-warn">{a}</div>
+      ))}
+
+      {/* ── Upgrade Rasante 2K ─────────────────────────────────────────── */}
+      {(hasRas2kAlert || ras2k_upgrade !== 'KEEP') && (
+        <div className="card p-5">
+          <p className="mb-3 text-sm font-semibold text-brand-800">Scelta rasante parete</p>
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+            {RAS2K_OPTIONS.map(opt => (
+              <button
+                key={opt.val}
+                onClick={() => setRas2kUpgrade(opt.val)}
+                className={`flex-1 rounded-lg border-2 p-4 text-left transition-all ${
+                  ras2k_upgrade === opt.val
+                    ? 'border-brand-600 bg-brand-50 shadow-sm'
+                    : 'border-sand-400 bg-sand-100 hover:border-brand-300'
+                }`}
+              >
+                <p className={`text-sm font-semibold ${ras2k_upgrade === opt.val ? 'text-brand-700' : 'text-brand-800'}`}>
+                  {opt.label}
+                </p>
+                <p className="mt-0.5 text-xs text-brand-500">{opt.desc}</p>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
-      {scheduleError && (
-        <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
-          <strong>Anteprima procedura non disponibile:</strong> {scheduleError}
+      {/* ── A • Preparazione Supporto ─────────────────────────────────── */}
+      {prepSection && prepSection.products.length > 0 && (
+        <div className="card overflow-hidden">
+          <div className="tbl-head">
+            <span className="section-number mr-2">A</span>
+            {prepSection.title}
+          </div>
+          <ul className="divide-y divide-sand-300">
+            {prepSection.products.map((prod, i) => (
+              <li key={i} className="flex items-start gap-3 px-4 py-3">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700">
+                  {i + 1}
+                </span>
+                <p className="text-sm font-medium text-brand-800">{prod.name}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
-      {schedule && schedule.sections.length > 0 && (
-        <div className="space-y-4">
-          {schedule.sections.map((section) => (
-            <div
-              key={section.title}
-              className={`rounded-xl border-l-4 p-4 ${SECTION_COLORS[section.title] ?? 'border-gray-300 bg-gray-50'}`}
-            >
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-3 flex items-center gap-2">
-                <span>{SECTION_ICON[section.title] ?? '•'}</span>
-                {section.title}
-              </h3>
-              <ol className="space-y-1.5">
-                {section.products.map((p, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-gray-800">
-                    <span className="shrink-0 w-5 h-5 rounded-full bg-white border border-gray-300 text-xs flex items-center justify-center font-medium text-gray-500">
-                      {i + 1}
-                    </span>
-                    <span className={p.name.toLowerCase().includes('rasante 2k') ? 'text-amber-700 font-medium' : ''}>
-                      {p.name}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          ))}
-
-          {/* Upgrade Rasante 2K */}
-          {hasRas2k && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-              <h4 className="text-sm font-semibold text-amber-800 mb-3">
-                Opzione: sostituisci il Rasante 2K
-              </h4>
-              <div className="grid gap-2">
-                {RAS2K_OPTIONS.map(opt => (
-                  <label
-                    key={opt.value}
-                    className={`flex items-start gap-3 cursor-pointer rounded-lg border px-3 py-2.5 transition-colors ${
-                      ras2k_upgrade === opt.value
-                        ? 'border-amber-400 bg-white'
-                        : 'border-gray-200 bg-white hover:border-amber-300'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="ras2k_upgrade"
-                      checked={ras2k_upgrade === opt.value}
-                      onChange={() => setRas2kUpgrade(opt.value)}
-                      className="mt-0.5 accent-amber-600"
-                    />
-                    <div>
-                      <span className="text-sm font-medium text-gray-800">{opt.label}</span>
-                      <p className="text-xs text-gray-500 mt-0.5">{opt.hint}</p>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {schedule.hard_alerts.length > 0 && (
-            <div className="space-y-2">
-              {schedule.hard_alerts.map((a, i) => (
-                <div key={i} className="alert-hard text-sm">{a}</div>
-              ))}
-            </div>
-          )}
+      {/* ── B • Texture ───────────────────────────────────────────────── */}
+      <div className="card overflow-hidden">
+        <div className="tbl-head">
+          <span className="section-number mr-2">B</span>
+          Texture
         </div>
-      )}
-
-      <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          className="btn-secondary flex-1"
-          onClick={prevStep}
-        >
-          ← Modifica configurazione
-        </button>
-        <button
-          type="button"
-          className="btn-primary flex-1 flex items-center justify-center gap-2"
-          disabled={!isValid || loading}
-          onClick={handleAddToCart}
-        >
-          {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-          )}
-          {completeLabel}
-        </button>
+        {hasSurfaces ? (
+          <ul className="divide-y divide-sand-300">
+            {surfaces.map((surf, i) => {
+              const lineName  = surf.texture_line ? (TEXTURE_LINE_LABELS[surf.texture_line] ?? surf.texture_line) : '—';
+              const colorName = surf.color_primary?.label ?? surf.color_secondary?.label ?? '';
+              const typeLabel = SURFACE_TYPE_LABELS[surf.type] ?? surf.type;
+              return (
+                <li key={surf.id ?? i} className="flex items-start gap-3 px-4 py-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-bold text-accent">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-brand-800">
+                      {lineName}{colorName ? ` — ${colorName}` : ''}
+                    </p>
+                    <p className="mt-0.5 text-xs text-brand-500">
+                      {typeLabel} · {surf.mq} m²
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        ) : state.texture_line ? (
+          <div className="px-4 py-3">
+            <p className="text-sm font-semibold text-brand-800">
+              {TEXTURE_LINE_LABELS[state.texture_line] ?? state.texture_line}
+              {state.color_primary?.label ? ` — ${state.color_primary.label}` : ''}
+            </p>
+            <p className="mt-0.5 text-xs text-brand-500">
+              {(state.mq_pavimento + state.mq_pareti).toFixed(1)} m² totali
+            </p>
+          </div>
+        ) : (
+          <p className="px-4 py-3 text-sm text-brand-400">Nessuna texture configurata.</p>
+        )}
       </div>
+
+      {/* ── C • Protettivo ────────────────────────────────────────────── */}
+      {(protSection?.products.length || state.protettivo) && (
+        <div className="card overflow-hidden">
+          <div className="tbl-head">
+            <span className="section-number mr-2">C</span>
+            Protettivo
+          </div>
+          {protSection?.products.length ? (
+            <ul className="divide-y divide-sand-300">
+              {protSection.products.map((prod, i) => (
+                <li key={i} className="flex items-start gap-3 px-4 py-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-bold text-accent">
+                    {i + 1}
+                  </span>
+                  <p className="text-sm font-medium text-brand-800">{prod.name}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="px-4 py-3">
+              <p className="text-sm text-brand-700">
+                {state.protettivo?.system ?? 'Protettivo'} — {state.protettivo?.finitura ?? ''}
+                {state.finish_type ? ` · ${state.finish_type === 'OPACO' ? 'Opaco' : 'Lucido'}` : ''}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <StepNavigation
+        canGoBack
+        canGoNext={!computeError}
+        nextLabel="Vai al Carrello →"
+        onNext={nextStep}
+      />
     </div>
   );
 }

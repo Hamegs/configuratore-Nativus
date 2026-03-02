@@ -9,22 +9,23 @@ import { StepSupportoRivenditore } from './StepSupportoRivenditore';
 import { StepTexture } from './StepTexture';
 import { StepProtettivi } from './StepProtettivi';
 import { StepReview } from './StepReview';
+import { StepCart } from './StepCart';
 import { loadDataStore } from '../../utils/data-loader';
 import type { CartResult } from '../../engine/cart-calculator';
+import type { PackagingStrategy } from '../../types/project';
 
 /**
  * Flusso Admin/Applicatore:
- *   0 Superfici → 1 Supporto → 2 Texture → 3 Protettivi → 4 Riepilogo
+ *   0 Superfici → 1 Supporto → 2 Texture → 3 Protettivi → 4 Riepilogo → 5 Carrello
  *
  * Flusso Rivenditore:
- *   0 Superfici → 1 Texture → 2 Protettivi → 3 Supporto → 4 Riepilogo
+ *   0 Superfici → 1 Texture → 2 Protettivi → 3 Supporto → 4 Riepilogo → 5 Carrello
  */
-const STEPS_APPLICATORE = ['Superfici', 'Supporto', 'Texture', 'Protettivi', 'Riepilogo'];
-const STEPS_RIVENDITORE  = ['Superfici', 'Texture', 'Protettivi', 'Supporto', 'Riepilogo'];
+const STEPS_APPLICATORE = ['Superfici', 'Supporto', 'Texture', 'Protettivi', 'Riepilogo', 'Carrello'];
+const STEPS_RIVENDITORE  = ['Superfici', 'Texture', 'Protettivi', 'Supporto', 'Riepilogo', 'Carrello'];
 
 interface WizardContainerProps {
   onComplete?: (result: CartResult) => void;
-  /** Nasconde il selettore ambiente (usato quando l'ambiente è già fissato dalla stanza) */
   lockedAmbiente?: boolean;
 }
 
@@ -36,24 +37,25 @@ export function WizardContainer({ onComplete, lockedAmbiente = false }: WizardCo
   const isRivenditore = user?.role === 'rivenditore';
   const stepLabels = isRivenditore ? STEPS_RIVENDITORE : STEPS_APPLICATORE;
 
-  function handleComplete(result: CartResult) {
+  const reviewStep = stepLabels.length - 2;
+  const cartStep   = stepLabels.length - 1;
+
+  function handleComplete(result: CartResult, strategy: PackagingStrategy = 'MINIMO_SFRIDO') {
     if (onComplete) {
       onComplete(result);
     } else {
-      // Standalone mode: auto-crea una stanza nel progetto e naviga al carrello
-      const { addRoom, setRoomResult } = useProjectStore.getState();
-      const store = loadDataStore();
+      const { addRoom, setRoomResult, setStrategy } = useProjectStore.getState();
+      const store    = loadDataStore();
       const wizState = useWizardStore.getState();
       const ambiente = wizState.ambiente ?? 'ORD';
       const roomTypeMap: Record<string, string> = { ORD: 'SOGGIORNO', BAG: 'BAGNO', DOC: 'BAGNO', DIN: 'BAGNO' };
       const roomType = roomTypeMap[ambiente] ?? 'ALTRO';
       const roomId = addRoom(roomType, '');
       setRoomResult(roomId, wizState, result.summary.lines, store, result);
+      setStrategy(strategy, store);
       navigate('/progetto/carrello');
     }
   }
-
-  const reviewStep = stepLabels.length - 1;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
@@ -70,9 +72,8 @@ export function WizardContainer({ onComplete, lockedAmbiente = false }: WizardCo
         {isRivenditore && currentStep === 2 && <StepProtettivi />}
         {isRivenditore && currentStep === 3 && <StepSupportoRivenditore />}
 
-        {currentStep === reviewStep && (
-          <StepReview onComplete={handleComplete} completeLabel="Aggiungi al carrello" />
-        )}
+        {currentStep === reviewStep && <StepReview />}
+        {currentStep === cartStep   && <StepCart onComplete={handleComplete} />}
       </div>
     </div>
   );
@@ -91,7 +92,7 @@ function StepProgress({ current, labels }: StepProgressProps) {
       <ol className="flex items-center gap-0">
         {labels.map((label, i) => {
           const isCompleted = i < current;
-          const isActive = i === current;
+          const isActive    = i === current;
           return (
             <li key={i} className="flex flex-1 items-center">
               <div className="flex flex-col items-center min-w-0">
@@ -101,25 +102,21 @@ function StepProgress({ current, labels }: StepProgressProps) {
                       ? 'bg-brand-600 text-white'
                       : isActive
                       ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-400'
-                      : 'bg-gray-100 text-gray-400'
+                      : 'bg-sand-200 text-brand-400'
                   }`}
                 >
                   {isCompleted ? '✓' : i + 1}
                 </span>
                 <span
-                  className={`mt-1 text-center text-xs leading-tight truncate max-w-[72px] ${
-                    isActive ? 'font-semibold text-brand-700' : 'text-gray-400'
+                  className={`mt-1 text-center text-xs leading-tight truncate max-w-[68px] ${
+                    isActive ? 'font-semibold text-brand-700' : isCompleted ? 'text-brand-500' : 'text-brand-300'
                   }`}
                 >
                   {label}
                 </span>
               </div>
               {i < labels.length - 1 && (
-                <div
-                  className={`mx-1 h-0.5 flex-1 mb-4 ${
-                    isCompleted ? 'bg-brand-400' : 'bg-gray-200'
-                  }`}
-                />
+                <div className={`mx-1 h-0.5 flex-1 mb-4 ${isCompleted ? 'bg-brand-400' : 'bg-sand-400'}`} />
               )}
             </li>
           );

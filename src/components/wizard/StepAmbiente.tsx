@@ -8,32 +8,49 @@ import type { AmbienteId } from '../../types/enums';
 interface StepHeaderProps { title: string; subtitle?: string }
 export function StepHeader({ title, subtitle }: StepHeaderProps) {
   return (
-    <div>
-      <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-      {subtitle && <p className="mt-1 text-sm text-gray-500">{subtitle}</p>}
+    <div className="pb-2">
+      <h2 className="text-2xl font-bold text-brand-700">{title}</h2>
+      {subtitle && <p className="mt-1 text-sm text-brand-500">{subtitle}</p>}
     </div>
   );
 }
 
 interface StepNavProps {
-  canContinue: boolean;
+  canContinue?: boolean;
+  canGoNext?: boolean;
   onNext: () => void;
-  onPrev: () => void;
+  onPrev?: () => void;
   nextLabel?: string;
-  isLastStep?: boolean;
   showPrev?: boolean;
+  canGoBack?: boolean;
+  isLastStep?: boolean;
 }
 export function StepNavigation({
-  canContinue, onNext, onPrev,
+  canContinue, canGoNext,
+  onNext, onPrev,
   nextLabel = 'Avanti →',
-  showPrev = true,
+  showPrev = true, canGoBack,
 }: StepNavProps) {
+  const { prevStep } = useWizardStore();
+  const handlePrev = onPrev ?? prevStep;
+  const canNext    = canGoNext ?? canContinue ?? true;
+  const showBack   = canGoBack ?? showPrev;
+
   return (
-    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-      {showPrev
-        ? <button type="button" className="btn-secondary" onClick={onPrev}>← Indietro</button>
+    <div className="flex items-center justify-between border-t border-sand-400 pt-6">
+      {showBack
+        ? (
+          <button type="button" className="btn-secondary h-14 px-6 text-base font-semibold" onClick={handlePrev}>
+            ← Indietro
+          </button>
+        )
         : <span />}
-      <button type="button" className="btn-primary" disabled={!canContinue} onClick={onNext}>
+      <button
+        type="button"
+        className="btn-primary h-14 px-6 text-base font-semibold"
+        disabled={!canNext}
+        onClick={onNext}
+      >
         {nextLabel}
       </button>
     </div>
@@ -53,19 +70,19 @@ interface NumFieldProps {
 }
 export function NumField({ label, value, onChange, unit = '', min = 0, step = 0.5, disabled }: NumFieldProps) {
   return (
-    <div>
-      <label className="label-text">{label}</label>
-      <div className="flex items-center gap-1">
+    <div className="flex flex-col gap-1">
+      <label className="text-sm font-medium text-brand-700">{label}</label>
+      <div className="flex items-center gap-2">
         <input
           type="number"
           min={min}
           step={step}
           disabled={disabled}
-          className={`input-field w-28 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`h-12 w-36 rounded-md border-brand-300 bg-sand-50 px-3 text-base font-medium text-brand-800 shadow-sm focus:border-brand-600 focus:ring-brand-600 ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
           value={value || ''}
           onChange={e => onChange(parseFloat(e.target.value) || 0)}
         />
-        {unit && <span className="text-xs text-gray-400">{unit}</span>}
+        {unit && <span className="text-sm text-brand-500">{unit}</span>}
       </div>
     </div>
   );

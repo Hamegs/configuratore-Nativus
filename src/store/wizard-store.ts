@@ -198,6 +198,33 @@ const TEXTURE_RESET = {
   finish_type: 'OPACO' as const,
 };
 
+// Resetta solo la configurazione texture (non l'array surfaces)
+const TEXTURE_CONFIG_RESET = {
+  walls_differentiated: false,
+  texture_line: null as null,
+  texture_style: null as null,
+  color_mode: null as null,
+  color_primary: null as null,
+  color_secondary: null as null,
+  lamine_pattern: null as null,
+  protettivo: null as null,
+  protector_mode: 'TRASPARENTE' as const,
+  finish_type: 'OPACO' as const,
+};
+
+function resetSurfacesTexture(surfaces: Surface[]): Surface[] {
+  return surfaces.map(surf => ({
+    ...surf,
+    texture_line: null,
+    texture_style: null,
+    color_mode: null,
+    color_primary: null,
+    color_secondary: null,
+    lamine_pattern: null,
+    protector_color: null,
+  }));
+}
+
 export const useWizardStore = create<WizardStore>((set) => ({
   ...INITIAL_STATE,
 
@@ -275,11 +302,11 @@ export const useWizardStore = create<WizardStore>((set) => ({
   setDocciaRaccordi: (v) => set({ doccia_n_raccordi: v }),
 
   setSupportoFloor: (v) => set(s => {
-    const next = { ...s, supporto_floor: v, sub_answers_floor: {}, ...TEXTURE_RESET };
+    const next = { ...s, supporto_floor: v, sub_answers_floor: {}, ...TEXTURE_CONFIG_RESET, surfaces: resetSurfacesTexture(s.surfaces) };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
   setSupportoWall: (v) => set(s => {
-    const next = { ...s, supporto_wall: v, sub_answers_wall: {}, ...TEXTURE_RESET };
+    const next = { ...s, supporto_wall: v, sub_answers_wall: {}, ...TEXTURE_CONFIG_RESET, surfaces: resetSurfacesTexture(s.surfaces) };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
   setSubAnswerFloor: (key, value) => set(s => {
