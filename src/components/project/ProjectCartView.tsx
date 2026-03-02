@@ -68,6 +68,7 @@ export function ProjectCartView() {
   const [manualSearch, setManualSearch] = useState('');
   const [confirmAutoModal, setConfirmAutoModal] = useState<PackagingStrategy | null>(null);
   const [showLog, setShowLog] = useState(false);
+  const [savedFeedback, setSavedFeedback] = useState(false);
 
   const isManual = strategy === 'MANUALE';
   const configuredRooms = rooms.filter(r => r.is_configured);
@@ -84,6 +85,8 @@ export function ProjectCartView() {
   function handleStrategyChange(s: PackagingStrategy) {
     if (s === 'MANUALE') {
       setStrategy('MANUALE', store);
+      setSavedFeedback(true);
+      setTimeout(() => setSavedFeedback(false), 2000);
       return;
     }
     // switching from MANUALE to auto → ask confirmation
@@ -92,6 +95,8 @@ export function ProjectCartView() {
       return;
     }
     setStrategy(s, store);
+    setSavedFeedback(true);
+    setTimeout(() => setSavedFeedback(false), 2000);
   }
 
   function confirmSwitchToAuto() {
@@ -144,7 +149,12 @@ export function ProjectCartView() {
             {configuredRooms.length} {configuredRooms.length === 1 ? 'ambiente' : 'ambienti'} · {activeRows.length} righe attive
           </p>
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap items-center">
+          {savedFeedback && (
+            <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-lg animate-pulse">
+              ✓ Configurazione salvata
+            </span>
+          )}
           {hasApplicatoreData && (
             <button
               type="button"
@@ -152,6 +162,15 @@ export function ProjectCartView() {
               onClick={() => navigate('/progetto/applicatore')}
             >
               Vista Applicatore →
+            </button>
+          )}
+          {activeRows.length > 0 && (
+            <button
+              type="button"
+              className="btn-primary px-5 py-2 text-sm font-semibold"
+              onClick={() => window.print()}
+            >
+              Genera ordine / Stampa
             </button>
           )}
           <button type="button" className="btn-secondary text-sm" onClick={() => navigate('/progetto')}>
@@ -163,7 +182,10 @@ export function ProjectCartView() {
       {/* Modalità packaging */}
       <div className="card p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-sm text-gray-700">Modalità packaging</h2>
+          <div>
+            <h2 className="font-semibold text-sm text-gray-700">Ottimizzazione packaging</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Clicca una strategia — il carrello si ricalcola e si salva automaticamente.</p>
+          </div>
           {isManual && (
             <span className="text-xs font-semibold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
               Modalità manuale — righe modificabili

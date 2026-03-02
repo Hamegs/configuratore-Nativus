@@ -361,7 +361,7 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
   const lines: CartLine[] = [];
   const spessore_cm = 3; // default 3 cm
 
-  // Fondo Base (150 g/m² per strato adesivo)
+  // Fondo Base adesivo (150 g/m²)
   const fondoQtyKg = docArea * 0.15;
   const fondoSkus = store.packagingSku.filter(p => p.product_id === 'FONDO_BASE');
   if (fondoSkus.length > 0) {
@@ -371,17 +371,17 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
     lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'FONDO_BASE', section: 'fondo', qty_raw: fondoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
-  // Massetto epossidico (18 kg/m²/cm)
+  // Massetto epossidico (18 kg/m²/cm) — product_id: MAS_EP → CRYSTEPO_3_7_25KG
   const massettoQtyKg = docArea * 18 * spessore_cm;
-  const massettoSkus = store.packagingSku.filter(p => p.product_id === 'MASSETTO_EP');
+  const massettoSkus = store.packagingSku.filter(p => p.product_id === 'MAS_EP');
   if (massettoSkus.length > 0) {
     const best = massettoSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
     const qty = Math.ceil(massettoQtyKg / (best.pack_size ?? 1));
     const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'MASSETTO_EP', section: 'fondo', qty_raw: massettoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'MAS_EP', section: 'fondo', qty_raw: massettoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
-  // Rasante Base Quarzo su massetto (2.2 kg/m²) + rete 160
+  // Rasante Base Quarzo su massetto (2.2 kg/m²)
   const rbqQtyKg = docArea * 2.2;
   const rbqSkus = store.packagingSku.filter(p => p.product_id === 'RAS_BASE_Q');
   if (rbqSkus.length > 0) {
@@ -389,6 +389,16 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
     const qty = Math.ceil(rbqQtyKg / (best.pack_size ?? 1));
     const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
     lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RAS_BASE_Q', section: 'fondo', qty_raw: rbqQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+  }
+
+  // Rete 160 g/m² per il piatto (1 rotolo = 50 m, larghezza 1 m → 50 m²; sovrapposto +10%)
+  const reteMetri = docArea * 1.1; // m² → ml con +10% sovrapposizione
+  const reteSkus = store.packagingSku.filter(p => p.product_id === 'RETE_160');
+  if (reteSkus.length > 0) {
+    const best = reteSkus[0];
+    const qty = Math.ceil(reteMetri / (best.pack_size ?? 50));
+    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RETE_160', section: 'fondo', qty_raw: reteMetri, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
   return lines;
