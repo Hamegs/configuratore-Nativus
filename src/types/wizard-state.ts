@@ -22,6 +22,22 @@ export interface SubAnswers {
   tracce_riempimento?: 'RAS_FONDO_FINO' | 'MALTA_ANTIRITIRO' | null;
 }
 
+// ── Multi-superficie ──────────────────────────────────────────────────────────
+// Ogni Surface corrisponde a un'area fisica (pavimento o porzione di parete)
+// con la propria texture, colore e (in caso COLOR mode) colore protettivo.
+export interface Surface {
+  id: string;
+  type: 'FLOOR' | 'WALL_PART';
+  mq: number;
+  texture_line: TextureLineId | null;
+  texture_style: TextureStyleId | null;
+  color_mode: ColorMode | null;
+  color_primary: ColorSelection | null;
+  color_secondary: ColorSelection | null;
+  lamine_pattern: string | null;
+  protector_color: ColorSelection | null;  // usato solo quando protector_mode = 'COLOR'
+}
+
 export interface WizardState {
   currentStep: number;
   maxReachedStep: number;
@@ -58,7 +74,10 @@ export interface WizardState {
   sub_answers_floor: SubAnswers;
   sub_answers_wall: SubAnswers;
 
-  // Step 3 — Texture
+  // Step 3 — Texture (multi-superficie)
+  surfaces: Surface[];                // modello primario per-superficie
+  walls_differentiated: boolean;      // false = 1 WALL_PART, true = più WALL_PART
+  // backward compat: derivati dalla prima superficie con texture_line != null
   texture_line: TextureLineId | null;
   texture_style: TextureStyleId | null;
   color_mode: ColorMode | null;
@@ -71,6 +90,8 @@ export interface WizardState {
 
   // Step 4 — Protettivi
   protettivo: ProtettivoSelection | null;
+  protector_mode: 'TRASPARENTE' | 'COLOR';  // globale per ambiente
+  finish_type: 'OPACO' | 'LUCIDO';          // globale per ambiente
 
   // Step 5 — DIN (condizionale)
   din_inputs: DinInputValues | null;
@@ -82,3 +103,4 @@ export interface WizardState {
   resolved_steps_floor: StepDefinition[];
   resolved_steps_wall: StepDefinition[];
 }
+

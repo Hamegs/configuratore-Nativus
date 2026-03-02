@@ -7,9 +7,10 @@ export interface CartLine {
   product_id?: string;
   section: 'fondo' | 'texture' | 'protettivi' | 'din' | 'speciale';
   note?: string;
-  qty_raw?: number;      // quantità raw prima del packaging (kg, m² o pz a seconda del prodotto)
-  pack_size?: number;    // dimensione confezione usata
-  pack_unit?: string;    // unità confezione
+  qty_raw?: number;
+  pack_size?: number;
+  pack_unit?: string;
+  color_label?: string;  // etichetta colore per consolidamento per-superficie
 }
 
 export interface CartFee {

@@ -53,9 +53,16 @@ export function computeFullCart(
   const all_alerts: CartHardNote[] = [];
   const computation_errors: { code: string; text: string }[] = [];
 
-  if (!state.ambiente || !state.texture_line || !state.protettivo) {
+  // Guard: con multi-superficie basta avere almeno una surface con texture_line
+  const hasTexture = state.surfaces.length > 0
+    ? state.surfaces.some(s => s.texture_line !== null)
+    : !!state.texture_line;
+  if (!state.ambiente || !hasTexture || !state.protettivo) {
     throw new DataError('CART_INCOMPLETE_STATE', 'Stato wizard incompleto per generare il carrello.', {});
   }
+
+  // Import TextureLineId per le conversioni tipo
+  type TexLine = import('../types/enums').TextureLineId;
 
   // ─── Piastrella con tracce — riempimento pre-procedura ────────────────────
   all_lines.push(...computeTracceLines(store, state));
@@ -147,32 +154,114 @@ export function computeFullCart(
     }
   }
 
-  // ─── Texture ──────────────────────────────────────────────────────────────
+  // ─── Texture ─────────────────────────────────────────────────────────────
+  // Modello multi-superficie: calcola per ogni Surface; fallback singola texture se surfaces è vuoto.
   const lastBase = detectLastBaseLayer(procedure_floor, procedure_wall);
-  const texArea = state.mq_pavimento + state.mq_pareti;
-  const macro: 'FLOOR' | 'WALL' = state.mq_pavimento > 0 ? 'FLOOR' : 'WALL';
-  const texResult = computeTextureCart(store, {
-    line: state.texture_line,
-    style: state.texture_style!,
-    area_mq: texArea,
-    macro,
-    color_mode: state.color_mode,
-    color_primary: state.color_primary,
-    color_secondary: state.color_secondary,
-    lamine_pattern: state.lamine_pattern,
-    last_base_layer: lastBase,
-    fughe_residue: state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue,
-    env_id: effectiveAmbiente(state),
-  });
-  all_lines.push(...texResult.cart_lines);
-  texResult.fees.forEach(f => all_fees.push(f));
-  texResult.hard_alerts.forEach(a => all_alerts.push({ code: 'TEX_ALERT', text: a, severity: 'hard' }));
+  const allTexAlerts: string[] = [];
+  const texProcLines: CartLine[] = [];  // raccoglie le righe texture per procedure_texture
+
+  let texArea = 0;
+  let primaryTexLine: TexLine = (state.texture_line ?? 'NATURAL') as TexLine;
+
+  if (state.surfaces.length > 0) {
+    for (const surface of state.surfaces) {
+      if (!surface.texture_line) continue;
+      const surfMacro: 'FLOOR' | 'WALL' = surface.type === 'FLOOR' ? 'FLOOR' : 'WALL';
+      const fughe = surface.type === 'WALL_PART'
+        ? (state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue)
+        : state.sub_answers_floor.fughe_residue;
+      const texResult = computeTextureCart(store, {
+        line: surface.texture_line,
+        style: surface.texture_style!,
+        area_mq: surface.mq,
+        macro: surfMacro,
+        color_mode: surface.color_mode,
+        color_primary: surface.color_primary,
+        color_secondary: surface.color_secondary,
+        lamine_pattern: surface.lamine_pattern,
+        last_base_layer: lastBase,
+        fughe_residue: fughe,
+        env_id: effectiveAmbiente(state),
+      });
+      const colorLbl = surface.color_primary?.label ?? undefined;
+      texResult.cart_lines.forEach(l => {
+        const ln: CartLine = { ...l, color_label: colorLbl };
+        all_lines.push(ln);
+        if (l.section === 'texture') texProcLines.push(ln);
+      });
+      texResult.fees.forEach(f => all_fees.push(f));
+      allTexAlerts.push(...texResult.hard_alerts);
+      texArea += surface.mq;
+    }
+    primaryTexLine = (state.surfaces.find(s => s.texture_line)?.texture_line ?? state.texture_line ?? 'NATURAL') as TexLine;
+  } else {
+    // ── Backward compat — singola texture globale ──────────────────────────
+    texArea = state.mq_pavimento + state.mq_pareti;
+    const macro: 'FLOOR' | 'WALL' = state.mq_pavimento > 0 ? 'FLOOR' : 'WALL';
+    const texResult = computeTextureCart(store, {
+      line: state.texture_line!,
+      style: state.texture_style!,
+      area_mq: texArea,
+      macro,
+      color_mode: state.color_mode,
+      color_primary: state.color_primary,
+      color_secondary: state.color_secondary,
+      lamine_pattern: state.lamine_pattern,
+      last_base_layer: lastBase,
+      fughe_residue: state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue,
+      env_id: effectiveAmbiente(state),
+    });
+    all_lines.push(...texResult.cart_lines);
+    texProcLines.push(...texResult.cart_lines.filter(l => l.section === 'texture'));
+    texResult.fees.forEach(f => all_fees.push(f));
+    allTexAlerts.push(...texResult.hard_alerts);
+  }
+  allTexAlerts.forEach(a => all_alerts.push({ code: 'TEX_ALERT', text: a, severity: 'hard' }));
 
   // ─── Protettivi ───────────────────────────────────────────────────────────
   const usoSup = deriveUsoSuperficie(state);
-  const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line, texArea, usoSup);
-  all_lines.push(...protResult.cart_lines);
-  protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+  let protStepDescriptions: ReturnType<typeof computeProtettiviCart>['step_descriptions'] = [];
+
+  if (state.surfaces.length > 0 && state.protettivo) {
+    if (state.protector_mode === 'COLOR') {
+      // Per-surface: ogni superficie ha il proprio colore protettivo
+      for (const surface of state.surfaces) {
+        if (!surface.texture_line) continue;
+        const protSelColor: import('../types/protettivi').ProtettivoSelection = {
+          system: state.protettivo.system,
+          finitura: state.protettivo.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : 'OPACO',
+          uso_superficie: usoSup,
+          opaco_colorato: state.protettivo.system === 'S',
+          colore_source: surface.protector_color?.type,
+          colore_code: surface.protector_color?.code ?? surface.protector_color?.label,
+          trasparente_finale: state.protettivo.trasparente_finale,
+        };
+        const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup);
+        protResult.cart_lines.forEach(l => {
+          all_lines.push({ ...l, color_label: surface.protector_color?.label ?? undefined });
+        });
+        protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+        if (protStepDescriptions.length === 0) protStepDescriptions = protResult.step_descriptions;
+      }
+    } else {
+      // TRASPARENTE: calcolo unico sull'area totale
+      const protSel: import('../types/protettivi').ProtettivoSelection = {
+        ...state.protettivo,
+        finitura: state.finish_type === 'LUCIDO' ? 'LUCIDO' : (state.protettivo.finitura ?? 'OPACO'),
+      };
+      const protResult = computeProtettiviCart(store, protSel, primaryTexLine, texArea, usoSup);
+      all_lines.push(...protResult.cart_lines);
+      protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+      protStepDescriptions = protResult.step_descriptions;
+    }
+  } else if (state.protettivo) {
+    // ── Backward compat — singolo protettivo globale ───────────────────────
+    const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line as TexLine, texArea, usoSup);
+    all_lines.push(...protResult.cart_lines);
+    protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+    protStepDescriptions = protResult.step_descriptions;
+  }
+
 
   // ─── DIN / accessori doccia ───────────────────────────────────────────────
   if (state.presenza_doccia) {
@@ -196,20 +285,19 @@ export function computeFullCart(
   const total_fees = all_fees.reduce((acc, f) => acc + f.amount * f.qty, 0);
 
   // ─── Costruisci procedure texture ─────────────────────────────────────────
-  const procedure_texture: CartProcedureStep[] = texResult.cart_lines
-    .filter(l => l.section === 'texture')
+  const procedure_texture: CartProcedureStep[] = texProcLines
     .map((line, i) => ({
       step_order: (i + 1) * 10,
-      name: line.descrizione,
+      name: line.color_label ? `${line.descrizione} — ${line.color_label}` : line.descrizione,
       product_id: line.product_id ?? null,
       qty_total_kg: (line as CartLine & { qty_raw?: number }).qty_raw ?? null,
       unit: line.pack_unit ?? null,
       section: 'texture' as const,
-      hard_alerts: i === 0 ? texResult.hard_alerts : [],
+      hard_alerts: i === 0 ? allTexAlerts : [],
     }));
 
   // ─── Costruisci procedure protettivi ──────────────────────────────────────
-  const procedure_protettivi: CartProcedureStep[] = protResult.step_descriptions.map(s => ({
+  const procedure_protettivi: CartProcedureStep[] = protStepDescriptions.map(s => ({
     step_order: s.step_order,
     name: s.name,
     product_id: s.product_id,
@@ -515,12 +603,17 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
 function consolidateLines(lines: CartLine[]): CartLine[] {
   const map = new Map<string, CartLine>();
   for (const line of lines) {
-    const existing = map.get(line.sku_id);
+    // Righe con colori diversi NON vengono accorpate anche se stesso SKU
+    const key = `${line.sku_id}::${line.color_label ?? ''}`;
+    const existing = map.get(key);
     if (existing) {
       existing.qty += line.qty;
       existing.totale += line.totale;
+      if (line.qty_raw !== undefined) {
+        existing.qty_raw = (existing.qty_raw ?? 0) + line.qty_raw;
+      }
     } else {
-      map.set(line.sku_id, { ...line });
+      map.set(key, { ...line });
     }
   }
   return Array.from(map.values());
