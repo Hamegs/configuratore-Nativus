@@ -4,14 +4,27 @@ import type { CartLine } from '../types/cart';
 import type { WizardState } from '../types/wizard-state';
 
 export function buildDinInputsFromWizard(state: WizardState): DinInputValues {
+  if (state.mercato_tedesco && state.presenza_doccia) {
+    return {
+      DIN_DOCCE_PZ: 1,
+      DIN_BBCORNER_IN_PZ: state.doccia_bbcorner_in ?? 0,
+      DIN_BBCORNER_OUT_PZ: state.doccia_bbcorner_out ?? 0,
+      DIN_BBPASS_PZ: state.doccia_raccordi_standard ?? 0,
+      DIN_BBDRAIN_PZ: state.doccia_raccordi_grandi ?? 0,
+      DIN_BBTAPE_ML: state.doccia_bbtape_ml ?? 0,
+      DIN_NORPHEN_ML: state.doccia_norphen_ml ?? 0,
+    };
+  }
+  const nRaccordi = state.doccia_n_raccordi ?? 0;
+  const norphen_ml = nRaccordi * 0.30;
   return {
     DIN_DOCCE_PZ: state.presenza_doccia ? 1 : 0,
-    DIN_BBCORNER_IN_PZ: state.doccia_bbcorner_in ?? 0,
-    DIN_BBCORNER_OUT_PZ: state.doccia_bbcorner_out ?? 0,
-    DIN_BBPASS_PZ: state.doccia_raccordi_standard ?? 0,
-    DIN_BBDRAIN_PZ: state.doccia_raccordi_grandi ?? 0,
-    DIN_BBTAPE_ML: state.doccia_bbtape_ml ?? 0,
-    DIN_NORPHEN_ML: state.doccia_norphen_ml ?? 0,
+    DIN_BBCORNER_IN_PZ: 0,
+    DIN_BBCORNER_OUT_PZ: 0,
+    DIN_BBPASS_PZ: 0,
+    DIN_BBDRAIN_PZ: 0,
+    DIN_BBTAPE_ML: 0,
+    DIN_NORPHEN_ML: norphen_ml,
   };
 }
 

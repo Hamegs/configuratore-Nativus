@@ -30,6 +30,7 @@ const INITIAL_STATE: WizardState = {
   doccia_bbtape_ml: 0,
   doccia_norphen_ml: 0,
   doccia_nicchie: false,
+  doccia_n_raccordi: 0,
   // Supporto
   supporto_floor: null,
   supporto_wall: null,
@@ -83,6 +84,7 @@ interface WizardStore extends WizardState {
   setDocciaBbtapeMl: (v: number) => void;
   setDocciaNorphenMl: (v: number) => void;
   setDoccianicchie: (v: boolean) => void;
+  setDocciaRaccordi: (v: number) => void;
   // Step 2 — Supporto
   setSupportoFloor: (v: string | null) => void;
   setSupportoWall: (v: string | null) => void;
@@ -131,6 +133,7 @@ const DOCCIA_RESET = {
   doccia_bbtape_ml: 0,
   doccia_norphen_ml: 0,
   doccia_nicchie: false,
+  doccia_n_raccordi: 0,
 };
 
 export const useWizardStore = create<WizardStore>((set, get) => ({
@@ -207,6 +210,7 @@ export const useWizardStore = create<WizardStore>((set, get) => ({
   setDocciaBbtapeMl: (v) => set({ doccia_bbtape_ml: v }),
   setDocciaNorphenMl: (v) => set({ doccia_norphen_ml: v }),
   setDoccianicchie: (v) => set({ doccia_nicchie: v }),
+  setDocciaRaccordi: (v) => set({ doccia_n_raccordi: v }),
 
   setSupportoFloor: (v) => set(s => {
     const next = {

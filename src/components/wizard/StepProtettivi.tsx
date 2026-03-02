@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useWizardStore } from '../../store/wizard-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { BlockAlerts } from '../shared/BlockAlerts';
@@ -40,6 +40,12 @@ export function StepProtettivi() {
     setProtettivo({ ...sel, ...patch } as ProtettivoSelection);
   }
 
+  useEffect(() => {
+    if (!protettivo) {
+      setProtettivo({ ...sel } as ProtettivoSelection);
+    }
+  }, []);
+
   const isMaterial = texture_line === 'MATERIAL';
   const availableSystems: ProtectionSystem[] = isMaterial ? ['H2O'] : ['H2O', 'S'];
   const availableFinitura = FINITURA_OPTIONS.filter(f =>
@@ -49,9 +55,7 @@ export function StepProtettivi() {
   const needsTrasparentefinale = sel.finitura === 'PROTEGGO_COLOR_OPACO';
   const needsProteggoColor = sel.finitura === 'PROTEGGO_COLOR_OPACO';
   const isValid =
-    !!protettivo &&
-    !!protettivo.system &&
-    !!protettivo.finitura &&
+    !!sel.system && !!sel.finitura &&
     (!needsTrasparentefinale || !!sel.trasparente_finale) &&
     (!needsProteggoColor || !!sel.colore_source) &&
     active_blocks.length === 0;

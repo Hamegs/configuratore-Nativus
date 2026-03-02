@@ -1,5 +1,5 @@
 import type { DataStore } from '../utils/data-loader';
-import type { CartLine, CartFee, CartHardNote, CartSummary } from '../types/cart';
+import type { CartLine, CartFee, CartHardNote, CartSummary, CartProcedureStep } from '../types/cart';
 import type { WizardState } from '../types/wizard-state';
 import { matchDecisionTable, buildRuleInputFromWizard, resolveCompRule } from './decision-table';
 import { resolveStepsForRule } from './step-resolver';
@@ -13,6 +13,8 @@ export interface CartResult {
   summary: CartSummary;
   procedure_floor: import('./step-resolver').ResolvedProcedure | null;
   procedure_wall: import('./step-resolver').ResolvedProcedure | null;
+  procedure_texture: CartProcedureStep[];
+  procedure_protettivi: CartProcedureStep[];
 }
 
 function deriveUsoSuperficie(state: WizardState): 'PAVIMENTO' | 'PARETE_FUORI_BAGNO' | 'BAGNO_DOCCIA' {
@@ -165,6 +167,35 @@ export function computeFullCart(
   const total_lines = consolidated.reduce((acc, l) => acc + l.totale, 0);
   const total_fees = all_fees.reduce((acc, f) => acc + f.amount * f.qty, 0);
 
+  // ─── Costruisci procedure texture ─────────────────────────────────────────
+  const procedure_texture: CartProcedureStep[] = texResult.cart_lines
+    .filter(l => l.section === 'texture')
+    .map((line, i) => ({
+      step_order: (i + 1) * 10,
+      name: line.descrizione,
+      product_id: line.product_id ?? null,
+      qty_total_kg: (line as CartLine & { qty_raw?: number }).qty_raw ?? null,
+      unit: line.pack_unit ?? null,
+      section: 'texture' as const,
+      hard_alerts: i === 0 ? texResult.hard_alerts : [],
+    }));
+
+  // ─── Costruisci procedure protettivi ──────────────────────────────────────
+  const procedure_protettivi: CartProcedureStep[] = protResult.step_descriptions.map(s => ({
+    step_order: s.step_order,
+    name: s.name,
+    product_id: s.product_id,
+    qty_total_kg: s.qty_total_kg,
+    unit: s.unit,
+    section: 'protettivi' as const,
+    diluizione: s.diluizione,
+    potlife_min: s.potlife_min,
+    t_min_h: s.t_min_h,
+    t_max_h: s.t_max_h,
+    note: s.note,
+    hard_alerts: [],
+  }));
+
   return {
     summary: {
       lines: consolidated,
@@ -177,6 +208,8 @@ export function computeFullCart(
     },
     procedure_floor,
     procedure_wall,
+    procedure_texture,
+    procedure_protettivi,
   };
 }
 

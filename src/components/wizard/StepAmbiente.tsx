@@ -89,7 +89,7 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
     doccia_raccordi_standard, doccia_raccordi_grandi,
     doccia_bbcorner_in, doccia_bbcorner_out,
     doccia_bbtape_ml, doccia_norphen_ml,
-    doccia_nicchie,
+    doccia_n_raccordi,
     setAmbiente, setRoomTypeDisplay,
     setMqPavimento, setMqPareti,
     setSuperficiConfirmed,
@@ -99,7 +99,7 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
     setDocciaRaccordiStandard, setDocciaRaccordiGrandi,
     setDocciaBbcornerIn, setDocciaBbcornerOut,
     setDocciaBbtapeMl, setDocciaNorphenMl,
-    setDoccianicchie,
+    setDocciaRaccordi,
     nextStep,
   } = useWizardStore();
 
@@ -121,9 +121,11 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
 
   const docciaValid = !presenza_doccia || (
     !!doccia_piatto_type &&
-    doccia_larghezza > 0 &&
-    doccia_lunghezza > 0 &&
-    doccia_altezza_rivestimento > 0
+    (doccia_piatto_type === 'ESISTENTE' || (
+      doccia_larghezza > 0 &&
+      doccia_lunghezza > 0 &&
+      doccia_altezza_rivestimento > 0
+    ))
   );
 
   const canConfirm =
@@ -163,8 +165,8 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
                 {presenza_doccia && (
                   <span className="text-blue-700">
                     Doccia: {doccia_piatto_type === 'NUOVO' ? 'Piatto da realizzare' : 'Piatto esistente'}
-                    {doccia_larghezza > 0 && doccia_lunghezza > 0 &&
-                      ` (${doccia_larghezza}×${doccia_lunghezza} m)`}
+                    {doccia_piatto_type === 'NUOVO' && doccia_larghezza > 0 && doccia_lunghezza > 0 &&
+                      ` (${Math.round(doccia_larghezza * 1000)}×${Math.round(doccia_lunghezza * 1000)} mm)`}
                   </span>
                 )}
                 {mercato_tedesco && presenza_doccia && (
@@ -325,55 +327,94 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
                 )}
               </div>
 
-              {/* Misure */}
-              <div>
-                <p className="text-xs font-medium text-gray-700 mb-2">
-                  Misure area doccia <span className="text-red-500">*</span>
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <NumField label="Larghezza" value={doccia_larghezza} onChange={setDocciaLarghezza} unit="m" />
-                  <NumField label="Lunghezza" value={doccia_lunghezza} onChange={setDocciaLunghezza} unit="m" />
-                  <NumField label="H rivestimento" value={doccia_altezza_rivestimento} onChange={setDocciaAltezza} unit="m" />
-                </div>
-                {doccia_larghezza > 0 && doccia_lunghezza > 0 && (
-                  <p className="text-xs text-blue-500 mt-1.5">
-                    Pavimento doccia: {(doccia_larghezza * doccia_lunghezza).toFixed(2)} m² ·
-                    Pareti doccia: {(2 * (doccia_larghezza + doccia_lunghezza) * doccia_altezza_rivestimento).toFixed(2)} m²
-                    <span className="ml-1 text-gray-400">(compresi nei mq totali)</span>
+              {/* Misure — solo piatto NUOVO */}
+              {doccia_piatto_type === 'NUOVO' && (
+                <div>
+                  <p className="text-xs font-medium text-gray-700 mb-2">
+                    Misure area doccia <span className="text-red-500">*</span>
                   </p>
-                )}
-              </div>
-
-              {/* Raccordi */}
-              <div>
-                <p className="text-xs font-medium text-gray-700 mb-2">Raccordi idraulici</p>
-                <div className="flex flex-wrap gap-4">
-                  <NumField label="Standard (BBpass)" value={doccia_raccordi_standard} onChange={setDocciaRaccordiStandard} unit="pz" step={1} />
-                  <NumField label="Grandi (BBdrain)" value={doccia_raccordi_grandi} onChange={setDocciaRaccordiGrandi} unit="pz" step={1} />
+                  <div className="flex flex-wrap gap-4">
+                    <NumField
+                      label="Larghezza"
+                      value={Math.round(doccia_larghezza * 1000)}
+                      onChange={(v) => setDocciaLarghezza(v / 1000)}
+                      unit="mm"
+                      step={10}
+                    />
+                    <NumField
+                      label="Lunghezza"
+                      value={Math.round(doccia_lunghezza * 1000)}
+                      onChange={(v) => setDocciaLunghezza(v / 1000)}
+                      unit="mm"
+                      step={10}
+                    />
+                    <NumField
+                      label="H rivestimento"
+                      value={Math.round(doccia_altezza_rivestimento * 1000)}
+                      onChange={(v) => setDocciaAltezza(v / 1000)}
+                      unit="mm"
+                      step={10}
+                    />
+                  </div>
+                  {doccia_larghezza > 0 && doccia_lunghezza > 0 && (
+                    <p className="text-xs text-blue-500 mt-1.5">
+                      Pavimento doccia: {(doccia_larghezza * doccia_lunghezza).toFixed(2)} m² ·
+                      Pareti doccia: {(2 * (doccia_larghezza + doccia_lunghezza) * doccia_altezza_rivestimento).toFixed(2)} m²
+                      <span className="ml-1 text-gray-400">(compresi nei mq totali)</span>
+                    </p>
+                  )}
                 </div>
-              </div>
+              )}
 
-              {/* Angoli e sigillature */}
-              <div>
-                <p className="text-xs font-medium text-gray-700 mb-2">Angoli e sigillature</p>
-                <div className="flex flex-wrap gap-4">
-                  <NumField label="BBcorner IN" value={doccia_bbcorner_in} onChange={setDocciaBbcornerIn} unit="pz" step={1} />
-                  <NumField label="BBcorner OUT" value={doccia_bbcorner_out} onChange={setDocciaBbcornerOut} unit="pz" step={1} />
-                  <NumField label="BBtape" value={doccia_bbtape_ml} onChange={setDocciaBbtapeMl} unit="ml" />
-                  <NumField label="Norphen" value={doccia_norphen_ml} onChange={setDocciaNorphenMl} unit="ml" />
+              {/* Raccordi — logica diversa per DIN e non-DIN */}
+              {!mercato_tedesco && (
+                <div>
+                  <p className="text-xs font-medium text-gray-700 mb-1">Raccordi idraulici</p>
+                  <p className="text-xs text-gray-400 mb-2">
+                    Necessari per calcolo sigillature Norphen e MS Pro Sealer.
+                  </p>
+                  <NumField
+                    label="Numero raccordi"
+                    value={doccia_n_raccordi}
+                    onChange={setDocciaRaccordi}
+                    unit="pz"
+                    step={1}
+                  />
                 </div>
-              </div>
+              )}
 
-              {/* Nicchie */}
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-brand-600"
-                  checked={doccia_nicchie}
-                  onChange={e => setDoccianicchie(e.target.checked)}
-                />
-                <span className="text-sm text-gray-700">Presenza nicchie / elementi integrati</span>
-              </label>
+              {/* Campi DIN — solo mercato tedesco */}
+              {mercato_tedesco && (
+                <div className="space-y-4">
+                  <p className="text-xs font-semibold text-orange-700 uppercase tracking-wide">
+                    Dati DIN 18534 obbligatori
+                  </p>
+                  <div>
+                    <p className="text-xs font-medium text-gray-700 mb-2">Raccordi idraulici</p>
+                    <div className="flex flex-wrap gap-4">
+                      <NumField label="Standard ∅≤30mm (BBpass)" value={doccia_raccordi_standard} onChange={setDocciaRaccordiStandard} unit="pz" step={1} />
+                      <NumField label="Grandi/scarichi ∅>30mm (BBdrain)" value={doccia_raccordi_grandi} onChange={setDocciaRaccordiGrandi} unit="pz" step={1} />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-700 mb-2">Angoli</p>
+                    <div className="flex flex-wrap gap-4">
+                      <NumField label="BBcorner IN (angoli interni)" value={doccia_bbcorner_in} onChange={setDocciaBbcornerIn} unit="pz" step={1} />
+                      <NumField label="BBcorner OUT (angoli esterni)" value={doccia_bbcorner_out} onChange={setDocciaBbcornerOut} unit="pz" step={1} />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-700 mb-2">Sigillature</p>
+                    <div className="flex flex-wrap gap-4">
+                      <NumField label="BBtape (ml lineari)" value={doccia_bbtape_ml} onChange={setDocciaBbtapeMl} unit="ml" step={0.5} />
+                      <div>
+                        <NumField label="Norphen Fondo Igro (ml lineari)" value={doccia_norphen_ml} onChange={setDocciaNorphenMl} unit="ml" step={0.1} />
+                        <p className="text-xs text-gray-400 mt-0.5">5 g/ml su fascia 5 cm</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

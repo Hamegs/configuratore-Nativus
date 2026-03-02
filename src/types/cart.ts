@@ -34,6 +34,21 @@ export interface CartSummary {
   generated_at: string;
 }
 
+export interface CartProcedureStep {
+  step_order: number;
+  name: string;
+  product_id: string | null;
+  qty_total_kg: number | null;
+  unit: string | null;
+  section: 'texture' | 'protettivi';
+  diluizione?: string;
+  potlife_min?: string;
+  t_min_h?: string;
+  t_max_h?: string;
+  note?: string;
+  hard_alerts: string[];
+}
+
 export interface PackagingResult {
   product_id: string;
   total_needed: number;

@@ -3,13 +3,15 @@ import { loadDataStore, invalidateCache } from '../utils/data-loader';
 import { useAdminStore } from '../store/admin-store';
 import { AdminListino } from '../components/admin/AdminListino';
 import { AdminStratigrafie } from '../components/admin/AdminStratigrafie';
+import { AdminExport } from '../components/admin/AdminExport';
 
-type Tab = 'riepilogo' | 'stratigrafie' | 'listino';
+type Tab = 'riepilogo' | 'stratigrafie' | 'listino' | 'export';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'riepilogo', label: 'Riepilogo' },
   { id: 'stratigrafie', label: 'Stratigrafie' },
   { id: 'listino', label: 'Listino' },
+  { id: 'export', label: 'Export Dati' },
 ];
 
 export function AdminPage() {
@@ -128,6 +130,7 @@ export function AdminPage() {
 
       {tab === 'stratigrafie' && <AdminStratigrafie store={store} />}
       {tab === 'listino' && <AdminListino store={store} />}
+      {tab === 'export' && <AdminExport />}
     </div>
   );
 }

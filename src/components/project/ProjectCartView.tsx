@@ -242,6 +242,42 @@ export function ProjectCartView() {
         </div>
       )}
 
+      {/* Riepilogo per ambiente */}
+      {configuredRooms.length > 0 && (
+        <div className="card p-4 space-y-2">
+          <h2 className="font-semibold text-sm text-gray-700">Riepilogo per ambiente</h2>
+          {configuredRooms.map(room => {
+            const roomTotal = room.cart_lines.reduce((a, l) => a + (l.qty * (l.prezzo_unitario ?? 0)), 0);
+            const displayName = room.custom_name || room.room_type;
+            return (
+              <div key={room.id} className="flex items-center justify-between text-sm py-1 border-b border-gray-50 last:border-0">
+                <span className="text-gray-700 font-medium">{displayName}</span>
+                <span className="text-gray-500 text-xs">{room.cart_lines.length} righe</span>
+                <span className="font-semibold text-gray-800">{roomTotal.toFixed(2)} €</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Bottone finalizza */}
+      {activeRows.length > 0 && (
+        <div className="flex items-center justify-between bg-brand-50 rounded-xl px-5 py-4 border border-brand-200">
+          <div>
+            <p className="text-sm font-semibold text-brand-800">Totale ordine</p>
+            <p className="text-2xl font-bold text-brand-700 mt-0.5">{totalActive.toFixed(2)} €</p>
+            <p className="text-xs text-brand-500 mt-0.5">{activeRows.length} righe attive · strategia: {strategy}</p>
+          </div>
+          <button
+            type="button"
+            className="btn-primary px-6 py-3 text-sm font-semibold"
+            onClick={() => window.print()}
+          >
+            Stampa / Esporta ordine
+          </button>
+        </div>
+      )}
+
       {/* Override modal */}
       {overrideRowId && overrideRow && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">

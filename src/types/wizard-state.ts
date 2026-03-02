@@ -46,6 +46,7 @@ export interface WizardState {
   doccia_bbtape_ml: number;
   doccia_norphen_ml: number;
   doccia_nicchie: boolean;
+  doccia_n_raccordi: number;
 
   // Step 2 — Supporto + stato
   supporto_floor: string | null;
