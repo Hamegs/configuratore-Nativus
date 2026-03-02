@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProjectStore } from '../store/project-store';
 import { useWizardStore } from '../store/wizard-store';
@@ -14,12 +14,13 @@ export function RoomWizardPage() {
 
   const rooms = useProjectStore(s => s.rooms);
   const setRoomResult = useProjectStore(s => s.setRoomResult);
-  const buildCart = useProjectStore(s => s.buildCart);
 
   const reset = useWizardStore(s => s.reset);
   const hydrateFromState = useWizardStore(s => s.hydrateFromState);
   const setAmbiente = useWizardStore(s => s.setAmbiente);
   const setRoomTypeDisplay = useWizardStore(s => s.setRoomTypeDisplay);
+
+  const [warnings, setWarnings] = useState<{ code: string; text: string }[]>([]);
 
   const room = rooms.find(r => r.id === roomId);
 
@@ -28,6 +29,7 @@ export function RoomWizardPage() {
       navigate('/progetto');
       return;
     }
+    setWarnings([]);
     if (room.wizard_state) {
       hydrateFromState(room.wizard_state);
     } else {
@@ -45,12 +47,15 @@ export function RoomWizardPage() {
   function handleComplete(result: CartResult) {
     if (!roomId) return;
     const wizState = useWizardStore.getState();
-    // Salva il risultato nella stanza
-    setRoomResult(roomId, wizState, result.summary.lines, result);
-    // Ricostruisce subito il carrello aggregato e naviga al carrello
     const store = loadDataStore();
-    buildCart(store);
-    navigate('/progetto/carrello');
+    // setRoomResult ora auto-builda il carrello
+    setRoomResult(roomId, wizState, result.summary.lines, store, result);
+
+    if (result.computation_errors.length > 0) {
+      setWarnings(result.computation_errors);
+    } else {
+      navigate('/progetto/carrello');
+    }
   }
 
   const roomLabel = ROOM_TYPES.find(t => t.id === room.room_type)?.label ?? room.room_type;
@@ -77,6 +82,42 @@ export function RoomWizardPage() {
           )}
         </div>
       </div>
+
+      {warnings.length > 0 && (
+        <div className="mx-auto max-w-3xl mt-4 px-4">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+            <p className="font-semibold text-amber-800 text-sm mb-1">
+              Avvisi tecnici — il carrello è stato generato parzialmente
+            </p>
+            <ul className="list-disc list-inside space-y-0.5 text-xs text-amber-700">
+              {warnings.map((w, i) => (
+                <li key={i}>{w.text}</li>
+              ))}
+            </ul>
+            <p className="text-xs text-amber-600 mt-2">
+              Le combinazioni mancanti possono essere aggiunte in{' '}
+              <a href="/admin" className="underline font-medium">Admin → Stratigrafie</a>.
+            </p>
+            <div className="mt-3 flex gap-2">
+              <button
+                type="button"
+                className="btn-primary text-xs"
+                onClick={() => navigate('/progetto/carrello')}
+              >
+                Vai al carrello →
+              </button>
+              <button
+                type="button"
+                className="btn-secondary text-xs"
+                onClick={() => setWarnings([])}
+              >
+                Chiudi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <WizardContainer onComplete={handleComplete} lockedAmbiente={true} />
     </div>
   );

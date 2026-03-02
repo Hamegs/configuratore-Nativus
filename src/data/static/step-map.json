@@ -4323,5 +4323,25 @@
     "rule_id": "F_ZMX_DOC",
     "step_order": 100,
     "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "PIATTO_DOCCIA_NUOVO",
+    "step_order": 10,
+    "step_id": "S_DOCCIA_FB_150"
+  },
+  {
+    "rule_id": "PIATTO_DOCCIA_NUOVO",
+    "step_order": 20,
+    "step_id": "S_DOCCIA_Q_712"
+  },
+  {
+    "rule_id": "PIATTO_DOCCIA_NUOVO",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "PIATTO_DOCCIA_NUOVO",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
   }
 ]

@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import type { ProjectRoom, ProjectCartRow, AggregatedRawQty, PackagingStrategy, ConfigLogEntry } from '../types/project';
+import type { ProjectRoom, ProjectCartRow, AggregatedRawQty, PackagingStrategy, ConfigLogEntry, StepLavorazione } from '../types/project';
 import type { CartLine } from '../types/cart';
 import type { WizardState } from '../types/wizard-state';
 import type { CartResult } from '../engine/cart-calculator';
+import type { StepDefinition } from '../types/step';
 import { buildCartFromAggregated } from '../engine/packaging-optimizer';
 import type { DataStore } from '../utils/data-loader';
 
@@ -14,15 +15,17 @@ interface ProjectState {
   strategy: PackagingStrategy;
   cart_built: boolean;
   config_log: ConfigLogEntry[];
+  waste_pct: number;
 }
 
 interface ProjectStore extends ProjectState {
   addRoom: (room_type: string, custom_name: string) => string;
   removeRoom: (id: string) => void;
-  setRoomResult: (id: string, state: WizardState, lines: CartLine[], result?: CartResult) => void;
+  setRoomResult: (id: string, state: WizardState, lines: CartLine[], store: DataStore, result?: CartResult) => void;
   unconfigureRoom: (id: string) => void;
   buildCart: (store: DataStore, strategy?: PackagingStrategy) => void;
   setStrategy: (s: PackagingStrategy, store: DataStore) => void;
+  setWastePct: (v: number, store: DataStore) => void;
   overrideCartRow: (row_id: string, sku_id: string, qty_packs: number, store: DataStore) => void;
   excludeCartRow: (row_id: string) => void;
   restoreCartRow: (row_id: string) => void;
@@ -34,18 +37,72 @@ interface ProjectStore extends ProjectState {
   isManualMode: () => boolean;
 }
 
-function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
+function buildStepLavorazioni(roomId: string, result: CartResult): StepLavorazione[] {
+  const lav: StepLavorazione[] = [];
+  let order = 0;
+
+  function addSteps(steps: StepDefinition[], sectionPrefix: string) {
+    for (const s of steps) {
+      order += 10;
+      const alerts = s.hard_alerts?.join('; ') ?? '';
+      lav.push({
+        id: crypto.randomUUID(),
+        id_ambiente: roomId,
+        numero_step: s.step_order ?? order,
+        descrizione_step: s.name,
+        prodotti_coinvolti: s.product_id ?? '',
+        consumi_step: s.qty_total != null && s.unit ? `${s.qty_total.toFixed(2)} ${s.unit}` : '',
+        note_tecniche: [sectionPrefix, alerts].filter(Boolean).join(' — '),
+      });
+    }
+  }
+
+  if (result.procedure_floor) addSteps(result.procedure_floor.steps, 'Pavimento');
+  if (result.procedure_wall) addSteps(result.procedure_wall.steps, 'Pareti');
+
+  for (const s of result.procedure_texture) {
+    order += 10;
+    lav.push({
+      id: crypto.randomUUID(),
+      id_ambiente: roomId,
+      numero_step: s.step_order,
+      descrizione_step: s.name,
+      prodotti_coinvolti: s.product_id ?? '',
+      consumi_step: s.qty_total_kg != null && s.unit ? `${s.qty_total_kg.toFixed(2)} ${s.unit}` : '',
+      note_tecniche: ['Texture', s.note ?? '', ...s.hard_alerts].filter(Boolean).join(' — '),
+    });
+  }
+
+  for (const s of result.procedure_protettivi) {
+    order += 10;
+    lav.push({
+      id: crypto.randomUUID(),
+      id_ambiente: roomId,
+      numero_step: s.step_order,
+      descrizione_step: s.name,
+      prodotti_coinvolti: s.product_id ?? '',
+      consumi_step: s.qty_total_kg != null && s.unit ? `${s.qty_total_kg.toFixed(2)} ${s.unit}` : '',
+      note_tecniche: ['Protettivi', s.diluizione ?? '', s.note ?? '', ...s.hard_alerts].filter(Boolean).join(' — '),
+    });
+  }
+
+  return lav;
+}
+
+function aggregate(rooms: ProjectRoom[], waste_pct: number): AggregatedRawQty[] {
   const map = new Map<string, AggregatedRawQty>();
   for (const room of rooms) {
     if (!room.is_configured) continue;
     for (const line of room.cart_lines) {
       const pid = line.product_id ?? line.sku_id;
-      const raw = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
+      const rawBase = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
+      const raw = rawBase * (1 + waste_pct);
+      const roomName = room.custom_name || room.room_type;
       if (map.has(pid)) {
         const existing = map.get(pid)!;
         existing.qty_raw += raw;
-        if (!existing.from_rooms.includes(room.custom_name || room.room_type)) {
-          existing.from_rooms.push(room.custom_name || room.room_type);
+        if (!existing.from_rooms.includes(roomName)) {
+          existing.from_rooms.push(roomName);
         }
       } else {
         map.set(pid, {
@@ -56,7 +113,7 @@ function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
           pack_size_default: line.pack_size ?? 1,
           pack_unit: line.pack_unit ?? 'kg',
           section: line.section,
-          from_rooms: [room.custom_name || room.room_type],
+          from_rooms: [roomName],
         });
       }
     }
@@ -80,6 +137,7 @@ const initialState: ProjectState = {
   strategy: 'MINIMO_SFRIDO',
   cart_built: false,
   config_log: [],
+  waste_pct: 0.08,
 };
 
 export const useProjectStore = create<ProjectStore>((set, get) => ({
@@ -96,6 +154,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
         wizard_state: null,
         cart_lines: [],
         cart_result: null,
+        step_lavorazioni: [],
+        computation_errors: [],
       }],
     }));
     get().persist();
@@ -107,15 +167,23 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     get().persist();
   },
 
-  setRoomResult: (id, wizard_state, lines, result?) => {
+  setRoomResult: (id, wizard_state, lines, store, result?) => {
+    const step_lavorazioni = result ? buildStepLavorazioni(id, result) : [];
+    const computation_errors = result
+      ? result.computation_errors
+      : [];
     set(s => ({
       rooms: s.rooms.map(r =>
         r.id === id
-          ? { ...r, wizard_state, cart_lines: lines, cart_result: result ?? null, is_configured: true }
+          ? { ...r, wizard_state, cart_lines: lines, cart_result: result ?? null, is_configured: true, step_lavorazioni, computation_errors }
           : r
       ),
-      cart_built: false,
     }));
+    // Auto-rebuild cart immediately
+    const currentStrategy = get().strategy;
+    const aggregated = aggregate(get().rooms, get().waste_pct);
+    const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, currentStrategy);
+    set({ cart: rows, cart_built: true });
     get().persist();
   },
 
@@ -123,7 +191,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     set(s => ({
       rooms: s.rooms.map(r =>
         r.id === id
-          ? { ...r, wizard_state: null, cart_lines: [], cart_result: null, is_configured: false }
+          ? { ...r, wizard_state: null, cart_lines: [], cart_result: null, is_configured: false, step_lavorazioni: [], computation_errors: [] }
           : r
       ),
       cart_built: false,
@@ -133,20 +201,28 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   buildCart: (store, strategy?) => {
     const s = strategy ?? get().strategy;
-    const aggregated = aggregate(get().rooms);
+    const aggregated = aggregate(get().rooms, get().waste_pct);
     const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, s);
     set({ cart: rows, strategy: s, cart_built: true });
     get().persist();
   },
 
+  setWastePct: (v, store) => {
+    set({ waste_pct: v });
+    const s = get().strategy;
+    const aggregated = aggregate(get().rooms, v);
+    const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, s);
+    set({ cart: rows, cart_built: true });
+    get().persist();
+  },
+
   setStrategy: (strategy, store) => {
     if (strategy === 'MANUALE') {
-      // solo sblocca — non ricalcola
       set({ strategy });
       get().persist();
       return;
     }
-    const aggregated = aggregate(get().rooms);
+    const aggregated = aggregate(get().rooms, get().waste_pct);
     const autoRows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, strategy);
     const manual = get().cart.filter(r => r.source === 'manual');
     const merged = [...autoRows, ...manual];
@@ -175,7 +251,6 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
         };
       }),
     }));
-    // log modifica
     if (prev) {
       const room = get().rooms.find(r => r.cart_lines.some(l => l.sku_id === prev.sku_id)) ?? null;
       const entry = makeLogEntry({
@@ -256,7 +331,6 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       is_override: false,
       section: 'speciale',
     };
-    // Aggiunta manuale → forza modalità MANUALE
     const prevStrategy = get().strategy;
     set(s => ({ cart: [...s.cart, row], strategy: 'MANUALE' }));
     const entry = makeLogEntry({
@@ -276,8 +350,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   persist: () => {
     try {
-      const { rooms, cart, strategy, cart_built, config_log } = get();
-      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, cart_built, config_log }));
+      const { rooms, cart, strategy, cart_built, config_log, waste_pct } = get();
+      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, cart_built, config_log, waste_pct }));
     } catch { /* noop */ }
   },
 
@@ -287,6 +361,13 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       if (raw) {
         const parsed = JSON.parse(raw) as ProjectState;
         if (!parsed.config_log) parsed.config_log = [];
+        if (parsed.waste_pct === undefined) parsed.waste_pct = 0.08;
+        // Migrate old rooms without step_lavorazioni/computation_errors
+        parsed.rooms = parsed.rooms.map(r => ({
+          ...r,
+          step_lavorazioni: r.step_lavorazioni ?? [],
+          computation_errors: r.computation_errors ?? [],
+        }));
         set(parsed);
       }
     } catch { /* noop */ }

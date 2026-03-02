@@ -417,5 +417,21 @@
     "product_id": null,
     "qty": null,
     "unit": null
+  },
+  {
+    "step_id": "S_DOCCIA_FB_150",
+    "step_type_id": "PRIM",
+    "name": "Fondo Base a rullo 150 g/m² — adesione piatto (applicare quarzo 0,7-1,2 a rifiuto nel fresco)",
+    "product_id": "FONDO_BASE",
+    "qty": 150,
+    "unit": "g/m²"
+  },
+  {
+    "step_id": "S_DOCCIA_Q_712",
+    "step_type_id": "ADDV",
+    "name": "Quarzo 0,7-1,2 spolvero a rifiuto nel Fondo Base fresco — 2 kg/m²",
+    "product_id": "QUARZO_0_7_1_2",
+    "qty": 2,
+    "unit": "kg/m²"
   }
 ]

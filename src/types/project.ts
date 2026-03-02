@@ -31,6 +31,16 @@ export interface ConfigLogEntry {
   action: 'override' | 'add_manual' | 'exclude' | 'restore' | 'remove';
 }
 
+export interface StepLavorazione {
+  id: string;
+  id_ambiente: string;
+  numero_step: number;
+  descrizione_step: string;
+  prodotti_coinvolti: string;
+  consumi_step: string;
+  note_tecniche: string;
+}
+
 export interface ProjectRoom {
   id: string;
   room_type: string;
@@ -39,6 +49,8 @@ export interface ProjectRoom {
   wizard_state: WizardState | null;
   cart_lines: CartLine[];
   cart_result: CartResult | null;
+  step_lavorazioni: StepLavorazione[];
+  computation_errors: { code: string; text: string }[];
 }
 
 export interface AggregatedRawQty {
@@ -66,4 +78,5 @@ export interface ProjectCartRow {
   status: 'active' | 'excluded';
   is_override: boolean;
   section: CartLine['section'];
+  from_rooms?: string[];
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FileSpreadsheet, FileText } from 'lucide-react';
 import { useProjectStore } from '../store/project-store';
 import { ROOM_TYPES } from '../types/project';
 import { loadDataStore } from '../utils/data-loader';
@@ -12,7 +13,18 @@ export function ProjectPage() {
   const [newType, setNewType] = useState('SOGGIORNO');
   const [newName, setNewName] = useState('');
 
-  useEffect(() => { hydrate(); }, []);
+  useEffect(() => {
+    hydrate();
+  }, []);
+
+  // Se ci sono ambienti configurati ma il carrello non è ancora stato costruito, costruiscilo silenziosamente
+  useEffect(() => {
+    const configuredCount = rooms.filter(r => r.is_configured).length;
+    if (configuredCount > 0 && !cart_built) {
+      const store = loadDataStore();
+      buildCart(store);
+    }
+  }, [rooms, cart_built]);
 
   const configuredCount = rooms.filter(r => r.is_configured).length;
 
@@ -24,18 +36,18 @@ export function ProjectPage() {
     setShowAddForm(false);
   }
 
-  function handleConfigure(roomId: string) {
-    navigate(`/progetto/stanza/${roomId}`);
+  async function handleExportRoomXlsx(roomId: string) {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    const { exportRoomXlsx } = await import('../utils/export-xlsx');
+    exportRoomXlsx(room);
   }
 
-  function handleBuildCart() {
-    const store = loadDataStore();
-    buildCart(store);
-    navigate('/progetto/carrello');
-  }
-
-  function handleViewCart() {
-    navigate('/progetto/carrello');
+  async function handleExportRoomPdf(roomId: string) {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    const { exportRoomPdf } = await import('../utils/export-pdf');
+    exportRoomPdf(room);
   }
 
   return (
@@ -52,9 +64,9 @@ export function ProjectPage() {
             + Aggiungi ambiente
           </button>
           {configuredCount > 0 && (
-            cart_built
-              ? <button type="button" className="btn-primary text-sm" onClick={handleViewCart}>Vedi carrello →</button>
-              : <button type="button" className="btn-primary text-sm" onClick={handleBuildCart}>Genera carrello →</button>
+            <button type="button" className="btn-primary text-sm" onClick={() => navigate('/progetto/carrello')}>
+              Vedi carrello →
+            </button>
           )}
         </div>
       </div>
@@ -111,21 +123,49 @@ export function ProjectPage() {
                     {room.wizard_state.mq_pavimento > 0 && <div>Pavimento: {room.wizard_state.mq_pavimento} m²</div>}
                     {room.wizard_state.mq_pareti > 0 && <div>Pareti: {room.wizard_state.mq_pareti} m²</div>}
                     {room.wizard_state.texture_line && <div>Texture: {room.wizard_state.texture_line} {room.wizard_state.texture_style}</div>}
+                    {room.computation_errors.length > 0 && (
+                      <div className="text-amber-600 font-medium">
+                        ⚠ {room.computation_errors.length} avviso/i tecnico/i
+                      </div>
+                    )}
                     <div className="text-green-600 font-medium mt-1">
                       {room.cart_lines.reduce((a, l) => a + l.totale, 0).toFixed(2)} € stimati
                     </div>
                   </div>
                 )}
-                <div className="flex gap-2 mt-auto">
-                  <button type="button" className="btn-primary text-xs flex-1" onClick={() => handleConfigure(room.id)}>
+                <div className="flex gap-1.5 mt-auto flex-wrap">
+                  <button type="button" className="btn-primary text-xs flex-1" onClick={() => navigate(`/progetto/stanza/${room.id}`)}>
                     {room.is_configured ? 'Ri-configura' : 'Configura'}
                   </button>
                   {room.is_configured && (
-                    <button type="button" className="btn-secondary text-xs" onClick={() => unconfigureRoom(room.id)} title="Azzera configurazione">
-                      ✕
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className="btn-secondary text-xs p-1.5"
+                        title="Esporta Excel"
+                        onClick={() => handleExportRoomXlsx(room.id)}
+                      >
+                        <FileSpreadsheet size={13} />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-secondary text-xs p-1.5"
+                        title="Esporta PDF"
+                        onClick={() => handleExportRoomPdf(room.id)}
+                      >
+                        <FileText size={13} />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-secondary text-xs"
+                        onClick={() => unconfigureRoom(room.id)}
+                        title="Azzera configurazione"
+                      >
+                        ✕
+                      </button>
+                    </>
                   )}
-                  <button type="button" className="btn-secondary text-xs text-red-500" onClick={() => removeRoom(room.id)} title="Rimuovi ambiente">
+                  <button type="button" className="btn-secondary text-xs text-red-500" onClick={() => removeRoom(room.id)}>
                     Rimuovi
                   </button>
                 </div>
@@ -140,7 +180,7 @@ export function ProjectPage() {
           <button type="button" className="text-sm text-red-500 hover:underline" onClick={() => { if (confirm('Azzerare tutto il progetto?')) reset(); }}>
             Azzera progetto
           </button>
-          <p className="text-xs text-gray-400">Le modifiche sono salvate automaticamente nel browser.</p>
+          <p className="text-xs text-gray-400">Il carrello si aggiorna automaticamente ad ogni ambiente configurato.</p>
         </div>
       )}
     </div>

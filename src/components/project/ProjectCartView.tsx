@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FileSpreadsheet, FileText } from 'lucide-react';
 import { useProjectStore } from '../../store/project-store';
 import { loadDataStore } from '../../utils/data-loader';
 import type { PackagingStrategy, ProjectCartRow } from '../../types/project';
@@ -46,6 +47,15 @@ function RowTitle({ row }: { row: ProjectCartRow }) {
         )}
       </p>
       <p className="text-xs text-gray-400 font-mono mt-0.5">{row.sku_id}</p>
+      {row.from_rooms && row.from_rooms.length > 0 && (
+        <div className="mt-1 flex flex-wrap gap-1">
+          {row.from_rooms.map(rm => (
+            <span key={rm} className="inline-block rounded-full bg-stone-100 px-1.5 py-0.5 text-[10px] text-stone-500 font-medium">
+              {rm}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -53,9 +63,9 @@ function RowTitle({ row }: { row: ProjectCartRow }) {
 export function ProjectCartView() {
   const navigate = useNavigate();
   const {
-    rooms, cart, strategy, setStrategy,
+    rooms, cart, strategy, waste_pct, setStrategy, setWastePct,
     overrideCartRow, excludeCartRow, restoreCartRow, removeCartRow, addManualRow,
-    config_log, persist,
+    config_log,
   } = useProjectStore();
   const store = loadDataStore();
 
@@ -139,6 +149,38 @@ export function ProjectCartView() {
 
   const hasApplicatoreData = configuredRooms.some(r => r.cart_result);
 
+  async function handleExportXlsx() {
+    try {
+      const { exportProjectXlsx } = await import('../../utils/export-xlsx');
+      exportProjectXlsx(configuredRooms, activeRows, strategy);
+    } catch (e) { console.error(e); }
+  }
+
+  async function handleExportPdf() {
+    try {
+      const { exportProjectPdf } = await import('../../utils/export-pdf');
+      exportProjectPdf(configuredRooms, activeRows);
+    } catch (e) { console.error(e); }
+  }
+
+  async function handleExportRoomXlsx(roomId: string) {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    try {
+      const { exportRoomXlsx } = await import('../../utils/export-xlsx');
+      exportRoomXlsx(room);
+    } catch (e) { console.error(e); }
+  }
+
+  async function handleExportRoomPdf(roomId: string) {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+    try {
+      const { exportRoomPdf } = await import('../../utils/export-pdf');
+      exportRoomPdf(room);
+    } catch (e) { console.error(e); }
+  }
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 space-y-6">
       {/* Header */}
@@ -150,6 +192,25 @@ export function ProjectCartView() {
           </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
+          {/* Sfrido */}
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-3 py-1.5">
+            <label className="text-xs font-medium text-stone-600 whitespace-nowrap">Sfrido:</label>
+            <input
+              type="range"
+              min={0} max={20} step={1}
+              value={Math.round((waste_pct ?? 0.08) * 100)}
+              onChange={e => setWastePct(Number(e.target.value) / 100, store)}
+              className="w-20 accent-stone-700"
+            />
+            <span className="text-xs font-bold text-stone-800 w-6 text-right">{Math.round((waste_pct ?? 0.08) * 100)}%</span>
+          </div>
+          {/* Export */}
+          <button type="button" className="btn-secondary text-xs flex items-center gap-1" onClick={handleExportXlsx} disabled={activeRows.length === 0}>
+            <FileSpreadsheet size={13} /> Excel
+          </button>
+          <button type="button" className="btn-secondary text-xs flex items-center gap-1" onClick={handleExportPdf} disabled={activeRows.length === 0}>
+            <FileText size={13} /> PDF
+          </button>
           {savedFeedback && (
             <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-lg animate-pulse">
               ✓ Configurazione salvata
@@ -178,6 +239,7 @@ export function ProjectCartView() {
           </button>
         </div>
       </div>
+
 
       {/* Modalità packaging */}
       <div className="card p-4 space-y-3">
@@ -429,10 +491,16 @@ export function ProjectCartView() {
             const roomTotal = room.cart_lines.reduce((a, l) => a + (l.qty * (l.prezzo_unitario ?? 0)), 0);
             const displayName = room.custom_name || room.room_type;
             return (
-              <div key={room.id} className="flex items-center justify-between text-sm py-1 border-b border-gray-50 last:border-0">
-                <span className="text-gray-700 font-medium">{displayName}</span>
+              <div key={room.id} className="flex items-center justify-between text-sm py-1.5 border-b border-gray-50 last:border-0 gap-2">
+                <span className="text-gray-700 font-medium flex-1">{displayName}</span>
                 <span className="text-gray-500 text-xs">{room.cart_lines.length} prodotti</span>
-                <span className="font-semibold text-gray-800">{roomTotal.toFixed(2)} €</span>
+                <span className="font-semibold text-gray-800 w-24 text-right">{roomTotal.toFixed(2)} €</span>
+                <button type="button" title="Esporta Excel" className="p-1 text-stone-400 hover:text-stone-700" onClick={() => handleExportRoomXlsx(room.id)}>
+                  <FileSpreadsheet size={14} />
+                </button>
+                <button type="button" title="Esporta PDF" className="p-1 text-stone-400 hover:text-stone-700" onClick={() => handleExportRoomPdf(room.id)}>
+                  <FileText size={14} />
+                </button>
               </div>
             );
           })}

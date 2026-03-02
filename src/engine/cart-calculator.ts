@@ -15,6 +15,7 @@ export interface CartResult {
   procedure_wall: import('./step-resolver').ResolvedProcedure | null;
   procedure_texture: CartProcedureStep[];
   procedure_protettivi: CartProcedureStep[];
+  computation_errors: { code: string; text: string }[];
 }
 
 function deriveUsoSuperficie(state: WizardState): 'PAVIMENTO' | 'PARETE_FUORI_BAGNO' | 'BAGNO_DOCCIA' {
@@ -44,6 +45,7 @@ export function computeFullCart(
   const all_lines: CartLine[] = [];
   const all_fees: CartFee[] = [];
   const all_alerts: CartHardNote[] = [];
+  const computation_errors: { code: string; text: string }[] = [];
 
   if (!state.ambiente || !state.texture_line || !state.protettivo) {
     throw new DataError('CART_INCOMPLETE_STATE', 'Stato wizard incompleto per generare il carrello.', {});
@@ -54,39 +56,46 @@ export function computeFullCart(
   if (state.mq_pavimento > 0 && state.supporto_floor) {
     const input = buildRuleInputFromWizard(state, 'FLOOR');
     if (input) {
-      let rule;
-      if (state.supporto_floor === 'F_COMP') {
-        const comp_type = state.sub_answers_floor.tile_bedding as 'AS' | 'EP' ?? 'AS';
-        rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), comp_type);
-      } else if (state.supporto_floor === 'F_PAR_RM') {
-        const comp_type = state.sub_answers_floor.parquet_comp ?? 'AS';
-        rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), comp_type, 'PAR');
-      } else {
-        rule = matchDecisionTable(store.decisionTable, input);
-      }
-      procedure_floor = resolveStepsForRule(store, rule.rule_id, 'FLOOR', state.mq_pavimento);
-      procedure_floor.steps.forEach(step => {
-        if (step.product_id && step.qty_total !== undefined) {
-          const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
-          if (skus.length > 0) {
-            const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-            const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
-            const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-            all_lines.push({
-              sku_id: best.sku_id,
-              descrizione: best.descrizione_sku,
-              qty,
-              prezzo_unitario: price,
-              totale: qty * price,
-              product_id: step.product_id,
-              section: 'fondo',
-              qty_raw: step.qty_total,
-              pack_size: best.pack_size,
-              pack_unit: best.pack_unit,
-            });
-          }
+      try {
+        let rule;
+        if (state.supporto_floor === 'F_COMP') {
+          const comp_type = state.sub_answers_floor.tile_bedding as 'AS' | 'EP' ?? 'AS';
+          rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), comp_type);
+        } else if (state.supporto_floor === 'F_PAR_RM') {
+          const comp_type = state.sub_answers_floor.parquet_comp ?? 'AS';
+          rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), comp_type, 'PAR');
+        } else {
+          rule = matchDecisionTable(store.decisionTable, input);
         }
-      });
+        procedure_floor = resolveStepsForRule(store, rule.rule_id, 'FLOOR', state.mq_pavimento);
+        procedure_floor.steps.forEach(step => {
+          if (step.product_id && step.qty_total !== undefined) {
+            const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
+            if (skus.length > 0) {
+              const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+              const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
+              const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+              all_lines.push({
+                sku_id: best.sku_id,
+                descrizione: best.descrizione_sku,
+                qty,
+                prezzo_unitario: price,
+                totale: qty * price,
+                product_id: step.product_id,
+                section: 'fondo',
+                qty_raw: step.qty_total,
+                pack_size: best.pack_size,
+                pack_unit: best.pack_unit,
+              });
+            }
+          }
+        });
+      } catch (err) {
+        if (err instanceof DataError) {
+          computation_errors.push({ code: err.code, text: err.message });
+          all_alerts.push({ code: err.code, text: `Pavimento: ${err.message}`, severity: 'hard' });
+        } else { throw err; }
+      }
     }
   }
 
@@ -95,30 +104,37 @@ export function computeFullCart(
   if (state.mq_pareti > 0 && state.supporto_wall) {
     const input = buildRuleInputFromWizard(state, 'WALL');
     if (input) {
-      const rule = matchDecisionTable(store.decisionTable, input);
-      procedure_wall = resolveStepsForRule(store, rule.rule_id, 'WALL', state.mq_pareti);
-      procedure_wall.steps.forEach(step => {
-        if (step.product_id && step.qty_total !== undefined) {
-          const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
-          if (skus.length > 0) {
-            const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-            const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
-            const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-            all_lines.push({
-              sku_id: best.sku_id,
-              descrizione: best.descrizione_sku,
-              qty,
-              prezzo_unitario: price,
-              totale: qty * price,
-              product_id: step.product_id,
-              section: 'fondo',
-              qty_raw: step.qty_total,
-              pack_size: best.pack_size,
-              pack_unit: best.pack_unit,
-            });
+      try {
+        const rule = matchDecisionTable(store.decisionTable, input);
+        procedure_wall = resolveStepsForRule(store, rule.rule_id, 'WALL', state.mq_pareti);
+        procedure_wall.steps.forEach(step => {
+          if (step.product_id && step.qty_total !== undefined) {
+            const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
+            if (skus.length > 0) {
+              const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+              const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
+              const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+              all_lines.push({
+                sku_id: best.sku_id,
+                descrizione: best.descrizione_sku,
+                qty,
+                prezzo_unitario: price,
+                totale: qty * price,
+                product_id: step.product_id,
+                section: 'fondo',
+                qty_raw: step.qty_total,
+                pack_size: best.pack_size,
+                pack_unit: best.pack_unit,
+              });
+            }
           }
-        }
-      });
+        });
+      } catch (err) {
+        if (err instanceof DataError) {
+          computation_errors.push({ code: err.code, text: err.message });
+          all_alerts.push({ code: err.code, text: `Pareti: ${err.message}`, severity: 'hard' });
+        } else { throw err; }
+      }
     }
   }
 
@@ -213,6 +229,7 @@ export function computeFullCart(
     procedure_wall,
     procedure_texture,
     procedure_protettivi,
+    computation_errors,
   };
 }
 
@@ -360,36 +377,31 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
   const docArea = (state.doccia_larghezza ?? 0) * (state.doccia_lunghezza ?? 0);
   if (docArea <= 0) return [];
 
+  const proc = resolveStepsForRule(store, 'PIATTO_DOCCIA_NUOVO', 'FLOOR', docArea);
   const lines: CartLine[] = [];
 
-  function addLine(product_id: string, consumo_kg_mq: number) {
-    const skus = store.packagingSku.filter(p => p.product_id === product_id);
-    if (skus.length === 0) return;
-    const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-    const qty_raw = docArea * consumo_kg_mq;
-    const qty = Math.ceil(qty_raw / (best.pack_size ?? 1));
-    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id, section: 'fondo', qty_raw, pack_size: best.pack_size, pack_unit: best.pack_unit });
-  }
-
-  // 1. Fondo Base adesivo — 150 g/m²
-  addLine('FONDO_BASE', 0.15);
-
-  // 2. Quarzo 0,7-1,2 spolvero a rifiuto sul Fondo Base fresco — ~2 kg/m²
-  addLine('QUARZO_0_7_1_2', 2.0);
-
-  // 3. Rasante Base Quarzo — 2,2 kg/m²
-  addLine('RAS_BASE_Q', 2.2);
-
-  // 4. Rete 160 g/m² (rotolo 50 m × 1 m = 50 m²; +10% sovrapposizione)
-  const reteSkus = store.packagingSku.filter(p => p.product_id === 'RETE_160');
-  if (reteSkus.length > 0) {
-    const best = reteSkus[0];
-    const qty_raw = docArea * 1.1;
-    const qty = Math.ceil(qty_raw / (best.pack_size ?? 50));
-    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RETE_160', section: 'fondo', qty_raw, pack_size: best.pack_size, pack_unit: best.pack_unit });
-  }
+  proc.steps.forEach(step => {
+    if (step.product_id && step.qty_total !== undefined) {
+      const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
+      if (skus.length > 0) {
+        const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+        const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
+        const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+        lines.push({
+          sku_id: best.sku_id,
+          descrizione: best.descrizione_sku,
+          qty,
+          prezzo_unitario: price,
+          totale: qty * price,
+          product_id: step.product_id,
+          section: 'fondo',
+          qty_raw: step.qty_total,
+          pack_size: best.pack_size,
+          pack_unit: best.pack_unit,
+        });
+      }
+    }
+  });
 
   return lines;
 }
