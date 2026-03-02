@@ -103,6 +103,15 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
     nextStep,
   } = useWizardStore();
 
+  // Guard: in locked mode, wait until ambiente is hydrated (avoids stale-state flash)
+  if (lockedAmbiente && !ambiente) {
+    return (
+      <div className="py-12 flex items-center justify-center">
+        <div className="h-6 w-6 rounded-full border-2 border-brand-400 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
   const isBag = ambiente === 'BAG';
 
   // Deriva il label leggibile dall'ambiente selezionato

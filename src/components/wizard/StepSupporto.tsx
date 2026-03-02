@@ -3,75 +3,29 @@ import { useWizardStore } from '../../store/wizard-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { BlockAlerts } from '../shared/BlockAlerts';
 import { StepHeader, StepNavigation } from './StepAmbiente';
+import { buildQuestionsForSupport, areSubAnswersComplete, getAvailableSupporti } from './supporto-questions';
+import type { SubQuestion } from './supporto-questions';
+import { effectiveAmbiente, isEffectiveDin, isEffectiveShower } from '../../engine/effective-ambiente';
 import type { Supporto } from '../../types/supporto';
+import type { SubAnswers } from '../../types/wizard-state';
 
 const store = loadDataStore();
 
-interface SubQuestion {
-  key: string;
-  label: string;
-  type: 'yesno' | 'select' | 'number';
-  options?: Array<{ value: string; label: string }>;
-  applyIf?: (support_id: string) => boolean;
-}
-
-const FLOOR_SUB_QUESTIONS: SubQuestion[] = [
-  { key: 'cohesion', label: 'Il supporto è sfarinante?', type: 'yesno', applyIf: () => true },
-  { key: 'humidity_band', label: 'Presenza di umidità di risalita?', type: 'select', options: [
-    { value: '', label: '— Seleziona —' },
-    { value: 'NONE', label: 'No' },
-    { value: 'LOW', label: 'Bassa (umidità ordinaria)' },
-    { value: 'HIGH', label: 'Alta (struttura umida)' },
-    { value: 'RISING', label: 'Risalita capillare (STOP — contattare assistenza)' },
-  ]},
-  { key: 'cracks', label: 'Presenza di crepe?', type: 'yesno' },
-  { key: 'crepe_ml', label: 'Lunghezza totale crepe (ml)', type: 'number', applyIf: (_id) => true },
-  { key: 'hollow', label: 'Piastrelle a vuoto?', type: 'select', options: [
-    { value: '', label: '— Seleziona —' },
-    { value: 'NONE', label: 'Nessun vuoto' },
-    { value: 'PUNCTUAL', label: 'Vuoti puntuali (ripristino)' },
-    { value: 'ALL', label: 'Tutte vuote (demolizione + comp. quota)' },
-  ], applyIf: (id) => id === 'F_TILE' },
-  { key: 'parquet_comp', label: 'Compensazione quota post-rimozione', type: 'select', options: [
-    { value: '', label: '— Seleziona —' },
-    { value: 'AS', label: 'Autolivellante AS' },
-    { value: 'EP', label: 'Massetto epossidico' },
-  ], applyIf: (id) => id === 'F_PAR_RM' },
-];
-
-const WALL_SUB_QUESTIONS: SubQuestion[] = [
-  { key: 'cohesion', label: 'Supporto sfarinante?', type: 'yesno' },
-  { key: 'cracks', label: 'Presenza di crepe?', type: 'yesno' },
-  { key: 'fughe_residue', label: 'Fughe residue (piastrelle/mosaico)?', type: 'select', options: [
-    { value: 'OK', label: 'OK (ordinarie)' },
-    { value: 'CRITICHE', label: 'Critiche (richiedono passaggio extra fondo)' },
-  ], applyIf: (id) => id === 'W_TILE' || id === 'W_MOS' },
-  { key: 'piatto_doccia', label: 'Piatto doccia', type: 'select', options: [
-    { value: 'NUOVO', label: 'Nuovo (massetto epossidico)' },
-    { value: 'ESISTENTE', label: 'Esistente (scasso e sigillatura)' },
-  ], applyIf: (id) => id === 'W_SHW_MOD' || id === 'W_DIN' },
-];
-
-function SubQuestionRow({
-  q,
-  value,
-  onChange,
-  support_id,
-  show_crepe_ml,
-}: {
+function SubQuestionRow({ q, value, onChange, sub }: {
   q: SubQuestion;
   value: unknown;
   onChange: (v: unknown) => void;
-  support_id: string;
-  show_crepe_ml?: boolean;
+  sub: SubAnswers;
 }) {
-  if (q.applyIf && !q.applyIf(support_id)) return null;
-  if (q.key === 'crepe_ml' && !show_crepe_ml) return null;
+  if (q.key === 'crepe_ml' && !sub.crepe) return null;
 
   if (q.type === 'yesno') {
     return (
       <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-        <span className="text-sm font-medium text-gray-700">{q.label}</span>
+        <span className="text-sm font-medium text-gray-700">
+          {q.label}
+          {!q.optional && <span className="ml-1 text-red-400">*</span>}
+        </span>
         <div className="flex gap-4">
           {(['Sì', 'No'] as const).map(opt => (
             <label key={opt} className="flex cursor-pointer items-center gap-1.5 text-sm">
@@ -93,15 +47,16 @@ function SubQuestionRow({
   if (q.type === 'select' && q.options) {
     return (
       <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-        <label className="block text-sm font-medium text-gray-700 mb-2">{q.label}</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {q.label}
+          {!q.optional && <span className="ml-1 text-red-400">*</span>}
+        </label>
         <select
           value={(value as string) ?? ''}
           onChange={e => onChange(e.target.value)}
           className="select-field"
         >
-          {q.options.map(o => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
+          {q.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
     );
@@ -110,11 +65,12 @@ function SubQuestionRow({
   if (q.type === 'number') {
     return (
       <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
-        <label className="block text-sm font-medium text-gray-700 mb-2">{q.label}</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {q.label}
+          {!q.optional && <span className="ml-1 text-red-400">*</span>}
+        </label>
         <input
-          type="number"
-          min="0"
-          step="0.5"
+          type="number" min="0" step="0.5"
           value={(value as number) ?? ''}
           onChange={e => onChange(parseFloat(e.target.value) || 0)}
           className="input-field"
@@ -127,16 +83,15 @@ function SubQuestionRow({
   return null;
 }
 
-function SupportoSelect({
-  macro,
-  value,
-  onChange,
-}: {
+function SupportoSelect({ macro, value, onChange, envId, isDin, isShower }: {
   macro: 'FLOOR' | 'WALL';
   value: string | null;
   onChange: (v: string) => void;
+  envId: string | null;
+  isDin: boolean;
+  isShower: boolean;
 }) {
-  const items = store.supporti.filter(s => s.macro_id === macro);
+  const items = getAvailableSupporti(macro, envId, isDin, isShower, store.decisionTable, store.supporti);
   return (
     <select value={value ?? ''} onChange={e => onChange(e.target.value)} className="select-field">
       <option value="">— Seleziona supporto —</option>
@@ -148,6 +103,7 @@ function SupportoSelect({
 }
 
 export function StepSupporto() {
+  const state = useWizardStore();
   const {
     mq_pavimento, mq_pareti,
     supporto_floor, setSupportoFloor,
@@ -155,21 +111,49 @@ export function StepSupporto() {
     sub_answers_floor, setSubAnswerFloor,
     sub_answers_wall, setSubAnswerWall,
     active_blocks, nextStep, prevStep,
-  } = useWizardStore();
+  } = state;
+
+  const envId   = effectiveAmbiente(state);
+  const isDin   = isEffectiveDin(state);
+  const isShower = isEffectiveShower(state);
+  const dt      = store.decisionTable;
 
   const needsFloor = mq_pavimento > 0;
-  const needsWall = mq_pareti > 0;
+  const needsWall  = mq_pareti > 0;
 
-  const isFloorValid = !needsFloor || !!supporto_floor;
-  const isWallValid = !needsWall || !!supporto_wall;
-  const hasBlocks = active_blocks.some(b => b.code !== 'LAME_NO_PATTERN');
-  const isValid = isFloorValid && isWallValid && !hasBlocks;
+  const isFloorValid = !needsFloor || areSubAnswersComplete(supporto_floor, sub_answers_floor, envId, isDin, isShower, dt);
+  const isWallValid  = !needsWall  || areSubAnswersComplete(supporto_wall,  sub_answers_wall,  envId, isDin, isShower, dt);
+  const hasBlocks    = active_blocks.some(b => b.code !== 'LAME_NO_PATTERN');
+  const canContinue  = isFloorValid && isWallValid && !hasBlocks;
+
+  function renderQuestions(supportId: string | null, sub: SubAnswers, setAnswer: (k: keyof SubAnswers, v: never) => void) {
+    if (!supportId) return null;
+    const qs = buildQuestionsForSupport(supportId, envId, isDin, isShower, dt);
+    if (qs.length === 0) return (
+      <p key={`qs-${supportId}`} className="text-xs text-gray-400 italic mt-2">
+        Nessuna condizione aggiuntiva richiesta per questo supporto.
+      </p>
+    );
+    return (
+      <div key={`qs-${supportId}`} className="space-y-3 mt-4">
+        {qs.map(q => (
+          <SubQuestionRow
+            key={q.key}
+            q={q}
+            value={sub[q.key as keyof SubAnswers]}
+            onChange={v => setAnswer(q.key as keyof SubAnswers, v as never)}
+            sub={sub}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       <StepHeader
         title="Supporto e stato"
-        subtitle="Indica su cosa lavori e le condizioni del supporto."
+        subtitle="Indica su cosa lavori. Verranno mostrate solo le domande rilevanti per il supporto e l'ambiente selezionati."
       />
 
       <BlockAlerts blocks={active_blocks} />
@@ -177,45 +161,22 @@ export function StepSupporto() {
       {needsFloor && (
         <section className="card p-6 space-y-4">
           <h2 className="font-semibold text-gray-800">Pavimento ({mq_pavimento} m²)</h2>
-          <SupportoSelect macro="FLOOR" value={supporto_floor} onChange={setSupportoFloor} />
-          {supporto_floor && (
-            <div className="space-y-3 mt-4">
-              {FLOOR_SUB_QUESTIONS.map(q => (
-                <SubQuestionRow
-                  key={q.key}
-                  q={q}
-                  value={sub_answers_floor[q.key as keyof typeof sub_answers_floor]}
-                  onChange={v => setSubAnswerFloor(q.key as keyof typeof sub_answers_floor, v as never)}
-                  support_id={supporto_floor}
-                  show_crepe_ml={!!sub_answers_floor.crepe}
-                />
-              ))}
-            </div>
-          )}
+          <SupportoSelect macro="FLOOR" value={supporto_floor} onChange={setSupportoFloor}
+            envId={envId} isDin={isDin} isShower={isShower} />
+          {renderQuestions(supporto_floor, sub_answers_floor, setSubAnswerFloor)}
         </section>
       )}
 
       {needsWall && (
         <section className="card p-6 space-y-4">
           <h2 className="font-semibold text-gray-800">Pareti ({mq_pareti} m²)</h2>
-          <SupportoSelect macro="WALL" value={supporto_wall} onChange={setSupportoWall} />
-          {supporto_wall && (
-            <div className="space-y-3 mt-4">
-              {WALL_SUB_QUESTIONS.map(q => (
-                <SubQuestionRow
-                  key={q.key}
-                  q={q}
-                  value={sub_answers_wall[q.key as keyof typeof sub_answers_wall]}
-                  onChange={v => setSubAnswerWall(q.key as keyof typeof sub_answers_wall, v as never)}
-                  support_id={supporto_wall}
-                />
-              ))}
-            </div>
-          )}
+          <SupportoSelect macro="WALL" value={supporto_wall} onChange={setSupportoWall}
+            envId={envId} isDin={isDin} isShower={isShower} />
+          {renderQuestions(supporto_wall, sub_answers_wall, setSubAnswerWall)}
         </section>
       )}
 
-      <StepNavigation canContinue={isValid} onNext={nextStep} onPrev={prevStep} />
+      <StepNavigation canContinue={canContinue} onNext={nextStep} onPrev={prevStep} />
     </div>
   );
 }

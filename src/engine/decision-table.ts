@@ -28,6 +28,14 @@ function matchBoolField(ruleVal: string, inputVal: boolean): boolean {
   return ruleVal === (inputVal ? '1' : '0');
 }
 
+// Specificity = number of non-wildcard discriminating fields in a rule.
+// Used to resolve ties when multiple rules match: the most specific wins.
+function ruleSpecificity(rule: DecisionRule): number {
+  return [rule.humidity_band, rule.cohesion, rule.cracks, rule.tile_bedding, rule.hollow]
+    .filter(v => v !== null && v !== '' && v !== undefined)
+    .length;
+}
+
 export function matchDecisionTable(
   table: DecisionRule[],
   input: RuleMatchInput,
@@ -53,16 +61,22 @@ export function matchDecisionTable(
     );
   }
 
-  if (matches.length > 1) {
-    const ids = matches.map(m => m.rule_id);
-    throw new DataError(
-      'AMBIGUOUS_RULE',
-      `Trovate ${matches.length} regole ambigue per: ${JSON.stringify(input)} → [${ids.join(', ')}]`,
-      { input, rule_ids: ids },
-    );
-  }
+  if (matches.length === 1) return matches[0];
 
-  return matches[0];
+  // Multiple matches: prefer the most specific rule (most non-wildcard fields).
+  // This handles cases where a specific rule (e.g. tile_bedding=COLLA) coexists
+  // with a wildcard fallback (tile_bedding=null).
+  const maxSpec = Math.max(...matches.map(ruleSpecificity));
+  const topMatches = matches.filter(r => ruleSpecificity(r) === maxSpec);
+
+  if (topMatches.length === 1) return topMatches[0];
+
+  const ids = topMatches.map(m => m.rule_id);
+  throw new DataError(
+    'AMBIGUOUS_RULE',
+    `Trovate ${topMatches.length} regole ambigue per: ${JSON.stringify(input)} → [${ids.join(', ')}]`,
+    { input, rule_ids: ids },
+  );
 }
 
 export function buildRuleInputFromWizard(
@@ -82,29 +96,35 @@ export function buildRuleInputFromWizard(
   const isShower = isEffectiveShower(state);
   const env_id = effectiveAmbiente(state);
 
-  function mapHumidity(v: unknown): string | null {
-    if (v === 'NONE') return 'LE3';
-    if (v === 'LOW')  return '3_8';
-    if (v === 'HIGH') return 'GT8_OR_ISSUE';
-    return null;
-  }
+  // humidity_band is stored as the DT-native value (LE3, 3_8, GT8_OR_ISSUE, LE8, GT8_OR_NOBARR).
+  // No mapping needed — the sub-question options are defined with DT values directly.
+  const humidity_band = (typeof sub.humidity_band === 'string' && sub.humidity_band !== '')
+    ? sub.humidity_band
+    : null;
 
-  function mapCracks(crepe: unknown): string | null {
-    if (crepe === true)  return 'YES';
-    if (crepe === false) return 'NO';
-    return null;
-  }
+  // cohesion: boolean → SFAR/SOLID for standard supports;
+  // string pass-through for supports using named values (PERFETTO, RETTIFICA, LEV_OK, LEV_NOK, etc.)
+  const cohesion = sub.cohesion === true
+    ? 'SFAR'
+    : sub.cohesion === false
+    ? 'SOLID'
+    : typeof sub.cohesion === 'string' && sub.cohesion !== ''
+    ? sub.cohesion
+    : null;
+
+  // crepe: boolean → YES/NO
+  const cracks = sub.crepe === true ? 'YES' : sub.crepe === false ? 'NO' : null;
 
   return {
     support_id,
     env_id,
     din: isDin,
     zona_doccia: isShower,
-    humidity_band: mapHumidity(sub.humidity_band),
-    cohesion: sub.cohesion === true ? 'SFAR' : sub.cohesion === false ? 'SOLID' : typeof sub.cohesion === 'string' ? sub.cohesion : null,
-    cracks: mapCracks(sub.crepe),
-    tile_bedding: sub.tile_bedding ?? null,
-    hollow: sub.hollow ?? null,
+    humidity_band,
+    cohesion,
+    cracks,
+    tile_bedding: (typeof sub.tile_bedding === 'string' && sub.tile_bedding !== '') ? sub.tile_bedding : null,
+    hollow: (typeof sub.hollow === 'string' && sub.hollow !== '') ? sub.hollow : null,
   };
 }
 

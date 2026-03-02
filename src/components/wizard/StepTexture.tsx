@@ -3,6 +3,7 @@ import { useWizardStore } from '../../store/wizard-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { BlockAlerts } from '../shared/BlockAlerts';
 import { StepHeader, StepNavigation } from './StepAmbiente';
+import { isEffectiveShower } from '../../engine/effective-ambiente';
 import type { TextureLineId, TextureStyleId } from '../../types/enums';
 import type { ColorSelection } from '../../types/texture';
 
@@ -18,8 +19,9 @@ const LINE_CONSTRAINTS: Record<TextureLineId, { floor: boolean; wall: boolean; s
 };
 
 export function StepTexture() {
+  const state = useWizardStore();
   const {
-    ambiente, mq_pavimento, mq_pareti,
+    mq_pavimento, mq_pareti,
     texture_line, setTextureLine,
     texture_style, setTextureStyle,
     color_mode, setColorMode,
@@ -27,11 +29,12 @@ export function StepTexture() {
     color_secondary, setColorSecondary,
     lamine_pattern, setLaminePattern,
     active_blocks, nextStep, prevStep,
-  } = useWizardStore();
+  } = state;
 
-  const isShower = ambiente === 'DOC' || ambiente === 'DIN';
+  // Use effectiveAmbiente to correctly detect shower (BAG + presenza_doccia → DOC)
+  const isShower = isEffectiveShower(state);
   const hasFloor = mq_pavimento > 0;
-  const hasWall = mq_pareti > 0;
+  const hasWall  = mq_pareti > 0;
 
   const filteredLines = store.textureLines.filter(l => {
     const c = LINE_CONSTRAINTS[l.line_id as TextureLineId];
@@ -48,20 +51,29 @@ export function StepTexture() {
         if (texture_line === 'CORLITE') return s.style_id.startsWith('COR_');
         if (texture_line === 'LAMINE') return false;
         if (texture_line === 'MATERIAL') return false;
+        if (texture_line === 'DEKORA') return false;
+        if (texture_line === 'SENSE') return false;
         return !s.style_id.startsWith('COR_');
       })
     : [];
 
   const isLamine = texture_line === 'LAMINE';
   const isMaterial = texture_line === 'MATERIAL';
-  const needsStyle = !isLamine && !isMaterial && texture_line !== null;
+  const needsStyle = !isLamine && !isMaterial && texture_line !== null && texture_line !== 'DEKORA' && texture_line !== 'SENSE';
   const needsPattern = isLamine;
+
+  const isBicolor = texture_style === 'ALIZEE_EVIDENCE_4' || texture_style === 'COR_EVIDENCE';
+  const needsColorPrimary = ['NATURAL', 'SENSE', 'DEKORA', 'CORLITE'].includes(texture_line ?? '');
+  const needsColorSecondary = isBicolor;
+  const needsMaterialColorProduct = isMaterial && color_mode === 'CUSTOM_FEE0' && color_primary === null;
 
   const isValid =
     texture_line !== null &&
     (!needsStyle || texture_style !== null) &&
     (!needsPattern || lamine_pattern !== null) &&
-    (!['NATURAL', 'SENSE', 'DEKORA'].includes(texture_line ?? '') || color_primary !== null) &&
+    (!needsColorPrimary || color_primary !== null) &&
+    (!needsColorSecondary || color_secondary !== null) &&
+    !needsMaterialColorProduct &&
     active_blocks.length === 0;
 
   return (

@@ -209,11 +209,33 @@ export const useWizardStore = create<WizardStore>((set, get) => ({
   setDoccianicchie: (v) => set({ doccia_nicchie: v }),
 
   setSupportoFloor: (v) => set(s => {
-    const next = { ...s, supporto_floor: v, sub_answers_floor: {} };
+    const next = {
+      ...s,
+      supporto_floor: v,
+      sub_answers_floor: {},
+      texture_line: null,
+      texture_style: null,
+      color_mode: null,
+      color_primary: null,
+      color_secondary: null,
+      lamine_pattern: null,
+      protettivo: null,
+    };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
   setSupportoWall: (v) => set(s => {
-    const next = { ...s, supporto_wall: v, sub_answers_wall: {} };
+    const next = {
+      ...s,
+      supporto_wall: v,
+      sub_answers_wall: {},
+      texture_line: null,
+      texture_style: null,
+      color_mode: null,
+      color_primary: null,
+      color_secondary: null,
+      lamine_pattern: null,
+      protettivo: null,
+    };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
   setSubAnswerFloor: (key, value) => set(s => {
@@ -234,14 +256,15 @@ export const useWizardStore = create<WizardStore>((set, get) => ({
       color_primary: null,
       color_secondary: null,
       lamine_pattern: null,
+      protettivo: null,
     };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
   setTextureStyle: (v) => set(s => {
-    const next = { ...s, texture_style: v };
+    const next = { ...s, texture_style: v, color_secondary: null };
     return { ...next, active_blocks: recomputeBlocks(next) };
   }),
-  setColorMode: (v) => set({ color_mode: v }),
+  setColorMode: (v) => set({ color_mode: v, color_primary: null, color_secondary: null }),
   setColorPrimary: (v) => set(s => {
     const next = { ...s, color_primary: v };
     return { ...next, active_blocks: recomputeBlocks(next) };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProjectStore } from '../store/project-store';
 import { useWizardStore } from '../store/wizard-store';
@@ -21,7 +21,7 @@ export function RoomWizardPage() {
 
   const room = rooms.find(r => r.id === roomId);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!room) {
       navigate('/progetto');
       return;
