@@ -80,6 +80,15 @@ const Q_TILE_BEDDING: SubQuestion = {
   ],
 };
 
+const Q_TILE_BEDDING_REQUIRED: SubQuestion = {
+  key: 'tile_bedding', label: 'Tipo di posa', type: 'select',
+  options: [
+    { value: '', label: '— Seleziona tipo —' },
+    { value: 'COLLA', label: 'A colla' },
+    { value: 'SABCEM', label: 'Sabbia e cemento' },
+  ],
+};
+
 const Q_COHESION_SHOWER_PIATTO: SubQuestion = {
   key: 'cohesion', label: 'Situazione piatto doccia', type: 'select',
   options: [
@@ -122,7 +131,7 @@ const Q_FUGHE_RESIDUE: SubQuestion = {
 
 const SUPPORT_FIELD_Q: Record<string, Record<string, SubQuestion>> = {
   F_COT:     { humidity_band: Q_HUMIDITY_COTTO },
-  F_TILE:    { hollow: Q_HOLLOW, tile_bedding: Q_TILE_BEDDING },
+  F_TILE:    { hollow: Q_HOLLOW, tile_bedding: Q_TILE_BEDDING_REQUIRED },
   W_GYP:     { cohesion: Q_COHESION_GYP },
   W_TILE:    { cohesion: Q_COHESION_TILE },
   W_SHW_MOD: { cohesion: Q_COHESION_SHOWER_PIATTO },

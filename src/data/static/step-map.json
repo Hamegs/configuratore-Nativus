@@ -145,21 +145,6 @@
     "step_id": "S_ARM_160"
   },
   {
-    "rule_id": "F_TILE_FUGA",
-    "step_order": 10,
-    "step_id": "S_F_DIAMOND"
-  },
-  {
-    "rule_id": "F_TILE_FUGA",
-    "step_order": 20,
-    "step_id": "S_RAS_BQ_2_0"
-  },
-  {
-    "rule_id": "F_TILE_FUGA",
-    "step_order": 30,
-    "step_id": "S_ARM_160"
-  },
-  {
     "rule_id": "F_TILE_HOLLOW_A",
     "step_order": 10,
     "step_id": "S_GATE_SUPPORT_UNDER"
@@ -3916,51 +3901,6 @@
   },
   {
     "rule_id": "F_TILE_COLLA_DOC",
-    "step_order": 30,
-    "step_id": "S_ARM_160"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_BAG",
-    "step_order": 10,
-    "step_id": "S_F_DIAMOND"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_BAG",
-    "step_order": 20,
-    "step_id": "S_RAS_BQ_2_0"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_BAG",
-    "step_order": 30,
-    "step_id": "S_ARM_160"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DIN",
-    "step_order": 10,
-    "step_id": "S_F_DIAMOND"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DIN",
-    "step_order": 20,
-    "step_id": "S_RAS_BQ_2_0"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DIN",
-    "step_order": 30,
-    "step_id": "S_ARM_160"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DOC",
-    "step_order": 10,
-    "step_id": "S_F_DIAMOND"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DOC",
-    "step_order": 20,
-    "step_id": "S_RAS_BQ_2_0"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DOC",
     "step_order": 30,
     "step_id": "S_ARM_160"
   },

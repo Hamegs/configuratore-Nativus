@@ -24,18 +24,6 @@
     "hollow": "NO_OR_FEW"
   },
   {
-    "rule_id": "F_TILE_FUGA",
-    "support_id": "F_TILE",
-    "env_id": "ORD",
-    "din": "0",
-    "zona_doccia": "0",
-    "humidity_band": null,
-    "cohesion": null,
-    "cracks": null,
-    "tile_bedding": null,
-    "hollow": "NO_OR_FEW"
-  },
-  {
     "rule_id": "F_TILE_HOLLOW_S",
     "support_id": "F_TILE",
     "env_id": "ORD",
@@ -816,18 +804,6 @@
     "hollow": "NO_OR_FEW"
   },
   {
-    "rule_id": "F_TILE_FUGA_BAG",
-    "support_id": "F_TILE",
-    "env_id": "BAG",
-    "din": "0",
-    "zona_doccia": "0",
-    "humidity_band": null,
-    "cohesion": null,
-    "cracks": null,
-    "tile_bedding": null,
-    "hollow": "NO_OR_FEW"
-  },
-  {
     "rule_id": "F_TILE_HOLLOW_S_BAG",
     "support_id": "F_TILE",
     "env_id": "BAG",
@@ -1272,18 +1248,6 @@
     "hollow": "NO_OR_FEW"
   },
   {
-    "rule_id": "F_TILE_FUGA_DOC",
-    "support_id": "F_TILE",
-    "env_id": "DOC",
-    "din": "0",
-    "zona_doccia": "1",
-    "humidity_band": null,
-    "cohesion": null,
-    "cracks": null,
-    "tile_bedding": null,
-    "hollow": "NO_OR_FEW"
-  },
-  {
     "rule_id": "F_TILE_HOLLOW_S_DOC",
     "support_id": "F_TILE",
     "env_id": "DOC",
@@ -1725,18 +1689,6 @@
     "cohesion": null,
     "cracks": null,
     "tile_bedding": "SABCEM",
-    "hollow": "NO_OR_FEW"
-  },
-  {
-    "rule_id": "F_TILE_FUGA_DIN",
-    "support_id": "F_TILE",
-    "env_id": "DIN",
-    "din": "1",
-    "zona_doccia": "1",
-    "humidity_band": null,
-    "cohesion": null,
-    "cracks": null,
-    "tile_bedding": null,
     "hollow": "NO_OR_FEW"
   },
   {
