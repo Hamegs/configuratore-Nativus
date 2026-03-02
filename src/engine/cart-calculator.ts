@@ -353,10 +353,8 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
 }
 
 // ─── Massetto doccia piatto NUOVO — linee extra nel carrello ─────────────────
-// Nota: il massetto epossidico (CRYSTEPO/MAS_EP) NON è gestito qui perché
-// il prodotto non è ancora configurato nel listino. Viene aggiunto da admin
-// quando la SKU è pronta. Qui si calcolano solo Fondo Base + RBQ + Rete 160
-// per la superficie del piatto, se i prodotti esistono in packaging-sku.
+// Sequenza: Fondo Base adesivo → spolvero Quarzo 0,7-1,2 a rifiuto → Rasante Base Quarzo → Rete 160.
+// CRYSTEPO/MAS_EP non incluso: aggiungere in admin quando il prodotto sarà configurato.
 function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[] {
   if (!state.presenza_doccia || state.doccia_piatto_type !== 'NUOVO') return [];
   const docArea = (state.doccia_larghezza ?? 0) * (state.doccia_lunghezza ?? 0);
@@ -364,34 +362,33 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
 
   const lines: CartLine[] = [];
 
-  // Fondo Base adesivo (150 g/m²)
-  const fondoQtyKg = docArea * 0.15;
-  const fondoSkus = store.packagingSku.filter(p => p.product_id === 'FONDO_BASE');
-  if (fondoSkus.length > 0) {
-    const best = fondoSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-    const qty = Math.ceil(fondoQtyKg / (best.pack_size ?? 1));
+  function addLine(product_id: string, consumo_kg_mq: number) {
+    const skus = store.packagingSku.filter(p => p.product_id === product_id);
+    if (skus.length === 0) return;
+    const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+    const qty_raw = docArea * consumo_kg_mq;
+    const qty = Math.ceil(qty_raw / (best.pack_size ?? 1));
     const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'FONDO_BASE', section: 'fondo', qty_raw: fondoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id, section: 'fondo', qty_raw, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
-  // Rasante Base Quarzo su piatto (2.2 kg/m²)
-  const rbqQtyKg = docArea * 2.2;
-  const rbqSkus = store.packagingSku.filter(p => p.product_id === 'RAS_BASE_Q');
-  if (rbqSkus.length > 0) {
-    const best = rbqSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-    const qty = Math.ceil(rbqQtyKg / (best.pack_size ?? 1));
-    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RAS_BASE_Q', section: 'fondo', qty_raw: rbqQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
-  }
+  // 1. Fondo Base adesivo — 150 g/m²
+  addLine('FONDO_BASE', 0.15);
 
-  // Rete 160 g/m² (1 rotolo = 50 m × 1 m = 50 m²; +10% sovrapposizione)
-  const reteMetri = docArea * 1.1;
+  // 2. Quarzo 0,7-1,2 spolvero a rifiuto sul Fondo Base fresco — ~2 kg/m²
+  addLine('QUARZO_0_7_1_2', 2.0);
+
+  // 3. Rasante Base Quarzo — 2,2 kg/m²
+  addLine('RAS_BASE_Q', 2.2);
+
+  // 4. Rete 160 g/m² (rotolo 50 m × 1 m = 50 m²; +10% sovrapposizione)
   const reteSkus = store.packagingSku.filter(p => p.product_id === 'RETE_160');
   if (reteSkus.length > 0) {
     const best = reteSkus[0];
-    const qty = Math.ceil(reteMetri / (best.pack_size ?? 50));
+    const qty_raw = docArea * 1.1;
+    const qty = Math.ceil(qty_raw / (best.pack_size ?? 50));
     const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RETE_160', section: 'fondo', qty_raw: reteMetri, pack_size: best.pack_size, pack_unit: best.pack_unit });
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RETE_160', section: 'fondo', qty_raw, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
   return lines;
