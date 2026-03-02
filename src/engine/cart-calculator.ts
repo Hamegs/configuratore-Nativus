@@ -18,6 +18,12 @@ export interface CartResult {
   computation_errors: { code: string; text: string }[];
 }
 
+function buildStepOverrides(state: WizardState): Partial<Record<string, string>> {
+  if (!state.ras2k_upgrade || state.ras2k_upgrade === 'KEEP') return {};
+  const replacement = state.ras2k_upgrade === 'RAS_BASE' ? 'S_RAS_BASE_1_35' : 'S_RAS_BQ_2_0';
+  return { S_RAS_2K_1_5: replacement };
+}
+
 function deriveUsoSuperficie(state: WizardState): 'PAVIMENTO' | 'PARETE_FUORI_BAGNO' | 'BAGNO_DOCCIA' {
   const eff = effectiveAmbiente(state);
   if (eff === 'DOC' || eff === 'DIN') return 'BAGNO_DOCCIA';
@@ -67,7 +73,7 @@ export function computeFullCart(
         } else {
           rule = matchDecisionTable(store.decisionTable, input);
         }
-        procedure_floor = resolveStepsForRule(store, rule.rule_id, 'FLOOR', state.mq_pavimento);
+        procedure_floor = resolveStepsForRule(store, rule.rule_id, 'FLOOR', state.mq_pavimento, buildStepOverrides(state));
         procedure_floor.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -106,7 +112,7 @@ export function computeFullCart(
     if (input) {
       try {
         const rule = matchDecisionTable(store.decisionTable, input);
-        procedure_wall = resolveStepsForRule(store, rule.rule_id, 'WALL', state.mq_pareti);
+        procedure_wall = resolveStepsForRule(store, rule.rule_id, 'WALL', state.mq_pareti, buildStepOverrides(state));
         procedure_wall.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -283,7 +289,7 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
         } else {
           rule = matchDecisionTable(store.decisionTable, input);
         }
-        const proc = resolveStepsForRule(store, rule.rule_id, 'FLOOR', 1);
+        const proc = resolveStepsForRule(store, rule.rule_id, 'FLOOR', 1, buildStepOverrides(state));
         proc.steps.forEach(s => {
           if (s.name) prepFloor.push({ name: s.name, step_order: s.step_order });
         });
@@ -296,7 +302,7 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
     if (input) {
       try {
         const rule = matchDecisionTable(store.decisionTable, input);
-        const proc = resolveStepsForRule(store, rule.rule_id, 'WALL', 1);
+        const proc = resolveStepsForRule(store, rule.rule_id, 'WALL', 1, buildStepOverrides(state));
         proc.steps.forEach(s => {
           if (s.name) prepWall.push({ name: s.name, step_order: s.step_order });
         });

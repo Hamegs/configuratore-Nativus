@@ -16,7 +16,9 @@ export function buildDinInputsFromWizard(state: WizardState): DinInputValues {
     };
   }
   const nRaccordi = state.doccia_n_raccordi ?? 0;
-  const norphen_ml = nRaccordi * 0.30;
+  // Caso B (doccia senza DIN): NORPHEN sempre min 1 confezione (= 100ml → ceil(0.5kg/0.5) = 1 pack)
+  // Formula: 5 g/ml su fascia 5 cm; 100ml → 0.5kg → 1 pack da 0.5kg
+  const norphen_ml = Math.max(nRaccordi * 30, 100);
   return {
     DIN_DOCCE_PZ: state.presenza_doccia ? 1 : 0,
     DIN_BBCORNER_IN_PZ: 0,
@@ -62,9 +64,10 @@ export function computeDinCart(
     });
   }
 
-  // 1 cartuccia MS Pro Sealer per doccia
+  // MS Pro Sealer: 1 cartuccia ogni 3 docce (min 1)
   if (inputs.DIN_DOCCE_PZ > 0) {
-    addLine('MS_PRO_SEALER_IN_CARTUCCIA_1CART', inputs.DIN_DOCCE_PZ, '1 cartuccia/doccia');
+    const msProQty = Math.ceil(inputs.DIN_DOCCE_PZ / 3);
+    addLine('MS_PRO_SEALER_IN_CARTUCCIA_1CART', msProQty, `${inputs.DIN_DOCCE_PZ} docce → ${msProQty} cartucce`);
   }
 
   // BB Corner IN

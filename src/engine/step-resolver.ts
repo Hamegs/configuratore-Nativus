@@ -14,6 +14,7 @@ export function resolveStepsForRule(
   ruleId: string,
   macro: 'FLOOR' | 'WALL',
   area_mq: number,
+  stepOverrides?: Partial<Record<string, string>>,
 ): ResolvedProcedure {
   const mapEntries = store.stepMap
     .filter(sm => sm.rule_id === ruleId)
@@ -28,12 +29,13 @@ export function resolveStepsForRule(
   }
 
   const steps: StepDefinition[] = mapEntries.map(entry => {
-    const libStep = store.stepLibrary.find(s => s.step_id === entry.step_id);
+    const resolvedId = stepOverrides?.[entry.step_id] ?? entry.step_id;
+    const libStep = store.stepLibrary.find(s => s.step_id === resolvedId);
     if (!libStep) {
       throw new DataError(
         'STEP_NOT_IN_LIBRARY',
-        `Step '${entry.step_id}' non trovato in step_library (rule: ${ruleId})`,
-        { step_id: entry.step_id, rule_id: ruleId },
+        `Step '${resolvedId}' non trovato in step_library (rule: ${ruleId})`,
+        { step_id: resolvedId, rule_id: ruleId },
       );
     }
 

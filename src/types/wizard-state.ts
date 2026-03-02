@@ -62,6 +62,9 @@ export interface WizardState {
   color_secondary: ColorSelection | null;
   lamine_pattern: string | null;
 
+  // Step 3b — Upgrade Rasante 2K (opzionale, visibile solo se la procedura contiene S_RAS_2K)
+  ras2k_upgrade: 'KEEP' | 'RAS_BASE' | 'RAS_BASE_Q';
+
   // Step 4 — Protettivi
   protettivo: ProtettivoSelection | null;
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useWizardStore } from '../../store/wizard-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { BlockAlerts } from '../shared/BlockAlerts';
-import { StepHeader, StepNavigation } from './StepAmbiente';
+import { StepHeader } from './StepAmbiente';
 import { computeFullCart, computeTechnicalSchedule } from '../../engine/cart-calculator';
 import type { CartResult, TechnicalSchedule } from '../../engine/cart-calculator';
 
@@ -20,14 +20,20 @@ const SECTION_COLORS: Record<string, string> = {
 };
 
 const SECTION_ICON: Record<string, string> = {
-  'PREPARAZIONE SUPPORTO': '🔧',
+  'PREPARAZIONE SUPPORTO': '⚙️',
   'TEXTURE': '🎨',
   'PROTETTIVO': '🛡️',
 };
 
+const RAS2K_OPTIONS: { value: 'KEEP' | 'RAS_BASE' | 'RAS_BASE_Q'; label: string; hint: string }[] = [
+  { value: 'KEEP', label: 'Mantieni Rasante 2K', hint: 'Prestazioni elevate, bicomponente' },
+  { value: 'RAS_BASE', label: 'Sostituisci con Rasante Base', hint: '1,35 kg/m² — prestazioni standard' },
+  { value: 'RAS_BASE_Q', label: 'Sostituisci con Rasante Base Quarzo', hint: '2,0 kg/m² — prestazioni superiori' },
+];
+
 export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' }: StepReviewProps) {
   const state = useWizardStore();
-  const { active_blocks, prevStep } = state;
+  const { active_blocks, prevStep, ras2k_upgrade, setRas2kUpgrade } = state;
   const [error, setError] = useState<string | null>(null);
   const [schedule, setSchedule] = useState<TechnicalSchedule | null>(null);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
@@ -46,7 +52,11 @@ export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' 
       const msg = e instanceof Error ? e.message : 'Errore calcolo procedura';
       setScheduleError(msg);
     }
-  }, [state.supporto_floor, state.supporto_wall, state.texture_line, state.texture_style, state.protettivo, isValid]);
+  }, [state.supporto_floor, state.supporto_wall, state.texture_line, state.texture_style, state.protettivo, state.ras2k_upgrade, isValid]);
+
+  const hasRas2k = schedule?.sections
+    .find(s => s.title === 'PREPARAZIONE SUPPORTO')
+    ?.products.some(p => p.name.toLowerCase().includes('rasante 2k'));
 
   function handleAddToCart() {
     setError(null);
@@ -63,10 +73,10 @@ export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' 
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <StepHeader
         title="Scaletta tecnica"
-        subtitle="Procedura di applicazione. Nessun calcolo di confezioni o prezzi — quelli vengono generati nel carrello."
+        subtitle="Procedura di applicazione. Confezioni e prezzi vengono calcolati nel carrello."
       />
       <BlockAlerts blocks={active_blocks} />
 
@@ -82,7 +92,6 @@ export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' 
         </div>
       )}
 
-      {/* Scaletta tecnica — solo nomi prodotti per sezione */}
       {schedule && schedule.sections.length > 0 && (
         <div className="space-y-4">
           {schedule.sections.map((section) => (
@@ -100,12 +109,47 @@ export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' 
                     <span className="shrink-0 w-5 h-5 rounded-full bg-white border border-gray-300 text-xs flex items-center justify-center font-medium text-gray-500">
                       {i + 1}
                     </span>
-                    <span>{p.name}</span>
+                    <span className={p.name.toLowerCase().includes('rasante 2k') ? 'text-amber-700 font-medium' : ''}>
+                      {p.name}
+                    </span>
                   </li>
                 ))}
               </ol>
             </div>
           ))}
+
+          {/* Upgrade Rasante 2K */}
+          {hasRas2k && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+              <h4 className="text-sm font-semibold text-amber-800 mb-3">
+                Opzione: sostituisci il Rasante 2K
+              </h4>
+              <div className="grid gap-2">
+                {RAS2K_OPTIONS.map(opt => (
+                  <label
+                    key={opt.value}
+                    className={`flex items-start gap-3 cursor-pointer rounded-lg border px-3 py-2.5 transition-colors ${
+                      ras2k_upgrade === opt.value
+                        ? 'border-amber-400 bg-white'
+                        : 'border-gray-200 bg-white hover:border-amber-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="ras2k_upgrade"
+                      checked={ras2k_upgrade === opt.value}
+                      onChange={() => setRas2kUpgrade(opt.value)}
+                      className="mt-0.5 accent-amber-600"
+                    />
+                    <div>
+                      <span className="text-sm font-medium text-gray-800">{opt.label}</span>
+                      <p className="text-xs text-gray-500 mt-0.5">{opt.hint}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           {schedule.hard_alerts.length > 0 && (
             <div className="space-y-2">
@@ -117,7 +161,6 @@ export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' 
         </div>
       )}
 
-      {/* Bottoni */}
       <div className="flex gap-3 pt-2">
         <button
           type="button"

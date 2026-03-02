@@ -43,6 +43,8 @@ const INITIAL_STATE: WizardState = {
   color_primary: null,
   color_secondary: null,
   lamine_pattern: null,
+  // Upgrade Rasante 2K
+  ras2k_upgrade: 'KEEP' as const,
   // Protettivi
   protettivo: null,
   // DIN legacy (backward compat)
@@ -97,6 +99,8 @@ interface WizardStore extends WizardState {
   setColorPrimary: (v: ColorSelection | null) => void;
   setColorSecondary: (v: ColorSelection | null) => void;
   setLaminePattern: (v: string | null) => void;
+  // Step 3b — Upgrade Rasante 2K
+  setRas2kUpgrade: (v: WizardState['ras2k_upgrade']) => void;
   // Step 4 — Protettivi
   setProtettivo: (v: ProtettivoSelection | null) => void;
   // Legacy
@@ -283,5 +287,6 @@ export const useWizardStore = create<WizardStore>((set, get) => ({
   }),
 
   setProtettivo: (v) => set({ protettivo: v }),
+  setRas2kUpgrade: (v) => set({ ras2k_upgrade: v }),
   setDinInputs: (v) => set({ din_inputs: v }),
 }));

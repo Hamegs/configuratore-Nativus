@@ -4343,5 +4343,15 @@
     "rule_id": "PIATTO_DOCCIA_NUOVO",
     "step_order": 40,
     "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "W_GYP_BAG",
+    "step_order": 25,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "W_INTG_BAG",
+    "step_order": 25,
+    "step_id": "S_RAS_BASE_1_35"
   }
 ]

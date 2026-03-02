@@ -433,5 +433,13 @@
     "product_id": "QUARZO_0_7_1_2",
     "qty": 2,
     "unit": "kg/m²"
+  },
+  {
+    "step_id": "S_RAS_BASE_1_35",
+    "step_type_id": "STRC",
+    "name": "Rasante Base",
+    "product_id": "RAS_BASE",
+    "qty": 1.35,
+    "unit": "kg/m²"
   }
 ]
