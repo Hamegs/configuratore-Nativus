@@ -1,19 +1,22 @@
 import type { DataStore } from '../utils/data-loader';
-import type { TextureLineId, TextureStyleId, ProtectionSystem } from '../types/enums';
+import type { TextureLineId, TextureStyleId } from '../types/enums';
 import type { ColorSelection } from '../types/texture';
 import type { CartLine } from '../types/cart';
 import { DataError } from './errors';
 
+type CartSection = CartLine['section'];
+const TEX: CartSection = 'texture';
+
 export interface TextureInput {
   line: TextureLineId;
-  style: TextureStyleId;
+  style: TextureStyleId | null;
   area_mq: number;
   macro: 'FLOOR' | 'WALL';
-  color_mode: string;
+  color_mode: string | null;
   color_primary: ColorSelection | null;
   color_secondary: ColorSelection | null;
   lamine_pattern: string | null;
-  last_base_layer: 'RAS_BASE' | 'RAS_BASE_Q' | 'BARR_VAP_4' | 'FONDO_BASE' | string;
+  last_base_layer: string;
   fughe_residue?: string;
   env_id: string;
 }
@@ -42,7 +45,7 @@ function computePackaging10Plus2(area_mq: number): { n10: number; n2: number } {
 function computePackaging4Plus1(area_mq: number): { n4: number; n1: number } {
   const n4 = Math.floor(area_mq / 4);
   const remainder = area_mq - n4 * 4;
-  const n1 = remainder > 0 ? Math.ceil(remainder / 1) : 0;
+  const n1 = remainder > 0 ? 1 : 0;
   return { n4, n1 };
 }
 
@@ -51,10 +54,17 @@ function findTexSku(
   line_id: string,
   component: string,
   mode: string,
+  pack_size_mq?: number,
+  paramIncludes?: string,
 ): string | null {
-  const entry = store.texturePackagingSku.find(
-    t => t.line_id === line_id && t.component === component && t.mode === mode,
-  );
+  const entry = store.texturePackagingSku.find(t => {
+    if (t.line_id !== line_id) return false;
+    if (t.component !== component) return false;
+    if (t.mode !== mode) return false;
+    if (pack_size_mq !== undefined && t.pack_size_mq !== pack_size_mq) return false;
+    if (paramIncludes !== undefined && !(t.param ?? '').includes(paramIncludes)) return false;
+    return true;
+  });
   return entry?.sku_id ?? null;
 }
 
@@ -66,119 +76,121 @@ function descOf(store: DataStore, sku_id: string): string {
   return store.packagingSku.find(p => p.sku_id === sku_id)?.descrizione_sku ?? sku_id;
 }
 
+function addLine(
+  store: DataStore,
+  lines: CartLine[],
+  sku_id: string | null,
+  qty: number,
+  section: CartSection,
+  note?: string,
+) {
+  if (!sku_id || qty <= 0) return;
+  const price = priceOf(store, sku_id);
+  lines.push({
+    sku_id,
+    descrizione: descOf(store, sku_id),
+    qty,
+    prezzo_unitario: price,
+    totale: qty * price,
+    section,
+    note,
+  });
+}
+
+function deriveColorMode(
+  line: TextureLineId,
+  color_mode: string | null,
+  color_primary: ColorSelection | null,
+): string {
+  if (color_mode && color_mode !== '') return color_mode;
+  if (line === 'LAMINE') return 'PATTERN';
+  if (line === 'CORLITE') return 'CUSTOM_FEE0';
+  if (line === 'MATERIAL') return 'NEUTRO';
+  const customSystems = ['RAL', 'NCS', 'PANTONE_C', 'ALTRO'];
+  if (color_primary && customSystems.includes(color_primary.type)) return 'CUSTOM_PRECOLORED';
+  return 'COLORABILE';
+}
+
 export function computeTextureCart(
   store: DataStore,
   input: TextureInput,
 ): TextureConsumption {
-  const { line, style, area_mq, color_mode } = input;
+  const { line, style, area_mq, color_mode, color_primary, lamine_pattern } = input;
   const alerts: string[] = [];
   const lines: CartLine[] = [];
   const fees: Array<{ description: string; amount: number; qty: number }> = [];
 
-  if (area_mq <= 0) return { pre_texture_kg: 0, pre_texture_sku_id: null, cart_lines: [], hard_alerts: [], fees: [] };
+  if (area_mq <= 0) {
+    return { pre_texture_kg: 0, pre_texture_sku_id: null, cart_lines: [], hard_alerts: [], fees: [] };
+  }
 
   const preQty = getPreTextureConsumption(input.last_base_layer);
+  const effMode = deriveColorMode(line, color_mode, color_primary);
 
   // ─── NATURAL ──────────────────────────────────────────────────────────────
   if (line === 'NATURAL') {
     const isBicolor = style === 'ALIZEE_EVIDENCE_4';
-    const isColorabile = color_mode === 'COLORABILE';
-    const isCustomFee = color_mode === 'CUSTOM_PRECOLORED';
+    const styleParam = isBicolor ? 'style=ALIZEE_EVIDENCE_4' : 'style=CHROMO';
+    const isCustom = effMode === 'CUSTOM_PRECOLORED';
+    const modeKey = isCustom ? 'CUSTOM_PRECOLORED' : 'COLORABILE';
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    const modeKey = isColorabile ? 'COLORABILE' : 'PRECOLORED';
-    const styleKey = isBicolor ? 'ALIZEE_EVIDENCE' : 'CHROMO';
 
-    const skuFondo10 = findTexSku(store, 'NATURAL', `FONDO_${styleKey}`, `${modeKey}_10MQ`);
-    const skuFinitura10 = findTexSku(store, 'NATURAL', `FINITURA_${styleKey}`, `${modeKey}_10MQ`);
-    const skuKit2 = findTexSku(store, 'NATURAL', `KIT_${styleKey}`, `${modeKey}_2MQ`);
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'FONDO', modeKey, 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'FINITURA', modeKey, 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'KIT', modeKey, 2, styleParam), n2, TEX);
 
-    if (n10 > 0 && skuFondo10) {
-      lines.push({ sku_id: skuFondo10, descrizione: descOf(store, skuFondo10), qty: n10, prezzo_unitario: priceOf(store, skuFondo10), totale: n10 * priceOf(store, skuFondo10), section: 'texture' });
-    }
-    if (n10 > 0 && skuFinitura10) {
-      lines.push({ sku_id: skuFinitura10, descrizione: descOf(store, skuFinitura10), qty: n10, prezzo_unitario: priceOf(store, skuFinitura10), totale: n10 * priceOf(store, skuFinitura10), section: 'texture' });
-    }
-    if (n2 > 0 && skuKit2) {
-      lines.push({ sku_id: skuKit2, descrizione: descOf(store, skuKit2), qty: n2, prezzo_unitario: priceOf(store, skuKit2), totale: n2 * priceOf(store, skuKit2), section: 'texture' });
-    }
-
-    if (isColorabile) {
-      const skuColor10f = findTexSku(store, 'NATURAL', `COLORE_FONDO_${styleKey}`, 'COLORABILE_10MQ');
-      const skuColor10fi = findTexSku(store, 'NATURAL', `COLORE_FINITURA_${styleKey}`, 'COLORABILE_10MQ');
-      const skuColorKit2 = findTexSku(store, 'NATURAL', `COLORE_KIT_${styleKey}`, 'COLORABILE_2MQ');
-      if (n10 > 0 && skuColor10f) lines.push({ sku_id: skuColor10f, descrizione: descOf(store, skuColor10f), qty: n10, prezzo_unitario: priceOf(store, skuColor10f), totale: n10 * priceOf(store, skuColor10f), section: 'texture' });
-      if (n10 > 0 && skuColor10fi) lines.push({ sku_id: skuColor10fi, descrizione: descOf(store, skuColor10fi), qty: n10, prezzo_unitario: priceOf(store, skuColor10fi), totale: n10 * priceOf(store, skuColor10fi), section: 'texture' });
-      if (n2 > 0 && skuColorKit2) lines.push({ sku_id: skuColorKit2, descrizione: descOf(store, skuColorKit2), qty: n2, prezzo_unitario: priceOf(store, skuColorKit2), totale: n2 * priceOf(store, skuColorKit2), section: 'texture' });
-    }
-
-    if (isCustomFee) {
+    if (!isCustom) {
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX);
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
+      const colorsCount = isBicolor ? 'colors=2' : 'colors=1';
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_KIT', 'COLORABILE', 2, colorsCount), n2, TEX);
+    } else {
       const numColors = isBicolor ? 2 : 1;
-      fees.push({ description: `Personalizzazione colore NATURAL ${styleKey}`, amount: 100, qty: numColors });
+      fees.push({ description: 'Personalizzazione colore NATURAL', amount: 100, qty: numColors });
     }
 
     if (isBicolor) {
-      alerts.push('NATURAL Alizeè/EVIDENCE: vietato carteggiare tra finitura 1 e finitura 2 (stesse giornata).');
+      alerts.push('NATURAL Alizeè/EVIDENCE: vietato carteggiare tra finitura 1 e finitura 2 (stessa giornata).');
     }
   }
 
   // ─── SENSE ────────────────────────────────────────────────────────────────
   if (line === 'SENSE') {
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    let extraFondoQty = 0;
+    let extraFondoN10 = 0;
     if (input.fughe_residue === 'CRITICHE') {
-      extraFondoQty = n10 + n2; // same packaging for extra fondo pass
+      extraFondoN10 = Math.ceil(area_mq / 10);
       alerts.push('SENSE su piastrelle/mosaico: fughe residue critiche → passaggio extra di fondo aggiunto.');
     }
-    const skuFondo10 = findTexSku(store, 'SENSE', 'FONDO', 'COLORABILE_10MQ');
-    const skuFinitura10 = findTexSku(store, 'SENSE', 'FINITURA', 'COLORABILE_10MQ');
-    const skuKit2 = findTexSku(store, 'SENSE', 'KIT', 'COLORABILE_2MQ');
-    const skuColorFondo10 = findTexSku(store, 'SENSE', 'COLORE_FONDO', 'COLORABILE_10MQ');
-    const skuColorFinitura10 = findTexSku(store, 'SENSE', 'COLORE_FINITURA', 'COLORABILE_10MQ');
-    const skuColorKit2 = findTexSku(store, 'SENSE', 'COLORE_KIT', 'COLORABILE_2MQ');
-
-    const totalFondo10 = n10 + extraFondoQty;
-    if (totalFondo10 > 0 && skuFondo10) lines.push({ sku_id: skuFondo10, descrizione: descOf(store, skuFondo10), qty: totalFondo10, prezzo_unitario: priceOf(store, skuFondo10), totale: totalFondo10 * priceOf(store, skuFondo10), section: 'texture' });
-    if (n10 > 0 && skuFinitura10) lines.push({ sku_id: skuFinitura10, descrizione: descOf(store, skuFinitura10), qty: n10, prezzo_unitario: priceOf(store, skuFinitura10), totale: n10 * priceOf(store, skuFinitura10), section: 'texture' });
-    if (n2 > 0 && skuKit2) lines.push({ sku_id: skuKit2, descrizione: descOf(store, skuKit2), qty: n2, prezzo_unitario: priceOf(store, skuKit2), totale: n2 * priceOf(store, skuKit2), section: 'texture' });
-    if (totalFondo10 > 0 && skuColorFondo10) lines.push({ sku_id: skuColorFondo10, descrizione: descOf(store, skuColorFondo10), qty: totalFondo10, prezzo_unitario: priceOf(store, skuColorFondo10), totale: totalFondo10 * priceOf(store, skuColorFondo10), section: 'texture' });
-    if (n10 > 0 && skuColorFinitura10) lines.push({ sku_id: skuColorFinitura10, descrizione: descOf(store, skuColorFinitura10), qty: n10, prezzo_unitario: priceOf(store, skuColorFinitura10), totale: n10 * priceOf(store, skuColorFinitura10), section: 'texture' });
-    if (n2 > 0 && skuColorKit2) lines.push({ sku_id: skuColorKit2, descrizione: descOf(store, skuColorKit2), qty: n2, prezzo_unitario: priceOf(store, skuColorKit2), totale: n2 * priceOf(store, skuColorKit2), section: 'texture' });
+    addLine(store, lines, findTexSku(store, 'SENSE', 'FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'FINITURA', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'KIT', 'COLORABILE', 2), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX);
   }
 
   // ─── DEKORA ───────────────────────────────────────────────────────────────
   if (line === 'DEKORA') {
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    const skuFondo10 = findTexSku(store, 'DEKORA', 'FONDO', 'COLORABILE_10MQ');
-    const skuFinitura10 = findTexSku(store, 'DEKORA', 'FINITURA', 'COLORABILE_10MQ');
-    const skuKit2 = findTexSku(store, 'DEKORA', 'KIT', 'COLORABILE_2MQ');
-    const skuColorFondo10 = findTexSku(store, 'DEKORA', 'COLORE_FONDO', 'COLORABILE_10MQ');
-    const skuColorFinitura10 = findTexSku(store, 'DEKORA', 'COLORE_FINITURA', 'COLORABILE_10MQ');
-    const skuColorKit2 = findTexSku(store, 'DEKORA', 'COLORE_KIT', 'COLORABILE_2MQ');
-
-    if (n10 > 0 && skuFondo10) lines.push({ sku_id: skuFondo10, descrizione: descOf(store, skuFondo10), qty: n10, prezzo_unitario: priceOf(store, skuFondo10), totale: n10 * priceOf(store, skuFondo10), section: 'texture' });
-    if (n10 > 0 && skuFinitura10) lines.push({ sku_id: skuFinitura10, descrizione: descOf(store, skuFinitura10), qty: n10, prezzo_unitario: priceOf(store, skuFinitura10), totale: n10 * priceOf(store, skuFinitura10), section: 'texture' });
-    if (n2 > 0 && skuKit2) lines.push({ sku_id: skuKit2, descrizione: descOf(store, skuKit2), qty: n2, prezzo_unitario: priceOf(store, skuKit2), totale: n2 * priceOf(store, skuKit2), section: 'texture' });
-    if (n10 > 0 && skuColorFondo10) lines.push({ sku_id: skuColorFondo10, descrizione: descOf(store, skuColorFondo10), qty: n10, prezzo_unitario: priceOf(store, skuColorFondo10), totale: n10 * priceOf(store, skuColorFondo10), section: 'texture' });
-    if (n10 > 0 && skuColorFinitura10) lines.push({ sku_id: skuColorFinitura10, descrizione: descOf(store, skuColorFinitura10), qty: n10, prezzo_unitario: priceOf(store, skuColorFinitura10), totale: n10 * priceOf(store, skuColorFinitura10), section: 'texture' });
-    if (n2 > 0 && skuColorKit2) lines.push({ sku_id: skuColorKit2, descrizione: descOf(store, skuColorKit2), qty: n2, prezzo_unitario: priceOf(store, skuColorKit2), totale: n2 * priceOf(store, skuColorKit2), section: 'texture' });
-
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'FONDO', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'FINITURA', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'KIT', 'COLORABILE', 2), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX);
     alerts.push('DEKORA: due mani di finitura nella stessa giornata (a fresco). Non interrompere tra le mani.');
   }
 
   // ─── LAMINE ───────────────────────────────────────────────────────────────
   if (line === 'LAMINE') {
-    if (!input.lamine_pattern) {
+    if (!lamine_pattern) {
       throw new DataError('LAMINE_NO_PATTERN', 'LAMINE richiede selezione pattern', {});
     }
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    const skuFondo10 = findTexSku(store, 'LAMINE', 'FONDO', '10MQ');
-    const skuLamine10 = findTexSku(store, 'LAMINE', 'LAMINE', '10MQ');
-    const skuKit2 = findTexSku(store, 'LAMINE', 'KIT', '2MQ');
-
-    if (n10 > 0 && skuFondo10) lines.push({ sku_id: skuFondo10, descrizione: descOf(store, skuFondo10), qty: n10, prezzo_unitario: priceOf(store, skuFondo10), totale: n10 * priceOf(store, skuFondo10), section: 'texture' });
-    if (n10 > 0 && skuLamine10) lines.push({ sku_id: skuLamine10, descrizione: descOf(store, skuLamine10), qty: n10, prezzo_unitario: priceOf(store, skuLamine10), totale: n10 * priceOf(store, skuLamine10), section: 'texture' });
-    if (n2 > 0 && skuKit2) lines.push({ sku_id: skuKit2, descrizione: descOf(store, skuKit2), qty: n2, prezzo_unitario: priceOf(store, skuKit2), totale: n2 * priceOf(store, skuKit2), section: 'texture' });
-
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'FONDO', 'PATTERN', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'LAMINE', 'PATTERN', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'KIT', 'PATTERN', 2), n2, TEX);
     alerts.push('LAMINE: applicare fondo a rullo; spolvero lamine a rifiuto IMMEDIATO (non attendere).');
     alerts.push('LAMINE: carteggio 120 + aspirazione prima dei protettivi.');
   }
@@ -186,14 +198,10 @@ export function computeTextureCart(
   // ─── CORLITE ──────────────────────────────────────────────────────────────
   if (line === 'CORLITE') {
     const isBicolor = style === 'COR_EVIDENCE';
+    const styleParam = isBicolor ? 'style=EVIDENCE' : 'style=CHROMO';
     const { n4, n1 } = computePackaging4Plus1(area_mq);
-    const styleKey = isBicolor ? 'EVIDENCE' : 'CHROMO';
-    const skuKit4 = findTexSku(store, 'CORLITE', `KIT4_${styleKey}`, 'PRECOLORED');
-    const skuKit1 = findTexSku(store, 'CORLITE', `KIT1_${styleKey}`, 'PRECOLORED');
-
-    if (n4 > 0 && skuKit4) lines.push({ sku_id: skuKit4, descrizione: descOf(store, skuKit4), qty: n4, prezzo_unitario: priceOf(store, skuKit4), totale: n4 * priceOf(store, skuKit4), section: 'texture' });
-    if (n1 > 0 && skuKit1) lines.push({ sku_id: skuKit1, descrizione: descOf(store, skuKit1), qty: n1, prezzo_unitario: priceOf(store, skuKit1), totale: n1 * priceOf(store, skuKit1), section: 'texture' });
-
+    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 4, styleParam), n4, TEX);
+    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 1, styleParam), n1, TEX);
     if (isBicolor) {
       alerts.push('CORLITE EVIDENCE: applicare colore 2 a fresco entro 15–20 minuti dal colore 1.');
     }
@@ -203,24 +211,17 @@ export function computeTextureCart(
   // ─── MATERIAL ─────────────────────────────────────────────────────────────
   if (line === 'MATERIAL') {
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    const skuKit10 = findTexSku(store, 'MATERIAL', 'KIT', '10MQ');
-    const skuKit2 = findTexSku(store, 'MATERIAL', 'KIT', '2MQ');
+    addLine(store, lines, findTexSku(store, 'MATERIAL', 'MATERIAL', 'NEUTRO', 10), n10, TEX);
+    addLine(store, lines, findTexSku(store, 'MATERIAL', 'KIT', 'NEUTRO', 2), n2, TEX);
 
-    if (n10 > 0 && skuKit10) lines.push({ sku_id: skuKit10, descrizione: descOf(store, skuKit10), qty: n10, prezzo_unitario: priceOf(store, skuKit10), totale: n10 * priceOf(store, skuKit10), section: 'texture' });
-    if (n2 > 0 && skuKit2) lines.push({ sku_id: skuKit2, descrizione: descOf(store, skuKit2), qty: n2, prezzo_unitario: priceOf(store, skuKit2), totale: n2 * priceOf(store, skuKit2), section: 'texture' });
-
-    // Optional surface color
-    if (color_mode === 'CUSTOM_FEE0' && input.color_primary) {
-      const colorSource = input.color_primary.type;
+    if (effMode === 'CUSTOM_FEE0' && color_primary) {
       const mani_colore = Math.ceil(area_mq * 0.25);
-      if (colorSource === 'NATURAL_24') {
-        const skuNordcolor = 'NORDCOLOR_ART_NCS_RAL_1KG_1KG';
-        lines.push({ sku_id: skuNordcolor, descrizione: descOf(store, skuNordcolor), qty: mani_colore, prezzo_unitario: priceOf(store, skuNordcolor), totale: mani_colore * priceOf(store, skuNordcolor), section: 'texture', note: 'Colore superficiale – non in massa' });
+      if (color_primary.type === 'NATURAL_24') {
+        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'CUSTOM_FEE0'), mani_colore, TEX, 'Colore superficiale – non in massa');
       } else {
-        const skuDekorArt = 'DEKOR_ART_W_1_KG_1KG';
-        lines.push({ sku_id: skuDekorArt, descrizione: descOf(store, skuDekorArt), qty: mani_colore, prezzo_unitario: priceOf(store, skuDekorArt), totale: mani_colore * priceOf(store, skuDekorArt), section: 'texture', note: 'Colore superficiale – non in massa' });
+        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'METALLIC_FEE0'), mani_colore, TEX, 'Colore superficiale – non in massa');
       }
-      alerts.push('MATERIAL con colore superficiale: il colore è in superficie, NON in massa. Far accettare esplicitamente al cliente.');
+      alerts.push('MATERIAL con colore superficiale: colore in SUPERFICIE, non in massa. Far accettare al cliente.');
     }
   }
 

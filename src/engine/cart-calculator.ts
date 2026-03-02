@@ -129,7 +129,7 @@ export function computeFullCart(
     style: state.texture_style!,
     area_mq: texArea,
     macro,
-    color_mode: state.color_mode ?? 'COLORABILE',
+    color_mode: state.color_mode,
     color_primary: state.color_primary,
     color_secondary: state.color_secondary,
     lamine_pattern: state.lamine_pattern,
