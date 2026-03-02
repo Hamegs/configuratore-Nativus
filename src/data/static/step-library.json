@@ -116,24 +116,27 @@
     "step_type_id": "ARMR",
     "name": "Armatura rete 75",
     "product_id": "RETE_75",
-    "qty": 75,
-    "unit": "g/m²"
+    "qty": 1,
+    "unit": "m²",
+    "note": "75 g/m² — 1 rotolo 100m = 100m²"
   },
   {
     "step_id": "S_ARM_160",
     "step_type_id": "ARMR",
     "name": "Armatura rete 160",
     "product_id": "RETE_160",
-    "qty": 160,
-    "unit": "g/m²"
+    "qty": 1,
+    "unit": "m²",
+    "note": "160 g/m² — 1 rotolo 50m = 50m²"
   },
   {
     "step_id": "S_WPRO_BARR_PR_100",
     "step_type_id": "PRIM",
     "name": "Primer barriera vapore",
     "product_id": "BARR_VAP_4_PR",
-    "qty": 100,
-    "unit": "g/m²"
+    "qty": 1,
+    "unit": "m²",
+    "note": "1 kit 12mq primer BARR VAP 4.0"
   },
   {
     "step_id": "S_WPRO_BARR_1_5",
@@ -251,7 +254,7 @@
     "step_id": "S_DIN_BANDELLE",
     "step_type_id": "WPRO",
     "name": "Bandelle perimetrali incollate con Guaina Base",
-    "product_id": "BAND_GUAINA",
+    "product_id": "GUAINA_BASE",
     "qty": null,
     "unit": "m"
   },

@@ -64,7 +64,7 @@
   },
   {
     "sku_id": "FONDO_BASE_ESTIVO_3KG",
-    "product_id": "FONDO_BASE_ESTIVO",
+    "product_id": "FONDO_BASE",
     "descrizione_sku": "Fondo base estivo",
     "pack_size": 3,
     "pack_unit": "kg",
@@ -73,7 +73,7 @@
   },
   {
     "sku_id": "FONDO_BASE_ESTIVO_2_12KG",
-    "product_id": "FONDO_BASE_ESTIVO_2",
+    "product_id": "FONDO_BASE",
     "descrizione_sku": "Fondo base estivo",
     "pack_size": 12,
     "pack_unit": "kg",
@@ -91,7 +91,7 @@
   },
   {
     "sku_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO_0_5KG",
-    "product_id": "MS_PRO_SEALER_NORPHEN_FONDO_IGRO",
+    "product_id": "NORPHEN_IGRO",
     "descrizione_sku": "MS Pro Sealer - Norphen Fondo Igro",
     "pack_size": 0.5,
     "pack_unit": "kg",
@@ -100,7 +100,7 @@
   },
   {
     "sku_id": "MS_PRO_SEALER_IN_CARTUCCIA_1CART",
-    "product_id": "MS_PRO_SEALER_IN_CARTUCCIA",
+    "product_id": "MS_PRO",
     "descrizione_sku": "MS Pro Sealer in cartuccia",
     "pack_size": 1,
     "pack_unit": "cart",
@@ -154,16 +154,16 @@
   },
   {
     "sku_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ_0_54KG",
-    "product_id": "BARRIERA_VAPORE_4_0_PRIMER_KIT_12MQ",
+    "product_id": "BARR_VAP_4_PR",
     "descrizione_sku": "Barriera Vapore 4.0 Primer kit 12mq",
-    "pack_size": 0.54,
-    "pack_unit": "kg",
+    "pack_size": 12,
+    "pack_unit": "m²",
     "componenti": "",
     "note_packaging": "DA_LISTINO_XLSX"
   },
   {
     "sku_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ_18KG",
-    "product_id": "BARRIERA_VAPORE_4_0_RASANTE_KIT_12_MQ",
+    "product_id": "BARR_VAP_4",
     "descrizione_sku": "Barriera Vapore 4.0 Rasante kit 12 mq",
     "pack_size": 18,
     "pack_unit": "kg",
@@ -181,7 +181,7 @@
   },
   {
     "sku_id": "RASANTE_FONDO_10KG",
-    "product_id": "RASANTE_FONDO",
+    "product_id": "RAS_FONDO_FINO",
     "descrizione_sku": "Rasante Fondo",
     "pack_size": 10,
     "pack_unit": "kg",
@@ -289,7 +289,7 @@
   },
   {
     "sku_id": "RETE_DI_VETRO_DA_160_G_MQ_50M",
-    "product_id": "RETE_DI_VETRO_DA_160_G_MQ",
+    "product_id": "RETE_160",
     "descrizione_sku": "Rete di vetro da 160 g/mq",
     "pack_size": 50,
     "pack_unit": "m",
@@ -298,7 +298,7 @@
   },
   {
     "sku_id": "RETE_DI_VETRO_DA_75_G_MQ_100M",
-    "product_id": "RETE_DI_VETRO_DA_75_G_MQ",
+    "product_id": "RETE_75",
     "descrizione_sku": "Rete di vetro da 75 g/mq",
     "pack_size": 100,
     "pack_unit": "m",
@@ -703,7 +703,7 @@
   },
   {
     "sku_id": "CRYSTEPO_3_7_25KG",
-    "product_id": "CRYSTEPO_3",
+    "product_id": "MAS_EP",
     "descrizione_sku": "Crystepo 3",
     "pack_size": 7.25,
     "pack_unit": "kg",
