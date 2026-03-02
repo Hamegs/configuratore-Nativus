@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWizardStore } from '../../store/wizard-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { BlockAlerts } from '../shared/BlockAlerts';
 import { StepHeader, StepNavigation } from './StepAmbiente';
-import { computeFullCart } from '../../engine/cart-calculator';
-import type { CartResult } from '../../engine/cart-calculator';
-import { ambienteLabel, formatEur } from '../../utils/formatters';
+import { computeFullCart, computeTechnicalSchedule } from '../../engine/cart-calculator';
+import type { CartResult, TechnicalSchedule } from '../../engine/cart-calculator';
 
 const store = loadDataStore();
 
@@ -14,28 +13,61 @@ interface StepReviewProps {
   completeLabel?: string;
 }
 
-export function StepReview({ onComplete, completeLabel = 'Genera ordine' }: StepReviewProps) {
+const SECTION_COLORS: Record<string, string> = {
+  'PREPARAZIONE SUPPORTO': 'border-stone-400 bg-stone-50',
+  'TEXTURE': 'border-brand-400 bg-brand-50',
+  'PROTETTIVO': 'border-teal-400 bg-teal-50',
+};
+
+const SECTION_ICON: Record<string, string> = {
+  'PREPARAZIONE SUPPORTO': '🔧',
+  'TEXTURE': '🎨',
+  'PROTETTIVO': '🛡️',
+};
+
+export function StepReview({ onComplete, completeLabel = 'Aggiungi al carrello' }: StepReviewProps) {
   const state = useWizardStore();
   const { active_blocks, prevStep } = state;
   const [error, setError] = useState<string | null>(null);
+  const [schedule, setSchedule] = useState<TechnicalSchedule | null>(null);
+  const [scheduleError, setScheduleError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleGenerate() {
+  const hasBlocks = active_blocks.length > 0;
+  const isValid = !hasBlocks;
+
+  useEffect(() => {
+    if (!isValid) return;
+    setScheduleError(null);
+    try {
+      const s = computeTechnicalSchedule(store, state);
+      setSchedule(s);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Errore calcolo procedura';
+      setScheduleError(msg);
+    }
+  }, [state.supporto_floor, state.supporto_wall, state.texture_line, state.texture_style, state.protettivo, isValid]);
+
+  function handleAddToCart() {
     setError(null);
+    setLoading(true);
     try {
       const result = computeFullCart(store, state);
       onComplete(result);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Errore sconosciuto';
       setError(msg);
+    } finally {
+      setLoading(false);
     }
   }
 
-  const hasBlocks = active_blocks.length > 0;
-  const isValid = !hasBlocks;
-
   return (
     <div className="space-y-8">
-      <StepHeader title="Riepilogo" subtitle="Verifica le scelte prima di generare l'ordine." />
+      <StepHeader
+        title="Scaletta tecnica"
+        subtitle="Procedura di applicazione. Nessun calcolo di confezioni o prezzi — quelli vengono generati nel carrello."
+      />
       <BlockAlerts blocks={active_blocks} />
 
       {error && (
@@ -44,46 +76,71 @@ export function StepReview({ onComplete, completeLabel = 'Genera ordine' }: Step
         </div>
       )}
 
-      <section className="card p-6 space-y-3">
-        <h2 className="font-semibold text-gray-800 mb-4">Scelte configurate</h2>
-        <ReviewRow label="Ambiente" value={state.ambiente ? ambienteLabel(state.ambiente, state.room_type_display) : '—'} />
-        <ReviewRow label="Pavimento" value={state.mq_pavimento > 0 ? `${state.mq_pavimento} m²` : '—'} />
-        <ReviewRow label="Pareti" value={state.mq_pareti > 0 ? `${state.mq_pareti} m²` : '—'} />
-        {state.supporto_floor && (
-          <ReviewRow label="Supporto pavimento" value={store.supporti.find(s => s.support_id === state.supporto_floor)?.name ?? state.supporto_floor} />
-        )}
-        {state.supporto_wall && (
-          <ReviewRow label="Supporto parete" value={store.supporti.find(s => s.support_id === state.supporto_wall)?.name ?? state.supporto_wall} />
-        )}
-        <ReviewRow label="Texture" value={state.texture_line ?? '—'} />
-        {state.texture_style && <ReviewRow label="Stile" value={state.texture_style} />}
-        {state.lamine_pattern && <ReviewRow label="Pattern LAMINE" value={store.laminePatterns.find(p => p.pattern_id === state.lamine_pattern)?.name ?? state.lamine_pattern} />}
-        {state.color_primary && <ReviewRow label="Colore primario" value={state.color_primary.label} />}
-        {state.color_secondary && <ReviewRow label="Colore secondario" value={state.color_secondary.label} />}
-        {state.protettivo && (
-          <>
-            <ReviewRow label="Sistema protettivo" value={state.protettivo.system} />
-            <ReviewRow label="Finitura" value={state.protettivo.finitura} />
-          </>
-        )}
-      </section>
+      {scheduleError && (
+        <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+          <strong>Anteprima procedura non disponibile:</strong> {scheduleError}
+        </div>
+      )}
 
-      <StepNavigation
-        canContinue={isValid}
-        onNext={handleGenerate}
-        onPrev={prevStep}
-        nextLabel={completeLabel}
-        isLastStep
-      />
-    </div>
-  );
-}
+      {/* Scaletta tecnica — solo nomi prodotti per sezione */}
+      {schedule && schedule.sections.length > 0 && (
+        <div className="space-y-4">
+          {schedule.sections.map((section) => (
+            <div
+              key={section.title}
+              className={`rounded-xl border-l-4 p-4 ${SECTION_COLORS[section.title] ?? 'border-gray-300 bg-gray-50'}`}
+            >
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-3 flex items-center gap-2">
+                <span>{SECTION_ICON[section.title] ?? '•'}</span>
+                {section.title}
+              </h3>
+              <ol className="space-y-1.5">
+                {section.products.map((p, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-800">
+                    <span className="shrink-0 w-5 h-5 rounded-full bg-white border border-gray-300 text-xs flex items-center justify-center font-medium text-gray-500">
+                      {i + 1}
+                    </span>
+                    <span>{p.name}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
 
-function ReviewRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between border-b border-gray-50 py-2 text-sm">
-      <span className="text-gray-500">{label}</span>
-      <span className="font-medium text-gray-800">{value}</span>
+          {schedule.hard_alerts.length > 0 && (
+            <div className="space-y-2">
+              {schedule.hard_alerts.map((a, i) => (
+                <div key={i} className="alert-hard text-sm">{a}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bottoni */}
+      <div className="flex gap-3 pt-2">
+        <button
+          type="button"
+          className="btn-secondary flex-1"
+          onClick={prevStep}
+        >
+          ← Modifica configurazione
+        </button>
+        <button
+          type="button"
+          className="btn-primary flex-1 flex items-center justify-center gap-2"
+          disabled={!isValid || loading}
+          onClick={handleAddToCart}
+        >
+          {loading && (
+            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          )}
+          {completeLabel}
+        </button>
+      </div>
     </div>
   );
 }

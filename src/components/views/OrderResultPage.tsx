@@ -14,9 +14,8 @@ export function OrderResultPage({ result, onReset }: OrderResultPageProps) {
   const { user } = useAuthStore();
   const { reset } = useWizardStore();
   const isApplicatore = user?.role === 'applicatore';
-  const [activeTab, setActiveTab] = useState<'rivenditore' | 'applicatore'>(
-    isApplicatore ? 'applicatore' : 'rivenditore',
-  );
+  const isAdmin = user?.role === 'admin';
+  const [activeTab, setActiveTab] = useState<'applicatore' | 'rivenditore'>('applicatore');
 
   function handleReset() {
     reset();
@@ -25,17 +24,17 @@ export function OrderResultPage({ result, onReset }: OrderResultPageProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Ordine generato</h1>
+      <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <h1 className="text-2xl font-bold text-gray-900">Scaletta tecnica</h1>
         <button type="button" className="btn-secondary" onClick={handleReset}>
           Nuovo configuratore
         </button>
       </div>
 
-      {/* Tab selector */}
-      {user?.role !== 'applicatore' && user?.role !== 'rivenditore' ? (
+      {/* Tab — solo Admin vede entrambe le viste */}
+      {isAdmin && (
         <div className="mb-6 flex gap-2 border-b border-gray-200">
-          {(['rivenditore', 'applicatore'] as const).map(tab => (
+          {(['applicatore', 'rivenditore'] as const).map(tab => (
             <button
               key={tab}
               type="button"
@@ -50,20 +49,23 @@ export function OrderResultPage({ result, onReset }: OrderResultPageProps) {
             </button>
           ))}
         </div>
-      ) : (
-        <div className="mb-4 text-sm text-gray-500">
-          Vista {user.role}
-        </div>
       )}
 
-      {activeTab === 'rivenditore' && !isApplicatore && (
+      {/* Vista Applicatore — default per tutti */}
+      {(activeTab === 'applicatore' || !isAdmin) && (
+        <VistaApplicatore result={result} />
+      )}
+
+      {/* Vista Rivenditore — solo Admin */}
+      {isAdmin && activeTab === 'rivenditore' && (
         <VistaRivenditore result={result} />
       )}
-      {activeTab === 'applicatore' && (
-        <VistaApplicatore result={result} />
-      )}
-      {isApplicatore && (
-        <VistaApplicatore result={result} />
+
+      {/* Nota per rivenditore / applicatore */}
+      {!isAdmin && (
+        <div className="mt-6 text-center text-xs text-gray-400">
+          Per confezioni, prezzi e carrello aggregato usa il modulo <strong>Progetto</strong>.
+        </div>
       )}
     </div>
   );

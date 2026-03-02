@@ -1,5 +1,6 @@
 import type { WizardState } from './wizard-state';
 import type { CartLine } from './cart';
+import type { CartResult } from '../engine/cart-calculator';
 
 export const ROOM_TYPES = [
   { id: 'SOGGIORNO',  label: 'Soggiorno',   env_default: 'ORD', icon: '🛋️' },
@@ -14,7 +15,21 @@ export type PackagingStrategy =
   | 'MINIMO_SFRIDO'
   | 'ECONOMICO'
   | 'CONFEZIONI_GRANDI'
-  | 'CONFEZIONI_PICCOLE';
+  | 'CONFEZIONI_PICCOLE'
+  | 'MANUALE';
+
+export interface ConfigLogEntry {
+  id: string;
+  timestamp: string;
+  room_id: string | null;
+  room_name: string | null;
+  sku_id: string;
+  product_name: string;
+  qty_before: number;
+  qty_after: number;
+  mode_before: PackagingStrategy;
+  action: 'override' | 'add_manual' | 'exclude' | 'restore' | 'remove';
+}
 
 export interface ProjectRoom {
   id: string;
@@ -22,18 +37,19 @@ export interface ProjectRoom {
   custom_name: string;
   is_configured: boolean;
   wizard_state: WizardState | null;
-  cart_lines: CartLine[];          // linee dall'ultima configurazione
+  cart_lines: CartLine[];
+  cart_result: CartResult | null;
 }
 
 export interface AggregatedRawQty {
   product_id: string;
-  sku_id_default: string;          // SKU più comune usato nelle stanze
+  sku_id_default: string;
   descrizione: string;
-  qty_raw: number;                 // quantità aggregata (kg, m² o pz)
+  qty_raw: number;
   pack_size_default: number;
   pack_unit: string;
   section: CartLine['section'];
-  from_rooms: string[];            // room custom_name
+  from_rooms: string[];
 }
 
 export interface ProjectCartRow {

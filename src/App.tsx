@@ -11,6 +11,7 @@ import { AdminPage } from './pages/AdminPage';
 import { ProjectPage } from './pages/ProjectPage';
 import { RoomWizardPage } from './pages/RoomWizardPage';
 import { ProjectCartView } from './components/project/ProjectCartView';
+import { VistaApplicatoreProgetto } from './components/views/VistaApplicatoreProgetto';
 
 export default function App() {
   const { restoreSession } = useAuthStore();
@@ -86,6 +87,17 @@ export default function App() {
             <ProtectedRoute allowedRoles={['admin', 'rivenditore']}>
               <AppShell>
                 <ProjectCartView />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/progetto/applicatore"
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'rivenditore', 'applicatore']}>
+              <AppShell>
+                <VistaApplicatoreProgetto />
               </AppShell>
             </ProtectedRoute>
           }

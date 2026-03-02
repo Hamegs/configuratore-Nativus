@@ -44,6 +44,10 @@ function bestOption(options: PackagingOption[], strategy: PackagingStrategy): Pa
       return options.slice().sort((a, b) => b.pack_size - a.pack_size)[0];
     case 'CONFEZIONI_PICCOLE':
       return options.slice().sort((a, b) => a.pack_size - b.pack_size)[0];
+    case 'MANUALE':
+      return options.slice().sort((a, b) => a.sfrido - b.sfrido || a.totale - b.totale)[0];
+    default:
+      return options[0];
   }
 }
 

@@ -43,7 +43,7 @@ export function RoomWizardPage() {
   function handleComplete(result: CartResult) {
     if (!roomId) return;
     const wizState = useWizardStore.getState();
-    setRoomResult(roomId, wizState, result.summary.lines);
+    setRoomResult(roomId, wizState, result.summary.lines, result);
     navigate('/progetto');
   }
 

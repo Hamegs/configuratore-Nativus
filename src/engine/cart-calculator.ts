@@ -161,6 +161,9 @@ export function computeFullCart(
     dinResult.hard_alerts.forEach(a => all_alerts.push({ code: 'DIN_ALERT', text: a, severity: 'hard' }));
   }
 
+  // ─── Massetto doccia piatto NUOVO ────────────────────────────────────────
+  all_lines.push(...buildDocciaPiattoLines(store, state));
+
   // ─── Consolidamento righe duplicate (stesso sku_id nella stessa section) ──
   const consolidated = consolidateLines(all_lines);
 
@@ -211,6 +214,184 @@ export function computeFullCart(
     procedure_texture,
     procedure_protettivi,
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SCALETTA TECNICA (solo nomi prodotti, niente prezzi / confezioni)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface TechnicalProduct {
+  name: string;
+  step_order: number;
+}
+
+export interface TechnicalSection {
+  title: string;
+  products: TechnicalProduct[];
+}
+
+export interface TechnicalSchedule {
+  sections: TechnicalSection[];
+  hard_alerts: string[];
+}
+
+/**
+ * Restituisce solo la scaletta operativa (prodotto → sezione) senza calcolare
+ * confezioni né prezzi. Usata da StepReview per mostrare la procedura prima
+ * di aggiungere al carrello.
+ */
+export function computeTechnicalSchedule(store: DataStore, state: WizardState): TechnicalSchedule {
+  const sections: TechnicalSection[] = [];
+  const hard_alerts: string[] = [];
+
+  if (!state.ambiente || !state.texture_line || !state.protettivo) {
+    throw new DataError('INCOMPLETE_STATE', 'Stato wizard incompleto.', {});
+  }
+
+  // ─── Preparazione supporto ─────────────────────────────────────────────────
+  const prepFloor: TechnicalProduct[] = [];
+  const prepWall: TechnicalProduct[] = [];
+
+  if (state.mq_pavimento > 0 && state.supporto_floor) {
+    const input = buildRuleInputFromWizard(state, 'FLOOR');
+    if (input) {
+      try {
+        let rule;
+        if (state.supporto_floor === 'F_COMP') {
+          const ct = state.sub_answers_floor.tile_bedding as 'AS' | 'EP' ?? 'AS';
+          rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), ct);
+        } else if (state.supporto_floor === 'F_PAR_RM') {
+          const ct = state.sub_answers_floor.parquet_comp ?? 'AS';
+          rule = resolveCompRule(store.decisionTable, effectiveAmbiente(state), ct, 'PAR');
+        } else {
+          rule = matchDecisionTable(store.decisionTable, input);
+        }
+        const proc = resolveStepsForRule(store, rule.rule_id, 'FLOOR', 1);
+        proc.steps.forEach(s => {
+          if (s.name) prepFloor.push({ name: s.name, step_order: s.step_order });
+        });
+      } catch { /* noop — errore già gestito in computeFullCart */ }
+    }
+  }
+
+  if (state.mq_pareti > 0 && state.supporto_wall) {
+    const input = buildRuleInputFromWizard(state, 'WALL');
+    if (input) {
+      try {
+        const rule = matchDecisionTable(store.decisionTable, input);
+        const proc = resolveStepsForRule(store, rule.rule_id, 'WALL', 1);
+        proc.steps.forEach(s => {
+          if (s.name) prepWall.push({ name: s.name, step_order: s.step_order });
+        });
+      } catch { /* noop */ }
+    }
+  }
+
+  // Doccia piatto NUOVO → aggiungi massetto epossidico automaticamente
+  if (state.presenza_doccia && state.doccia_piatto_type === 'NUOVO') {
+    const docArea = (state.doccia_larghezza ?? 0) * (state.doccia_lunghezza ?? 0);
+    if (docArea > 0) {
+      prepFloor.push({ name: 'Fondo Base — strato adesivo piatto doccia', step_order: 5 });
+      prepFloor.push({ name: 'Massetto epossidico drenante (18 kg/m²/cm)', step_order: 6 });
+      prepFloor.push({ name: 'Rasante Base Quarzo su massetto', step_order: 7 });
+      prepFloor.push({ name: 'Armatura rete 160 g/m²', step_order: 8 });
+    }
+  }
+
+  const allPrep = [
+    ...prepFloor.map(p => ({ ...p, label: 'Pavimento' })),
+    ...prepWall.map(p => ({ ...p, step_order: p.step_order + 1000, label: 'Parete' })),
+  ].sort((a, b) => a.step_order - b.step_order);
+
+  if (allPrep.length > 0) {
+    sections.push({
+      title: 'PREPARAZIONE SUPPORTO',
+      products: allPrep,
+    });
+  }
+
+  // ─── Texture ───────────────────────────────────────────────────────────────
+  const texArea = state.mq_pavimento + state.mq_pareti;
+  const macro: 'FLOOR' | 'WALL' = state.mq_pavimento > 0 ? 'FLOOR' : 'WALL';
+  try {
+    const texResult = computeTextureCart(store, {
+      line: state.texture_line,
+      style: state.texture_style!,
+      area_mq: texArea,
+      macro,
+      color_mode: state.color_mode,
+      color_primary: state.color_primary,
+      color_secondary: state.color_secondary,
+      lamine_pattern: state.lamine_pattern,
+      last_base_layer: detectLastBaseLayer(null, null),
+      fughe_residue: state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue,
+      env_id: effectiveAmbiente(state),
+    });
+    texResult.hard_alerts.forEach(a => hard_alerts.push(a));
+    const texProducts = texResult.cart_lines
+      .filter(l => l.section === 'texture')
+      .map((l, i) => ({ name: l.descrizione, step_order: (i + 1) * 10 }));
+    if (texProducts.length > 0) {
+      sections.push({ title: 'TEXTURE', products: texProducts });
+    }
+  } catch { /* noop */ }
+
+  // ─── Protettivo ────────────────────────────────────────────────────────────
+  try {
+    const usoSup = deriveUsoSuperficie(state);
+    const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line, texArea, usoSup);
+    const protProducts = protResult.step_descriptions.map(s => ({
+      name: s.name,
+      step_order: s.step_order,
+    }));
+    if (protProducts.length > 0) {
+      sections.push({ title: 'PROTETTIVO', products: protProducts });
+    }
+  } catch { /* noop */ }
+
+  return { sections, hard_alerts };
+}
+
+// ─── Massetto doccia piatto NUOVO — linee extra nel carrello ─────────────────
+function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[] {
+  if (!state.presenza_doccia || state.doccia_piatto_type !== 'NUOVO') return [];
+  const docArea = (state.doccia_larghezza ?? 0) * (state.doccia_lunghezza ?? 0);
+  if (docArea <= 0) return [];
+
+  const lines: CartLine[] = [];
+  const spessore_cm = 3; // default 3 cm
+
+  // Fondo Base (150 g/m² per strato adesivo)
+  const fondoQtyKg = docArea * 0.15;
+  const fondoSkus = store.packagingSku.filter(p => p.product_id === 'FONDO_BASE');
+  if (fondoSkus.length > 0) {
+    const best = fondoSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+    const qty = Math.ceil(fondoQtyKg / (best.pack_size ?? 1));
+    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'FONDO_BASE', section: 'fondo', qty_raw: fondoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+  }
+
+  // Massetto epossidico (18 kg/m²/cm)
+  const massettoQtyKg = docArea * 18 * spessore_cm;
+  const massettoSkus = store.packagingSku.filter(p => p.product_id === 'MASSETTO_EP');
+  if (massettoSkus.length > 0) {
+    const best = massettoSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+    const qty = Math.ceil(massettoQtyKg / (best.pack_size ?? 1));
+    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'MASSETTO_EP', section: 'fondo', qty_raw: massettoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+  }
+
+  // Rasante Base Quarzo su massetto (2.2 kg/m²) + rete 160
+  const rbqQtyKg = docArea * 2.2;
+  const rbqSkus = store.packagingSku.filter(p => p.product_id === 'RAS_BASE_Q');
+  if (rbqSkus.length > 0) {
+    const best = rbqSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
+    const qty = Math.ceil(rbqQtyKg / (best.pack_size ?? 1));
+    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
+    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RAS_BASE_Q', section: 'fondo', qty_raw: rbqQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
+  }
+
+  return lines;
 }
 
 function consolidateLines(lines: CartLine[]): CartLine[] {
