@@ -1503,5 +1503,2885 @@
     "rule_id": "W_COAT_DOC",
     "step_order": 40,
     "step_id": "S_ARM_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_3_8_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_BAG",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DIN",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRNO_DOC",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_BAG",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DIN",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SFAR_CRYES_DOC",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_BAG",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DIN",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRNO_DOC",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_BAG",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DIN",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_GT8_SOL_CRYES_DOC",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_CLS_LE3_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_GT8_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_GT8_BAG",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_COT_GT8_BAG",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_COT_GT8_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_GT8_BAG",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_COT_GT8_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_GT8_DIN",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_COT_GT8_DIN",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_COT_GT8_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_GT8_DIN",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_COT_GT8_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_GT8_DOC",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_COT_GT8_DOC",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_COT_GT8_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_GT8_DOC",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_COT_LE8_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_LE8_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_COT_LE8_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_COT_LE8_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_LE8_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_LE8_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_COT_LE8_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_COT_LE8_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_COT_LE8_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND_FUGA"
+  },
+  {
+    "rule_id": "F_COT_LE8_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_COT_LE8_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_COT_LE8_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAR_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAR_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAR_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAR_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAR_DIN",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAR_DIN",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAR_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAR_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAR_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_3_8_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_BAG",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DIN",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRNO_DOC",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_BAG",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DIN",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 70,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SFAR_CRYES_DOC",
+    "step_order": 80,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_BAG",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DIN",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRNO_DOC",
+    "step_order": 50,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_BAG",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DIN",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_WPRO_BARR_PR_100"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_WPRO_BARR_1_5"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_GT8_SOL_CRYES_DOC",
+    "step_order": 70,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_PR_SW_250"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SFAR_CRYES_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRNO_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_BAG",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_BAG",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_BAG",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_BAG",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_BAG",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DIN",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DIN",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DIN",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DIN",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DIN",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DOC",
+    "step_order": 10,
+    "step_id": "S_REP_CRACK_BARS"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DOC",
+    "step_order": 20,
+    "step_id": "S_REP_STUCCO_75"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DOC",
+    "step_order": 30,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DOC",
+    "step_order": 40,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_MAS_LE3_SOL_CRYES_DOC",
+    "step_order": 50,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 30,
+    "step_id": "S_COMP_AS_PRECOAT"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 40,
+    "step_id": "S_COMP_AS_POUR"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 50,
+    "step_id": "S_WAIT_AS_7D"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 60,
+    "step_id": "S_W_SAND"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 70,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 80,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_BAG",
+    "step_order": 90,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 30,
+    "step_id": "S_COMP_AS_PRECOAT"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 40,
+    "step_id": "S_COMP_AS_POUR"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 50,
+    "step_id": "S_WAIT_AS_7D"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 60,
+    "step_id": "S_W_SAND"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 70,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 80,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DIN",
+    "step_order": 90,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 30,
+    "step_id": "S_COMP_AS_PRECOAT"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 40,
+    "step_id": "S_COMP_AS_POUR"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 50,
+    "step_id": "S_WAIT_AS_7D"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 60,
+    "step_id": "S_W_SAND"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 70,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 80,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_PAR_AS_ORD_DOC",
+    "step_order": 90,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 40,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 40,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 10,
+    "step_id": "S_PAR_REMOVE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 20,
+    "step_id": "S_PAR_REMOVE_GLUE"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 40,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_PAR_EP_ORD_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_PAR_RM_BAG",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_PAR_RM_DIN",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_PAR_RM_DOC",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_SLEV_OK_BAG",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_SLEV_OK_BAG",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_SLEV_OK_BAG",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_SLEV_OK_BAG",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DIN",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DIN",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DIN",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DIN",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DOC",
+    "step_order": 10,
+    "step_id": "S_F_MAS_SAND_3640"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DOC",
+    "step_order": 20,
+    "step_id": "S_PR_SW_150"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DOC",
+    "step_order": 30,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_SLEV_OK_DOC",
+    "step_order": 40,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BASE_1_5"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DIN",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DIN",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_COLLA_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DIN",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DIN",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_FUGA_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_A_BAG",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_A_DIN",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_A_DOC",
+    "step_order": 10,
+    "step_id": "S_GATE_SUPPORT_UNDER"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 20,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_BAG",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 20,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DIN",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 20,
+    "step_id": "S_COMP_MASEP_PRIMER_150"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 30,
+    "step_id": "S_COMP_MASEP_18"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 40,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 50,
+    "step_id": "S_RAS_BQ_2_2"
+  },
+  {
+    "rule_id": "F_TILE_HOLLOW_S_DOC",
+    "step_order": 60,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DIN",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DIN",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TILE_SABCEM_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TV_BAG",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TV_BAG",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TV_BAG",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TV_DIN",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TV_DIN",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TV_DIN",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_TV_DOC",
+    "step_order": 10,
+    "step_id": "S_F_DIAMOND"
+  },
+  {
+    "rule_id": "F_TV_DOC",
+    "step_order": 20,
+    "step_id": "S_RAS_BQ_2_0"
+  },
+  {
+    "rule_id": "F_TV_DOC",
+    "step_order": 30,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 10,
+    "step_id": "S_ZMX_ASPIRA"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 20,
+    "step_id": "S_ZMX_FONDO_150"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 30,
+    "step_id": "S_WAIT_12H"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 40,
+    "step_id": "S_ZMX_LAMBDA_1"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 45,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 50,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 60,
+    "step_id": "S_ZMX_LAMBDA_2"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 70,
+    "step_id": "S_WAIT_24H_NO_CART"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 80,
+    "step_id": "S_ZMX_CORAZZANTE"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 85,
+    "step_id": "S_ZMX_Q_FINE"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 86,
+    "step_id": "S_ZMX_Q_MED"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 87,
+    "step_id": "S_ZMX_Q_GROSS"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 88,
+    "step_id": "S_ZMX_SPOLVERO"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 90,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_BAG",
+    "step_order": 100,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 10,
+    "step_id": "S_ZMX_ASPIRA"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 20,
+    "step_id": "S_ZMX_FONDO_150"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 30,
+    "step_id": "S_WAIT_12H"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 40,
+    "step_id": "S_ZMX_LAMBDA_1"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 45,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 50,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 60,
+    "step_id": "S_ZMX_LAMBDA_2"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 70,
+    "step_id": "S_WAIT_24H_NO_CART"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 80,
+    "step_id": "S_ZMX_CORAZZANTE"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 85,
+    "step_id": "S_ZMX_Q_FINE"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 86,
+    "step_id": "S_ZMX_Q_MED"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 87,
+    "step_id": "S_ZMX_Q_GROSS"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 88,
+    "step_id": "S_ZMX_SPOLVERO"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 90,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_DIN",
+    "step_order": 100,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 10,
+    "step_id": "S_ZMX_ASPIRA"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 20,
+    "step_id": "S_ZMX_FONDO_150"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 30,
+    "step_id": "S_WAIT_12H"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 40,
+    "step_id": "S_ZMX_LAMBDA_1"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 45,
+    "step_id": "S_ARM_160"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 50,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 60,
+    "step_id": "S_ZMX_LAMBDA_2"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 70,
+    "step_id": "S_WAIT_24H_NO_CART"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 80,
+    "step_id": "S_ZMX_CORAZZANTE"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 85,
+    "step_id": "S_ZMX_Q_FINE"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 86,
+    "step_id": "S_ZMX_Q_MED"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 87,
+    "step_id": "S_ZMX_Q_GROSS"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 88,
+    "step_id": "S_ZMX_SPOLVERO"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 90,
+    "step_id": "S_WAIT_24H"
+  },
+  {
+    "rule_id": "F_ZMX_DOC",
+    "step_order": 100,
+    "step_id": "S_NOTE_CORAZZ_CAR_3640"
   }
 ]
