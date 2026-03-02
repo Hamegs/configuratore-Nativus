@@ -353,13 +353,16 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
 }
 
 // ─── Massetto doccia piatto NUOVO — linee extra nel carrello ─────────────────
+// Nota: il massetto epossidico (CRYSTEPO/MAS_EP) NON è gestito qui perché
+// il prodotto non è ancora configurato nel listino. Viene aggiunto da admin
+// quando la SKU è pronta. Qui si calcolano solo Fondo Base + RBQ + Rete 160
+// per la superficie del piatto, se i prodotti esistono in packaging-sku.
 function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[] {
   if (!state.presenza_doccia || state.doccia_piatto_type !== 'NUOVO') return [];
   const docArea = (state.doccia_larghezza ?? 0) * (state.doccia_lunghezza ?? 0);
   if (docArea <= 0) return [];
 
   const lines: CartLine[] = [];
-  const spessore_cm = 3; // default 3 cm
 
   // Fondo Base adesivo (150 g/m²)
   const fondoQtyKg = docArea * 0.15;
@@ -371,17 +374,7 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
     lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'FONDO_BASE', section: 'fondo', qty_raw: fondoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
-  // Massetto epossidico (18 kg/m²/cm) — product_id: MAS_EP → CRYSTEPO_3_7_25KG
-  const massettoQtyKg = docArea * 18 * spessore_cm;
-  const massettoSkus = store.packagingSku.filter(p => p.product_id === 'MAS_EP');
-  if (massettoSkus.length > 0) {
-    const best = massettoSkus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-    const qty = Math.ceil(massettoQtyKg / (best.pack_size ?? 1));
-    const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-    lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'MAS_EP', section: 'fondo', qty_raw: massettoQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
-  }
-
-  // Rasante Base Quarzo su massetto (2.2 kg/m²)
+  // Rasante Base Quarzo su piatto (2.2 kg/m²)
   const rbqQtyKg = docArea * 2.2;
   const rbqSkus = store.packagingSku.filter(p => p.product_id === 'RAS_BASE_Q');
   if (rbqSkus.length > 0) {
@@ -391,8 +384,8 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
     lines.push({ sku_id: best.sku_id, descrizione: best.descrizione_sku, qty, prezzo_unitario: price, totale: qty * price, product_id: 'RAS_BASE_Q', section: 'fondo', qty_raw: rbqQtyKg, pack_size: best.pack_size, pack_unit: best.pack_unit });
   }
 
-  // Rete 160 g/m² per il piatto (1 rotolo = 50 m, larghezza 1 m → 50 m²; sovrapposto +10%)
-  const reteMetri = docArea * 1.1; // m² → ml con +10% sovrapposizione
+  // Rete 160 g/m² (1 rotolo = 50 m × 1 m = 50 m²; +10% sovrapposizione)
+  const reteMetri = docArea * 1.1;
   const reteSkus = store.packagingSku.filter(p => p.product_id === 'RETE_160');
   if (reteSkus.length > 0) {
     const best = reteSkus[0];
