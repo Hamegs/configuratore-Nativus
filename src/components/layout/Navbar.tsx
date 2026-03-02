@@ -18,20 +18,24 @@ export function Navbar() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-brand-700 bg-brand-600 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-brand-700">Nativus</span>
-            <span className="hidden text-sm text-gray-400 sm:inline">Configuratore Ordini</span>
+            <span className="text-xl font-bold tracking-widest text-white uppercase">Nativus</span>
+            <span className="hidden text-xs text-brand-200 sm:inline font-light tracking-wide">Configuratore Ordini</span>
           </Link>
 
           {user && (
-            <nav className="hidden sm:flex items-center gap-1">
+            <nav className="hidden sm:flex items-center gap-0.5">
               <NavLink
                 to="/configuratore"
                 className={({ isActive }) =>
-                  `px-3 py-1.5 rounded text-sm font-medium transition-colors ${isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:text-gray-900'}`
+                  `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-brand-700 text-white'
+                      : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                  }`
                 }
               >
                 Configuratore
@@ -40,7 +44,11 @@ export function Navbar() {
                 <NavLink
                   to="/progetto"
                   className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:text-gray-900'}`
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-brand-700 text-white'
+                        : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
                   }
                 >
                   Progetto
@@ -50,7 +58,11 @@ export function Navbar() {
                 <NavLink
                   to="/admin"
                   className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:text-gray-900'}`
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-brand-700 text-white'
+                        : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
                   }
                 >
                   Admin
@@ -61,15 +73,18 @@ export function Navbar() {
         </div>
 
         {user && (
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              <span className="font-medium">{user.displayName}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-brand-100">
+              <span className="font-medium text-white">{user.displayName}</span>
               {' '}
-              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700">
+              <span className="rounded-full bg-sand-200 px-2 py-0.5 text-xs font-semibold text-brand-600">
                 {ROLE_LABELS[user.role] ?? user.role}
               </span>
             </span>
-            <button onClick={handleLogout} className="btn-secondary py-1.5 text-xs">
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center justify-center rounded-md border border-brand-300 bg-transparent px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 transition-colors"
+            >
               Esci
             </button>
           </div>
