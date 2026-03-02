@@ -207,7 +207,8 @@ export function buildQuestionsForSupport(
 }
 
 // Supports that use resolveCompRule (no DT entry needed — handled specially in cart-calculator)
-const SPECIAL_SUPPORTS = new Set(['F_PAR_RM', 'F_COMP', 'F_PAR_AS', 'F_PAR_EP']);
+const SPECIAL_SUPPORTS = new Set(['F_PAR_RM', 'F_PAR_AS', 'F_PAR_EP']);
+const HIDDEN_SUPPORTS = new Set(['F_COMP']);
 
 /**
  * Returns only the supporti that have at least one matching DT rule for the
@@ -225,6 +226,7 @@ export function getAvailableSupporti(
   if (!envId) return [];
   return supporti.filter(s => {
     if (s.macro_id !== macro) return false;
+    if (HIDDEN_SUPPORTS.has(s.support_id)) return false;
     if (SPECIAL_SUPPORTS.has(s.support_id)) return true;
     return decisionTable.some(r => {
       if (r.support_id !== s.support_id) return false;
