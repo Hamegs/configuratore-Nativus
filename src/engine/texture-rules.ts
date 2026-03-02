@@ -69,11 +69,25 @@ function findTexSku(
 }
 
 function priceOf(store: DataStore, sku_id: string): number {
-  return store.listino.find(l => l.sku_id === sku_id)?.prezzo_listino ?? 0;
+  const direct = store.listino.find(l => l.sku_id === sku_id);
+  if (direct) return direct.prezzo_listino;
+  const texEntry = store.texturePackagingSku.find(t => t.sku_id === sku_id);
+  if (texEntry?.product_id) {
+    return store.listino.find(l => l.sku_id === texEntry.product_id)?.prezzo_listino ?? 0;
+  }
+  return 0;
 }
 
 function descOf(store: DataStore, sku_id: string): string {
-  return store.packagingSku.find(p => p.sku_id === sku_id)?.descrizione_sku ?? sku_id;
+  const pkg = store.packagingSku.find(p => p.sku_id === sku_id);
+  if (pkg) return pkg.descrizione_sku;
+  const texEntry = store.texturePackagingSku.find(t => t.sku_id === sku_id);
+  if (texEntry?.product_id) {
+    const byProduct = store.packagingSku.find(p => p.sku_id === texEntry.product_id);
+    if (byProduct) return byProduct.descrizione_sku;
+    return texEntry.product_id.replace(/_/g, ' ');
+  }
+  return sku_id;
 }
 
 function addLine(
@@ -85,9 +99,11 @@ function addLine(
   note?: string,
 ) {
   if (!sku_id || qty <= 0) return;
+  const texEntry = store.texturePackagingSku.find(t => t.sku_id === sku_id);
+  const commercialId = texEntry?.product_id || sku_id;
   const price = priceOf(store, sku_id);
   lines.push({
-    sku_id,
+    sku_id: commercialId,
     descrizione: descOf(store, sku_id),
     qty,
     prezzo_unitario: price,

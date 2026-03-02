@@ -160,6 +160,7 @@ export function StepTexture() {
       {/* Colore 1 */}
       {['NATURAL', 'SENSE', 'DEKORA', 'CORLITE'].includes(texture_line ?? '') && (
         <ColorPickerSection
+          key={`color-primary-${texture_line}`}
           label="Colore principale *"
           line={texture_line!}
           value={color_primary}
@@ -170,6 +171,7 @@ export function StepTexture() {
       {/* Colore 2 — bicolor */}
       {(texture_style === 'ALIZEE_EVIDENCE_4' || texture_style === 'COR_EVIDENCE') && (
         <ColorPickerSection
+          key={`color-secondary-${texture_line}-${texture_style}`}
           label={texture_style === 'COR_EVIDENCE' ? 'Colore 2 CORLITE (diverso dal 1) *' : 'Colore contrasto Alizeè *'}
           line={texture_line!}
           value={color_secondary}
