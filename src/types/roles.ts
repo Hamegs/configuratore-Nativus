@@ -8,8 +8,8 @@ export const ROLE_TO_MODE: Record<string, ConfiguratorMode> = {
 };
 
 export const ROLE_TO_HOME: Record<string, string> = {
-  applicatore: '/applicatore',
-  rivenditore: '/rivenditore',
-  progettista: '/progettista',
-  admin: '/',
+  applicatore: '/progetto',
+  rivenditore: '/progetto',
+  progettista: '/progetto',
+  admin: '/progetto',
 };
