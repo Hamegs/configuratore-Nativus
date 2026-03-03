@@ -1,6 +1,0 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-
-export function ConfiguratorePage() {
-  return <Navigate to="/progetto" replace />;
-}
