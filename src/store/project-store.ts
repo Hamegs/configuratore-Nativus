@@ -4,11 +4,13 @@ import type { CartLine } from '../types/cart';
 import type { WizardState } from '../types/wizard-state';
 import type { CartResult } from '../engine/cart-calculator';
 import type { StepDefinition } from '../types/step';
-import { buildCartFromAggregated } from '../engine/packaging-optimizer';
+import { computePackagingOptions, bestOption } from '../engine/packaging-optimizer';
 import type { DataStore } from '../utils/data-loader';
 import { getCommercialName } from '../utils/product-names';
 import type { PackagedItem } from '../types/services';
 import { useCartStore } from './cart-store';
+import { computeTechnicalGroups, type TechnicalGroupEnriched } from '../services/technical';
+import { computePackagedItems } from '../services/packaging';
 
 const LS_KEY = 'nativus_project';
 
@@ -125,6 +127,106 @@ function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
   return Array.from(map.values());
 }
 
+type GroupWithRooms = TechnicalGroupEnriched & { _from_rooms: string[] };
+
+function buildCartFromRooms(
+  rooms: ProjectRoom[],
+  store: DataStore,
+  strategy: PackagingStrategy,
+): ProjectCartRow[] {
+  const configured = rooms.filter(r => r.is_configured && r.wizard_state);
+  if (configured.length === 0) return [];
+
+  const texById = new Map<string, GroupWithRooms>();
+  const nonTexById = new Map<string, { product_id: string; section: CartLine['section']; qty_raw: number; from_rooms: string[]; nomeCommerciale: string }>();
+
+  for (const room of configured) {
+    const roomName = room.custom_name || room.room_type;
+    let groups: TechnicalGroupEnriched[];
+    try {
+      groups = computeTechnicalGroups(room.wizard_state!, store);
+    } catch {
+      continue;
+    }
+    for (const g of groups) {
+      if (g.section === 'texture') {
+        const existing = texById.get(g.id);
+        if (existing) {
+          existing.qty_raw += g.qty_raw;
+          if (!existing._from_rooms.includes(roomName)) existing._from_rooms.push(roomName);
+        } else {
+          texById.set(g.id, { ...g, _from_rooms: [roomName] });
+        }
+      } else {
+        const key = `${g.product_id}::${g.section}::${g.destination ?? ''}`;
+        const existing = nonTexById.get(key);
+        if (existing) {
+          existing.qty_raw += g.qty_raw;
+          if (!existing.from_rooms.includes(roomName)) existing.from_rooms.push(roomName);
+        } else {
+          nonTexById.set(key, {
+            product_id: g.product_id,
+            section: g.section as CartLine['section'],
+            qty_raw: g.qty_raw,
+            from_rooms: [roomName],
+            nomeCommerciale: g.nomeCommerciale,
+          });
+        }
+      }
+    }
+  }
+
+  const texGroups = Array.from(texById.values());
+  const fromRoomsMap = new Map<string, string[]>();
+  for (const g of texGroups) {
+    fromRoomsMap.set(`${g.product_id}::${g.destination ?? ''}`, g._from_rooms);
+  }
+  const texItems = computePackagedItems(texGroups, store, strategy);
+  const texRows: ProjectCartRow[] = texItems.map(item => ({
+    row_id: item.row_id,
+    product_id: item.product_id ?? null,
+    sku_id: item.sku_id,
+    descrizione: item.description,
+    qty_packs: item.qty_packs,
+    pack_size: item.pack_size,
+    pack_unit: item.pack_unit,
+    prezzo_unitario: item.prezzo_unitario,
+    totale: item.totale,
+    source: 'auto' as const,
+    status: 'active' as const,
+    is_override: false,
+    section: item.section as CartLine['section'],
+    from_rooms: fromRoomsMap.get(`${item.product_id}::${item.destination ?? ''}`) ?? [],
+  }));
+
+  const nonTexRows: ProjectCartRow[] = [];
+  for (const [, agg] of nonTexById) {
+    const skus = store.packagingSku.filter(s => s.product_id === agg.product_id);
+    if (skus.length === 0) continue;
+    const opts = computePackagingOptions(agg.qty_raw, skus, store.listino);
+    const best = bestOption(opts, strategy);
+    if (!best) continue;
+    nonTexRows.push({
+      row_id: crypto.randomUUID(),
+      product_id: agg.product_id ?? null,
+      sku_id: best.sku_id,
+      descrizione: agg.nomeCommerciale,
+      qty_packs: best.qty_packs,
+      pack_size: best.pack_size,
+      pack_unit: best.pack_unit,
+      prezzo_unitario: best.prezzo_unitario,
+      totale: best.totale,
+      source: 'auto' as const,
+      status: 'active' as const,
+      is_override: false,
+      section: agg.section,
+      from_rooms: agg.from_rooms,
+    });
+  }
+
+  return [...nonTexRows, ...texRows];
+}
+
 function makeLogEntry(
   partial: Omit<ConfigLogEntry, 'id' | 'timestamp'>
 ): ConfigLogEntry {
@@ -182,8 +284,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
     // Auto-rebuild cart immediately (full reset)
     const currentStrategy = get().strategy;
-    const aggregated = aggregate(get().rooms);
-    const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, currentStrategy);
+    const rows = buildCartFromRooms(get().rooms, store, currentStrategy);
     set({ cart: rows, cart_built: true });
     // Sync cart-store with the newly built aggregated cart
     const packaged: PackagedItem[] = rows.map(row => ({
@@ -221,8 +322,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   buildCart: (store, strategy?) => {
     const s = strategy ?? get().strategy;
-    const aggregated = aggregate(get().rooms);
-    const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, s);
+    const rows = buildCartFromRooms(get().rooms, store, s);
     set({ cart: rows, strategy: s, cart_built: true });
     get().persist();
   },
@@ -233,8 +333,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       get().persist();
       return;
     }
-    const aggregated = aggregate(get().rooms);
-    const autoRows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, strategy);
+    const autoRows = buildCartFromRooms(get().rooms, store, strategy);
     const manual = get().cart.filter(r => r.source === 'manual');
     const merged = [...autoRows, ...manual];
     set({ strategy, cart: merged, cart_built: true });
@@ -378,7 +477,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
           step_lavorazioni: r.step_lavorazioni ?? [],
           computation_errors: r.computation_errors ?? [],
         }));
-        set(parsed as ProjectState);
+        set({ ...parsed as ProjectState, cart_built: false });
       }
     } catch { /* noop */ }
   },
