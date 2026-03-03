@@ -1,6 +1,7 @@
 import type { DataStore } from '../utils/data-loader';
 import type { CartLine, CartFee, CartHardNote, CartSummary, CartProcedureStep, RawCartLine } from '../types/cart';
 import type { TextureInput } from './texture-rules';
+import { packageLines } from './raw-cart-engine';
 import type { WizardState } from '../types/wizard-state';
 import { matchDecisionTable, buildRuleInputFromWizard, resolveCompRule } from './decision-table';
 import { resolveStepsForRule } from './step-resolver';
@@ -71,7 +72,19 @@ export function computeFullCart(
   type TexLine = import('../types/enums').TextureLineId;
 
   // ─── Piastrella con tracce — riempimento pre-procedura ────────────────────
-  all_lines.push(...computeTracceLines(store, state));
+  const tracceLines = computeTracceLines(store, state);
+  all_lines.push(...tracceLines);
+  // Collect tracce raw (section fondo — excluded from end-scan which skips fondo)
+  tracceLines.filter(l => l.product_id).forEach(l => {
+    all_raw_lines.push({
+      environment_id: '__room__',
+      product_id: l.product_id!,
+      qty_raw: l.qty_raw ?? l.qty * (l.pack_size ?? 1),
+      section: l.section,
+      pack_unit: l.pack_unit ?? 'kg',
+      descrizione: l.descrizione,
+    });
+  });
 
   // ─── Risolvi procedura pavimento ──────────────────────────────────────────
   let procedure_floor: import('./step-resolver').ResolvedProcedure | null = null;
@@ -102,25 +115,15 @@ export function computeFullCart(
           steps: applyPreparationUpgrade(store, procedure_floor.steps, state, state.mq_pavimento),
         };
         procedure_floor.steps.forEach(step => {
-          if (step.product_id && step.qty_total !== undefined) {
-            const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
-            if (skus.length > 0) {
-              const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-              const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
-              const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-              all_lines.push({
-                sku_id: best.sku_id,
-                descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
-                qty,
-                prezzo_unitario: price,
-                totale: qty * price,
-                product_id: step.product_id,
-                section: 'fondo',
-                qty_raw: step.qty_total,
-                pack_size: best.pack_size,
-                pack_unit: best.pack_unit,
-              });
-            }
+          if (step.product_id && (step.qty_total ?? 0) > 0) {
+            all_raw_lines.push({
+              environment_id: '__room__',
+              product_id: step.product_id,
+              qty_raw: step.qty_total!,
+              section: 'fondo',
+              pack_unit: step.unit ?? 'kg',
+              descrizione: getCommercialName(step.product_id) ?? step.product_id,
+            });
           }
         });
       } catch (err) {
@@ -152,25 +155,15 @@ export function computeFullCart(
           steps: applyPreparationUpgrade(store, procedure_wall.steps, state, state.mq_pareti),
         };
         procedure_wall.steps.forEach(step => {
-          if (step.product_id && step.qty_total !== undefined) {
-            const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
-            if (skus.length > 0) {
-              const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-              const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
-              const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-              all_lines.push({
-                sku_id: best.sku_id,
-                descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
-                qty,
-                prezzo_unitario: price,
-                totale: qty * price,
-                product_id: step.product_id,
-                section: 'fondo',
-                qty_raw: step.qty_total,
-                pack_size: best.pack_size,
-                pack_unit: best.pack_unit,
-              });
-            }
+          if (step.product_id && (step.qty_total ?? 0) > 0) {
+            all_raw_lines.push({
+              environment_id: '__room__',
+              product_id: step.product_id,
+              qty_raw: step.qty_total!,
+              section: 'fondo',
+              pack_unit: step.unit ?? 'kg',
+              descrizione: getCommercialName(step.product_id) ?? step.product_id,
+            });
           }
         });
       } catch (err) {
@@ -181,6 +174,10 @@ export function computeFullCart(
       }
     }
   }
+
+  // ─── Package fondo (floor + wall) — unico punto Math.ceil per preparazione ─
+  // floor/wall raw lines già in all_raw_lines, ora producono CartLine per display
+  all_lines.push(...packageLines(store, all_raw_lines.filter(l => l.section === 'fondo'), 'CONFEZIONI_GRANDI'));
 
   // ─── Texture ─────────────────────────────────────────────────────────────
   // Modello multi-superficie: calcola per ogni Surface; fallback singola texture se surfaces è vuoto.
@@ -338,7 +335,19 @@ export function computeFullCart(
   }
 
   // ─── Massetto doccia piatto NUOVO ────────────────────────────────────────
-  all_lines.push(...buildDocciaPiattoLines(store, state));
+  const docciaLines = buildDocciaPiattoLines(store, state);
+  all_lines.push(...docciaLines);
+  // Collect doccia raw (section fondo — excluded from end-scan)
+  docciaLines.filter(l => l.product_id).forEach(l => {
+    all_raw_lines.push({
+      environment_id: '__room__',
+      product_id: l.product_id!,
+      qty_raw: l.qty_raw ?? l.qty * (l.pack_size ?? 1),
+      section: l.section,
+      pack_unit: l.pack_unit ?? 'kg',
+      descrizione: l.descrizione,
+    });
+  });
 
   // ─── Consolidamento righe duplicate (stesso sku_id nella stessa section) ──
   const consolidated = consolidateLines(all_lines);
@@ -351,7 +360,8 @@ export function computeFullCart(
   // Per fondo/protettivi/din/speciale usiamo qty_raw già impostato in each CartLine.
   console.log('[computeFullCart] RAW texture lines collected:', all_raw_lines.filter(l => l.section === 'texture').length);
   for (const line of all_lines) {
-    if (line.section === 'texture' || !line.product_id) continue;
+    // fondo già raccolto esplicitamente dai procedure steps (floor/wall); skip per evitare duplicati
+    if (line.section === 'texture' || line.section === 'fondo' || !line.product_id) continue;
     const qty_raw = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
     all_raw_lines.push({
       environment_id: '__room__',
@@ -600,23 +610,15 @@ function pushLine(
   section: CartLine['section'],
 ): void {
   if (kgTotal <= 0) return;
-  const skus = store.packagingSku.filter(p => p.product_id === product_id);
-  if (skus.length === 0) return;
-  const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-  const qty = Math.ceil(kgTotal / (best.pack_size ?? 1));
-  const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-  lines.push({
-    sku_id: best.sku_id,
-    descrizione: getCommercialName(product_id) ?? best.descrizione_sku,
-    qty,
-    prezzo_unitario: price,
-    totale: qty * price,
+  const raw: RawCartLine = {
+    environment_id: '__room__',
     product_id,
-    section,
     qty_raw: kgTotal,
-    pack_size: best.pack_size,
-    pack_unit: best.pack_unit,
-  });
+    section,
+    pack_unit: 'kg',
+    descrizione: getCommercialName(product_id) ?? product_id,
+  };
+  lines.push(...packageLines(store, [raw], 'CONFEZIONI_GRANDI'));
 }
 
 /**
@@ -669,32 +671,17 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
   if (docArea <= 0) return [];
 
   const proc = resolveStepsForRule(store, 'PIATTO_DOCCIA_NUOVO', 'FLOOR', docArea);
-  const lines: CartLine[] = [];
-
-  proc.steps.forEach(step => {
-    if (step.product_id && step.qty_total !== undefined) {
-      const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
-      if (skus.length > 0) {
-        const best = skus.sort((a, b) => (b.pack_size ?? 0) - (a.pack_size ?? 0))[0];
-        const qty = Math.ceil(step.qty_total / (best.pack_size ?? 1));
-        const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
-        lines.push({
-          sku_id: best.sku_id,
-          descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
-          qty,
-          prezzo_unitario: price,
-          totale: qty * price,
-          product_id: step.product_id,
-          section: 'fondo',
-          qty_raw: step.qty_total,
-          pack_size: best.pack_size,
-          pack_unit: best.pack_unit,
-        });
-      }
-    }
-  });
-
-  return lines;
+  const rawLines: RawCartLine[] = proc.steps
+    .filter(step => step.product_id && (step.qty_total ?? 0) > 0)
+    .map(step => ({
+      environment_id: '__room__',
+      product_id: step.product_id!,
+      qty_raw: step.qty_total!,
+      section: 'fondo' as CartLine['section'],
+      pack_unit: step.unit ?? 'kg',
+      descrizione: getCommercialName(step.product_id!) ?? step.product_id!,
+    }));
+  return packageLines(store, rawLines, 'CONFEZIONI_GRANDI');
 }
 
 function stripZoneLabel(desc: string): string {

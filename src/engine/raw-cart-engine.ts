@@ -89,7 +89,9 @@ export function consolidateRawGlobal(rawLines: RawCartLine[]): RawCartLine[] {
         texMap.set(key, { ...line, environment_id: 'global' });
       }
     } else {
-      const key = `${line.product_id}::${line.section}::${line.destination ?? ''}`;
+      // Global merge: destination is intentionally ignored so identical products
+      // across rooms (e.g. same rasante in Pavimento vs Parete) are summed.
+      const key = `${line.product_id}::${line.section}`;
       const existing = nonTexMap.get(key);
       if (existing) {
         existing.qty_raw += line.qty_raw;
@@ -166,6 +168,7 @@ export function packageLines(
       console.warn('[packageLines] qty_raw ≤ 0 for:', raw.product_id);
       continue;
     }
+    console.log('[PACKAGING] product:', raw.product_id, 'qty_raw:', raw.qty_raw);
     const validSkus = store.packagingSku.filter(
       s => s.product_id === raw.product_id && (s.pack_size ?? 0) > 0,
     );
@@ -175,6 +178,7 @@ export function packageLines(
     }
     const opts = computePackagingOptions(raw.qty_raw, validSkus, store.listino);
     const best = bestOption(opts, strategy);
+    console.log('[PACKAGING RESULT]', best);
     if (!best) continue;
 
     result.push({
