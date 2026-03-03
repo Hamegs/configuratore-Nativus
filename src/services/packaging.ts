@@ -18,7 +18,22 @@ export function computePackagedItems(
     if (group.section !== 'texture') continue;
     if (!group._textureCartLines) continue;
 
-    for (const line of group._textureCartLines) {
+    let textureLines = group._textureCartLines;
+
+    if (mode === 'CONFEZIONI_GRANDI') {
+      const maxPackSize = Math.max(0, ...textureLines.map(l => l.pack_size ?? 0));
+      if (maxPackSize > 0) {
+        textureLines = textureLines
+          .filter(l => (l.pack_size ?? 0) === 0 || (l.pack_size ?? 0) >= maxPackSize)
+          .map(l => {
+            if (!l.pack_size) return l;
+            const newQty = Math.ceil(group.qty_raw / l.pack_size);
+            return { ...l, qty: newQty, totale: newQty * l.prezzo_unitario };
+          });
+      }
+    }
+
+    for (const line of textureLines) {
       items.push({
         row_id: crypto.randomUUID(),
         product_id: group.product_id,
