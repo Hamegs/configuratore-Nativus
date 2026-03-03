@@ -739,7 +739,7 @@
   },
   {
     "sku_id": "PROTEGGO_FIX_H2O_2_5LT",
-    "product_id": "PROTEGGO_FIX_H2O_2",
+    "product_id": "PROTEGGO_FIX_H2O",
     "descrizione_sku": "PROTEGGO FIX H2O",
     "pack_size": 5,
     "pack_unit": "lt",
@@ -757,7 +757,7 @@
   },
   {
     "sku_id": "PROTEGGO_OPACO_H20_2_5_5KG",
-    "product_id": "PROTEGGO_OPACO_H20_2",
+    "product_id": "PROTEGGO_OPACO_H20",
     "descrizione_sku": "PROTEGGO OPACO H20",
     "pack_size": 5.5,
     "pack_unit": "kg",
@@ -775,7 +775,7 @@
   },
   {
     "sku_id": "PROTEGGO_LUCIDO_H20_2_4_5KG",
-    "product_id": "PROTEGGO_LUCIDO_H20_2",
+    "product_id": "PROTEGGO_LUCIDO_H20",
     "descrizione_sku": "PROTEGGO LUCIDO H20",
     "pack_size": 4.5,
     "pack_unit": "kg",
@@ -793,7 +793,7 @@
   },
   {
     "sku_id": "PROTEGGO_FIX_S_2_4_95KG",
-    "product_id": "PROTEGGO_FIX_S_2",
+    "product_id": "PROTEGGO_FIX_S",
     "descrizione_sku": "PROTEGGO FIX S",
     "pack_size": 4.95,
     "pack_unit": "kg",
@@ -820,7 +820,7 @@
   },
   {
     "sku_id": "PROTEGGO_OPACO_S_2_6KG",
-    "product_id": "PROTEGGO_OPACO_S_2",
+    "product_id": "PROTEGGO_OPACO_S",
     "descrizione_sku": "PROTEGGO OPACO S",
     "pack_size": 6,
     "pack_unit": "kg",
@@ -838,7 +838,7 @@
   },
   {
     "sku_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2_4_5KG",
-    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL_2",
+    "product_id": "PROTEGGO_COLOR_OPACO_H20_COLORE_NATURAL",
     "descrizione_sku": "PROTEGGO COLOR OPACO H20 COLORE NATURAL",
     "pack_size": 4.5,
     "pack_unit": "kg",
