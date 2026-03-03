@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useWizardStore } from '../../store/wizard-store';
 import { computeFullCart } from '../../engine/cart-calculator';
-import { buildCartFromAggregated } from '../../engine/packaging-optimizer';
+import { computeTechnicalGroups } from '../../services/technical';
+import { computePackagedItems } from '../../services/packaging';
+import { useCartStore } from '../../store/cart-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { formatEur } from '../../utils/format';
 import { StepHeader, StepNavigation } from './StepAmbiente';
 import type { CartResult } from '../../engine/cart-calculator';
-import type { PackagingStrategy, ProjectCartRow, AggregatedRawQty } from '../../types/project';
-import type { CartLine } from '../../types/cart';
+import type { PackagingStrategy } from '../../types/project';
+import type { PackagedItem } from '../../types/services';
+import type { TechnicalGroupEnriched } from '../../services/technical';
 
 interface StepCartProps {
   onComplete: (result: CartResult, strategy: PackagingStrategy) => void;
@@ -26,24 +29,29 @@ const STRATEGIES: {
 ];
 
 const SECTION_LABELS: Record<string, string> = {
-  SUPPORTO:   'A • Preparazione supporto',
-  TEXTURE:    'B • Texture',
-  PROTETTIVO: 'C • Protettivo',
-  DIN:        'DIN 18534',
+  fondo:      'A • Preparazione supporto',
+  texture:    'B • Texture',
+  protettivi: 'C • Protettivo',
+  din:        'DIN 18534',
+  speciale:   'Speciali',
 };
-const SECTION_ORDER = ['SUPPORTO', 'TEXTURE', 'PROTETTIVO', 'DIN'];
+const SECTION_ORDER = ['fondo', 'texture', 'protettivi', 'din', 'speciale'];
 
 export function StepCart({ onComplete }: StepCartProps) {
   const state = useWizardStore();
   const store = loadDataStore();
+  const { setItems: setCartItems } = useCartStore();
 
-  const [strategy, setStrategy]     = useState<PackagingStrategy>('MINIMO_SFRIDO');
-  const [cartResult, setCartResult] = useState<CartResult | null>(null);
-  const [error, setError]           = useState<string | null>(null);
+  const [strategy, setStrategy]       = useState<PackagingStrategy>('MINIMO_SFRIDO');
+  const [cartResult, setCartResult]   = useState<CartResult | null>(null);
+  const [groups, setGroups]           = useState<TechnicalGroupEnriched[]>([]);
+  const [error, setError]             = useState<string | null>(null);
 
   useEffect(() => {
     setError(null);
     try {
+      const g = computeTechnicalGroups(state, store);
+      setGroups(g);
       setCartResult(computeFullCart(store, state));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Errore calcolo carrello');
@@ -51,38 +59,28 @@ export function StepCart({ onComplete }: StepCartProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const aggregated = useMemo((): AggregatedRawQty[] => {
-    if (!cartResult) return [];
-    return cartResult.summary.lines.map((line: CartLine) => ({
-      product_id: line.product_id ?? line.sku_id,
-      sku_id_default: line.sku_id,
-      descrizione: line.descrizione,
-      qty_raw: line.qty_raw ?? line.qty,
-      pack_size_default: line.pack_size ?? 1,
-      pack_unit: line.pack_unit ?? 'kg',
-      section: line.section,
-      from_rooms: [],
-    }));
-  }, [cartResult]);
+  const items: PackagedItem[] = useMemo(() => {
+    if (groups.length === 0) return [];
+    try {
+      const computed = computePackagedItems(groups, store, strategy);
+      setCartItems(computed);
+      return computed;
+    } catch (e) {
+      return [];
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups, strategy]);
 
-  const rows: ProjectCartRow[] = useMemo(
-    () => (aggregated.length > 0
-      ? buildCartFromAggregated(aggregated, store.packagingSku, store.listino, strategy)
-      : []),
-    [aggregated, strategy]
-  );
-
-  const rowsBySection = useMemo(() => {
-    const map: Partial<Record<string, ProjectCartRow[]>> = {};
-    for (const row of rows) {
-      const sec = (row as ProjectCartRow & { section?: string }).section ?? 'SUPPORTO';
-      if (!map[sec]) map[sec] = [];
-      map[sec]!.push(row);
+  const itemsBySection = useMemo(() => {
+    const map: Partial<Record<string, PackagedItem[]>> = {};
+    for (const item of items) {
+      if (!map[item.section]) map[item.section] = [];
+      map[item.section]!.push(item);
     }
     return map;
-  }, [rows]);
+  }, [items]);
 
-  const total  = rows.reduce((acc, r) => acc + r.totale, 0);
+  const total  = items.reduce((acc, i) => acc + i.totale, 0);
   const alerts = cartResult?.computation_errors ?? [];
 
   function handleConfirm() {
@@ -129,13 +127,13 @@ export function StepCart({ onComplete }: StepCartProps) {
       </div>
 
       {/* ── Cart lines by section ────────────────────────────────────────── */}
-      {rows.length === 0 && !error && (
+      {items.length === 0 && !error && (
         <div className="card p-6 text-center text-sm text-brand-400">
           Nessun materiale calcolato. Verifica la configurazione nel Riepilogo tecnico.
         </div>
       )}
 
-      {SECTION_ORDER.filter(sec => (rowsBySection[sec]?.length ?? 0) > 0).map(sec => (
+      {SECTION_ORDER.filter(sec => (itemsBySection[sec]?.length ?? 0) > 0).map(sec => (
         <div key={sec} className="card overflow-hidden">
           <div className="tbl-head">{SECTION_LABELS[sec] ?? sec}</div>
           <table className="w-full text-sm">
@@ -148,19 +146,22 @@ export function StepCart({ onComplete }: StepCartProps) {
               </tr>
             </thead>
             <tbody>
-              {(rowsBySection[sec] ?? []).map(row => (
-                <tr key={row.row_id} className="tbl-row">
+              {(itemsBySection[sec] ?? []).map(item => (
+                <tr key={item.row_id} className="tbl-row">
                   <td className="px-4 py-3">
-                    <p className="font-medium text-brand-800">{row.descrizione}</p>
+                    <p className="font-medium text-brand-800">{item.nomeCommerciale}</p>
+                    {item.description !== item.nomeCommerciale && (
+                      <p className="text-xs text-brand-500 mt-0.5">{item.description}</p>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right font-semibold text-brand-700">
-                    {row.qty_packs} × {row.pack_size} {row.pack_unit}
+                    {item.qty_packs} × {item.pack_size} {item.pack_unit}
                   </td>
                   <td className="px-4 py-3 text-right text-brand-600 hidden sm:table-cell">
-                    {row.prezzo_unitario > 0 ? formatEur(row.prezzo_unitario) : '—'}
+                    {item.prezzo_unitario > 0 ? formatEur(item.prezzo_unitario) : '—'}
                   </td>
                   <td className="px-4 py-3 text-right font-bold price-text">
-                    {row.totale > 0 ? formatEur(row.totale) : '—'}
+                    {item.totale > 0 ? formatEur(item.totale) : '—'}
                   </td>
                 </tr>
               ))}
@@ -170,7 +171,7 @@ export function StepCart({ onComplete }: StepCartProps) {
       ))}
 
       {/* ── Totale ──────────────────────────────────────────────────────── */}
-      {rows.length > 0 && (
+      {items.length > 0 && (
         <div className="flex justify-end rounded-xl border-2 border-brand-600 bg-brand-50 px-6 py-4">
           <div className="text-right">
             <p className="text-xs text-brand-500">
@@ -184,7 +185,7 @@ export function StepCart({ onComplete }: StepCartProps) {
 
       <StepNavigation
         canGoBack
-        canGoNext={!!cartResult && rows.length > 0}
+        canGoNext={!!cartResult && items.length > 0}
         nextLabel="Aggiungi al Carrello Progetto"
         onNext={handleConfirm}
       />
