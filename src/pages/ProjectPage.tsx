@@ -17,10 +17,9 @@ export function ProjectPage() {
     hydrate();
   }, []);
 
-  // Se ci sono ambienti configurati ma il carrello non è ancora stato costruito, costruiscilo silenziosamente
+  // Ricostruisce (o svuota) il carrello ogni volta che cart_built diventa false
   useEffect(() => {
-    const configuredCount = rooms.filter(r => r.is_configured).length;
-    if (configuredCount > 0 && !cart_built) {
+    if (!cart_built) {
       const store = loadDataStore();
       buildCart(store);
     }
