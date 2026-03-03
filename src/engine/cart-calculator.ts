@@ -9,6 +9,7 @@ import { computeDinCart, buildDinInputsFromWizard } from './din-calculator';
 import { DataError } from './errors';
 import { effectiveAmbiente, isEffectiveShower } from './effective-ambiente';
 import { getCommercialName } from '../utils/product-names';
+import { applyTextureTechnicalModifiers } from './texture-technical-modifiers';
 
 export interface CartResult {
   summary: CartSummary;
@@ -85,6 +86,13 @@ export function computeFullCart(
           rule = matchDecisionTable(store.decisionTable, input);
         }
         procedure_floor = resolveStepsForRule(store, rule.rule_id, 'FLOOR', state.mq_pavimento, buildStepOverrides(state));
+        const floorTexLine = (state.surfaces.find(s => s.type === 'FLOOR')?.texture_line ?? state.texture_line) as TexLine | null;
+        if (floorTexLine) {
+          procedure_floor = {
+            ...procedure_floor,
+            steps: applyTextureTechnicalModifiers(store, procedure_floor.steps, floorTexLine, state.mq_pavimento),
+          };
+        }
         procedure_floor.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -124,6 +132,13 @@ export function computeFullCart(
       try {
         const rule = matchDecisionTable(store.decisionTable, input);
         procedure_wall = resolveStepsForRule(store, rule.rule_id, 'WALL', state.mq_pareti, buildStepOverrides(state));
+        const wallTexLine = (state.surfaces.find(s => s.type === 'WALL_PART')?.texture_line ?? state.texture_line) as TexLine | null;
+        if (wallTexLine) {
+          procedure_wall = {
+            ...procedure_wall,
+            steps: applyTextureTechnicalModifiers(store, procedure_wall.steps, wallTexLine, state.mq_pareti),
+          };
+        }
         procedure_wall.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -423,7 +438,11 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
           rule = matchDecisionTable(store.decisionTable, input);
         }
         const proc = resolveStepsForRule(store, rule.rule_id, 'FLOOR', 1, buildStepOverrides(state));
-        proc.steps.forEach(s => {
+        const floorTexLineSchedule = state.texture_line;
+        const modifiedProcFloor = floorTexLineSchedule
+          ? { ...proc, steps: applyTextureTechnicalModifiers(store, proc.steps, floorTexLineSchedule, 1) }
+          : proc;
+        modifiedProcFloor.steps.forEach(s => {
           if (s.name) prepFloor.push({ name: s.name, step_order: s.step_order });
         });
       } catch { /* noop — errore già gestito in computeFullCart */ }
@@ -436,7 +455,11 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
       try {
         const rule = matchDecisionTable(store.decisionTable, input);
         const proc = resolveStepsForRule(store, rule.rule_id, 'WALL', 1, buildStepOverrides(state));
-        proc.steps.forEach(s => {
+        const wallTexLineSchedule = state.texture_line;
+        const modifiedProcWall = wallTexLineSchedule
+          ? { ...proc, steps: applyTextureTechnicalModifiers(store, proc.steps, wallTexLineSchedule, 1) }
+          : proc;
+        modifiedProcWall.steps.forEach(s => {
           if (s.name) prepWall.push({ name: s.name, step_order: s.step_order });
         });
       } catch { /* noop */ }
