@@ -15,28 +15,44 @@ export function computePackagedItems(
 ): PackagedItem[] {
   const items: PackagedItem[] = [];
 
+  type TexAgg = {
+    totalArea: number;
+    baseInput: NonNullable<TechnicalGroupEnriched['_textureInput']>;
+    line: string;
+  };
+  const texAggMap = new Map<string, TexAgg>();
   for (const group of groups) {
     if (group.section !== 'texture') continue;
-    if (!group._textureCartLines) continue;
+    if (!group._textureInput) continue;
+    const lineId = group.texture_line ?? group.product_id;
+    const key = `${lineId}::${group._textureInput.style ?? ''}::${group.color_label ?? ''}`;
+    const existing = texAggMap.get(key);
+    if (existing) {
+      existing.totalArea += group.qty_raw;
+    } else {
+      texAggMap.set(key, { totalArea: group.qty_raw, baseInput: group._textureInput, line: lineId });
+    }
+  }
 
-    let textureLines = group._textureCartLines;
+  for (const [, agg] of texAggMap) {
+    const combinedInput = { ...agg.baseInput, area_mq: agg.totalArea, zone_label: undefined };
+    let textureLines = computeTextureCart(store, combinedInput).cart_lines;
 
-    if (mode === 'CONFEZIONI_GRANDI' && group._textureInput) {
-      const lineId = group.texture_line ?? group.product_id;
+    if (mode === 'CONFEZIONI_GRANDI') {
       const maxPossiblePack = Math.max(
         0,
         ...store.texturePackagingSku
-          .filter(t => t.line_id === lineId && (t.pack_size_mq ?? 0) > 0)
+          .filter(t => t.line_id === agg.line && (t.pack_size_mq ?? 0) > 0)
           .map(t => t.pack_size_mq as number),
       );
       if (maxPossiblePack > 0) {
-        const nLarge = Math.ceil(group.qty_raw / maxPossiblePack);
+        const nLarge = Math.ceil(agg.totalArea / maxPossiblePack);
         const adjustedArea = nLarge * maxPossiblePack;
-        const recomputed = computeTextureCart(store, { ...group._textureInput, area_mq: adjustedArea });
+        const recomputed = computeTextureCart(store, { ...combinedInput, area_mq: adjustedArea });
         textureLines = recomputed.cart_lines
           .filter(l => (l.pack_size ?? 0) >= maxPossiblePack)
           .map(l => {
-            const newQty = Math.ceil(group.qty_raw / l.pack_size!);
+            const newQty = Math.ceil(agg.totalArea / l.pack_size!);
             return { ...l, qty: newQty, totale: newQty * l.prezzo_unitario };
           });
       }
@@ -45,11 +61,11 @@ export function computePackagedItems(
     for (const line of textureLines) {
       items.push({
         row_id: crypto.randomUUID(),
-        product_id: group.product_id,
+        product_id: agg.line,
         sku_id: line.sku_id,
         nomeCommerciale: line.descrizione,
         description: line.descrizione,
-        destination: group.destination,
+        destination: null,
         section: 'texture',
         qty_packs: line.qty,
         pack_size: line.pack_size ?? 0,

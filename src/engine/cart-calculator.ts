@@ -257,7 +257,11 @@ export function computeFullCart(
       // TRASPARENTE: calcolo unico sull'area totale
       const protSel: import('../types/protettivi').ProtettivoSelection = {
         ...state.protettivo,
-        finitura: state.finish_type === 'LUCIDO' ? 'LUCIDO' : (state.protettivo.finitura ?? 'OPACO'),
+        finitura: state.finish_type === 'LUCIDO'
+        ? 'LUCIDO'
+        : (state.protettivo.finitura === 'OPACO' || state.protettivo.finitura === 'LUCIDO'
+            ? state.protettivo.finitura
+            : 'OPACO'),
       };
       const protResult = computeProtettiviCart(store, protSel, primaryTexLine, texArea, usoSup);
       all_lines.push(...protResult.cart_lines);
