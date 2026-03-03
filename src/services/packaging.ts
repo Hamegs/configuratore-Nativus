@@ -3,6 +3,7 @@ import type { PackagedItem, ServiceSection } from '../types/services';
 import type { PackagingStrategy } from '../types/project';
 import type { TechnicalGroupEnriched } from './technical';
 import { computePackagingOptions, bestOption } from '../engine/packaging-optimizer';
+import { computeTextureCart } from '../engine/texture-rules';
 import { DataError } from '../engine/errors';
 import { getCommercialName } from '../utils/product-names';
 
@@ -20,14 +21,22 @@ export function computePackagedItems(
 
     let textureLines = group._textureCartLines;
 
-    if (mode === 'CONFEZIONI_GRANDI') {
-      const maxPackSize = Math.max(0, ...textureLines.map(l => l.pack_size ?? 0));
-      if (maxPackSize > 0) {
-        textureLines = textureLines
-          .filter(l => (l.pack_size ?? 0) === 0 || (l.pack_size ?? 0) >= maxPackSize)
+    if (mode === 'CONFEZIONI_GRANDI' && group._textureInput) {
+      const lineId = group.texture_line ?? group.product_id;
+      const maxPossiblePack = Math.max(
+        0,
+        ...store.texturePackagingSku
+          .filter(t => t.line_id === lineId && (t.pack_size_mq ?? 0) > 0)
+          .map(t => t.pack_size_mq as number),
+      );
+      if (maxPossiblePack > 0) {
+        const nLarge = Math.ceil(group.qty_raw / maxPossiblePack);
+        const adjustedArea = nLarge * maxPossiblePack;
+        const recomputed = computeTextureCart(store, { ...group._textureInput, area_mq: adjustedArea });
+        textureLines = recomputed.cart_lines
+          .filter(l => (l.pack_size ?? 0) >= maxPossiblePack)
           .map(l => {
-            if (!l.pack_size) return l;
-            const newQty = Math.ceil(group.qty_raw / l.pack_size);
+            const newQty = Math.ceil(group.qty_raw / l.pack_size!);
             return { ...l, qty: newQty, totale: newQty * l.prezzo_unitario };
           });
       }
