@@ -278,7 +278,13 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
 
   removeRoom: (id) => {
-    set(s => ({ rooms: s.rooms.filter(r => r.id !== id), cart_built: false }));
+    const remaining = get().rooms.filter(r => r.id !== id && r.is_configured);
+    set(s => ({
+      rooms: s.rooms.filter(r => r.id !== id),
+      cart: [],
+      cart_built: remaining.length > 0 ? false : true,
+    }));
+    useCartStore.getState().setItems([]);
     get().persist();
   },
 
