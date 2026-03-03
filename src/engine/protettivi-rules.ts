@@ -38,6 +38,10 @@ function packQty(store: DataStore, sku_id: string, total_kg: number): number {
   return Math.ceil(total_kg / pkg.pack_size);
 }
 
+function packSizeOf(store: DataStore, sku_id: string): number {
+  return store.packagingSku.find(p => p.sku_id === sku_id)?.pack_size ?? 0;
+}
+
 function findOptimalSku(store: DataStore, product_id: string, total_kg: number): { sku_id: string; qty: number; prezzo_unitario: number } {
   const candidates = store.packagingSku.filter(p => p.product_id === product_id && p.pack_size);
   if (candidates.length === 0) return { sku_id: product_id, qty: 1, prezzo_unitario: 0 };
@@ -88,7 +92,18 @@ export function computeProtettiviCart(
       const fixKg = (fixConsumption / 1000) * area_mq;
       const fixSku = area_mq <= 2.5 ? 'PROTEGGO_FIX_H2O_1LITRO' : 'PROTEGGO_FIX_H2O_2_5LT';
       const fixQty = packQty(store, fixSku, fixKg);
-      lines.push({ sku_id: fixSku, descrizione: withZone(descOf(store, fixSku)), qty: fixQty, prezzo_unitario: priceOf(store, fixSku), totale: fixQty * priceOf(store, fixSku), section: 'protettivi' });
+      lines.push({
+        sku_id: fixSku,
+        product_id: 'PROTEGGO_FIX_H2O',
+        descrizione: withZone(descOf(store, fixSku)),
+        qty: fixQty,
+        qty_raw: fixKg,
+        pack_size: packSizeOf(store, fixSku),
+        pack_unit: 'lt',
+        prezzo_unitario: priceOf(store, fixSku),
+        totale: fixQty * priceOf(store, fixSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Fix H2O', product_id: 'PROTEGGO_FIX_H2O', qty_per_mano: fixConsumption, n_mani: 1, qty_total_kg: fixKg, unit: 'g/m²', t_min_h: '0', t_max_h: '—' });
       stepOrder += 10;
     }
@@ -98,7 +113,18 @@ export function computeProtettiviCart(
       const kgMano2 = (150 / 1000) * area_mq;
       const lucidoSku = area_mq <= 3 ? 'PROTEGGO_LUCIDO_H20_1_35KG' : 'PROTEGGO_LUCIDO_H20_2_4_5KG';
       const lucidoQty = packQty(store, lucidoSku, kgMano1 + kgMano2);
-      lines.push({ sku_id: lucidoSku, descrizione: withZone(`${descOf(store, lucidoSku)} — LAMINE base a spatola`), qty: lucidoQty, prezzo_unitario: priceOf(store, lucidoSku), totale: lucidoQty * priceOf(store, lucidoSku), section: 'protettivi' });
+      lines.push({
+        sku_id: lucidoSku,
+        product_id: 'PROTEGGO_LUCIDO_H2O',
+        descrizione: withZone(`${descOf(store, lucidoSku)} — LAMINE base a spatola`),
+        qty: lucidoQty,
+        qty_raw: kgMano1 + kgMano2,
+        pack_size: packSizeOf(store, lucidoSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, lucidoSku),
+        totale: lucidoQty * priceOf(store, lucidoSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'LAMINE: PROTEGGO Lucido H2O a spatola (mano 1, 250 g/m²)', product_id: 'PROTEGGO_LUCIDO_H2O', qty_per_mano: 250, n_mani: 1, qty_total_kg: kgMano1, unit: 'g/m²' });
       stepOrder += 10;
       steps.push({ step_order: stepOrder, name: 'LAMINE: PROTEGGO Lucido H2O a spatola (mano 2, 150 g/m²)', product_id: 'PROTEGGO_LUCIDO_H2O', qty_per_mano: 150, n_mani: 1, qty_total_kg: kgMano2, unit: 'g/m²' });
@@ -107,7 +133,18 @@ export function computeProtettiviCart(
         const opKg = (80 / 1000) * area_mq;
         const opSku = 'PROTEGGO_OPACO_H20_2_5_5KG';
         const opQty = packQty(store, opSku, opKg);
-        lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+        lines.push({
+          sku_id: opSku,
+          product_id: 'PROTEGGO_OPACO_H2O',
+          descrizione: withZone(descOf(store, opSku)),
+          qty: opQty,
+          qty_raw: opKg,
+          pack_size: packSizeOf(store, opSku),
+          pack_unit: 'kg',
+          prezzo_unitario: priceOf(store, opSku),
+          totale: opQty * priceOf(store, opSku),
+          section: 'protettivi',
+        });
         steps.push({ step_order: stepOrder, name: 'PROTEGGO Opaco H2O (finitura LAMINE)', product_id: 'PROTEGGO_OPACO_H2O', qty_per_mano: 80, n_mani: 1, qty_total_kg: opKg, unit: 'g/m²' });
       }
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
@@ -118,13 +155,35 @@ export function computeProtettiviCart(
         const waxKg = (30 / 1000) * area_mq * 2;
         const waxSku = 'CRYSTEPO_V_6KG';
         const waxQty = packQty(store, waxSku, waxKg);
-        lines.push({ sku_id: waxSku, descrizione: withZone('Seal Wax lucida (2 mani, 30 g/m²/mano)'), qty: waxQty, prezzo_unitario: priceOf(store, waxSku), totale: waxQty * priceOf(store, waxSku), section: 'protettivi' });
+        lines.push({
+          sku_id: waxSku,
+          product_id: 'SEAL_WAX',
+          descrizione: withZone('Seal Wax lucida (2 mani, 30 g/m²/mano)'),
+          qty: waxQty,
+          qty_raw: waxKg,
+          pack_size: packSizeOf(store, waxSku),
+          pack_unit: 'kg',
+          prezzo_unitario: priceOf(store, waxSku),
+          totale: waxQty * priceOf(store, waxSku),
+          section: 'protettivi',
+        });
         steps.push({ step_order: stepOrder, name: 'SEAL WAX lucida — 2 mani (30 g/m² per mano)', product_id: 'SEAL_WAX', qty_per_mano: 30, n_mani: 2, qty_total_kg: waxKg, unit: 'g/m²' });
       } else {
         const opKg = (80 / 1000) * area_mq * 2;
         const opSku = 'PROTEGGO_OPACO_H20_2_5_5KG';
         const opQty = packQty(store, opSku, opKg);
-        lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+        lines.push({
+          sku_id: opSku,
+          product_id: 'PROTEGGO_OPACO_H2O',
+          descrizione: withZone(descOf(store, opSku)),
+          qty: opQty,
+          qty_raw: opKg,
+          pack_size: packSizeOf(store, opSku),
+          pack_unit: 'kg',
+          prezzo_unitario: priceOf(store, opSku),
+          totale: opQty * priceOf(store, opSku),
+          section: 'protettivi',
+        });
         steps.push({ step_order: stepOrder, name: 'PROTEGGO Opaco H2O — 2 mani (80 g/m²/mano)', product_id: 'PROTEGGO_OPACO_H2O', qty_per_mano: 80, n_mani: 2, qty_total_kg: opKg, unit: 'g/m²' });
       }
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
@@ -137,13 +196,36 @@ export function computeProtettiviCart(
       const colorSku = area_mq <= 9 ? colorSkuSmall : colorSkuLarge;
       const packSizeColor = area_mq <= 9 ? 0.9 : 4.5;
       const colorQty = Math.ceil(kg3mani / packSizeColor);
-      lines.push({ sku_id: colorSku, descrizione: colorAndZone('PROTEGGO COLOR'), qty: colorQty, prezzo_unitario: priceOf(store, colorSku), totale: colorQty * priceOf(store, colorSku), section: 'protettivi' });
+      lines.push({
+        sku_id: colorSku,
+        product_id: 'PROTEGGO_COLOR_OPACO_H2O',
+        descrizione: colorAndZone('PROTEGGO COLOR'),
+        qty: colorQty,
+        qty_raw: kg3mani,
+        pack_size: packSizeColor,
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, colorSku),
+        totale: colorQty * priceOf(store, colorSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Color Opaco H2O — 3 mani (100 g/m²/mano, dil. 9%/5%/5%)', product_id: 'PROTEGGO_COLOR_OPACO_H2O', qty_per_mano: 100, n_mani: 3, qty_total_kg: kg3mani, unit: 'g/m²', diluizione: '9% / 5% / 5%' });
       stepOrder += 10;
       const transparentSku = sel.trasparente_finale === 'LUCIDO_H2O' ? 'PROTEGGO_LUCIDO_H20_2_4_5KG' : 'PROTEGGO_OPACO_H20_2_5_5KG';
+      const transProductId = sel.trasparente_finale === 'LUCIDO_H2O' ? 'PROTEGGO_LUCIDO_H2O' : 'PROTEGGO_OPACO_H2O';
       const transKg = (80 / 1000) * area_mq;
       const transQty = packQty(store, transparentSku, transKg);
-      lines.push({ sku_id: transparentSku, descrizione: withZone(`${descOf(store, transparentSku)} (mano finale trasparente obbligatoria)`), qty: transQty, prezzo_unitario: priceOf(store, transparentSku), totale: transQty * priceOf(store, transparentSku), section: 'protettivi' });
+      lines.push({
+        sku_id: transparentSku,
+        product_id: transProductId,
+        descrizione: withZone(`${descOf(store, transparentSku)} (mano finale trasparente obbligatoria)`),
+        qty: transQty,
+        qty_raw: transKg,
+        pack_size: packSizeOf(store, transparentSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, transparentSku),
+        totale: transQty * priceOf(store, transparentSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'Mano trasparente finale obbligatoria (opaco o lucido)', product_id: 'PROTEGGO_TRASPARENTE_FINALE', qty_per_mano: 80, n_mani: 1, qty_total_kg: transKg, unit: 'g/m²' });
       alerts.push('PROTEGGO Color Opaco H2O: obbligatorio 1 mano di trasparente finale (opaco o lucido).');
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
@@ -154,7 +236,18 @@ export function computeProtettiviCart(
       const kgTot = (80 / 1000) * area_mq * nMani;
       const opSku = area_mq <= 6 ? 'PROTEGGO_OPACO_H20_1_1KG' : 'PROTEGGO_OPACO_H20_2_5_5KG';
       const opQty = packQty(store, opSku, kgTot);
-      lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+      lines.push({
+        sku_id: opSku,
+        product_id: 'PROTEGGO_OPACO_H2O',
+        descrizione: withZone(descOf(store, opSku)),
+        qty: opQty,
+        qty_raw: kgTot,
+        pack_size: packSizeOf(store, opSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, opSku),
+        totale: opQty * priceOf(store, opSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: `PROTEGGO Opaco H2O — ${nMani} mani (80 g/m²/mano, non diluire)`, product_id: 'PROTEGGO_OPACO_H2O', qty_per_mano: 80, n_mani: nMani, qty_total_kg: kgTot, unit: 'g/m²', diluizione: 'non diluire', t_max_h: '24' });
       alerts.push('PROTEGGO Opaco H2O: max 24 h tra le mani; oltre → carteggio 150/180.');
     }
@@ -163,7 +256,18 @@ export function computeProtettiviCart(
       const kgTot = (50 / 1000) * area_mq * 3;
       const lucSku = area_mq <= 3 ? 'PROTEGGO_LUCIDO_H20_1_35KG' : 'PROTEGGO_LUCIDO_H20_2_4_5KG';
       const lucQty = packQty(store, lucSku, kgTot);
-      lines.push({ sku_id: lucSku, descrizione: withZone(descOf(store, lucSku)), qty: lucQty, prezzo_unitario: priceOf(store, lucSku), totale: lucQty * priceOf(store, lucSku), section: 'protettivi' });
+      lines.push({
+        sku_id: lucSku,
+        product_id: 'PROTEGGO_LUCIDO_H2O',
+        descrizione: withZone(descOf(store, lucSku)),
+        qty: lucQty,
+        qty_raw: kgTot,
+        pack_size: packSizeOf(store, lucSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, lucSku),
+        totale: lucQty * priceOf(store, lucSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Lucido H2O — 3 mani (50 g/m²/mano prod. puro, dil. 50%/30%/30%)', product_id: 'PROTEGGO_LUCIDO_H2O', qty_per_mano: 50, n_mani: 3, qty_total_kg: kgTot, unit: 'g/m²', diluizione: '50% / 30% / 30%', t_min_h: '4', t_max_h: '24' });
       alerts.push('PROTEGGO Lucido H2O: max 24 h tra le mani; oltre → carteggio 150/180.');
     }
@@ -181,7 +285,18 @@ export function computeProtettiviCart(
       const fixKg = (fixS / 1000) * area_mq;
       const fixSku = area_mq <= 5 ? 'PROTEGGO_FIX_S_1_1KG' : 'PROTEGGO_FIX_S_2_4_95KG';
       const fixQty = packQty(store, fixSku, fixKg);
-      lines.push({ sku_id: fixSku, descrizione: withZone(descOf(store, fixSku)), qty: fixQty, prezzo_unitario: priceOf(store, fixSku), totale: fixQty * priceOf(store, fixSku), section: 'protettivi' });
+      lines.push({
+        sku_id: fixSku,
+        product_id: 'PROTEGGO_FIX_S',
+        descrizione: withZone(descOf(store, fixSku)),
+        qty: fixQty,
+        qty_raw: fixKg,
+        pack_size: packSizeOf(store, fixSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, fixSku),
+        totale: fixQty * priceOf(store, fixSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: `PROTEGGO Fix S (${fixS} g/m²)`, product_id: 'PROTEGGO_FIX_S', qty_per_mano: fixS, n_mani: 1, qty_total_kg: fixKg, unit: 'g/m²' });
       stepOrder += 10;
     }
@@ -191,14 +306,36 @@ export function computeProtettiviCart(
       const kgMano2 = (150 / 1000) * area_mq;
       const lucSku = 'PROTEGGO_LUCIDO_S_4_5KG';
       const lucQty = packQty(store, lucSku, kgMano1 + kgMano2);
-      lines.push({ sku_id: lucSku, descrizione: withZone(`${descOf(store, lucSku)} — LAMINE base a spatola`), qty: lucQty, prezzo_unitario: priceOf(store, lucSku), totale: lucQty * priceOf(store, lucSku), section: 'protettivi' });
+      lines.push({
+        sku_id: lucSku,
+        product_id: 'PROTEGGO_LUCIDO_S',
+        descrizione: withZone(`${descOf(store, lucSku)} — LAMINE base a spatola`),
+        qty: lucQty,
+        qty_raw: kgMano1 + kgMano2,
+        pack_size: packSizeOf(store, lucSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, lucSku),
+        totale: lucQty * priceOf(store, lucSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'LAMINE: Lucido S a spatola (mano 1: 250 g/m², mano 2: 150 g/m²)', product_id: 'PROTEGGO_LUCIDO_S', qty_per_mano: 250, n_mani: 2, qty_total_kg: kgMano1 + kgMano2, unit: 'g/m²' });
       stepOrder += 10;
       if (finitura === 'OPACO') {
         const opKg = (80 / 1000) * area_mq;
         const opSku = 'PROTEGGO_OPACO_S_2_6KG';
         const opQty = packQty(store, opSku, opKg);
-        lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+        lines.push({
+          sku_id: opSku,
+          product_id: 'PROTEGGO_OPACO_S',
+          descrizione: withZone(descOf(store, opSku)),
+          qty: opQty,
+          qty_raw: opKg,
+          pack_size: packSizeOf(store, opSku),
+          pack_unit: 'kg',
+          prezzo_unitario: priceOf(store, opSku),
+          totale: opQty * priceOf(store, opSku),
+          section: 'protettivi',
+        });
         steps.push({ step_order: stepOrder, name: 'PROTEGGO Opaco S (finitura LAMINE, 1 mano)', product_id: 'PROTEGGO_OPACO_S', qty_per_mano: 80, n_mani: 1, qty_total_kg: opKg, unit: 'g/m²' });
       }
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
@@ -208,7 +345,18 @@ export function computeProtettiviCart(
       const opKg = (80 / 1000) * area_mq * 2;
       const opSku = 'PROTEGGO_OPACO_S_2_6KG';
       const opQty = packQty(store, opSku, opKg);
-      lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+      lines.push({
+        sku_id: opSku,
+        product_id: 'PROTEGGO_OPACO_S',
+        descrizione: withZone(descOf(store, opSku)),
+        qty: opQty,
+        qty_raw: opKg,
+        pack_size: packSizeOf(store, opSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, opSku),
+        totale: opQty * priceOf(store, opSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'CORLITE: PROTEGGO Opaco S — 2 mani (80 g/m²/mano)', product_id: 'PROTEGGO_OPACO_S', qty_per_mano: 80, n_mani: 2, qty_total_kg: opKg, unit: 'g/m²' });
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
     }
@@ -217,9 +365,31 @@ export function computeProtettiviCart(
       const opKg = (80 / 1000) * area_mq * 2;
       const opSku = 'PROTEGGO_OPACO_S_2_6KG';
       const opQty = packQty(store, opSku, opKg);
-      lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+      lines.push({
+        sku_id: opSku,
+        product_id: 'PROTEGGO_OPACO_S',
+        descrizione: withZone(descOf(store, opSku)),
+        qty: opQty,
+        qty_raw: opKg,
+        pack_size: packSizeOf(store, opSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, opSku),
+        totale: opQty * priceOf(store, opSku),
+        section: 'protettivi',
+      });
       const premixSku = 'PREMIX_COLORE_OPACO_S_1_88_0_14KG';
-      lines.push({ sku_id: premixSku, descrizione: withZone('Premix colore Opaco S (1 per confezione)'), qty: opQty, prezzo_unitario: priceOf(store, premixSku), totale: opQty * priceOf(store, premixSku), section: 'protettivi' });
+      lines.push({
+        sku_id: premixSku,
+        product_id: 'PREMIX_COLORE_OPACO_S',
+        descrizione: withZone('Premix colore Opaco S (1 per confezione)'),
+        qty: opQty,
+        qty_raw: opKg,
+        pack_size: packSizeOf(store, premixSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, premixSku),
+        totale: opQty * priceOf(store, premixSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Opaco S colorato — 2 mani + premix (80 g/m²/mano)', product_id: 'PROTEGGO_OPACO_S', qty_per_mano: 80, n_mani: 2, qty_total_kg: opKg, unit: 'g/m²' });
       alerts.push('Opaco S colorato: 1 premix per ogni confezione di Opaco S — gestito nel carrello.');
       return { cart_lines: lines, step_descriptions: steps, hard_alerts: alerts };
@@ -229,7 +399,18 @@ export function computeProtettiviCart(
       const kgTot = (80 / 1000) * area_mq * 2;
       const opSku = 'PROTEGGO_OPACO_S_2_6KG';
       const opQty = packQty(store, opSku, kgTot);
-      lines.push({ sku_id: opSku, descrizione: withZone(descOf(store, opSku)), qty: opQty, prezzo_unitario: priceOf(store, opSku), totale: opQty * priceOf(store, opSku), section: 'protettivi' });
+      lines.push({
+        sku_id: opSku,
+        product_id: 'PROTEGGO_OPACO_S',
+        descrizione: withZone(descOf(store, opSku)),
+        qty: opQty,
+        qty_raw: kgTot,
+        pack_size: packSizeOf(store, opSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, opSku),
+        totale: opQty * priceOf(store, opSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Opaco S — 2 mani (80 g/m²/mano)', product_id: 'PROTEGGO_OPACO_S', qty_per_mano: 80, n_mani: 2, qty_total_kg: kgTot, unit: 'g/m²' });
     }
 
@@ -237,7 +418,18 @@ export function computeProtettiviCart(
       const kgTot = (80 / 1000) * area_mq * 2;
       const lucSku = 'PROTEGGO_LUCIDO_S_4_5KG';
       const lucQty = packQty(store, lucSku, kgTot);
-      lines.push({ sku_id: lucSku, descrizione: withZone(descOf(store, lucSku)), qty: lucQty, prezzo_unitario: priceOf(store, lucSku), totale: lucQty * priceOf(store, lucSku), section: 'protettivi' });
+      lines.push({
+        sku_id: lucSku,
+        product_id: 'PROTEGGO_LUCIDO_S',
+        descrizione: withZone(descOf(store, lucSku)),
+        qty: lucQty,
+        qty_raw: kgTot,
+        pack_size: packSizeOf(store, lucSku),
+        pack_unit: 'kg',
+        prezzo_unitario: priceOf(store, lucSku),
+        totale: lucQty * priceOf(store, lucSku),
+        section: 'protettivi',
+      });
       steps.push({ step_order: stepOrder, name: 'PROTEGGO Lucido S — 2 mani (80 g/m²/mano)', product_id: 'PROTEGGO_LUCIDO_S', qty_per_mano: 80, n_mani: 2, qty_total_kg: kgTot, unit: 'g/m²' });
     }
   }

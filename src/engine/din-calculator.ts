@@ -51,13 +51,18 @@ export function computeDinCart(
   const lines: CartLine[] = [];
   const alerts: string[] = [];
 
-  function addLine(sku_id: string, qty: number, note?: string) {
+  function addLine(sku_id: string, qty: number, qty_raw: number, pack_unit: string, note?: string) {
     if (qty <= 0) return;
     const prezzo = priceOf(store, sku_id);
+    const pkg = store.packagingSku.find(p => p.sku_id === sku_id);
     lines.push({
       sku_id,
+      product_id: pkg?.product_id ?? sku_id,
       descrizione: note ? `${descOf(store, sku_id)} — ${note}` : descOf(store, sku_id),
       qty,
+      qty_raw,
+      pack_size: pkg?.pack_size ?? 1,
+      pack_unit,
       prezzo_unitario: prezzo,
       totale: qty * prezzo,
       section: 'din',
@@ -67,33 +72,33 @@ export function computeDinCart(
   // MS Pro Sealer: 1 cartuccia ogni 3 docce (min 1)
   if (inputs.DIN_DOCCE_PZ > 0) {
     const msProQty = Math.ceil(inputs.DIN_DOCCE_PZ / 3);
-    addLine('MS_PRO_SEALER_IN_CARTUCCIA_1CART', msProQty, `${inputs.DIN_DOCCE_PZ} docce → ${msProQty} cartucce`);
+    addLine('MS_PRO_SEALER_IN_CARTUCCIA_1CART', msProQty, inputs.DIN_DOCCE_PZ, 'pz', `${inputs.DIN_DOCCE_PZ} docce → ${msProQty} cartucce`);
   }
 
   // BB Corner IN
   if (inputs.DIN_BBCORNER_IN_PZ > 0) {
-    addLine('BBCORNER_IN_1PZ', inputs.DIN_BBCORNER_IN_PZ);
+    addLine('BBCORNER_IN_1PZ', inputs.DIN_BBCORNER_IN_PZ, inputs.DIN_BBCORNER_IN_PZ, 'pz');
   }
 
   // BB Corner OUT
   if (inputs.DIN_BBCORNER_OUT_PZ > 0) {
-    addLine('BBCORNER_OUT_1PZ', inputs.DIN_BBCORNER_OUT_PZ);
+    addLine('BBCORNER_OUT_1PZ', inputs.DIN_BBCORNER_OUT_PZ, inputs.DIN_BBCORNER_OUT_PZ, 'pz');
   }
 
   // BB Pass
   if (inputs.DIN_BBPASS_PZ > 0) {
-    addLine('BBPASS_120X120_1PZ', inputs.DIN_BBPASS_PZ, 'dopo MS Pro Sealer');
+    addLine('BBPASS_120X120_1PZ', inputs.DIN_BBPASS_PZ, inputs.DIN_BBPASS_PZ, 'pz', 'dopo MS Pro Sealer');
   }
 
   // BB Drain
   if (inputs.DIN_BBDRAIN_PZ > 0) {
-    addLine('BB_DRAIN_PZ', inputs.DIN_BBDRAIN_PZ);
+    addLine('BB_DRAIN_PZ', inputs.DIN_BBDRAIN_PZ, inputs.DIN_BBDRAIN_PZ, 'pz');
   }
 
   // BB Tape: ceil(ml / 50) rotoli da 50ml
   if (inputs.DIN_BBTAPE_ML > 0) {
     const rolls = Math.ceil(inputs.DIN_BBTAPE_ML / 50);
-    addLine('BBTAPE_50M', rolls, `${inputs.DIN_BBTAPE_ML} ml → ${rolls} rotolo/i`);
+    addLine('BBTAPE_50M', rolls, inputs.DIN_BBTAPE_ML, 'ml', `${inputs.DIN_BBTAPE_ML} ml → ${rolls} rotolo/i`);
   }
 
   // Norphen Fondo Igro: standard 5 g/ml (fascia 5 cm)
@@ -101,7 +106,7 @@ export function computeDinCart(
   if (inputs.DIN_NORPHEN_ML > 0) {
     const kgNorphen = (inputs.DIN_NORPHEN_ML * 5) / 1000;
     const packsNorphen = Math.ceil(kgNorphen / 0.5);
-    addLine('MS_PRO_SEALER_NORPHEN_FONDO_IGRO_0_5KG', packsNorphen, `${inputs.DIN_NORPHEN_ML} ml sigillature @ 5 g/ml`);
+    addLine('MS_PRO_SEALER_NORPHEN_FONDO_IGRO_0_5KG', packsNorphen, kgNorphen, 'kg', `${inputs.DIN_NORPHEN_ML} ml sigillature @ 5 g/ml`);
   }
 
   if (lines.length > 0) {

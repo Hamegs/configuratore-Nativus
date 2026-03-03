@@ -14,8 +14,7 @@ export function exportProjectXlsx(
 
   // Sheet 1 — Materiali aggregati
   const materialiData = cart.map(r => ({
-    SKU: r.sku_id,
-    Descrizione: r.descrizione,
+    Prodotto: r.descrizione,
     Confezioni: r.qty_packs,
     'Pack / conf.': r.pack_size,
     Unità: r.pack_unit,
@@ -32,12 +31,11 @@ export function exportProjectXlsx(
   const perAmbienteRows: Record<string, string | number>[] = [];
   for (const room of rooms) {
     const roomName = room.custom_name || room.room_type;
-    perAmbienteRows.push({ '': `─── ${roomName.toUpperCase()} ───`, SKU: '', Descrizione: '', Confezioni: '', 'Totale (€)': '' });
+    perAmbienteRows.push({ '': `─── ${roomName.toUpperCase()} ───`, Prodotto: '', Confezioni: '', 'Totale (€)': '' });
     for (const line of room.cart_lines) {
       perAmbienteRows.push({
         '': '',
-        SKU: line.sku_id,
-        Descrizione: line.descrizione,
+        Prodotto: line.descrizione,
         Confezioni: line.qty,
         'Consumo (kg)': line.qty_raw?.toFixed(3) ?? '',
         'Pack size': line.pack_size ?? '',
@@ -78,8 +76,7 @@ export function exportRoomXlsx(room: ProjectRoom): void {
   const roomName = room.custom_name || room.room_type;
 
   const materialiData = room.cart_lines.map(l => ({
-    SKU: l.sku_id,
-    Descrizione: l.descrizione,
+    Prodotto: l.descrizione,
     Confezioni: l.qty,
     'Consumo (kg)': l.qty_raw?.toFixed(3) ?? '',
     'Pack size': l.pack_size ?? '',

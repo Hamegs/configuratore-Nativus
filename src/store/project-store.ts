@@ -7,6 +7,8 @@ import type { StepDefinition } from '../types/step';
 import { buildCartFromAggregated } from '../engine/packaging-optimizer';
 import type { DataStore } from '../utils/data-loader';
 import { getCommercialName } from '../utils/product-names';
+import type { PackagedItem } from '../types/services';
+import { useCartStore } from './cart-store';
 
 const LS_KEY = 'nativus_project';
 
@@ -96,7 +98,7 @@ function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
       // Texture: aggregate by descrizione (includes texture+color+zone)
       // Other: aggregate by product_id to merge same product across rooms
       const key = line.section === 'texture'
-        ? line.descrizione
+        ? `${line.descrizione}|${line.pack_size ?? ''}`
         : (line.product_id ?? line.sku_id);
       const rawBase = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
       const roomName = room.custom_name || room.room_type;
@@ -183,6 +185,25 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     const aggregated = aggregate(get().rooms);
     const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, currentStrategy);
     set({ cart: rows, cart_built: true });
+    // Sync cart-store with the newly built aggregated cart
+    const packaged: PackagedItem[] = rows.map(row => ({
+      row_id: row.row_id,
+      product_id: row.product_id ?? row.sku_id,
+      sku_id: row.sku_id,
+      nomeCommerciale: getCommercialName(row.product_id ?? undefined) ?? row.descrizione,
+      description: row.descrizione,
+      destination: null,
+      section: row.section,
+      qty_packs: row.qty_packs,
+      pack_size: row.pack_size,
+      pack_unit: row.pack_unit,
+      prezzo_unitario: row.prezzo_unitario,
+      totale: row.totale,
+      from_rooms: row.from_rooms,
+      status: row.status,
+      source: row.source,
+    }));
+    useCartStore.getState().setItems(packaged);
     get().persist();
   },
 

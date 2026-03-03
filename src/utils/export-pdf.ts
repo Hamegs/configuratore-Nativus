@@ -39,9 +39,8 @@ export function exportProjectPdf(rooms: ProjectRoom[], cart: ProjectCartRow[]): 
 
   autoTable(doc, {
     startY: y,
-    head: [['SKU', 'Descrizione', 'Conf.', 'Prezzo', 'Totale €', 'Ambienti']],
+    head: [['Prodotto', 'Conf.', 'Prezzo', 'Totale €', 'Ambienti']],
     body: cart.map(r => [
-      r.sku_id,
       r.descrizione,
       String(r.qty_packs),
       `${r.prezzo_unitario.toFixed(2)} €`,
@@ -103,9 +102,8 @@ export function exportProjectPdf(rooms: ProjectRoom[], cart: ProjectCartRow[]): 
 
     autoTable(doc, {
       startY: y,
-      head: [['SKU', 'Descrizione', 'Conf.', 'Consumo kg', 'Sezione']],
+      head: [['Prodotto', 'Conf.', 'Consumo kg', 'Sezione']],
       body: room.cart_lines.map(l => [
-        l.sku_id,
         l.descrizione,
         String(l.qty),
         l.qty_raw?.toFixed(2) ?? '',
@@ -174,9 +172,8 @@ export function exportRoomPdf(room: ProjectRoom): void {
 
   autoTable(doc, {
     startY: y,
-    head: [['SKU', 'Descrizione', 'Conf.', 'Consumo kg', 'Totale €']],
+    head: [['Prodotto', 'Conf.', 'Consumo kg', 'Totale €']],
     body: room.cart_lines.map(l => [
-      l.sku_id,
       l.descrizione,
       String(l.qty),
       l.qty_raw?.toFixed(2) ?? '',

@@ -82,6 +82,7 @@ export function buildCartFromAggregated(
           status: 'active',
           is_override: false,
           section: agg.section,
+          from_rooms: agg.from_rooms,
         });
         continue;
       }
@@ -108,6 +109,7 @@ export function buildCartFromAggregated(
       status: 'active',
       is_override: false,
       section: agg.section,
+      from_rooms: agg.from_rooms,
     });
   }
   return rows;
