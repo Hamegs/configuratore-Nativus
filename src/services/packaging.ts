@@ -25,7 +25,7 @@ export function computePackagedItems(
     if (group.section !== 'texture') continue;
     if (!group._textureInput) continue;
     const lineId = group.texture_line ?? group.product_id;
-    const key = `${lineId}::${group._textureInput.style ?? ''}::${group.color_label ?? ''}`;
+    const key = `${lineId}::${group.color_label ?? ''}`;
     const existing = texAggMap.get(key);
     if (existing) {
       existing.totalArea += group.qty_raw;
