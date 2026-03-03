@@ -92,35 +92,43 @@ export function computePackagedItems(
   }
 
   for (const [, agg] of aggMap) {
-    const skus = store.packagingSku.filter(
-      s => s.product_id === agg.product_id && (s.pack_size ?? 0) > 0,
-    );
-    if (skus.length === 0) {
-      console.warn('[computePackagedItems] Nessuna SKU valida per:', agg.product_id);
-      continue;
-    }
-    const options = computePackagingOptions(agg.qty_raw, skus, store.listino);
-    const best = bestOption(options, mode);
-    if (!best) continue;
+    try {
+      const skus = store.packagingSku.filter(
+        s => s.product_id === agg.product_id && (s.pack_size ?? 0) > 0,
+      );
+      if (skus.length === 0) {
+        console.warn('[computePackagedItems] Nessuna SKU valida per:', agg.product_id);
+        continue;
+      }
+      if ((agg.qty_raw ?? 0) <= 0) {
+        console.warn('[computePackagedItems] qty_raw=0 per:', agg.product_id);
+        continue;
+      }
+      const options = computePackagingOptions(agg.qty_raw, skus, store.listino);
+      const best = bestOption(options, mode);
+      if (!best) continue;
 
-    const nomeCommerciale = getCommercialName(agg.product_id) ?? agg.description;
-    items.push({
-      row_id: crypto.randomUUID(),
-      product_id: agg.product_id,
-      sku_id: best.sku_id,
-      nomeCommerciale,
-      description: agg.description,
-      destination: agg.destination,
-      section: agg.section,
-      qty_packs: best.qty_packs,
-      pack_size: best.pack_size,
-      pack_unit: best.pack_unit,
-      prezzo_unitario: best.prezzo_unitario,
-      totale: best.totale,
-      from_rooms: fromRooms,
-      status: 'active',
-      source: 'auto',
-    });
+      const nomeCommerciale = getCommercialName(agg.product_id) ?? agg.description;
+      items.push({
+        row_id: crypto.randomUUID(),
+        product_id: agg.product_id,
+        sku_id: best.sku_id,
+        nomeCommerciale,
+        description: agg.description,
+        destination: agg.destination,
+        section: agg.section,
+        qty_packs: best.qty_packs,
+        pack_size: best.pack_size,
+        pack_unit: best.pack_unit,
+        prezzo_unitario: best.prezzo_unitario,
+        totale: best.totale,
+        from_rooms: fromRooms,
+        status: 'active',
+        source: 'auto',
+      });
+    } catch (e) {
+      console.error('[computePackagedItems] errore prodotto', agg.product_id, e);
+    }
   }
 
   return items;
