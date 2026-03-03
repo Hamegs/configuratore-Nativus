@@ -6,6 +6,7 @@ import type { CartResult } from '../engine/cart-calculator';
 import type { StepDefinition } from '../types/step';
 import { buildCartFromAggregated } from '../engine/packaging-optimizer';
 import type { DataStore } from '../utils/data-loader';
+import { getCommercialName } from '../utils/product-names';
 
 const LS_KEY = 'nativus_project';
 
@@ -15,7 +16,6 @@ interface ProjectState {
   strategy: PackagingStrategy;
   cart_built: boolean;
   config_log: ConfigLogEntry[];
-  waste_pct: number;
 }
 
 interface ProjectStore extends ProjectState {
@@ -25,7 +25,6 @@ interface ProjectStore extends ProjectState {
   unconfigureRoom: (id: string) => void;
   buildCart: (store: DataStore, strategy?: PackagingStrategy) => void;
   setStrategy: (s: PackagingStrategy, store: DataStore) => void;
-  setWastePct: (v: number, store: DataStore) => void;
   overrideCartRow: (row_id: string, sku_id: string, qty_packs: number, store: DataStore) => void;
   excludeCartRow: (row_id: string) => void;
   restoreCartRow: (row_id: string) => void;
@@ -89,27 +88,30 @@ function buildStepLavorazioni(roomId: string, result: CartResult): StepLavorazio
   return lav;
 }
 
-function aggregate(rooms: ProjectRoom[], waste_pct: number): AggregatedRawQty[] {
+function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
   const map = new Map<string, AggregatedRawQty>();
   for (const room of rooms) {
     if (!room.is_configured) continue;
     for (const line of room.cart_lines) {
-      const pid = line.product_id ?? line.sku_id;
+      // Texture: aggregate by descrizione (includes texture+color+zone)
+      // Other: aggregate by product_id to merge same product across rooms
+      const key = line.section === 'texture'
+        ? line.descrizione
+        : (line.product_id ?? line.sku_id);
       const rawBase = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
-      const raw = rawBase * (1 + waste_pct);
       const roomName = room.custom_name || room.room_type;
-      if (map.has(pid)) {
-        const existing = map.get(pid)!;
-        existing.qty_raw += raw;
+      if (map.has(key)) {
+        const existing = map.get(key)!;
+        existing.qty_raw += rawBase;
         if (!existing.from_rooms.includes(roomName)) {
           existing.from_rooms.push(roomName);
         }
       } else {
-        map.set(pid, {
-          product_id: pid,
+        map.set(key, {
+          product_id: line.product_id ?? line.sku_id,
           sku_id_default: line.sku_id,
           descrizione: line.descrizione,
-          qty_raw: raw,
+          qty_raw: rawBase,
           pack_size_default: line.pack_size ?? 1,
           pack_unit: line.pack_unit ?? 'kg',
           section: line.section,
@@ -137,7 +139,6 @@ const initialState: ProjectState = {
   strategy: 'MINIMO_SFRIDO',
   cart_built: false,
   config_log: [],
-  waste_pct: 0.08,
 };
 
 export const useProjectStore = create<ProjectStore>((set, get) => ({
@@ -169,9 +170,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   setRoomResult: (id, wizard_state, lines, store, result?) => {
     const step_lavorazioni = result ? buildStepLavorazioni(id, result) : [];
-    const computation_errors = result
-      ? result.computation_errors
-      : [];
+    const computation_errors = result ? result.computation_errors : [];
     set(s => ({
       rooms: s.rooms.map(r =>
         r.id === id
@@ -179,9 +178,9 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
           : r
       ),
     }));
-    // Auto-rebuild cart immediately
+    // Auto-rebuild cart immediately (full reset)
     const currentStrategy = get().strategy;
-    const aggregated = aggregate(get().rooms, get().waste_pct);
+    const aggregated = aggregate(get().rooms);
     const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, currentStrategy);
     set({ cart: rows, cart_built: true });
     get().persist();
@@ -201,18 +200,9 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   buildCart: (store, strategy?) => {
     const s = strategy ?? get().strategy;
-    const aggregated = aggregate(get().rooms, get().waste_pct);
+    const aggregated = aggregate(get().rooms);
     const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, s);
     set({ cart: rows, strategy: s, cart_built: true });
-    get().persist();
-  },
-
-  setWastePct: (v, store) => {
-    set({ waste_pct: v });
-    const s = get().strategy;
-    const aggregated = aggregate(get().rooms, v);
-    const rows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, s);
-    set({ cart: rows, cart_built: true });
     get().persist();
   },
 
@@ -222,7 +212,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       get().persist();
       return;
     }
-    const aggregated = aggregate(get().rooms, get().waste_pct);
+    const aggregated = aggregate(get().rooms);
     const autoRows = buildCartFromAggregated(aggregated, store.packagingSku, store.listino, strategy);
     const manual = get().cart.filter(r => r.source === 'manual');
     const merged = [...autoRows, ...manual];
@@ -243,7 +233,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
           qty_packs,
           pack_size: skuInfo?.pack_size ?? r.pack_size,
           pack_unit: skuInfo?.pack_unit ?? r.pack_unit,
-          descrizione: skuInfo?.descrizione_sku ?? r.descrizione,
+          descrizione: getCommercialName(skuInfo?.product_id) ?? skuInfo?.descrizione_sku ?? r.descrizione,
           prezzo_unitario: price,
           totale: qty_packs * price,
           is_override: true,
@@ -320,7 +310,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       row_id: crypto.randomUUID(),
       product_id: skuInfo?.product_id ?? null,
       sku_id,
-      descrizione: skuInfo?.descrizione_sku ?? sku_id,
+      descrizione: getCommercialName(skuInfo?.product_id) ?? skuInfo?.descrizione_sku ?? sku_id,
       qty_packs,
       pack_size: skuInfo?.pack_size ?? 1,
       pack_unit: skuInfo?.pack_unit ?? 'pz',
@@ -350,8 +340,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   persist: () => {
     try {
-      const { rooms, cart, strategy, cart_built, config_log, waste_pct } = get();
-      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, cart_built, config_log, waste_pct }));
+      const { rooms, cart, strategy, cart_built, config_log } = get();
+      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, cart_built, config_log }));
     } catch { /* noop */ }
   },
 
@@ -359,16 +349,15 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as ProjectState;
+        const parsed = JSON.parse(raw) as Partial<ProjectState> & { rooms: ProjectRoom[] };
         if (!parsed.config_log) parsed.config_log = [];
-        if (parsed.waste_pct === undefined) parsed.waste_pct = 0.08;
         // Migrate old rooms without step_lavorazioni/computation_errors
         parsed.rooms = parsed.rooms.map(r => ({
           ...r,
           step_lavorazioni: r.step_lavorazioni ?? [],
           computation_errors: r.computation_errors ?? [],
         }));
-        set(parsed);
+        set(parsed as ProjectState);
       }
     } catch { /* noop */ }
   },

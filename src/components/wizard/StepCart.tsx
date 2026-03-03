@@ -3,6 +3,7 @@ import { useWizardStore } from '../../store/wizard-store';
 import { computeFullCart } from '../../engine/cart-calculator';
 import { buildCartFromAggregated } from '../../engine/packaging-optimizer';
 import { loadDataStore } from '../../utils/data-loader';
+import { formatEur } from '../../utils/format';
 import { StepHeader, StepNavigation } from './StepAmbiente';
 import type { CartResult } from '../../engine/cart-calculator';
 import type { PackagingStrategy, ProjectCartRow, AggregatedRawQty } from '../../types/project';
@@ -156,10 +157,10 @@ export function StepCart({ onComplete }: StepCartProps) {
                     {row.qty_packs} × {row.pack_size} {row.pack_unit}
                   </td>
                   <td className="px-4 py-3 text-right text-brand-600 hidden sm:table-cell">
-                    {row.prezzo_unitario > 0 ? `€ ${row.prezzo_unitario.toFixed(2)}` : '—'}
+                    {row.prezzo_unitario > 0 ? formatEur(row.prezzo_unitario) : '—'}
                   </td>
                   <td className="px-4 py-3 text-right font-bold price-text">
-                    {row.totale > 0 ? `€ ${row.totale.toFixed(2)}` : '—'}
+                    {row.totale > 0 ? formatEur(row.totale) : '—'}
                   </td>
                 </tr>
               ))}
@@ -175,7 +176,7 @@ export function StepCart({ onComplete }: StepCartProps) {
             <p className="text-xs text-brand-500">
               Totale stimato · {STRATEGIES.find(s => s.id === strategy)?.label}
             </p>
-            <p className="text-2xl font-bold text-accent">€ {total.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-accent">{formatEur(total)}</p>
             <p className="text-xs text-brand-400">IVA esclusa</p>
           </div>
         </div>

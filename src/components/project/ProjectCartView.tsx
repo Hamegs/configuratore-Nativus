@@ -5,13 +5,13 @@ import { useProjectStore } from '../../store/project-store';
 import { loadDataStore } from '../../utils/data-loader';
 import type { PackagingStrategy, ProjectCartRow } from '../../types/project';
 import { computePackagingOptions } from '../../engine/packaging-optimizer';
+import { formatEur } from '../../utils/format';
 
 const STRATEGIES: { id: PackagingStrategy; label: string; desc: string; isAuto: boolean }[] = [
-  { id: 'MINIMO_SFRIDO',      label: 'Min. sfrido',       desc: 'Minimizza il materiale in eccesso',        isAuto: true  },
-  { id: 'ECONOMICO',          label: 'Economico',          desc: 'Minimizza il costo totale',                isAuto: true  },
-  { id: 'CONFEZIONI_GRANDI',  label: 'Conf. grandi',      desc: 'Usa sempre la pezzatura più grande',       isAuto: true  },
-  { id: 'CONFEZIONI_PICCOLE', label: 'Conf. piccole',     desc: 'Usa sempre la pezzatura più piccola',      isAuto: true  },
-  { id: 'MANUALE',            label: 'Manuale',            desc: 'Modifica libera delle singole righe',      isAuto: false },
+  { id: 'MINIMO_SFRIDO',     label: 'Min. sfrido',    desc: 'Minimizza il materiale in eccesso',   isAuto: true  },
+  { id: 'ECONOMICO',         label: 'Economico',       desc: 'Minimizza il costo totale',           isAuto: true  },
+  { id: 'CONFEZIONI_GRANDI', label: 'Conf. grandi',   desc: 'Usa sempre la pezzatura più grande',  isAuto: true  },
+  { id: 'MANUALE',           label: 'Manuale',         desc: 'Modifica libera delle singole righe', isAuto: false },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
@@ -46,7 +46,6 @@ function RowTitle({ row }: { row: ProjectCartRow }) {
           <span className="ml-1 text-gray-500 font-normal">— {row.pack_size} {row.pack_unit}</span>
         )}
       </p>
-      <p className="text-xs text-gray-400 font-mono mt-0.5">{row.sku_id}</p>
       {row.from_rooms && row.from_rooms.length > 0 && (
         <div className="mt-1 flex flex-wrap gap-1">
           {row.from_rooms.map(rm => (
@@ -63,7 +62,7 @@ function RowTitle({ row }: { row: ProjectCartRow }) {
 export function ProjectCartView() {
   const navigate = useNavigate();
   const {
-    rooms, cart, strategy, waste_pct, setStrategy, setWastePct,
+    rooms, cart, strategy, setStrategy,
     overrideCartRow, excludeCartRow, restoreCartRow, removeCartRow, addManualRow,
     config_log,
   } = useProjectStore();
@@ -192,18 +191,6 @@ export function ProjectCartView() {
           </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
-          {/* Sfrido */}
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-3 py-1.5">
-            <label className="text-xs font-medium text-stone-600 whitespace-nowrap">Sfrido:</label>
-            <input
-              type="range"
-              min={0} max={20} step={1}
-              value={Math.round((waste_pct ?? 0.08) * 100)}
-              onChange={e => setWastePct(Number(e.target.value) / 100, store)}
-              className="w-20 accent-stone-700"
-            />
-            <span className="text-xs font-bold text-stone-800 w-6 text-right">{Math.round((waste_pct ?? 0.08) * 100)}%</span>
-          </div>
           {/* Export */}
           <button type="button" className="btn-secondary text-xs flex items-center gap-1" onClick={handleExportXlsx} disabled={activeRows.length === 0}>
             <FileSpreadsheet size={13} /> Excel
@@ -254,7 +241,7 @@ export function ProjectCartView() {
             </span>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {STRATEGIES.map(s => (
             <button
               key={s.id}
@@ -380,8 +367,8 @@ export function ProjectCartView() {
                   <td className="px-3 py-2"><RowTitle row={row} /></td>
                   <td className="px-3 py-1.5"><SectionBadge section={row.section} /></td>
                   <td className="px-3 py-1.5 text-right font-semibold">{row.qty_packs}</td>
-                  <td className="px-3 py-1.5 text-right text-gray-500">{row.prezzo_unitario.toFixed(2)}</td>
-                  <td className="px-3 py-1.5 text-right font-semibold">{row.totale.toFixed(2)}</td>
+                  <td className="px-3 py-1.5 text-right text-gray-500">{formatEur(row.prezzo_unitario)}</td>
+                  <td className="px-3 py-1.5 text-right font-semibold">{formatEur(row.totale)}</td>
                   <td className="px-3 py-1.5 whitespace-nowrap">
                     {isManual ? (
                       <div className="flex gap-1">
@@ -430,7 +417,7 @@ export function ProjectCartView() {
             <tfoot>
               <tr className="bg-gray-50 border-t border-gray-200">
                 <td colSpan={5} className="px-3 py-2 text-right font-semibold text-gray-700">Totale</td>
-                <td className="px-3 py-2 text-right font-bold text-brand-700 text-sm">{totalActive.toFixed(2)} €</td>
+                <td className="px-3 py-2 text-right font-bold text-brand-700 text-sm">{formatEur(totalActive)}</td>
                 <td></td>
               </tr>
             </tfoot>
@@ -494,7 +481,7 @@ export function ProjectCartView() {
               <div key={room.id} className="flex items-center justify-between text-sm py-1.5 border-b border-gray-50 last:border-0 gap-2">
                 <span className="text-gray-700 font-medium flex-1">{displayName}</span>
                 <span className="text-gray-500 text-xs">{room.cart_lines.length} prodotti</span>
-                <span className="font-semibold text-gray-800 w-24 text-right">{roomTotal.toFixed(2)} €</span>
+                <span className="font-semibold text-gray-800 w-24 text-right">{formatEur(roomTotal)}</span>
                 <button type="button" title="Esporta Excel" className="p-1 text-stone-400 hover:text-stone-700" onClick={() => handleExportRoomXlsx(room.id)}>
                   <FileSpreadsheet size={14} />
                 </button>
@@ -512,7 +499,7 @@ export function ProjectCartView() {
         <div className="flex items-center justify-between bg-brand-50 rounded-xl px-5 py-4 border border-brand-200">
           <div>
             <p className="text-sm font-semibold text-brand-800">Totale ordine</p>
-            <p className="text-2xl font-bold text-brand-700 mt-0.5">{totalActive.toFixed(2)} €</p>
+            <p className="text-2xl font-bold text-brand-700 mt-0.5">{formatEur(totalActive)}</p>
             <p className="text-xs text-brand-500 mt-0.5">{activeRows.length} righe · {strategy}</p>
           </div>
           <div className="flex gap-2 flex-col sm:flex-row">
@@ -601,7 +588,7 @@ export function ProjectCartView() {
                   {overrideOptions.length > 0 ? (
                     overrideOptions.map(o => (
                       <option key={o.sku_id} value={o.sku_id}>
-                        {o.sku_id} — {o.pack_size} {o.pack_unit} — {o.prezzo_unitario.toFixed(2)} €/conf. (sfrido: {o.sfrido.toFixed(2)})
+                        {o.sku_id} — {o.pack_size} {o.pack_unit} — {formatEur(o.prezzo_unitario)}/conf. (sfrido: {o.sfrido.toFixed(2)})
                       </option>
                     ))
                   ) : (

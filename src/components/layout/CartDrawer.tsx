@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { X, FileSpreadsheet, FileText, ExternalLink } from 'lucide-react';
 import { useProjectStore } from '../../store/project-store';
 import { loadDataStore } from '../../utils/data-loader';
+import { formatEur } from '../../utils/format';
 import type { PackagingStrategy } from '../../types/project';
 
 interface CartDrawerProps {
@@ -11,24 +12,21 @@ interface CartDrawerProps {
 }
 
 const STRATEGY_LABELS: Record<PackagingStrategy, string> = {
-  MINIMO_SFRIDO: 'Min. sfrido',
-  ECONOMICO: 'Economico',
+  MINIMO_SFRIDO:     'Min. sfrido',
+  ECONOMICO:         'Economico',
   CONFEZIONI_GRANDI: 'Grandi',
-  CONFEZIONI_PICCOLE: 'Piccole',
-  MANUALE: 'Manuale',
+  MANUALE:           'Manuale',
 };
 
 export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const navigate = useNavigate();
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  const { cart, rooms, strategy, waste_pct, setStrategy, setWastePct } = useProjectStore(s => ({
+  const { cart, rooms, strategy, setStrategy } = useProjectStore(s => ({
     cart: s.cart,
     rooms: s.rooms,
     strategy: s.strategy,
-    waste_pct: s.waste_pct,
     setStrategy: s.setStrategy,
-    setWastePct: s.setWastePct,
   }));
 
   const activeRows = cart.filter(r => r.status === 'active');
@@ -79,7 +77,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div>
             <h2 className="text-lg font-semibold text-stone-800">Carrello progetto</h2>
             <p className="text-sm text-stone-500">
-              {totalPacks} confezioni — {totalEur.toFixed(2)} €
+              {totalPacks} confezioni — {formatEur(totalEur)}
             </p>
           </div>
           <button onClick={onClose} className="rounded p-1 hover:bg-stone-100">
@@ -88,29 +86,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
-          {/* Sfrido */}
-          <div>
-            <label className="mb-1 block text-xs font-medium text-stone-600">
-              Sfrido globale: <span className="font-bold text-stone-800">{Math.round(waste_pct * 100)}%</span>
-            </label>
-            <input
-              type="range"
-              min={0}
-              max={20}
-              step={1}
-              value={Math.round(waste_pct * 100)}
-              onChange={e => setWastePct(Number(e.target.value) / 100, store)}
-              className="w-full accent-stone-700"
-            />
-            <div className="mt-0.5 flex justify-between text-xs text-stone-400">
-              <span>0%</span><span>10%</span><span>20%</span>
-            </div>
-          </div>
-
           {/* Strategia */}
           <div>
             <p className="mb-1 text-xs font-medium text-stone-600">Strategia confezioni</p>
-            <div className="grid grid-cols-5 gap-1">
+            <div className="grid grid-cols-4 gap-1">
               {(Object.keys(STRATEGY_LABELS) as PackagingStrategy[]).map(s => (
                 <button
                   key={s}
@@ -144,7 +123,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         </span>
                         <span className="text-xs text-stone-500">{roomPacks} conf.</span>
                       </div>
-                      <div className="mt-0.5 text-sm font-semibold text-stone-700">{roomTotal.toFixed(2)} €</div>
+                      <div className="mt-0.5 text-sm font-semibold text-stone-700">{formatEur(roomTotal)}</div>
                       {room.computation_errors.length > 0 && (
                         <p className="mt-1 text-xs text-amber-600">
                           ⚠ {room.computation_errors.length} avviso/i tecnico/i
@@ -190,7 +169,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className="rounded-xl bg-stone-800 px-4 py-3 text-white">
             <div className="flex items-center justify-between">
               <span className="text-sm">Totale</span>
-              <span className="text-lg font-bold">{totalEur.toFixed(2)} €</span>
+              <span className="text-lg font-bold">{formatEur(totalEur)}</span>
             </div>
             <div className="mt-0.5 text-xs text-stone-400">{totalPacks} confezioni attive</div>
           </div>

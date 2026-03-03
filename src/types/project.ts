@@ -15,7 +15,6 @@ export type PackagingStrategy =
   | 'MINIMO_SFRIDO'
   | 'ECONOMICO'
   | 'CONFEZIONI_GRANDI'
-  | 'CONFEZIONI_PICCOLE'
   | 'MANUALE';
 
 export interface ConfigLogEntry {
