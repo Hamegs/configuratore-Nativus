@@ -1,4 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+
+const Preview3DPanel = lazy(() =>
+  import('../3d/Preview3DPanel').then(m => ({ default: m.Preview3DPanel }))
+);
+
+function PanelFallback() {
+  return (
+    <div className="flex h-full items-center justify-center bg-slate-800">
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
+        <span className="text-xs text-slate-500">3D…</span>
+      </div>
+    </div>
+  );
+}
 
 interface TechnicalLayoutProps {
   children: React.ReactNode;
@@ -17,17 +32,13 @@ export function TechnicalLayout({ children, sidebar }: TechnicalLayoutProps) {
             <span className="text-xs text-slate-400">Dati tecnici completi · Consumi reali · Stratigrafie</span>
           </div>
         </div>
-        <div className={sidebar ? 'flex gap-0' : ''}>
-          <div className={`flex-1 ${sidebar ? 'max-w-3xl' : ''}`}>
-            <div className="technical-theme">{children}</div>
-          </div>
-          {sidebar && (
-            <aside className="w-72 shrink-0 border-l border-slate-700 bg-slate-850 hidden xl:block">
-              {sidebar}
-            </aside>
-          )}
-        </div>
+        <div className="technical-theme">{children}</div>
       </div>
+      <aside className="w-72 shrink-0 border-l border-slate-700 hidden xl:flex xl:flex-col" style={{ height: 'calc(100vh - 56px)', position: 'sticky', top: 0 }}>
+        <Suspense fallback={<PanelFallback />}>
+          <Preview3DPanel />
+        </Suspense>
+      </aside>
     </div>
   );
 }

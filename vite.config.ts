@@ -15,6 +15,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'state': ['zustand'],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           'color-data': [
             './src/data/static/color-palettes/ncs.json',
             './src/data/static/color-palettes/pantone-c.json',
