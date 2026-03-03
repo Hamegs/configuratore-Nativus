@@ -66,6 +66,7 @@ export function StepCart({ onComplete }: StepCartProps) {
       setCartItems(computed);
       return computed;
     } catch (e) {
+      console.error('[StepCart] computePackagedItems error:', e);
       return [];
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

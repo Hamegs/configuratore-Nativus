@@ -92,13 +92,12 @@ export function computePackagedItems(
   }
 
   for (const [, agg] of aggMap) {
-    const skus = store.packagingSku.filter(s => s.product_id === agg.product_id);
+    const skus = store.packagingSku.filter(
+      s => s.product_id === agg.product_id && (s.pack_size ?? 0) > 0,
+    );
     if (skus.length === 0) {
-      throw new DataError(
-        'NO_SKU_FOR_PRODUCT',
-        `Nessuna SKU di confezionamento per: ${agg.product_id}`,
-        { product_id: agg.product_id },
-      );
+      console.warn('[computePackagedItems] Nessuna SKU valida per:', agg.product_id);
+      continue;
     }
     const options = computePackagingOptions(agg.qty_raw, skus, store.listino);
     const best = bestOption(options, mode);

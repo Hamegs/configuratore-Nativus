@@ -157,7 +157,7 @@ export function computeProtettiviCart(
         const waxQty = packQty(store, waxSku, waxKg);
         lines.push({
           sku_id: waxSku,
-          product_id: 'SEAL_WAX',
+          product_id: 'CRYSTEPO_V',
           descrizione: withZone('Seal Wax lucida (2 mani, 30 g/m²/mano)'),
           qty: waxQty,
           qty_raw: waxKg,
@@ -167,7 +167,7 @@ export function computeProtettiviCart(
           totale: waxQty * priceOf(store, waxSku),
           section: 'protettivi',
         });
-        steps.push({ step_order: stepOrder, name: 'SEAL WAX lucida — 2 mani (30 g/m² per mano)', product_id: 'SEAL_WAX', qty_per_mano: 30, n_mani: 2, qty_total_kg: waxKg, unit: 'g/m²' });
+        steps.push({ step_order: stepOrder, name: 'SEAL WAX lucida — 2 mani (30 g/m² per mano)', product_id: 'CRYSTEPO_V', qty_per_mano: 30, n_mani: 2, qty_total_kg: waxKg, unit: 'g/m²' });
       } else {
         const opKg = (80 / 1000) * area_mq * 2;
         const opSku = 'PROTEGGO_OPACO_H20_2_5_5KG';
@@ -380,7 +380,7 @@ export function computeProtettiviCart(
       const premixSku = 'PREMIX_COLORE_OPACO_S_1_88_0_14KG';
       lines.push({
         sku_id: premixSku,
-        product_id: 'PREMIX_COLORE_OPACO_S',
+        product_id: 'PREMIX_COLORE_OPACO_S_1_88',
         descrizione: withZone('Premix colore Opaco S (1 per confezione)'),
         qty: opQty,
         qty_raw: opKg,
