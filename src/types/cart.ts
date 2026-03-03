@@ -10,7 +10,6 @@ export interface CartLine {
   qty_raw?: number;
   pack_size?: number;
   pack_unit?: string;
-  color_label?: string;  // etichetta colore per consolidamento per-superficie
 }
 
 export interface CartFee {
@@ -62,5 +61,4 @@ export interface PackagingResult {
     prezzo_unitario: number;
     totale: number;
   }>;
-  waste_pct: number;
 }

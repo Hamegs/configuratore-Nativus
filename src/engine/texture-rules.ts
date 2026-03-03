@@ -92,6 +92,7 @@ function addLine(
   const texEntry = store.texturePackagingSku.find(t => t.sku_id === sku_id);
   const commercialId = texEntry?.product_id || sku_id;
   const price = priceOf(store, sku_id);
+  const packSizeMq = texEntry?.pack_size_mq ?? undefined;
   lines.push({
     sku_id: commercialId,
     descrizione,
@@ -100,6 +101,9 @@ function addLine(
     totale: qty * price,
     section,
     note,
+    pack_size: packSizeMq,
+    pack_unit: packSizeMq !== undefined ? 'mq' : undefined,
+    qty_raw: packSizeMq !== undefined ? qty * packSizeMq : undefined,
   });
 }
 

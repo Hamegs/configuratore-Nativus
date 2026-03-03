@@ -1,5 +1,6 @@
 import type { PackagingStrategy, ProjectCartRow, AggregatedRawQty } from '../types/project';
 import type { PackagingSku, ListinoSku } from '../types/packaging';
+import { DataError } from './errors';
 
 export interface PackagingOption {
   sku_id: string;
@@ -8,7 +9,7 @@ export interface PackagingOption {
   prezzo_unitario: number;
   qty_packs: number;
   totale: number;
-  sfrido: number;    // unità in eccesso rispetto al fabbisogno raw
+  sfrido: number;
 }
 
 export function computePackagingOptions(
@@ -18,9 +19,12 @@ export function computePackagingOptions(
 ): PackagingOption[] {
   if (skus.length === 0 || qty_raw <= 0) return [];
   return skus.map(sku => {
+    if (!sku.pack_size || sku.pack_size <= 0) {
+      throw new DataError('INVALID_PACK_SIZE', `Pack size non valido per SKU: ${sku.sku_id}`, { sku_id: sku.sku_id });
+    }
     const price = listino.find(l => l.sku_id === sku.sku_id)?.prezzo_listino ?? 0;
-    const qty_packs = Math.ceil(qty_raw / (sku.pack_size || 1));
-    const covered = qty_packs * (sku.pack_size || 1);
+    const qty_packs = Math.ceil(qty_raw / sku.pack_size);
+    const covered = qty_packs * sku.pack_size;
     return {
       sku_id: sku.sku_id,
       pack_size: sku.pack_size,
@@ -33,7 +37,7 @@ export function computePackagingOptions(
   });
 }
 
-function bestOption(options: PackagingOption[], strategy: PackagingStrategy): PackagingOption | null {
+export function bestOption(options: PackagingOption[], strategy: PackagingStrategy): PackagingOption | null {
   if (options.length === 0) return null;
   switch (strategy) {
     case 'MINIMO_SFRIDO':
@@ -59,25 +63,33 @@ export function buildCartFromAggregated(
   for (const agg of aggregated) {
     const skus = allSkus.filter(s => s.product_id === agg.product_id);
     if (skus.length === 0) {
-      // Nessuna SKU trovata: usa la SKU default con qty come era
-      const price = listino.find(l => l.sku_id === agg.sku_id_default)?.prezzo_listino ?? 0;
-      const qty = Math.ceil(agg.qty_raw / (agg.pack_size_default || 1));
-      rows.push({
-        row_id: crypto.randomUUID(),
-        product_id: agg.product_id,
-        sku_id: agg.sku_id_default,
-        descrizione: agg.descrizione,
-        qty_packs: qty,
-        pack_size: agg.pack_size_default,
-        pack_unit: agg.pack_unit,
-        prezzo_unitario: price,
-        totale: qty * price,
-        source: 'auto',
-        status: 'active',
-        is_override: false,
-        section: agg.section,
-      });
-      continue;
+      if (agg.section === 'texture') {
+        const price = listino.find(l => l.sku_id === agg.sku_id_default)?.prezzo_listino ?? 0;
+        const qty = agg.pack_size_default > 0
+          ? Math.ceil(agg.qty_raw / agg.pack_size_default)
+          : 1;
+        rows.push({
+          row_id: crypto.randomUUID(),
+          product_id: agg.product_id,
+          sku_id: agg.sku_id_default,
+          descrizione: agg.descrizione,
+          qty_packs: qty,
+          pack_size: agg.pack_size_default,
+          pack_unit: agg.pack_unit,
+          prezzo_unitario: price,
+          totale: qty * price,
+          source: 'auto',
+          status: 'active',
+          is_override: false,
+          section: agg.section,
+        });
+        continue;
+      }
+      throw new DataError(
+        'NO_SKU_FOR_PRODUCT',
+        `Nessuna SKU di confezionamento trovata per il prodotto: ${agg.product_id}`,
+        { product_id: agg.product_id },
+      );
     }
     const opts = computePackagingOptions(agg.qty_raw, skus, listino);
     const best = bestOption(opts, strategy);
