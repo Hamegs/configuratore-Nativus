@@ -19,6 +19,7 @@ export interface TextureInput {
   last_base_layer: string;
   fughe_residue?: string;
   env_id: string;
+  zone_label?: string;
 }
 
 export interface TextureConsumption {
@@ -78,24 +79,13 @@ function priceOf(store: DataStore, sku_id: string): number {
   return 0;
 }
 
-function descOf(store: DataStore, sku_id: string): string {
-  const pkg = store.packagingSku.find(p => p.sku_id === sku_id);
-  if (pkg) return pkg.descrizione_sku;
-  const texEntry = store.texturePackagingSku.find(t => t.sku_id === sku_id);
-  if (texEntry?.product_id) {
-    const byProduct = store.packagingSku.find(p => p.sku_id === texEntry.product_id);
-    if (byProduct) return byProduct.descrizione_sku;
-    return texEntry.product_id.replace(/_/g, ' ');
-  }
-  return sku_id;
-}
-
 function addLine(
   store: DataStore,
   lines: CartLine[],
   sku_id: string | null,
   qty: number,
   section: CartSection,
+  descrizione: string,
   note?: string,
 ) {
   if (!sku_id || qty <= 0) return;
@@ -104,7 +94,7 @@ function addLine(
   const price = priceOf(store, sku_id);
   lines.push({
     sku_id: commercialId,
-    descrizione: descOf(store, sku_id),
+    descrizione,
     qty,
     prezzo_unitario: price,
     totale: qty * price,
@@ -142,6 +132,15 @@ export function computeTextureCart(
 
   const preQty = getPreTextureConsumption(input.last_base_layer);
   const effMode = deriveColorMode(line, color_mode, color_primary);
+  const colorLabel = color_primary?.label ?? null;
+  const zone = input.zone_label ?? null;
+
+  function d(phase: string): string {
+    let desc = phase ? `${line} ${phase}` : `${line}`;
+    if (colorLabel) desc += ` — ${colorLabel}`;
+    if (zone) desc += ` — ${zone}`;
+    return desc;
+  }
 
   // ─── NATURAL ──────────────────────────────────────────────────────────────
   if (line === 'NATURAL') {
@@ -151,15 +150,15 @@ export function computeTextureCart(
     const modeKey = isCustom ? 'CUSTOM_PRECOLORED' : 'COLORABILE';
     const { n10, n2 } = computePackaging10Plus2(area_mq);
 
-    addLine(store, lines, findTexSku(store, 'NATURAL', 'FONDO', modeKey, 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'NATURAL', 'FINITURA', modeKey, 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'NATURAL', 'KIT', modeKey, 2, styleParam), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'FONDO', modeKey, 10), n10, TEX, d('Fondo'));
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'FINITURA', modeKey, 10), n10, TEX, d('Finitura'));
+    addLine(store, lines, findTexSku(store, 'NATURAL', 'KIT', modeKey, 2, styleParam), n2, TEX, d('Kit'));
 
     if (!isCustom) {
-      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX);
-      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX, d('Colore Fondo'));
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX, d('Colore Finitura'));
       const colorsCount = isBicolor ? 'colors=2' : 'colors=1';
-      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_KIT', 'COLORABILE', 2, colorsCount), n2, TEX);
+      addLine(store, lines, findTexSku(store, 'NATURAL', 'COLORE_KIT', 'COLORABILE', 2, colorsCount), n2, TEX, d('Colore Kit'));
     } else {
       const numColors = isBicolor ? 2 : 1;
       fees.push({ description: 'Personalizzazione colore NATURAL', amount: 100, qty: numColors });
@@ -178,23 +177,23 @@ export function computeTextureCart(
       extraFondoN10 = Math.ceil(area_mq / 10);
       alerts.push('SENSE su piastrelle/mosaico: fughe residue critiche → passaggio extra di fondo aggiunto.');
     }
-    addLine(store, lines, findTexSku(store, 'SENSE', 'FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX);
-    addLine(store, lines, findTexSku(store, 'SENSE', 'FINITURA', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'SENSE', 'KIT', 'COLORABILE', 2), n2, TEX);
-    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX);
-    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'SENSE', 'FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX, d('Fondo'));
+    addLine(store, lines, findTexSku(store, 'SENSE', 'FINITURA', 'COLORABILE', 10), n10, TEX, d('Finitura'));
+    addLine(store, lines, findTexSku(store, 'SENSE', 'KIT', 'COLORABILE', 2), n2, TEX, d('Kit'));
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FONDO', 'COLORABILE', 10), n10 + extraFondoN10, TEX, d('Colore Fondo'));
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX, d('Colore Finitura'));
+    addLine(store, lines, findTexSku(store, 'SENSE', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX, d('Colore Kit'));
   }
 
   // ─── DEKORA ───────────────────────────────────────────────────────────────
   if (line === 'DEKORA') {
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'FONDO', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'FINITURA', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'KIT', 'COLORABILE', 2), n2, TEX);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'FONDO', 'COLORABILE', 10), n10, TEX, d('Fondo'));
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'FINITURA', 'COLORABILE', 10), n10, TEX, d('Finitura'));
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'KIT', 'COLORABILE', 2), n2, TEX, d('Kit'));
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FONDO', 'COLORABILE', 10), n10, TEX, d('Colore Fondo'));
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_FINITURA', 'COLORABILE', 10), n10, TEX, d('Colore Finitura'));
+    addLine(store, lines, findTexSku(store, 'DEKORA', 'COLORE_KIT', 'COLORABILE', 2), n2, TEX, d('Colore Kit'));
     alerts.push('DEKORA: due mani di finitura nella stessa giornata (a fresco). Non interrompere tra le mani.');
   }
 
@@ -204,9 +203,16 @@ export function computeTextureCart(
       throw new DataError('LAMINE_NO_PATTERN', 'LAMINE richiede selezione pattern', {});
     }
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    addLine(store, lines, findTexSku(store, 'LAMINE', 'FONDO', 'PATTERN', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'LAMINE', 'LAMINE', 'PATTERN', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'LAMINE', 'KIT', 'PATTERN', 2), n2, TEX);
+    const patternLabel = lamine_pattern;
+    function dL(phase: string): string {
+      let desc = `LAMINE ${phase}`;
+      if (patternLabel) desc += ` — ${patternLabel}`;
+      if (zone) desc += ` — ${zone}`;
+      return desc;
+    }
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'FONDO', 'PATTERN', 10), n10, TEX, dL('Fondo'));
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'LAMINE', 'PATTERN', 10), n10, TEX, dL(''));
+    addLine(store, lines, findTexSku(store, 'LAMINE', 'KIT', 'PATTERN', 2), n2, TEX, dL('Kit'));
     alerts.push('LAMINE: applicare fondo a rullo; spolvero lamine a rifiuto IMMEDIATO (non attendere).');
     alerts.push('LAMINE: carteggio 120 + aspirazione prima dei protettivi.');
   }
@@ -216,8 +222,8 @@ export function computeTextureCart(
     const isBicolor = style === 'COR_EVIDENCE';
     const styleParam = isBicolor ? 'style=EVIDENCE' : 'style=CHROMO';
     const { n4, n1 } = computePackaging4Plus1(area_mq);
-    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 4, styleParam), n4, TEX);
-    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 1, styleParam), n1, TEX);
+    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 4, styleParam), n4, TEX, d('Kit'));
+    addLine(store, lines, findTexSku(store, 'CORLITE', 'KIT', 'CUSTOM_FEE0', 1, styleParam), n1, TEX, d('Kit'));
     if (isBicolor) {
       alerts.push('CORLITE EVIDENCE: applicare colore 2 a fresco entro 15–20 minuti dal colore 1.');
     }
@@ -227,15 +233,15 @@ export function computeTextureCart(
   // ─── MATERIAL ─────────────────────────────────────────────────────────────
   if (line === 'MATERIAL') {
     const { n10, n2 } = computePackaging10Plus2(area_mq);
-    addLine(store, lines, findTexSku(store, 'MATERIAL', 'MATERIAL', 'NEUTRO', 10), n10, TEX);
-    addLine(store, lines, findTexSku(store, 'MATERIAL', 'KIT', 'NEUTRO', 2), n2, TEX);
+    addLine(store, lines, findTexSku(store, 'MATERIAL', 'MATERIAL', 'NEUTRO', 10), n10, TEX, d(''));
+    addLine(store, lines, findTexSku(store, 'MATERIAL', 'KIT', 'NEUTRO', 2), n2, TEX, d('Kit'));
 
     if (effMode === 'CUSTOM_FEE0' && color_primary) {
       const mani_colore = Math.ceil(area_mq * 0.25);
       if (color_primary.type === 'NATURAL_24') {
-        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'CUSTOM_FEE0'), mani_colore, TEX, 'Colore superficiale – non in massa');
+        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'CUSTOM_FEE0'), mani_colore, TEX, d('Colore Superficiale'), 'Colore superficiale – non in massa');
       } else {
-        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'METALLIC_FEE0'), mani_colore, TEX, 'Colore superficiale – non in massa');
+        addLine(store, lines, findTexSku(store, 'MATERIAL', 'COLORE_SUPERFICIALE', 'METALLIC_FEE0'), mani_colore, TEX, d('Colore Superficiale'), 'Colore superficiale – non in massa');
       }
       alerts.push('MATERIAL con colore superficiale: colore in SUPERFICIE, non in massa. Far accettare al cliente.');
     }

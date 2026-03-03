@@ -55,7 +55,7 @@ export function StepCart({ onComplete }: StepCartProps) {
     return cartResult.summary.lines.map((line: CartLine) => ({
       product_id: line.product_id ?? line.sku_id,
       sku_id_default: line.sku_id,
-      descrizione: [line.descrizione, line.color_label].filter(Boolean).join(' — '),
+      descrizione: line.descrizione,
       qty_raw: line.qty_raw ?? line.qty,
       pack_size_default: line.pack_size ?? 1,
       pack_unit: line.pack_unit ?? 'kg',
@@ -151,7 +151,6 @@ export function StepCart({ onComplete }: StepCartProps) {
                 <tr key={row.row_id} className="tbl-row">
                   <td className="px-4 py-3">
                     <p className="font-medium text-brand-800">{row.descrizione}</p>
-                    <p className="text-xs text-brand-400">{row.sku_id}</p>
                   </td>
                   <td className="px-4 py-3 text-right font-semibold text-brand-700">
                     {row.qty_packs} × {row.pack_size} {row.pack_unit}

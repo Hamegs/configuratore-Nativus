@@ -8,6 +8,7 @@ import { computeProtettiviCart } from './protettivi-rules';
 import { computeDinCart, buildDinInputsFromWizard } from './din-calculator';
 import { DataError } from './errors';
 import { effectiveAmbiente, isEffectiveShower } from './effective-ambiente';
+import { getCommercialName } from '../utils/product-names';
 
 export interface CartResult {
   summary: CartSummary;
@@ -93,7 +94,7 @@ export function computeFullCart(
               const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
               all_lines.push({
                 sku_id: best.sku_id,
-                descrizione: best.descrizione_sku,
+                descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
                 qty,
                 prezzo_unitario: price,
                 totale: qty * price,
@@ -132,7 +133,7 @@ export function computeFullCart(
               const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
               all_lines.push({
                 sku_id: best.sku_id,
-                descrizione: best.descrizione_sku,
+                descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
                 qty,
                 prezzo_unitario: price,
                 totale: qty * price,
@@ -163,6 +164,8 @@ export function computeFullCart(
   let texArea = 0;
   let primaryTexLine: TexLine = (state.texture_line ?? 'NATURAL') as TexLine;
 
+  const wallSurfaces = state.surfaces.filter(s => s.type === 'WALL_PART');
+
   if (state.surfaces.length > 0) {
     for (const surface of state.surfaces) {
       if (!surface.texture_line) continue;
@@ -170,6 +173,11 @@ export function computeFullCart(
       const fughe = surface.type === 'WALL_PART'
         ? (state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue)
         : state.sub_answers_floor.fughe_residue;
+      const zone_label = surface.type === 'FLOOR'
+        ? 'Pavimento'
+        : wallSurfaces.length === 1
+          ? 'Parete'
+          : `Parete ${wallSurfaces.indexOf(surface) + 1}`;
       const texResult = computeTextureCart(store, {
         line: surface.texture_line,
         style: surface.texture_style!,
@@ -182,12 +190,11 @@ export function computeFullCart(
         last_base_layer: lastBase,
         fughe_residue: fughe,
         env_id: effectiveAmbiente(state),
+        zone_label,
       });
-      const colorLbl = surface.color_primary?.label ?? undefined;
       texResult.cart_lines.forEach(l => {
-        const ln: CartLine = { ...l, color_label: colorLbl };
-        all_lines.push(ln);
-        if (l.section === 'texture') texProcLines.push(ln);
+        all_lines.push(l);
+        if (l.section === 'texture') texProcLines.push(l);
       });
       texResult.fees.forEach(f => all_fees.push(f));
       allTexAlerts.push(...texResult.hard_alerts);
@@ -227,6 +234,11 @@ export function computeFullCart(
       // Per-surface: ogni superficie ha il proprio colore protettivo
       for (const surface of state.surfaces) {
         if (!surface.texture_line) continue;
+        const surfZone = surface.type === 'FLOOR'
+          ? 'Pavimento'
+          : wallSurfaces.length === 1
+            ? 'Parete'
+            : `Parete ${wallSurfaces.indexOf(surface) + 1}`;
         const protSelColor: import('../types/protettivi').ProtettivoSelection = {
           system: state.protettivo.system,
           finitura: state.protettivo.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : 'OPACO',
@@ -236,10 +248,8 @@ export function computeFullCart(
           colore_code: surface.protector_color?.code ?? surface.protector_color?.label,
           trasparente_finale: state.protettivo.trasparente_finale,
         };
-        const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup);
-        protResult.cart_lines.forEach(l => {
-          all_lines.push({ ...l, color_label: surface.protector_color?.label ?? undefined });
-        });
+        const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup, surfZone);
+        all_lines.push(...protResult.cart_lines);
         protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
         if (protStepDescriptions.length === 0) protStepDescriptions = protResult.step_descriptions;
       }
@@ -288,7 +298,7 @@ export function computeFullCart(
   const procedure_texture: CartProcedureStep[] = texProcLines
     .map((line, i) => ({
       step_order: (i + 1) * 10,
-      name: line.color_label ? `${line.descrizione} — ${line.color_label}` : line.descrizione,
+      name: line.descrizione,
       product_id: line.product_id ?? null,
       qty_total_kg: (line as CartLine & { qty_raw?: number }).qty_raw ?? null,
       unit: line.pack_unit ?? null,
@@ -510,7 +520,7 @@ function pushLine(
   const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
   lines.push({
     sku_id: best.sku_id,
-    descrizione: best.descrizione_sku,
+    descrizione: getCommercialName(product_id) ?? best.descrizione_sku,
     qty,
     prezzo_unitario: price,
     totale: qty * price,
@@ -583,7 +593,7 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
         const price = store.listino.find(l => l.sku_id === best.sku_id)?.prezzo_listino ?? 0;
         lines.push({
           sku_id: best.sku_id,
-          descrizione: best.descrizione_sku,
+          descrizione: getCommercialName(step.product_id) ?? best.descrizione_sku,
           qty,
           prezzo_unitario: price,
           totale: qty * price,
@@ -604,7 +614,7 @@ function consolidateLines(lines: CartLine[]): CartLine[] {
   const map = new Map<string, CartLine>();
   for (const line of lines) {
     // Righe con colori diversi NON vengono accorpate anche se stesso SKU
-    const key = `${line.sku_id}::${line.color_label ?? ''}`;
+    const key = `${line.sku_id}::${line.descrizione}`;
     const existing = map.get(key);
     if (existing) {
       existing.qty += line.qty;
