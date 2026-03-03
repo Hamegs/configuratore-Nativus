@@ -10,6 +10,7 @@ import { DataError } from './errors';
 import { effectiveAmbiente, isEffectiveShower } from './effective-ambiente';
 import { getCommercialName } from '../utils/product-names';
 import { applyTextureTechnicalModifiers } from './texture-technical-modifiers';
+import { applyPreparationUpgrade } from './preparation-upgrade';
 
 export interface CartResult {
   summary: CartSummary;
@@ -93,6 +94,10 @@ export function computeFullCart(
             steps: applyTextureTechnicalModifiers(store, procedure_floor.steps, floorTexLine, state.mq_pavimento),
           };
         }
+        procedure_floor = {
+          ...procedure_floor,
+          steps: applyPreparationUpgrade(store, procedure_floor.steps, state, state.mq_pavimento),
+        };
         procedure_floor.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -139,6 +144,10 @@ export function computeFullCart(
             steps: applyTextureTechnicalModifiers(store, procedure_wall.steps, wallTexLine, state.mq_pareti),
           };
         }
+        procedure_wall = {
+          ...procedure_wall,
+          steps: applyPreparationUpgrade(store, procedure_wall.steps, state, state.mq_pareti),
+        };
         procedure_wall.steps.forEach(step => {
           if (step.product_id && step.qty_total !== undefined) {
             const skus = store.packagingSku.filter(p => p.product_id === step.product_id);
@@ -442,7 +451,11 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
         const modifiedProcFloor = floorTexLineSchedule
           ? { ...proc, steps: applyTextureTechnicalModifiers(store, proc.steps, floorTexLineSchedule, 1) }
           : proc;
-        modifiedProcFloor.steps.forEach(s => {
+        const upgradedProcFloor = {
+          ...modifiedProcFloor,
+          steps: applyPreparationUpgrade(store, modifiedProcFloor.steps, state, 1),
+        };
+        upgradedProcFloor.steps.forEach(s => {
           if (s.name) prepFloor.push({ name: s.name, step_order: s.step_order });
         });
       } catch { /* noop — errore già gestito in computeFullCart */ }
@@ -459,7 +472,11 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
         const modifiedProcWall = wallTexLineSchedule
           ? { ...proc, steps: applyTextureTechnicalModifiers(store, proc.steps, wallTexLineSchedule, 1) }
           : proc;
-        modifiedProcWall.steps.forEach(s => {
+        const upgradedProcWall = {
+          ...modifiedProcWall,
+          steps: applyPreparationUpgrade(store, modifiedProcWall.steps, state, 1),
+        };
+        upgradedProcWall.steps.forEach(s => {
           if (s.name) prepWall.push({ name: s.name, step_order: s.step_order });
         });
       } catch { /* noop */ }

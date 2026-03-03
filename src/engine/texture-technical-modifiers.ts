@@ -131,6 +131,42 @@ export function applyTextureTechnicalModifiers(
     }
   }
 
+  // ─── REGOLA A1: CORLITE — layer strutturale FONDO_BASE + QUARZO dopo RAS_BASE_Q ──
+  // Inserito dopo RULE A (sostituzione RAS_BASE→RAS_BASE_Q) e prima di RULE B (barriera vapore).
+  // Attivo solo se BARR_VAP_4 NON è presente (se è presente, gestisce RULE B).
+  if (textureLine === 'CORLITE' && hasProd(result, 'RAS_BASE_Q') && !hasProd(result, 'BARR_VAP_4')) {
+    const hasCorliteFondo  = result.some(s => s.product_id === 'FONDO_BASE'   && s.qty === 0.35);
+    const hasCorliteQuarzo = result.some(s => s.product_id === 'QUARZO_01_03' && s.qty === 0.105);
+
+    if (!hasCorliteFondo && !hasCorliteQuarzo) {
+      const lastRasBaseQIdx = result.reduce<number>(
+        (acc, s, i) => (s.product_id === 'RAS_BASE_Q' ? i : acc), -1,
+      );
+      const fondoStep  = buildStep(store, 'FONDO_BASE',   0, 0.35,  'kg/m²', area_mq);
+      const quarzoStep = buildStep(store, 'QUARZO_01_03', 0, 0.105, 'kg/m²', area_mq);
+      result = [
+        ...result.slice(0, lastRasBaseQIdx + 1),
+        fondoStep,
+        quarzoStep,
+        ...result.slice(lastRasBaseQIdx + 1),
+      ];
+    } else if (!hasCorliteFondo) {
+      result = insertAfterLastProd(
+        result, 'RAS_BASE_Q',
+        buildStep(store, 'FONDO_BASE', 0, 0.35, 'kg/m²', area_mq),
+      );
+    } else if (!hasCorliteQuarzo) {
+      const fondoIdx = result.reduce<number>(
+        (acc, s, i) => (s.product_id === 'FONDO_BASE' && s.qty === 0.35 ? i : acc), -1,
+      );
+      if (fondoIdx >= 0) {
+        const r = [...result];
+        r.splice(fondoIdx + 1, 0, buildStep(store, 'QUARZO_01_03', 0, 0.105, 'kg/m²', area_mq));
+        result = r;
+      }
+    }
+  }
+
   // ─── REGOLA B: LAMINE/CORLITE + BARR_VAP_4 ──────────────────────────────
   const hasBarrVap4 = hasProd(result, 'BARR_VAP_4');
   const isLamineOrCorlite = textureLine === 'LAMINE' || textureLine === 'CORLITE';

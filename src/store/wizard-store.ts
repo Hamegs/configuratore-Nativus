@@ -55,6 +55,8 @@ const INITIAL_STATE: WizardState = {
   lamine_pattern: null,
   // Upgrade Rasante 2K
   ras2k_upgrade: 'KEEP' as const,
+  // Upgrade strato di preparazione
+  preparation_upgrade: 'KEEP' as const,
   // Protettivi
   protettivo: null,
   protector_mode: 'TRASPARENTE' as const,
@@ -118,6 +120,8 @@ interface WizardStore extends WizardState {
   updateSurface: (id: string, patch: Partial<Surface>) => void;
   // Step 3b — Upgrade Rasante 2K
   setRas2kUpgrade: (v: WizardState['ras2k_upgrade']) => void;
+  // Step 5 — Upgrade strato di preparazione
+  setPreparationUpgrade: (v: WizardState['preparation_upgrade']) => void;
   // Step 4 — Protettivi
   setProtettivo: (v: ProtettivoSelection | null) => void;
   setProtectorMode: (v: 'TRASPARENTE' | 'COLOR') => void;
@@ -392,5 +396,6 @@ export const useWizardStore = create<WizardStore>((set) => ({
   setFinishType: (v) => set({ finish_type: v }),
 
   setRas2kUpgrade: (v) => set({ ras2k_upgrade: v }),
+  setPreparationUpgrade: (v) => set({ preparation_upgrade: v }),
   setDinInputs: (v) => set({ din_inputs: v }),
 }));
