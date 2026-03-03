@@ -66,7 +66,23 @@ let cached: DataStore | null = null;
 
 const ADMIN_LS_KEY = 'nativus_admin_overrides';
 
-function loadAdminOverrides(): Partial<Pick<DataStore, 'stepLibrary' | 'stepMap' | 'packagingSku' | 'listino'>> {
+interface AdminLoaderOverrides {
+  stepLibrary?: StepLibraryEntry[];
+  stepMap?: StepMapEntry[];
+  packagingSku?: PackagingSku[];
+  listino?: ListinoSku[];
+  commercialNames?: Record<string, string>;
+  ambienti?: Array<Record<string, unknown>>;
+  supporti?: Array<Record<string, unknown>>;
+  dinInputs?: Array<Record<string, unknown>>;
+  dinOrderRules?: Array<Record<string, unknown>>;
+  textureLines?: Array<Record<string, unknown>>;
+  textureStyles?: Array<Record<string, unknown>>;
+  laminePatterns?: Array<Record<string, unknown>>;
+  colorOverrides?: Record<string, { is_active?: boolean; label?: string }>;
+}
+
+function loadAdminOverrides(): AdminLoaderOverrides {
   try {
     const raw = localStorage.getItem(ADMIN_LS_KEY);
     return raw ? JSON.parse(raw) : {};
@@ -75,10 +91,31 @@ function loadAdminOverrides(): Partial<Pick<DataStore, 'stepLibrary' | 'stepMap'
   }
 }
 
-export function loadDataStore(adminOverride?: Partial<DataStore>): DataStore {
+function applyColorOverrides<T extends Record<string, unknown>>(
+  colors: T[],
+  idKey: string,
+  overrides: Record<string, { is_active?: boolean; label?: string }> | undefined,
+): T[] {
+  if (!overrides || Object.keys(overrides).length === 0) return colors;
+  return colors.map(c => {
+    const id = c[idKey] as string;
+    const ov = overrides[id];
+    if (!ov) return c;
+    const merged = { ...c };
+    if (ov.is_active !== undefined) (merged as Record<string, unknown>).is_active = ov.is_active;
+    if (ov.label !== undefined) {
+      if ('ral_label' in merged) (merged as Record<string, unknown>).ral_label = ov.label;
+      else if ('ncs_label' in merged) (merged as Record<string, unknown>).ncs_label = ov.label;
+      else if ('pantone_label' in merged) (merged as Record<string, unknown>).pantone_label = ov.label;
+    }
+    return merged;
+  });
+}
+
+export function loadDataStore(adminOverride?: AdminLoaderOverrides): DataStore {
   if (cached && !adminOverride) return cached;
 
-  const adminOv = adminOverride ?? loadAdminOverrides();
+  const adminOv: AdminLoaderOverrides = adminOverride ?? loadAdminOverrides();
 
   const staticStepMap: StepMapEntry[]     = getStatic('step-map.json');
   const staticStepLib: StepLibraryEntry[] = getStatic('step-library.json');
@@ -120,19 +157,19 @@ export function loadDataStore(adminOverride?: Partial<DataStore>): DataStore {
   }
 
   const store: DataStore = {
-    ambienti:          getStatic('ambienti.json'),
+    ambienti:          mergeById(getStatic('ambienti.json') as unknown as { [k: string]: unknown }[], adminOv.ambienti, 'env_id') as unknown as Ambiente[],
     macros:            getStatic('macros.json'),
     stepTypes:         getStatic('step-types.json'),
-    supporti:          getStatic('supporti.json'),
+    supporti:          mergeById(getStatic('supporti.json') as unknown as { [k: string]: unknown }[], adminOv.supporti, 'support_id') as unknown as Supporto[],
     decisionTable:     getStatic('decision-table.json'),
     stepMap:           mergeStepMap(staticStepMap, adminOv.stepMap),
     stepLibrary:       mergeById(staticStepLib as unknown as { [k: string]: unknown }[], adminOv.stepLibrary as unknown as { [k: string]: unknown }[] | undefined, 'step_id') as unknown as StepLibraryEntry[],
     prodotti:          getStatic('prodotti.json'),
     packagingSku:      mergeById(staticPackSku as unknown as { [k: string]: unknown }[], adminOv.packagingSku as unknown as { [k: string]: unknown }[] | undefined, 'sku_id') as unknown as PackagingSku[],
     listino:           mergeById(staticListino as unknown as { [k: string]: unknown }[], adminOv.listino as unknown as { [k: string]: unknown }[] | undefined, 'sku_id') as unknown as ListinoSku[],
-    textureLines:      getStatic('texture-lines.json'),
-    textureStyles:     getStatic('texture-styles.json'),
-    laminePatterns:    getStatic('lamine-patterns.json'),
+    textureLines:      mergeById(getStatic('texture-lines.json') as unknown as { [k: string]: unknown }[], adminOv.textureLines, 'line_id') as unknown as TextureLine[],
+    textureStyles:     mergeById(getStatic('texture-styles.json') as unknown as { [k: string]: unknown }[], adminOv.textureStyles, 'style_id') as unknown as TextureStyle[],
+    laminePatterns:    mergeById(getStatic('lamine-patterns.json') as unknown as { [k: string]: unknown }[], adminOv.laminePatterns, 'pattern_id') as unknown as LaminePattern[],
     colorPalettesMeta: getStatic('color-palettes-meta.json'),
     colorStandards:    getStatic('color-standards.json'),
     textureOrderRules: getStatic('texture-order-rules.json'),
@@ -140,14 +177,14 @@ export function loadDataStore(adminOverride?: Partial<DataStore>): DataStore {
     texOpParams:       getStatic('tex-op-params.json'),
     protettiviH2o:     getStatic('protettivi-h2o.json'),
     protettiviS:       getStatic('protettivi-s.json'),
-    dinInputs:         getStatic('din-inputs.json'),
-    dinOrderRules:     getStatic('din-order-rules.json'),
+    dinInputs:         mergeById(getStatic('din-inputs.json') as unknown as { [k: string]: unknown }[], adminOv.dinInputs, 'input_id') as unknown as DinInput[],
+    dinOrderRules:     mergeById(getStatic('din-order-rules.json') as unknown as { [k: string]: unknown }[], adminOv.dinOrderRules, 'rule_id') as unknown as DinOrderRule[],
     colorNatural24:    getStatic('color-palettes/natural-24.json'),
     colorSense24:      getStatic('color-palettes/sense-24.json'),
     colorDekora24:     getStatic('color-palettes/dekora-24.json'),
-    colorRal:          getStatic('color-palettes/ral-classic.json'),
-    colorNcs:          getStatic('color-palettes/ncs.json'),
-    colorPantone:      getStatic('color-palettes/pantone-c.json'),
+    colorRal:          applyColorOverrides(getStatic('color-palettes/ral-classic.json') as unknown as Record<string, unknown>[], 'ral_id', adminOv.colorOverrides) as unknown as RalColor[],
+    colorNcs:          applyColorOverrides(getStatic('color-palettes/ncs.json') as unknown as Record<string, unknown>[], 'ncs_id', adminOv.colorOverrides) as unknown as NcsColor[],
+    colorPantone:      applyColorOverrides(getStatic('color-palettes/pantone-c.json') as unknown as Record<string, unknown>[], 'pantone_id', adminOv.colorOverrides) as unknown as PantoneColor[],
     meta:              getStatic('_meta.json'),
   };
 

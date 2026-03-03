@@ -7,15 +7,23 @@ import { setCommercialNameOverrides } from '../utils/product-names';
 
 const LS_KEY = 'nativus_admin_overrides';
 
-interface AdminOverrides {
+export interface AdminOverrides {
   stepLibrary?: StepLibraryEntry[];
   stepMap?: StepMapEntry[];
   packagingSku?: PackagingSku[];
   listino?: ListinoSku[];
   commercialNames?: Record<string, string>;
+  ambienti?: Array<Record<string, unknown>>;
+  supporti?: Array<Record<string, unknown>>;
+  dinInputs?: Array<Record<string, unknown>>;
+  dinOrderRules?: Array<Record<string, unknown>>;
+  textureLines?: Array<Record<string, unknown>>;
+  textureStyles?: Array<Record<string, unknown>>;
+  laminePatterns?: Array<Record<string, unknown>>;
+  colorOverrides?: Record<string, { is_active?: boolean; label?: string }>;
 }
 
-interface AdminStore {
+export interface AdminStore {
   overrides: AdminOverrides;
   isDirty: boolean;
   loadFromStorage: () => void;
@@ -24,6 +32,14 @@ interface AdminStore {
   savePackagingSku: (items: PackagingSku[]) => void;
   saveListino: (items: ListinoSku[]) => void;
   saveCommercialNames: (names: Record<string, string>) => void;
+  saveAmbienti: (items: Array<Record<string, unknown>>) => void;
+  saveSupporti: (items: Array<Record<string, unknown>>) => void;
+  saveDinInputs: (items: Array<Record<string, unknown>>) => void;
+  saveDinOrderRules: (items: Array<Record<string, unknown>>) => void;
+  saveTextureLines: (items: Array<Record<string, unknown>>) => void;
+  saveTextureStyles: (items: Array<Record<string, unknown>>) => void;
+  saveLaminePatterns: (items: Array<Record<string, unknown>>) => void;
+  saveColorOverrides: (overrides: Record<string, { is_active?: boolean; label?: string }>) => void;
   resetAll: () => void;
 }
 
@@ -42,6 +58,17 @@ function writeStorage(overrides: AdminOverrides) {
   } catch {
     console.warn('Admin store: impossibile scrivere su localStorage');
   }
+}
+
+function makeSimpleSaver(key: keyof AdminOverrides) {
+  return (items: unknown) => {
+    return (set: (s: Partial<{ overrides: AdminOverrides; isDirty: boolean }>) => void, get: () => { overrides: AdminOverrides }) => {
+      const overrides = { ...get().overrides, [key]: items };
+      writeStorage(overrides);
+      set({ overrides, isDirty: false });
+      invalidateCache();
+    };
+  };
 }
 
 export const useAdminStore = create<AdminStore>((set, get) => ({
@@ -90,6 +117,62 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     setCommercialNameOverrides(names);
   },
 
+  saveAmbienti: (items) => {
+    const overrides = { ...get().overrides, ambienti: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveSupporti: (items) => {
+    const overrides = { ...get().overrides, supporti: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveDinInputs: (items) => {
+    const overrides = { ...get().overrides, dinInputs: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveDinOrderRules: (items) => {
+    const overrides = { ...get().overrides, dinOrderRules: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveTextureLines: (items) => {
+    const overrides = { ...get().overrides, textureLines: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveTextureStyles: (items) => {
+    const overrides = { ...get().overrides, textureStyles: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveLaminePatterns: (items) => {
+    const overrides = { ...get().overrides, laminePatterns: items };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
+  saveColorOverrides: (colorOverrides) => {
+    const overrides = { ...get().overrides, colorOverrides };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    invalidateCache();
+  },
+
   resetAll: () => {
     try { localStorage.removeItem(LS_KEY); } catch { /* noop */ }
     set({ overrides: {}, isDirty: false });
@@ -98,11 +181,12 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
   },
 }));
 
+void makeSimpleSaver;
+
 export function getAdminOverrides(): AdminOverrides {
   return readStorage();
 }
 
-// Initialize commercial name overrides from localStorage at module load time
 (function initOverrides() {
   const stored = readStorage();
   if (stored.commercialNames) {

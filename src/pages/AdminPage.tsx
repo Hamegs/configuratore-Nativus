@@ -5,6 +5,7 @@ import { AdminListino } from '../components/admin/AdminListino';
 import { AdminStratigrafie } from '../components/admin/AdminStratigrafie';
 import { AdminExport } from '../components/admin/AdminExport';
 import { AdminProdotti } from '../components/admin/AdminProdotti';
+import { AdminRiepilogo } from '../components/admin/AdminRiepilogo';
 
 type Tab = 'riepilogo' | 'stratigrafie' | 'listino' | 'prodotti' | 'export';
 
@@ -51,8 +52,34 @@ export function AdminPage() {
   }
 
   const hasOverrides = Object.values(overrides).some(v =>
-    Array.isArray(v) || (typeof v === 'object' && v !== null && Object.keys(v).length > 0)
+    Array.isArray(v)
+      ? v.length > 0
+      : typeof v === 'object' && v !== null && Object.keys(v).length > 0
   );
+
+  const overrideSummary = [
+    overrides.stepLibrary?.length ? `step-library (${overrides.stepLibrary.length})` : null,
+    overrides.stepMap?.length ? `step-map (${overrides.stepMap.length})` : null,
+    overrides.packagingSku?.length ? `packaging (${overrides.packagingSku.length})` : null,
+    overrides.listino?.length ? `listino (${overrides.listino.length})` : null,
+    overrides.ambienti?.length ? `ambienti (${overrides.ambienti.length})` : null,
+    overrides.supporti?.length ? `supporti (${overrides.supporti.length})` : null,
+    overrides.dinInputs?.length ? `din-inputs (${overrides.dinInputs.length})` : null,
+    overrides.dinOrderRules?.length ? `din-rules (${overrides.dinOrderRules.length})` : null,
+    overrides.textureLines?.length ? `texture-lines (${overrides.textureLines.length})` : null,
+    overrides.textureStyles?.length ? `texture-styles (${overrides.textureStyles.length})` : null,
+    overrides.laminePatterns?.length ? `lamine (${overrides.laminePatterns.length})` : null,
+    overrides.commercialNames && Object.keys(overrides.commercialNames).length > 0
+      ? `nomi (${Object.keys(overrides.commercialNames).length})` : null,
+    overrides.colorOverrides && Object.keys(overrides.colorOverrides).length > 0
+      ? `colori (${Object.keys(overrides.colorOverrides).length})` : null,
+  ].filter(Boolean).join(', ');
+
+  function navigateTo(targetTab: string) {
+    if (['riepilogo', 'stratigrafie', 'listino', 'prodotti', 'export'].includes(targetTab)) {
+      setTab(targetTab as Tab);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
@@ -75,19 +102,10 @@ export function AdminPage() {
 
       {hasOverrides && (
         <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-          Dati personalizzati attivi: {[
-            overrides.stepLibrary ? `step-library (${overrides.stepLibrary.length})` : null,
-            overrides.stepMap ? `step-map (${overrides.stepMap.length})` : null,
-            overrides.packagingSku ? `packaging (${overrides.packagingSku.length})` : null,
-            overrides.listino ? `listino (${overrides.listino.length})` : null,
-            overrides.commercialNames && Object.keys(overrides.commercialNames).length > 0
-              ? `nomi-commerciali (${Object.keys(overrides.commercialNames).length})`
-              : null,
-          ].filter(Boolean).join(', ')}
+          Dati personalizzati attivi: {overrideSummary}
         </div>
       )}
 
-      {/* Tabs */}
       <div className="border-b border-gray-200">
         <nav className="flex gap-0 -mb-px">
           {TABS.map(t => (
@@ -107,34 +125,7 @@ export function AdminPage() {
         </nav>
       </div>
 
-      {/* Tab content */}
-      {tab === 'riepilogo' && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {[
-            { label: 'Ambienti', value: store.ambienti.length },
-            { label: 'Supporti', value: store.supporti.length },
-            { label: 'Regole DT', value: store.decisionTable.length },
-            { label: 'Step-map', value: store.stepMap.length },
-            { label: 'Step library', value: store.stepLibrary.length },
-            { label: 'SKU packaging', value: store.packagingSku.length },
-            { label: 'SKU listino', value: store.listino.length },
-            { label: 'Texture lines', value: store.textureLines.length },
-            { label: 'Texture styles', value: store.textureStyles.length },
-            { label: 'LAMINE pattern', value: store.laminePatterns.length },
-            { label: 'DIN inputs', value: store.dinInputs.length },
-            { label: 'DIN order rules', value: store.dinOrderRules.length },
-            { label: 'RAL Classic', value: store.colorRal.length },
-            { label: 'NCS', value: store.colorNcs.length },
-            { label: 'Pantone C', value: store.colorPantone.length },
-          ].map(s => (
-            <div key={s.label} className="card p-4 text-center">
-              <div className="text-2xl font-bold text-brand-700">{s.value}</div>
-              <div className="text-xs text-gray-500 mt-1">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
+      {tab === 'riepilogo' && <AdminRiepilogo store={store} onNavigateTab={navigateTo} />}
       {tab === 'stratigrafie' && <AdminStratigrafie store={store} />}
       {tab === 'listino' && <AdminListino store={store} />}
       {tab === 'prodotti' && <AdminProdotti store={store} />}
