@@ -1,10 +1,32 @@
-import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import React, { useRef, useState, useMemo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { LightingSetup } from './LightingSetup';
 import type { LayerConfig } from './MaterialManager';
-import { getLayerColor, TEXTURE_SECTION_COLORS } from './MaterialManager';
+import { getLayerColor, TEXTURE_SECTION_COLORS, FINISH_PBR } from './MaterialManager';
+
+// ─── Per-layer material (MeshPhysical, clearcoat for protective/texture) ─────
+
+function makeLayerMaterial(section: string, color: string, textureLine?: string): THREE.MeshPhysicalMaterial {
+  const c = section === 'texture' && textureLine
+    ? TEXTURE_SECTION_COLORS[textureLine] ?? color
+    : color;
+
+  const isGlossy   = section === 'protective';
+  const isMetallic = section === 'barrier';
+
+  return new THREE.MeshPhysicalMaterial({
+    color:              c,
+    roughness:          isGlossy   ? 0.25  : isMetallic ? 0.30 : 0.75,
+    metalness:          isMetallic ? 0.30  : 0.00,
+    clearcoat:          isGlossy   ? 0.60  : section === 'texture' ? 0.10 : 0.00,
+    clearcoatRoughness: isGlossy   ? 0.25  : 0.80,
+    envMapIntensity:    isGlossy   ? 0.90  : isMetallic ? 0.60 : 0.20,
+  });
+}
+
+// ─── Single layer box ─────────────────────────────────────────────────────────
 
 interface SingleLayerProps {
   config: LayerConfig;
@@ -16,74 +38,84 @@ interface SingleLayerProps {
 }
 
 function SingleLayer({ config, positionY, width, animDelay, showTechnical, textureLine }: SingleLayerProps) {
-  const meshRef = useRef<THREE.Mesh>(null!);
   const [hovered, setHovered] = useState(false);
-  const [animY, setAnimY] = useState(positionY - 6);
+  const animY   = useRef(positionY - 7);
   const elapsed = useRef(0);
   const settled = useRef(false);
+  const hoverAnim = useRef(1.0);
 
-  const color = useMemo(() => {
-    if (config.section === 'texture' && textureLine) {
-      return TEXTURE_SECTION_COLORS[textureLine] ?? config.color;
-    }
-    return config.color;
-  }, [config.color, config.section, textureLine]);
-
-  const material = useMemo(() => new THREE.MeshStandardMaterial({
-    color,
-    roughness: config.section === 'texture' ? 0.6 : 0.8,
-    metalness: config.section === 'barrier' ? 0.2 : 0.0,
-  }), [color, config.section]);
+  const material = useMemo(
+    () => makeLayerMaterial(config.section, config.color, textureLine),
+    [config.section, config.color, textureLine],
+  );
 
   useFrame((_, delta) => {
-    if (settled.current) return;
-    elapsed.current += delta;
-    if (elapsed.current < animDelay) return;
-
-    setAnimY(prev => {
-      const diff = positionY - prev;
-      if (Math.abs(diff) < 0.002) {
-        settled.current = true;
-        return positionY;
+    // Entry animation
+    if (!settled.current) {
+      elapsed.current += delta;
+      if (elapsed.current >= animDelay) {
+        const diff = positionY - animY.current;
+        if (Math.abs(diff) < 0.002) {
+          animY.current = positionY;
+          settled.current = true;
+        } else {
+          animY.current += diff * Math.min(delta * 9, 0.4);
+        }
       }
-      return prev + diff * Math.min(delta * 8, 0.3);
-    });
+    }
+
+    // Hover scale
+    const targetScale = hovered ? 1.05 : 1.0;
+    hoverAnim.current = THREE.MathUtils.lerp(hoverAnim.current, targetScale, delta * 12);
   });
 
-  const scaleFactor = hovered ? 1.04 : 1.0;
-  const height = Math.max(config.thickness_mm / 10, 0.08);
+  const height = Math.max(config.thickness_mm / 10, 0.06);
 
   return (
-    <group position={[0, animY, 0]}>
+    <group position={[0, animY.current, 0]}>
       <mesh
-        ref={meshRef}
-        scale={[scaleFactor, 1, scaleFactor]}
+        scale={[hoverAnim.current, 1, hoverAnim.current]}
         onPointerEnter={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
         onPointerLeave={() => { setHovered(false); document.body.style.cursor = 'default'; }}
       >
         <boxGeometry args={[width, height, 1.2]} />
         <primitive object={material} attach="material" />
       </mesh>
+
+      {/* Edge line for definition */}
+      <lineSegments position={[0, height / 2 + 0.001, 0]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(width, 0.001, 1.2)]} />
+        <lineBasicMaterial color="#1e293b" transparent opacity={0.4} />
+      </lineSegments>
+
       {hovered && (
-        <Html position={[width / 2 + 0.15, 0, 0]} style={{ pointerEvents: 'none' }}>
+        <Html position={[width / 2 + 0.18, 0, 0]} style={{ pointerEvents: 'none' }} zIndexRange={[100, 0]}>
           <div style={{
-            background: 'rgba(15,23,42,0.95)',
-            border: '1px solid rgba(100,116,139,0.5)',
+            background: 'rgba(10,15,30,0.97)',
+            border: `1px solid ${config.color}55`,
+            borderLeft: `3px solid ${config.color}`,
             borderRadius: '6px',
             padding: '8px 12px',
-            minWidth: '160px',
+            minWidth: '170px',
             color: '#f1f5f9',
             fontSize: '11px',
-            lineHeight: '1.6',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+            lineHeight: '1.7',
+            boxShadow: '0 6px 20px rgba(0,0,0,0.5)',
+            backdropFilter: 'blur(4px)',
           }}>
-            <div style={{ fontWeight: 700, color: color, marginBottom: '4px' }}>{config.label}</div>
-            <div style={{ color: '#94a3b8' }}>{config.thickness_mm} mm</div>
+            <div style={{ fontWeight: 700, color: config.color, marginBottom: '4px', fontSize: '12px' }}>
+              {config.label}
+            </div>
+            <div style={{ color: '#94a3b8' }}>
+              {config.thickness_mm >= 1
+                ? `${config.thickness_mm} mm`
+                : `${(config.thickness_mm * 10).toFixed(1)} mm`}
+            </div>
             {showTechnical && config.consumption && (
-              <div style={{ color: '#64748b', marginTop: '2px' }}>{config.consumption}</div>
+              <div style={{ color: '#64748b', marginTop: '3px' }}>{config.consumption}</div>
             )}
             {showTechnical && config.waiting_time && (
-              <div style={{ color: '#0ea5e9', marginTop: '2px' }}>Attesa: {config.waiting_time}</div>
+              <div style={{ color: '#38bdf8', marginTop: '3px' }}>⏱ {config.waiting_time}</div>
             )}
           </div>
         </Html>
@@ -92,28 +124,28 @@ function SingleLayer({ config, positionY, width, animDelay, showTechnical, textu
   );
 }
 
+// ─── Full scene ───────────────────────────────────────────────────────────────
+
 interface LayerStack3DSceneProps {
   layers: LayerConfig[];
   showTechnical: boolean;
   textureLine?: string;
 }
 
-function LayerStack3DScene({ layers, showTechnical, textureLine }: LayerStack3DSceneProps) {
-  const { gl, size } = useThree();
-  const W = 2.8;
-
+export function LayerStack3DContent({ layers, showTechnical, textureLine }: LayerStack3DSceneProps) {
   const { positions } = useMemo(() => {
     let y = 0;
     const positions: number[] = [];
     for (const l of layers) {
-      const h = Math.max(l.thickness_mm / 10, 0.08);
+      const h = Math.max(l.thickness_mm / 10, 0.06);
       positions.push(y + h / 2);
-      y += h + 0.02;
+      y += h + 0.025; // small gap between layers
     }
-    const totalH = y;
-    const centerOffset = totalH / 2;
-    return { positions: positions.map(p => p - centerOffset) };
+    const center = y / 2;
+    return { positions: positions.map(p => p - center) };
   }, [layers]);
+
+  if (layers.length === 0) return null;
 
   return (
     <>
@@ -123,8 +155,8 @@ function LayerStack3DScene({ layers, showTechnical, textureLine }: LayerStack3DS
           key={layer.id}
           config={layer}
           positionY={positions[i]}
-          width={W}
-          animDelay={i * 0.07}
+          width={2.8}
+          animDelay={i * 0.06}
           showTechnical={showTechnical}
           textureLine={textureLine}
         />
@@ -132,22 +164,9 @@ function LayerStack3DScene({ layers, showTechnical, textureLine }: LayerStack3DS
       <OrbitControls
         enablePan={false}
         minDistance={2}
-        maxDistance={10}
+        maxDistance={12}
         target={[0, 0, 0]}
       />
     </>
   );
 }
-
-interface LayerStack3DProps {
-  layers: LayerConfig[];
-  showTechnical: boolean;
-  textureLine?: string;
-  canvasRef?: React.RefObject<HTMLCanvasElement>;
-}
-
-export function LayerStack3DScene_Export({ layers, showTechnical, textureLine, canvasRef }: LayerStack3DProps) {
-  return <LayerStack3DScene layers={layers} showTechnical={showTechnical} textureLine={textureLine} />;
-}
-
-export { LayerStack3DScene as LayerStack3DContent };
