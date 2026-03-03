@@ -1,5 +1,6 @@
 import type { DataStore } from '../utils/data-loader';
-import type { CartLine, CartFee, CartHardNote, CartSummary, CartProcedureStep } from '../types/cart';
+import type { CartLine, CartFee, CartHardNote, CartSummary, CartProcedureStep, RawCartLine } from '../types/cart';
+import type { TextureInput } from './texture-rules';
 import type { WizardState } from '../types/wizard-state';
 import { matchDecisionTable, buildRuleInputFromWizard, resolveCompRule } from './decision-table';
 import { resolveStepsForRule } from './step-resolver';
@@ -14,6 +15,7 @@ import { applyPreparationUpgrade } from './preparation-upgrade';
 
 export interface CartResult {
   summary: CartSummary;
+  raw_lines: RawCartLine[];
   procedure_floor: import('./step-resolver').ResolvedProcedure | null;
   procedure_wall: import('./step-resolver').ResolvedProcedure | null;
   procedure_texture: CartProcedureStep[];
@@ -55,6 +57,7 @@ export function computeFullCart(
   const all_fees: CartFee[] = [];
   const all_alerts: CartHardNote[] = [];
   const computation_errors: { code: string; text: string }[] = [];
+  const all_raw_lines: RawCartLine[] = [];
 
   // Guard: con multi-superficie basta avere almeno una surface con texture_line
   const hasTexture = state.surfaces.length > 0
@@ -202,7 +205,7 @@ export function computeFullCart(
         : wallSurfaces.length === 1
           ? 'Parete'
           : `Parete ${wallSurfaces.indexOf(surface) + 1}`;
-      const texResult = computeTextureCart(store, {
+      const textureInput: TextureInput = {
         line: surface.texture_line,
         style: surface.texture_style!,
         area_mq: surface.mq,
@@ -215,7 +218,8 @@ export function computeFullCart(
         fughe_residue: fughe,
         env_id: effectiveAmbiente(state),
         zone_label,
-      });
+      };
+      const texResult = computeTextureCart(store, textureInput);
       texResult.cart_lines.forEach(l => {
         all_lines.push(l);
         if (l.section === 'texture') texProcLines.push(l);
@@ -223,13 +227,23 @@ export function computeFullCart(
       texResult.fees.forEach(f => all_fees.push(f));
       allTexAlerts.push(...texResult.hard_alerts);
       texArea += surface.mq;
+      all_raw_lines.push({
+        environment_id: '__room__',
+        product_id: surface.texture_line,
+        qty_raw: surface.mq,
+        section: 'texture',
+        destination: zone_label,
+        color_label: surface.color_primary?.label ?? undefined,
+        descrizione: `${surface.texture_line} — ${surface.color_primary?.label ?? ''} — ${zone_label}`,
+        _texture_input: textureInput,
+      });
     }
     primaryTexLine = (state.surfaces.find(s => s.texture_line)?.texture_line ?? state.texture_line ?? 'NATURAL') as TexLine;
   } else {
     // ── Backward compat — singola texture globale ──────────────────────────
     texArea = state.mq_pavimento + state.mq_pareti;
     const macro: 'FLOOR' | 'WALL' = state.mq_pavimento > 0 ? 'FLOOR' : 'WALL';
-    const texResult = computeTextureCart(store, {
+    const textureInputGlobal: TextureInput = {
       line: state.texture_line!,
       style: state.texture_style!,
       area_mq: texArea,
@@ -241,11 +255,21 @@ export function computeFullCart(
       last_base_layer: lastBase,
       fughe_residue: state.sub_answers_wall.fughe_residue ?? state.sub_answers_floor.fughe_residue,
       env_id: effectiveAmbiente(state),
-    });
+    };
+    const texResult = computeTextureCart(store, textureInputGlobal);
     all_lines.push(...texResult.cart_lines);
     texProcLines.push(...texResult.cart_lines.filter(l => l.section === 'texture'));
     texResult.fees.forEach(f => all_fees.push(f));
     allTexAlerts.push(...texResult.hard_alerts);
+    all_raw_lines.push({
+      environment_id: '__room__',
+      product_id: state.texture_line!,
+      qty_raw: texArea,
+      section: 'texture',
+      color_label: state.color_primary?.label ?? undefined,
+      descrizione: `${state.texture_line} — ${state.color_primary?.label ?? ''}`,
+      _texture_input: textureInputGlobal,
+    });
   }
   allTexAlerts.forEach(a => all_alerts.push({ code: 'TEX_ALERT', text: a, severity: 'hard' }));
 
@@ -322,6 +346,24 @@ export function computeFullCart(
   const total_lines = consolidated.reduce((acc, l) => acc + l.totale, 0);
   const total_fees = all_fees.reduce((acc, f) => acc + f.amount * f.qty, 0);
 
+  // ─── Raccogli raw lines non-texture da all_lines ───────────────────────────
+  // Le raw texture sono già state aggiunte inline nel loop superfici.
+  // Per fondo/protettivi/din/speciale usiamo qty_raw già impostato in each CartLine.
+  console.log('[computeFullCart] RAW texture lines collected:', all_raw_lines.filter(l => l.section === 'texture').length);
+  for (const line of all_lines) {
+    if (line.section === 'texture' || !line.product_id) continue;
+    const qty_raw = line.qty_raw ?? line.qty * (line.pack_size ?? 1);
+    all_raw_lines.push({
+      environment_id: '__room__',
+      product_id: line.product_id,
+      qty_raw,
+      section: line.section,
+      pack_unit: line.pack_unit ?? 'kg',
+      descrizione: line.descrizione,
+    });
+  }
+  console.log('[computeFullCart] RAW lines total:', all_raw_lines.length, all_raw_lines.map(l => `${l.section}:${l.product_id}:${l.qty_raw.toFixed(2)}`));
+
   // ─── Costruisci procedure texture ─────────────────────────────────────────
   const procedure_texture: CartProcedureStep[] = texProcLines
     .map((line, i) => ({
@@ -360,6 +402,7 @@ export function computeFullCart(
       total_fees_eur: total_fees,
       generated_at: new Date().toISOString(),
     },
+    raw_lines: all_raw_lines,
     procedure_floor,
     procedure_wall,
     procedure_texture,

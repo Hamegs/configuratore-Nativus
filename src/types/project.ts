@@ -1,5 +1,5 @@
 import type { WizardState } from './wizard-state';
-import type { CartLine } from './cart';
+import type { CartLine, RawCartLine } from './cart';
 import type { CartResult } from '../engine/cart-calculator';
 
 export const ROOM_TYPES = [
@@ -23,6 +23,13 @@ export type PackagingStrategy =
  * SEPARATE  — calcola packaging per ogni ambiente indipendentemente, poi combina
  */
 export type ConsolidationMode = 'SEPARATE' | 'OPTIMIZED';
+
+/**
+ * Alias semantico per ConsolidationMode (nomenclatura enterprise).
+ * PER_ENVIRONMENT === SEPARATE
+ * GLOBAL_OPTIMIZED === OPTIMIZED
+ */
+export type PackagingMode = 'PER_ENVIRONMENT' | 'GLOBAL_OPTIMIZED';
 
 export interface ConfigLogEntry {
   id: string;
@@ -54,6 +61,7 @@ export interface ProjectRoom {
   is_configured: boolean;
   wizard_state: WizardState | null;
   cart_lines: CartLine[];
+  raw_cart_lines: RawCartLine[];
   cart_result: CartResult | null;
   step_lavorazioni: StepLavorazione[];
   computation_errors: { code: string; text: string }[];

@@ -71,6 +71,7 @@ export function ProjectCartView() {
     consolidation_mode, setConsolidationMode,
     overrideCartRow, excludeCartRow, restoreCartRow, removeCartRow, addManualRow,
     config_log,
+    cart_total_optimized, cart_total_separate, cart_savings_eur,
   } = useProjectStore();
   const store = loadDataStore();
 
@@ -312,9 +313,22 @@ export function ProjectCartView() {
                   {m.label}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5 leading-tight">{m.desc}</p>
+                {m.id === 'OPTIMIZED' && cart_total_optimized > 0 && (
+                  <p className="text-xs font-semibold text-brand-600 mt-1">{formatEur(cart_total_optimized)}</p>
+                )}
+                {m.id === 'SEPARATE' && cart_total_separate > 0 && (
+                  <p className="text-xs font-semibold text-gray-600 mt-1">{formatEur(cart_total_separate)}</p>
+                )}
               </button>
             ))}
           </div>
+          {cart_savings_eur > 0.5 && (
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+              <span className="text-green-600 font-bold text-sm">Risparmio con Ottimizzata globale:</span>
+              <span className="text-green-700 font-bold text-sm">{formatEur(cart_savings_eur)}</span>
+              <span className="text-green-500 text-xs ml-1">({((cart_savings_eur / cart_total_separate) * 100).toFixed(1)}%)</span>
+            </div>
+          )}
         </div>
       )}
 

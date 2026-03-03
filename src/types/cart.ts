@@ -12,6 +12,27 @@ export interface CartLine {
   pack_unit?: string;
 }
 
+/**
+ * Raw quantity line — no packaging, no Math.ceil.
+ * Contains the physical quantity needed (mq, kg, pz) for a product/environment.
+ * Used as the single source-of-truth before any packaging calculation.
+ */
+export interface RawCartLine {
+  environment_id: string;
+  product_id: string;
+  qty_raw: number;
+  section: 'fondo' | 'texture' | 'protettivi' | 'din' | 'speciale';
+  destination?: string;
+  descrizione?: string;
+  pack_unit?: string;
+  /**
+   * For texture items only: the original TextureInput used for re-packaging.
+   * Typed as unknown to avoid circular dependency (texture-rules imports cart).
+   */
+  _texture_input?: unknown;
+  color_label?: string;
+}
+
 export interface CartFee {
   description: string;
   amount: number;
