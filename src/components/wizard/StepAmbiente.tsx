@@ -8,9 +8,31 @@ import type { AmbienteId } from '../../types/enums';
 interface StepHeaderProps { title: string; subtitle?: string }
 export function StepHeader({ title, subtitle }: StepHeaderProps) {
   return (
-    <div className="pb-2">
-      <h2 className="text-2xl font-bold text-brand-700">{title}</h2>
-      {subtitle && <p className="mt-1 text-sm text-brand-500">{subtitle}</p>}
+    <div className="pb-6">
+      <p className="surtitle mb-2">Configurazione</p>
+      <h2
+        style={{
+          fontSize: 26,
+          fontWeight: 500,
+          letterSpacing: '0.04em',
+          color: '#171e29',
+          lineHeight: 1.2,
+        }}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: 14,
+            color: '#8b8f94',
+            letterSpacing: '0.02em',
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }
@@ -37,17 +59,17 @@ export function StepNavigation({
   const showBack   = canGoBack ?? showPrev;
 
   return (
-    <div className="flex items-center justify-between border-t border-sand-400 pt-6">
+    <div className="flex items-center justify-between pt-8 mt-8" style={{ borderTop: '1px solid #d8d9d6' }}>
       {showBack
         ? (
-          <button type="button" className="btn-secondary h-14 px-6 text-base font-semibold" onClick={handlePrev}>
+          <button type="button" className="btn-secondary" onClick={handlePrev}>
             ← Indietro
           </button>
         )
         : <span />}
       <button
         type="button"
-        className="btn-primary h-14 px-6 text-base font-semibold"
+        className="btn-primary"
         disabled={!canNext}
         onClick={onNext}
       >
@@ -70,19 +92,43 @@ interface NumFieldProps {
 }
 export function NumField({ label, value, onChange, unit = '', min = 0, step = 0.5, disabled }: NumFieldProps) {
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-brand-700">{label}</label>
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-1.5">
+      <label
+        style={{
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          color: '#8b8f94',
+        }}
+      >
+        {label}
+      </label>
+      <div className="flex items-center gap-3">
         <input
           type="number"
           min={min}
           step={step}
           disabled={disabled}
-          className={`h-12 w-36 rounded-md border-brand-300 bg-sand-50 px-3 text-base font-medium text-brand-800 shadow-sm focus:border-brand-600 focus:ring-brand-600 ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+          style={{
+            height: 48,
+            width: 140,
+            border: '1px solid #d8d9d6',
+            background: '#ffffff',
+            padding: '0 12px',
+            fontSize: 16,
+            fontWeight: 500,
+            color: '#171e29',
+            outline: 'none',
+            opacity: disabled ? 0.4 : 1,
+            cursor: disabled ? 'not-allowed' : 'auto',
+          }}
           value={value || ''}
           onChange={e => onChange(parseFloat(e.target.value) || 0)}
         />
-        {unit && <span className="text-sm text-brand-500">{unit}</span>}
+        {unit && (
+          <span style={{ fontSize: 13, color: '#8b8f94', letterSpacing: '0.04em' }}>{unit}</span>
+        )}
       </div>
     </div>
   );
@@ -164,39 +210,38 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
   // ── Stato confermato: mostra riepilogo locked ─────────────────────────────
   if (superfici_confirmed) {
     return (
-      <div className="space-y-4">
-        <div className="card p-5 border-green-200 bg-green-50">
+      <div className="space-y-5">
+        <div style={{ border: '1px solid #d8d9d6', background: '#ffffff', padding: '20px 24px' }}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">
-                Superfici confermate
-              </div>
-              <div className="text-sm font-bold text-gray-900 mb-2">{displayLabel}</div>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-700">
+              <p className="surtitle mb-2" style={{ color: '#897e5e' }}>Superfici confermate</p>
+              <div style={{ fontSize: 15, fontWeight: 500, color: '#171e29', marginBottom: 10 }}>{displayLabel}</div>
+              <div className="flex flex-wrap gap-5" style={{ fontSize: 13, color: '#445164' }}>
                 {mq_pavimento > 0 && (
-                  <span>Pavimento: <strong>{mq_pavimento} m²</strong></span>
+                  <span>Pavimento: <strong style={{ color: '#171e29' }}>{mq_pavimento} m²</strong></span>
                 )}
                 {mq_pareti > 0 && (
-                  <span>Pareti: <strong>{mq_pareti} m²</strong></span>
+                  <span>Pareti: <strong style={{ color: '#171e29' }}>{mq_pareti} m²</strong></span>
                 )}
                 {presenza_doccia && (
-                  <span className="text-blue-700">
+                  <span style={{ color: '#445164' }}>
                     Doccia: {doccia_piatto_type === 'NUOVO' ? 'Piatto da realizzare' : 'Piatto esistente'}
                     {doccia_piatto_type === 'NUOVO' && doccia_larghezza > 0 && doccia_lunghezza > 0 &&
                       ` (${Math.round(doccia_larghezza * 1000)}×${Math.round(doccia_lunghezza * 1000)} mm)`}
                   </span>
                 )}
                 {mercato_tedesco && presenza_doccia && (
-                  <span className="text-xs font-semibold text-orange-600">DIN 18534 attivo</span>
+                  <span className="surtitle" style={{ color: '#897e5e' }}>DIN 18534 attivo</span>
                 )}
               </div>
             </div>
             <button
               type="button"
-              className="btn-secondary text-xs whitespace-nowrap"
+              className="btn-secondary"
+              style={{ fontSize: 11, padding: '6px 16px', whiteSpace: 'nowrap', minHeight: 36 }}
               onClick={() => setSuperficiConfirmed(false)}
             >
-              Modifica superfici
+              Modifica
             </button>
           </div>
         </div>
@@ -211,30 +256,46 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
 
   // ── Stato non confermato: form inserimento ────────────────────────────────
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
 
       {/* Card 1 — Tipo ambiente (nascosta se locked) */}
       {!lockedAmbiente && (
-        <div className="card p-5">
-          <h2 className="font-semibold text-gray-900 mb-4">Tipo di ambiente</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {ROOM_TYPES.filter(t => t.id !== 'ALTRO').map(rt => (
-              <button
-                key={rt.id}
-                type="button"
-                onClick={() => handleSelectRoomType(rt.id, rt.env_default)}
-                className={`text-left rounded-lg border p-3 transition-colors ${
-                  room_type_display === rt.id
-                    ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <div className="text-2xl mb-1">{rt.icon}</div>
-                <div className={`font-semibold text-sm ${room_type_display === rt.id ? 'text-brand-700' : 'text-gray-800'}`}>
-                  {rt.label}
-                </div>
-              </button>
-            ))}
+        <div>
+          <p className="surtitle mb-4">Tipo di ambiente</p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {ROOM_TYPES.filter(t => t.id !== 'ALTRO').map(rt => {
+              const isSelected = room_type_display === rt.id;
+              return (
+                <button
+                  key={rt.id}
+                  type="button"
+                  onClick={() => handleSelectRoomType(rt.id, rt.env_default)}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    padding: '20px 18px',
+                    border: isSelected ? '1px solid #171e29' : '1px solid #d8d9d6',
+                    background: isSelected ? '#171e29' : '#ffffff',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{ fontSize: 22, marginBottom: 8, display: 'block' }}>{rt.icon}</span>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 500,
+                      letterSpacing: '0.04em',
+                      color: isSelected ? '#ffffff' : '#171e29',
+                    }}
+                  >
+                    {rt.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -246,23 +307,23 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
             {ROOM_TYPES.find(t => t.id === room_type_display)?.icon ?? '🏠'}
           </span>
           <div>
-            <div className="text-xs text-gray-400 uppercase tracking-wide">Ambiente</div>
-            <div className="font-semibold text-gray-900">{displayLabel}</div>
+            <div className="surtitle">Ambiente</div>
+            <div style={{ fontSize: 15, fontWeight: 500, color: '#171e29' }}>{displayLabel}</div>
           </div>
         </div>
       )}
 
       {/* Card 2 — Superfici */}
       {ambiente && (
-        <div className="card p-5">
-          <h2 className="font-semibold text-gray-900 mb-1">Superfici da trattare</h2>
+        <div style={{ border: '1px solid #d8d9d6', background: '#ffffff', padding: '24px' }}>
+          <p className="surtitle mb-4">Superfici da trattare</p>
           {isBag && presenza_doccia && (
-            <p className="text-xs text-blue-600 mb-4 bg-blue-50 rounded px-3 py-2 border border-blue-100">
+            <p className="alert-info text-xs mb-5">
               Le metrature inserite sono comprensive dell'area doccia.
               Non aggiungere mq separati per la doccia.
             </p>
           )}
-          <div className="flex flex-wrap gap-6 mt-3">
+          <div className="flex flex-wrap gap-8 mt-1">
             <NumField
               label="Pavimento"
               value={mq_pavimento}
@@ -277,8 +338,8 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
             />
           </div>
           {mq_pavimento === 0 && mq_pareti === 0 && (
-            <p className="text-xs text-amber-600 mt-3">
-              Inserisci almeno una metratura. Se il valore è 0, non verranno generati materiali per quella superficie.
+            <p className="alert-warn text-xs mt-4">
+              Inserisci almeno una metratura.
             </p>
           )}
         </div>
@@ -286,20 +347,21 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
 
       {/* Card 3 — Opzioni Bagno (solo se BAG) */}
       {isBag && (
-        <div className="card p-5 space-y-5">
-          <h2 className="font-semibold text-gray-900">Bagno — opzioni speciali</h2>
+        <div style={{ border: '1px solid #d8d9d6', background: '#ffffff', padding: '24px' }} className="space-y-5">
+          <p className="surtitle">Bagno — opzioni speciali</p>
 
           {/* Toggle doccia */}
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+              className="mt-0.5 h-4 w-4"
+              style={{ accentColor: '#171e29' }}
               checked={presenza_doccia}
               onChange={e => setPresenzaDoccia(e.target.checked)}
             />
             <div>
-              <div className="text-sm font-medium text-gray-800">Presenza Zona Doccia</div>
-              <div className="text-xs text-gray-500">
+              <div style={{ fontSize: 14, fontWeight: 500, color: '#171e29' }}>Presenza Zona Doccia</div>
+              <div style={{ fontSize: 12, color: '#8b8f94', marginTop: 2 }}>
                 Abilita la stratigrafia specifica per la doccia.
                 I mq inseriti sopra includono già la zona doccia.
               </div>
@@ -308,25 +370,31 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
 
           {/* Sub-sezione doccia */}
           {presenza_doccia && (
-            <div className="border border-blue-100 rounded-lg bg-blue-50 p-4 space-y-5">
-              <h3 className="text-sm font-semibold text-blue-800">Zona Doccia — dati obbligatori</h3>
+            <div style={{ border: '1px solid #d8d9d6', background: '#f5f5f3', padding: '20px' }} className="space-y-5">
+              <p className="surtitle" style={{ color: '#445164' }}>Zona Doccia — dati obbligatori</p>
 
               {/* Tipo piatto */}
               <div>
-                <p className="text-xs font-medium text-gray-700 mb-2">
-                  Tipo piatto doccia <span className="text-red-500">*</span>
+                <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8b8f94', marginBottom: 8 }}>
+                  Tipo piatto doccia <span style={{ color: '#ef4444' }}>*</span>
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {(['NUOVO', 'ESISTENTE'] as const).map(t => (
                     <button
                       key={t}
                       type="button"
                       onClick={() => setDocciaPiattoType(t)}
-                      className={`px-4 py-2 rounded-lg border text-xs font-medium transition-colors ${
-                        doccia_piatto_type === t
-                          ? 'border-blue-500 bg-blue-500 text-white'
-                          : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                      }`}
+                      style={{
+                        padding: '10px 20px',
+                        border: doccia_piatto_type === t ? '1px solid #171e29' : '1px solid #d8d9d6',
+                        background: doccia_piatto_type === t ? '#171e29' : '#ffffff',
+                        color: doccia_piatto_type === t ? '#ffffff' : '#445164',
+                        fontSize: 12,
+                        fontWeight: 500,
+                        letterSpacing: '0.04em',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }}
                     >
                       {t === 'NUOVO' ? 'Piatto da realizzare' : 'Piatto esistente'}
                     </button>
@@ -476,7 +544,7 @@ export function StepAmbiente({ lockedAmbiente = false }: StepAmbienteProps) {
             type="button"
             disabled={!canConfirm}
             onClick={handleConfirm}
-            className="btn-primary px-8 py-2.5"
+            className="btn-primary"
           >
             Conferma Superfici →
           </button>

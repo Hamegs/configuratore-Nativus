@@ -22,94 +22,77 @@ export function Navbar() {
   const homeLink = user ? (ROLE_TO_HOME[user.role] ?? '/') : '/';
 
   return (
-    <header className="border-b border-brand-700 bg-brand-600 shadow-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-6">
-          <Link to={homeLink} className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-widest text-white uppercase">Nativus</span>
-            <span className="hidden text-xs text-brand-200 sm:inline font-light tracking-wide">Configuratore Ordini</span>
+    <header className="nativus-nav sticky top-0 z-40">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" style={{ height: 64 }}>
+        {/* Logo */}
+        <div className="flex items-center gap-8">
+          <Link
+            to={homeLink}
+            className="flex items-center gap-3"
+            style={{ textDecoration: 'none' }}
+          >
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: '#171e29',
+              }}
+            >
+              Nativus
+            </span>
+            <span
+              style={{
+                width: 1,
+                height: 16,
+                backgroundColor: '#d8d9d6',
+                display: 'inline-block',
+              }}
+            />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 400,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#8b8f94',
+              }}
+            >
+              Configuratore
+            </span>
           </Link>
 
+          {/* Nav links */}
           {user && (
-            <nav className="hidden sm:flex items-center gap-0.5">
-              {/* Applicatore — technical dashboard */}
+            <nav className="hidden sm:flex items-center gap-1">
               {(user.role === 'applicatore' || user.role === 'admin') && (
-                <NavLink
-                  to="/applicatore"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/applicatore" className={navLinkClass}>
                   Cantiere
                 </NavLink>
               )}
-
-              {/* Rivenditore — sales dashboard */}
               {(user.role === 'rivenditore' || user.role === 'admin') && (
-                <NavLink
-                  to="/rivenditore"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/rivenditore" className={navLinkClass}>
                   Preventivo
                 </NavLink>
               )}
-
-              {/* Progettista — spec dashboard */}
               {(user.role === 'progettista' || user.role === 'admin') && (
-                <NavLink
-                  to="/progettista"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/progettista" className={navLinkClass}>
                   Specifiche
                 </NavLink>
               )}
-
-              {/* Legacy project route for admin/rivenditore */}
               {user.role === 'admin' && (
-                <NavLink
-                  to="/progetto"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/progetto" className={navLinkClass}>
                   Progetto
                 </NavLink>
               )}
-
               {(user.role === 'admin' || user.role === 'rivenditore' || user.role === 'applicatore') && (
-                <NavLink
-                  to="/configuratore"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/configuratore" className={navLinkClass}>
                   Wizard
                 </NavLink>
               )}
-
               {user.role === 'admin' && (
-                <NavLink
-                  to="/admin"
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                    }`
-                  }
-                >
+                <NavLink to="/admin" className={navLinkClass}>
                   Admin
                 </NavLink>
               )}
@@ -117,18 +100,54 @@ export function Navbar() {
           )}
         </div>
 
+        {/* User area */}
         {user && (
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-brand-100">
-              <span className="font-medium text-white">{user.displayName}</span>
-              {' '}
-              <span className="rounded-full bg-sand-200 px-2 py-0.5 text-xs font-semibold text-brand-600">
+          <div className="flex items-center gap-4">
+            <span
+              style={{
+                fontSize: 12,
+                fontWeight: 400,
+                letterSpacing: '0.04em',
+                color: '#445164',
+              }}
+            >
+              {user.displayName}
+              <span
+                style={{
+                  marginLeft: 8,
+                  padding: '2px 8px',
+                  border: '1px solid #d8d9d6',
+                  fontSize: 10,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: '#8b8f94',
+                }}
+              >
                 {ROLE_LABELS[user.role] ?? user.role}
               </span>
             </span>
             <button
               onClick={handleLogout}
-              className="inline-flex items-center justify-center rounded-md border border-brand-300 bg-transparent px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 transition-colors"
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                border: '1px solid #d8d9d6',
+                background: 'transparent',
+                color: '#445164',
+                padding: '6px 14px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = '#171e29';
+                (e.currentTarget as HTMLButtonElement).style.color = '#171e29';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = '#d8d9d6';
+                (e.currentTarget as HTMLButtonElement).style.color = '#445164';
+              }}
             >
               Esci
             </button>
@@ -137,4 +156,10 @@ export function Navbar() {
       </div>
     </header>
   );
+}
+
+function navLinkClass({ isActive }: { isActive: boolean }) {
+  return isActive
+    ? 'px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-ink-700 border-b border-ink-700'
+    : 'px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-stone-400 hover:text-ink-700 transition-colors border-b border-transparent hover:border-ink-700';
 }

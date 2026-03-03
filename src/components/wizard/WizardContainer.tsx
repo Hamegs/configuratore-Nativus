@@ -14,13 +14,6 @@ import { loadDataStore } from '../../utils/data-loader';
 import type { CartResult } from '../../engine/cart-calculator';
 import type { PackagingStrategy } from '../../types/project';
 
-/**
- * Flusso Admin/Applicatore:
- *   0 Superfici → 1 Supporto → 2 Texture → 3 Protettivi → 4 Riepilogo → 5 Carrello
- *
- * Flusso Rivenditore:
- *   0 Superfici → 1 Texture → 2 Protettivi → 3 Supporto → 4 Riepilogo → 5 Carrello
- */
 const STEPS_APPLICATORE = ['Superfici', 'Supporto', 'Texture', 'Protettivi', 'Riepilogo', 'Carrello'];
 const STEPS_RIVENDITORE  = ['Superfici', 'Texture', 'Protettivi', 'Supporto', 'Riepilogo', 'Carrello'];
 
@@ -58,10 +51,9 @@ export function WizardContainer({ onComplete, lockedAmbiente = false }: WizardCo
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <StepProgress current={currentStep} labels={stepLabels} />
-
-      <div className="mt-8">
+      <div className="mt-10">
         {currentStep === 0 && <StepAmbiente lockedAmbiente={lockedAmbiente} />}
 
         {!isRivenditore && currentStep === 1 && <StepSupporto />}
@@ -79,7 +71,7 @@ export function WizardContainer({ onComplete, lockedAmbiente = false }: WizardCo
   );
 }
 
-// ─── Step progress indicator ──────────────────────────────────────────────────
+// ─── Step progress indicator — Nativus editorial style ───────────────────────
 
 interface StepProgressProps {
   current: number;
@@ -89,39 +81,80 @@ interface StepProgressProps {
 function StepProgress({ current, labels }: StepProgressProps) {
   return (
     <nav aria-label="Progressione wizard">
-      <ol className="flex items-center gap-0">
+      {/* Top thin line */}
+      <div className="w-full h-px bg-linen-300 mb-6" />
+
+      {/* Step track */}
+      <ol className="flex items-start gap-0">
         {labels.map((label, i) => {
           const isCompleted = i < current;
           const isActive    = i === current;
+          const isLast      = i === labels.length - 1;
+
           return (
-            <li key={i} className="flex flex-1 items-center">
-              <div className="flex flex-col items-center min-w-0">
+            <React.Fragment key={i}>
+              <li className="flex flex-col items-center min-w-0">
+                {/* Dot */}
                 <span
-                  className={`step-badge flex-shrink-0 ${
-                    isCompleted
-                      ? 'bg-brand-600 text-white'
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 28,
+                    height: 28,
+                    fontSize: 11,
+                    fontWeight: 500,
+                    letterSpacing: '0',
+                    backgroundColor: isCompleted ? '#171e29' : isActive ? '#897e5e' : 'transparent',
+                    border: isCompleted
+                      ? '1px solid #171e29'
                       : isActive
-                      ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-400'
-                      : 'bg-sand-200 text-brand-400'
-                  }`}
+                      ? '1px solid #897e5e'
+                      : '1px solid #c4c5c1',
+                    color: isCompleted || isActive ? '#ffffff' : '#8b8f94',
+                    flexShrink: 0,
+                  }}
                 >
                   {isCompleted ? '✓' : i + 1}
                 </span>
+
+                {/* Label */}
                 <span
-                  className={`mt-1 text-center text-xs leading-tight truncate max-w-[68px] ${
-                    isActive ? 'font-semibold text-brand-700' : isCompleted ? 'text-brand-500' : 'text-brand-300'
-                  }`}
+                  style={{
+                    marginTop: 6,
+                    fontSize: 10,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    fontWeight: isActive ? 600 : 400,
+                    color: isActive ? '#171e29' : isCompleted ? '#445164' : '#a8a9a4',
+                    whiteSpace: 'nowrap',
+                    maxWidth: 72,
+                    textAlign: 'center',
+                    lineHeight: 1.3,
+                  }}
                 >
                   {label}
                 </span>
-              </div>
-              {i < labels.length - 1 && (
-                <div className={`mx-1 h-0.5 flex-1 mb-4 ${isCompleted ? 'bg-brand-400' : 'bg-sand-400'}`} />
+              </li>
+
+              {/* Connector line */}
+              {!isLast && (
+                <div
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    marginTop: 14,
+                    backgroundColor: isCompleted ? '#171e29' : '#c4c5c1',
+                  }}
+                />
               )}
-            </li>
+            </React.Fragment>
           );
         })}
       </ol>
+
+      {/* Bottom thin line */}
+      <div className="w-full h-px bg-linen-300 mt-6" />
     </nav>
   );
 }
