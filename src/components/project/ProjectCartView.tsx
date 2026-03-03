@@ -3,9 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { FileSpreadsheet, FileText } from 'lucide-react';
 import { useProjectStore } from '../../store/project-store';
 import { loadDataStore } from '../../utils/data-loader';
-import type { PackagingStrategy, ProjectCartRow } from '../../types/project';
+import type { PackagingStrategy, ProjectCartRow, ConsolidationMode } from '../../types/project';
 import { computePackagingOptions } from '../../engine/packaging-optimizer';
 import { formatEur } from '../../utils/format';
+
+const CONSOLIDATION_MODES: { id: ConsolidationMode; label: string; desc: string }[] = [
+  { id: 'OPTIMIZED', label: 'Ottimizzata globalmente',  desc: 'Aggrega i materiali tra ambienti, poi calcola le confezioni' },
+  { id: 'SEPARATE',  label: 'Separata per ambiente',    desc: 'Calcola le confezioni per ogni ambiente indipendentemente' },
+];
 
 const STRATEGIES: { id: PackagingStrategy; label: string; desc: string; isAuto: boolean }[] = [
   { id: 'MINIMO_SFRIDO',     label: 'Min. sfrido',    desc: 'Minimizza il materiale in eccesso',   isAuto: true  },
@@ -63,6 +68,7 @@ export function ProjectCartView() {
   const navigate = useNavigate();
   const {
     rooms, cart, strategy, setStrategy, buildCart, hydrate,
+    consolidation_mode, setConsolidationMode,
     overrideCartRow, excludeCartRow, restoreCartRow, removeCartRow, addManualRow,
     config_log,
   } = useProjectStore();
@@ -89,6 +95,18 @@ export function ProjectCartView() {
   const activeRows = cart.filter(r => r.status === 'active');
   const excludedRows = cart.filter(r => r.status === 'excluded');
   const totalActive = activeRows.reduce((a, r) => a + r.totale, 0);
+
+  // Raggruppa righe per ambiente (solo in SEPARATE mode con >1 ambienti)
+  const groupedRows = useMemo<Map<string, ProjectCartRow[]> | null>(() => {
+    if (consolidation_mode !== 'SEPARATE' || configuredRooms.length <= 1) return null;
+    const groups = new Map<string, ProjectCartRow[]>();
+    for (const row of activeRows) {
+      const room = row.from_rooms?.[0] ?? 'Altro';
+      if (!groups.has(room)) groups.set(room, []);
+      groups.get(room)!.push(row);
+    }
+    return groups;
+  }, [activeRows, consolidation_mode, configuredRooms.length]);
 
   const allSkuIds = useMemo(() => store.packagingSku.map(p => p.sku_id).sort(), [store]);
   const filteredSkus = useMemo(() => {
@@ -269,6 +287,37 @@ export function ProjectCartView() {
         </div>
       </div>
 
+      {/* Toggle consolidazione multi-ambiente (visibile solo con >1 ambienti configurati) */}
+      {configuredRooms.length > 1 && (
+        <div className="card p-4 space-y-3">
+          <div>
+            <h2 className="font-semibold text-sm text-gray-700">Modalità calcolo materiali</h2>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Scegli come ottimizzare il packaging tra tutti gli ambienti.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {CONSOLIDATION_MODES.map(m => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setConsolidationMode(m.id, store)}
+                className={`p-3 rounded-lg border-2 text-left transition-colors ${
+                  consolidation_mode === m.id
+                    ? 'border-brand-500 bg-brand-50'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+                }`}
+              >
+                <p className={`text-xs font-semibold ${consolidation_mode === m.id ? 'text-brand-700' : 'text-gray-700'}`}>
+                  {m.label}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5 leading-tight">{m.desc}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Righe carrello */}
       <div className="card overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
@@ -359,58 +408,73 @@ export function ProjectCartView() {
               </tr>
             </thead>
             <tbody>
-              {activeRows.map(row => (
-                <tr key={row.row_id} className={`border-b border-gray-50 ${isManual ? 'hover:bg-amber-50' : 'hover:bg-gray-50'}`}>
-                  <td className="px-2 py-1.5">
-                    {row.source === 'manual' && (
-                      <span className="text-xs bg-yellow-100 text-yellow-700 px-1 rounded font-semibold">M</span>
-                    )}
-                    {row.is_override && (
-                      <span className="text-xs bg-blue-100 text-blue-700 px-1 rounded ml-1">*</span>
-                    )}
-                  </td>
-                  <td className="px-3 py-2"><RowTitle row={row} /></td>
-                  <td className="px-3 py-1.5"><SectionBadge section={row.section} /></td>
-                  <td className="px-3 py-1.5 text-right font-semibold">{row.qty_packs}</td>
-                  <td className="px-3 py-1.5 text-right text-gray-500">{formatEur(row.prezzo_unitario)}</td>
-                  <td className="px-3 py-1.5 text-right font-semibold">{formatEur(row.totale)}</td>
-                  <td className="px-3 py-1.5 whitespace-nowrap">
-                    {isManual ? (
-                      <div className="flex gap-1">
-                        <button
-                          type="button"
-                          className="text-brand-600 hover:underline"
-                          onClick={() => openOverride(row)}
-                        >
-                          Modifica
-                        </button>
-                        <span className="text-gray-300">|</span>
-                        <button
-                          type="button"
-                          className="text-amber-600 hover:underline"
-                          onClick={() => excludeCartRow(row.row_id)}
-                        >
-                          Escludi
-                        </button>
-                        {row.source === 'manual' && (
-                          <>
-                            <span className="text-gray-300">|</span>
-                            <button
-                              type="button"
-                              className="text-red-500 hover:underline"
-                              onClick={() => removeCartRow(row.row_id)}
-                            >
-                              Rimuovi
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-gray-300 text-xs italic">—</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {/* SEPARATE mode: righe raggruppate per ambiente */}
+              {groupedRows
+                ? Array.from(groupedRows.entries()).map(([roomName, rows]) => (
+                    <React.Fragment key={roomName}>
+                      <tr className="bg-blue-50 border-b border-blue-100">
+                        <td colSpan={7} className="px-3 py-2 text-xs font-semibold text-blue-700 tracking-wide uppercase">
+                          {roomName}
+                        </td>
+                      </tr>
+                      {rows.map(row => (
+                        <tr key={row.row_id} className={`border-b border-gray-50 ${isManual ? 'hover:bg-amber-50' : 'hover:bg-gray-50'}`}>
+                          <td className="px-2 py-1.5">
+                            {row.source === 'manual' && (
+                              <span className="text-xs bg-yellow-100 text-yellow-700 px-1 rounded font-semibold">M</span>
+                            )}
+                            {row.is_override && (
+                              <span className="text-xs bg-blue-100 text-blue-700 px-1 rounded ml-1">*</span>
+                            )}
+                          </td>
+                          <td className="px-3 py-2"><RowTitle row={row} /></td>
+                          <td className="px-3 py-1.5"><SectionBadge section={row.section} /></td>
+                          <td className="px-3 py-1.5 text-right font-semibold">{row.qty_packs}</td>
+                          <td className="px-3 py-1.5 text-right text-gray-500">{formatEur(row.prezzo_unitario)}</td>
+                          <td className="px-3 py-1.5 text-right font-semibold">{formatEur(row.totale)}</td>
+                          <td className="px-3 py-1.5 whitespace-nowrap">
+                            <span className="text-gray-300 text-xs italic">—</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </React.Fragment>
+                  ))
+                /* OPTIMIZED mode: flat list */
+                : activeRows.map(row => (
+                  <tr key={row.row_id} className={`border-b border-gray-50 ${isManual ? 'hover:bg-amber-50' : 'hover:bg-gray-50'}`}>
+                    <td className="px-2 py-1.5">
+                      {row.source === 'manual' && (
+                        <span className="text-xs bg-yellow-100 text-yellow-700 px-1 rounded font-semibold">M</span>
+                      )}
+                      {row.is_override && (
+                        <span className="text-xs bg-blue-100 text-blue-700 px-1 rounded ml-1">*</span>
+                      )}
+                    </td>
+                    <td className="px-3 py-2"><RowTitle row={row} /></td>
+                    <td className="px-3 py-1.5"><SectionBadge section={row.section} /></td>
+                    <td className="px-3 py-1.5 text-right font-semibold">{row.qty_packs}</td>
+                    <td className="px-3 py-1.5 text-right text-gray-500">{formatEur(row.prezzo_unitario)}</td>
+                    <td className="px-3 py-1.5 text-right font-semibold">{formatEur(row.totale)}</td>
+                    <td className="px-3 py-1.5 whitespace-nowrap">
+                      {isManual ? (
+                        <div className="flex gap-1">
+                          <button type="button" className="text-brand-600 hover:underline" onClick={() => openOverride(row)}>Modifica</button>
+                          <span className="text-gray-300">|</span>
+                          <button type="button" className="text-amber-600 hover:underline" onClick={() => excludeCartRow(row.row_id)}>Escludi</button>
+                          {row.source === 'manual' && (
+                            <>
+                              <span className="text-gray-300">|</span>
+                              <button type="button" className="text-red-500 hover:underline" onClick={() => removeCartRow(row.row_id)}>Rimuovi</button>
+                            </>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-gray-300 text-xs italic">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              }
               {activeRows.length === 0 && (
                 <tr>
                   <td colSpan={7} className="px-4 py-6 text-center text-gray-400">

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ProjectRoom, ProjectCartRow, AggregatedRawQty, PackagingStrategy, ConfigLogEntry, StepLavorazione } from '../types/project';
+import type { ProjectRoom, ProjectCartRow, AggregatedRawQty, PackagingStrategy, ConsolidationMode, ConfigLogEntry, StepLavorazione } from '../types/project';
 import type { CartLine } from '../types/cart';
 import type { WizardState } from '../types/wizard-state';
 import type { CartResult } from '../engine/cart-calculator';
@@ -18,6 +18,7 @@ interface ProjectState {
   rooms: ProjectRoom[];
   cart: ProjectCartRow[];
   strategy: PackagingStrategy;
+  consolidation_mode: ConsolidationMode;
   cart_built: boolean;
   config_log: ConfigLogEntry[];
 }
@@ -29,6 +30,7 @@ interface ProjectStore extends ProjectState {
   unconfigureRoom: (id: string) => void;
   buildCart: (store: DataStore, strategy?: PackagingStrategy) => void;
   setStrategy: (s: PackagingStrategy, store: DataStore) => void;
+  setConsolidationMode: (mode: ConsolidationMode, store: DataStore) => void;
   overrideCartRow: (row_id: string, sku_id: string, qty_packs: number, store: DataStore) => void;
   excludeCartRow: (row_id: string) => void;
   restoreCartRow: (row_id: string) => void;
@@ -128,6 +130,78 @@ function aggregate(rooms: ProjectRoom[]): AggregatedRawQty[] {
 }
 
 type GroupWithRooms = TechnicalGroupEnriched & { _from_rooms: string[] };
+
+/**
+ * SEPARATE mode: calcola packaging per ogni ambiente indipendentemente.
+ * Ogni riga cart ha from_rooms = [nomeAmbiente].
+ * Le quantità NON vengono aggregate tra ambienti prima del packaging.
+ */
+function buildCartFromRoomsSeparate(
+  rooms: ProjectRoom[],
+  store: DataStore,
+  strategy: PackagingStrategy,
+): ProjectCartRow[] {
+  const configured = rooms.filter(r => r.is_configured && r.wizard_state);
+  if (configured.length === 0) return [];
+
+  const allRows: ProjectCartRow[] = [];
+
+  for (const room of configured) {
+    const roomName = room.custom_name || room.room_type;
+    let groups: TechnicalGroupEnriched[];
+    try {
+      groups = computeTechnicalGroups(room.wizard_state!, store);
+    } catch (e) {
+      console.warn('[buildCartFromRoomsSeparate] computeTechnicalGroups failed for', roomName, e);
+      continue;
+    }
+
+    let items: ReturnType<typeof computePackagedItems>;
+    try {
+      items = computePackagedItems(groups, store, strategy);
+    } catch (e) {
+      console.error('[buildCartFromRoomsSeparate] computePackagedItems failed for', roomName, e);
+      continue;
+    }
+
+    for (const item of items.filter(i => i.status === 'active')) {
+      allRows.push({
+        row_id: crypto.randomUUID(),
+        product_id: item.product_id ?? null,
+        sku_id: item.sku_id,
+        descrizione: item.description,
+        qty_packs: item.qty_packs,
+        pack_size: item.pack_size,
+        pack_unit: item.pack_unit,
+        prezzo_unitario: item.prezzo_unitario,
+        totale: item.totale,
+        source: 'auto',
+        status: 'active',
+        is_override: false,
+        section: item.section as ProjectCartRow['section'],
+        from_rooms: [roomName],
+      });
+    }
+  }
+
+  return allRows;
+}
+
+/**
+ * Seleziona la modalità di costruzione carrello.
+ * OPTIMIZED (default): aggrega qty_raw di tutti gli ambienti, poi calcola packaging una volta.
+ * SEPARATE: calcola packaging per ogni ambiente, poi combina.
+ */
+function buildCartWithMode(
+  rooms: ProjectRoom[],
+  store: DataStore,
+  strategy: PackagingStrategy,
+  mode: ConsolidationMode,
+): ProjectCartRow[] {
+  return mode === 'OPTIMIZED'
+    ? buildCartFromRooms(rooms, store, strategy)
+    : buildCartFromRoomsSeparate(rooms, store, strategy);
+}
 
 function buildCartFromRooms(
   rooms: ProjectRoom[],
@@ -251,6 +325,7 @@ const initialState: ProjectState = {
   rooms: [],
   cart: [],
   strategy: 'MINIMO_SFRIDO',
+  consolidation_mode: 'OPTIMIZED',
   cart_built: false,
   config_log: [],
 };
@@ -300,7 +375,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
     // Auto-rebuild cart immediately (full reset)
     const currentStrategy = get().strategy;
-    const rows = buildCartFromRooms(get().rooms, store, currentStrategy);
+    const rows = buildCartWithMode(get().rooms, store, currentStrategy, get().consolidation_mode);
     set({ cart: rows, cart_built: true });
     // Sync cart-store with the newly built aggregated cart
     const packaged: PackagedItem[] = rows.map(row => ({
@@ -338,7 +413,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   buildCart: (store, strategy?) => {
     const s = strategy ?? get().strategy;
-    const rows = buildCartFromRooms(get().rooms, store, s);
+    const rows = buildCartWithMode(get().rooms, store, s, get().consolidation_mode);
     set({ cart: rows, strategy: s, cart_built: true });
     get().persist();
   },
@@ -349,10 +424,17 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       get().persist();
       return;
     }
-    const autoRows = buildCartFromRooms(get().rooms, store, strategy);
+    const autoRows = buildCartWithMode(get().rooms, store, strategy, get().consolidation_mode);
     const manual = get().cart.filter(r => r.source === 'manual');
     const merged = [...autoRows, ...manual];
     set({ strategy, cart: merged, cart_built: true });
+    get().persist();
+  },
+
+  setConsolidationMode: (mode, store) => {
+    const autoRows = buildCartWithMode(get().rooms, store, get().strategy, mode);
+    const manual = get().cart.filter(r => r.source === 'manual');
+    set({ consolidation_mode: mode, cart: [...autoRows, ...manual], cart_built: true });
     get().persist();
   },
 
@@ -476,8 +558,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   persist: () => {
     try {
-      const { rooms, cart, strategy, cart_built, config_log } = get();
-      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, cart_built, config_log }));
+      const { rooms, cart, strategy, consolidation_mode, cart_built, config_log } = get();
+      localStorage.setItem(LS_KEY, JSON.stringify({ rooms, cart, strategy, consolidation_mode, cart_built, config_log }));
     } catch { /* noop */ }
   },
 
@@ -493,6 +575,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
           step_lavorazioni: r.step_lavorazioni ?? [],
           computation_errors: r.computation_errors ?? [],
         }));
+        if (!parsed.consolidation_mode) parsed.consolidation_mode = 'OPTIMIZED';
         set({ ...parsed as ProjectState, cart_built: false });
       }
     } catch { /* noop */ }

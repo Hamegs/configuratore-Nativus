@@ -17,6 +17,13 @@ export type PackagingStrategy =
   | 'CONFEZIONI_GRANDI'
   | 'MANUALE';
 
+/**
+ * Modalità di consolidamento cart multi-ambiente:
+ * OPTIMIZED — aggrega qty_raw di tutti gli ambienti, poi calcola packaging una volta sola
+ * SEPARATE  — calcola packaging per ogni ambiente indipendentemente, poi combina
+ */
+export type ConsolidationMode = 'SEPARATE' | 'OPTIMIZED';
+
 export interface ConfigLogEntry {
   id: string;
   timestamp: string;
