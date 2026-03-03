@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileSpreadsheet, FileText } from 'lucide-react';
 import { useProjectStore } from '../../store/project-store';
@@ -62,11 +62,16 @@ function RowTitle({ row }: { row: ProjectCartRow }) {
 export function ProjectCartView() {
   const navigate = useNavigate();
   const {
-    rooms, cart, strategy, setStrategy,
+    rooms, cart, strategy, setStrategy, buildCart, hydrate,
     overrideCartRow, excludeCartRow, restoreCartRow, removeCartRow, addManualRow,
     config_log,
   } = useProjectStore();
   const store = loadDataStore();
+
+  useEffect(() => {
+    hydrate();
+    buildCart(store);
+  }, []);
 
   const [overrideRowId, setOverrideRowId] = useState<string | null>(null);
   const [overrideSku, setOverrideSku] = useState('');

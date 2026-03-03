@@ -181,47 +181,57 @@ function buildCartFromRooms(
   for (const g of texGroups) {
     fromRoomsMap.set(`${g.product_id}::${g.destination ?? ''}`, g._from_rooms);
   }
-  const texItems = computePackagedItems(texGroups, store, strategy);
-  const texRows: ProjectCartRow[] = texItems.map(item => ({
-    row_id: item.row_id,
-    product_id: item.product_id ?? null,
-    sku_id: item.sku_id,
-    descrizione: item.description,
-    qty_packs: item.qty_packs,
-    pack_size: item.pack_size,
-    pack_unit: item.pack_unit,
-    prezzo_unitario: item.prezzo_unitario,
-    totale: item.totale,
-    source: 'auto' as const,
-    status: 'active' as const,
-    is_override: false,
-    section: item.section as CartLine['section'],
-    from_rooms: fromRoomsMap.get(`${item.product_id}::${item.destination ?? ''}`) ?? [],
-  }));
 
-  const nonTexRows: ProjectCartRow[] = [];
-  for (const [, agg] of nonTexById) {
-    const skus = store.packagingSku.filter(s => s.product_id === agg.product_id);
-    if (skus.length === 0) continue;
-    const opts = computePackagingOptions(agg.qty_raw, skus, store.listino);
-    const best = bestOption(opts, strategy);
-    if (!best) continue;
-    nonTexRows.push({
-      row_id: crypto.randomUUID(),
-      product_id: agg.product_id ?? null,
-      sku_id: best.sku_id,
-      descrizione: agg.nomeCommerciale,
-      qty_packs: best.qty_packs,
-      pack_size: best.pack_size,
-      pack_unit: best.pack_unit,
-      prezzo_unitario: best.prezzo_unitario,
-      totale: best.totale,
+  let texRows: ProjectCartRow[] = [];
+  try {
+    const texItems = computePackagedItems(texGroups, store, strategy);
+    texRows = texItems.map(item => ({
+      row_id: item.row_id,
+      product_id: item.product_id ?? null,
+      sku_id: item.sku_id,
+      descrizione: item.description,
+      qty_packs: item.qty_packs,
+      pack_size: item.pack_size,
+      pack_unit: item.pack_unit,
+      prezzo_unitario: item.prezzo_unitario,
+      totale: item.totale,
       source: 'auto' as const,
       status: 'active' as const,
       is_override: false,
-      section: agg.section,
-      from_rooms: agg.from_rooms,
-    });
+      section: item.section as CartLine['section'],
+      from_rooms: fromRoomsMap.get(`${item.product_id}::${item.destination ?? ''}`) ?? [],
+    }));
+  } catch (e) {
+    console.error('[buildCartFromRooms] texture error:', e);
+  }
+
+  const nonTexRows: ProjectCartRow[] = [];
+  for (const [, agg] of nonTexById) {
+    try {
+      const validSkus = store.packagingSku.filter(s => s.product_id === agg.product_id && (s.pack_size ?? 0) > 0);
+      if (validSkus.length === 0) continue;
+      const opts = computePackagingOptions(agg.qty_raw, validSkus, store.listino);
+      const best = bestOption(opts, strategy);
+      if (!best) continue;
+      nonTexRows.push({
+        row_id: crypto.randomUUID(),
+        product_id: agg.product_id ?? null,
+        sku_id: best.sku_id,
+        descrizione: agg.nomeCommerciale,
+        qty_packs: best.qty_packs,
+        pack_size: best.pack_size,
+        pack_unit: best.pack_unit,
+        prezzo_unitario: best.prezzo_unitario,
+        totale: best.totale,
+        source: 'auto' as const,
+        status: 'active' as const,
+        is_override: false,
+        section: agg.section,
+        from_rooms: agg.from_rooms,
+      });
+    } catch (e) {
+      console.error('[buildCartFromRooms] nonTex error for', agg.product_id, e);
+    }
   }
 
   return [...nonTexRows, ...texRows];
