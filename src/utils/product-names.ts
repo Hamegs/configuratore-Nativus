@@ -46,7 +46,20 @@ const COMMERCIAL_NAMES: Record<string, string> = {
   PREMIX_COLORE_OPACO_S_6:    'Premix colore Opaco S',
 };
 
+let _runtimeOverrides: Record<string, string> = {};
+
+export function setCommercialNameOverrides(overrides: Record<string, string>): void {
+  _runtimeOverrides = { ...overrides };
+}
+
 export function getCommercialName(product_id: string | undefined | null): string | null {
+  if (!product_id) return null;
+  return _runtimeOverrides[product_id] ?? COMMERCIAL_NAMES[product_id] ?? null;
+}
+
+export function getDefaultCommercialName(product_id: string | undefined | null): string | null {
   if (!product_id) return null;
   return COMMERCIAL_NAMES[product_id] ?? null;
 }
+
+export { COMMERCIAL_NAMES };

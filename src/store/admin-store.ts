@@ -3,6 +3,7 @@ import type { StepLibraryEntry } from '../types/step';
 import type { StepMapEntry } from '../types/regole';
 import type { PackagingSku, ListinoSku } from '../types/packaging';
 import { invalidateCache } from '../utils/data-loader';
+import { setCommercialNameOverrides } from '../utils/product-names';
 
 const LS_KEY = 'nativus_admin_overrides';
 
@@ -11,6 +12,7 @@ interface AdminOverrides {
   stepMap?: StepMapEntry[];
   packagingSku?: PackagingSku[];
   listino?: ListinoSku[];
+  commercialNames?: Record<string, string>;
 }
 
 interface AdminStore {
@@ -21,6 +23,7 @@ interface AdminStore {
   saveStepMap: (items: StepMapEntry[]) => void;
   savePackagingSku: (items: PackagingSku[]) => void;
   saveListino: (items: ListinoSku[]) => void;
+  saveCommercialNames: (names: Record<string, string>) => void;
   resetAll: () => void;
 }
 
@@ -49,6 +52,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     const overrides = readStorage();
     set({ overrides, isDirty: false });
     invalidateCache();
+    setCommercialNameOverrides(overrides.commercialNames ?? {});
   },
 
   saveStepLibrary: (items) => {
@@ -79,13 +83,29 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     invalidateCache();
   },
 
+  saveCommercialNames: (names) => {
+    const overrides = { ...get().overrides, commercialNames: names };
+    writeStorage(overrides);
+    set({ overrides, isDirty: false });
+    setCommercialNameOverrides(names);
+  },
+
   resetAll: () => {
     try { localStorage.removeItem(LS_KEY); } catch { /* noop */ }
     set({ overrides: {}, isDirty: false });
     invalidateCache();
+    setCommercialNameOverrides({});
   },
 }));
 
 export function getAdminOverrides(): AdminOverrides {
   return readStorage();
 }
+
+// Initialize commercial name overrides from localStorage at module load time
+(function initOverrides() {
+  const stored = readStorage();
+  if (stored.commercialNames) {
+    setCommercialNameOverrides(stored.commercialNames);
+  }
+})();

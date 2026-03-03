@@ -4,13 +4,15 @@ import { useAdminStore } from '../store/admin-store';
 import { AdminListino } from '../components/admin/AdminListino';
 import { AdminStratigrafie } from '../components/admin/AdminStratigrafie';
 import { AdminExport } from '../components/admin/AdminExport';
+import { AdminProdotti } from '../components/admin/AdminProdotti';
 
-type Tab = 'riepilogo' | 'stratigrafie' | 'listino' | 'export';
+type Tab = 'riepilogo' | 'stratigrafie' | 'listino' | 'prodotti' | 'export';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'riepilogo', label: 'Riepilogo' },
   { id: 'stratigrafie', label: 'Stratigrafie' },
   { id: 'listino', label: 'Listino' },
+  { id: 'prodotti', label: 'Prodotti' },
   { id: 'export', label: 'Export Dati' },
 ];
 
@@ -48,7 +50,9 @@ export function AdminPage() {
     setTimeout(() => setInfo(null), 2500);
   }
 
-  const hasOverrides = Object.values(overrides).some(v => Array.isArray(v));
+  const hasOverrides = Object.values(overrides).some(v =>
+    Array.isArray(v) || (typeof v === 'object' && v !== null && Object.keys(v).length > 0)
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
@@ -76,6 +80,9 @@ export function AdminPage() {
             overrides.stepMap ? `step-map (${overrides.stepMap.length})` : null,
             overrides.packagingSku ? `packaging (${overrides.packagingSku.length})` : null,
             overrides.listino ? `listino (${overrides.listino.length})` : null,
+            overrides.commercialNames && Object.keys(overrides.commercialNames).length > 0
+              ? `nomi-commerciali (${Object.keys(overrides.commercialNames).length})`
+              : null,
           ].filter(Boolean).join(', ')}
         </div>
       )}
@@ -130,6 +137,7 @@ export function AdminPage() {
 
       {tab === 'stratigrafie' && <AdminStratigrafie store={store} />}
       {tab === 'listino' && <AdminListino store={store} />}
+      {tab === 'prodotti' && <AdminProdotti store={store} />}
       {tab === 'export' && <AdminExport />}
     </div>
   );
