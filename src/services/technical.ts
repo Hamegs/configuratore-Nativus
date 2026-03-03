@@ -2,15 +2,12 @@ import type { DataStore } from '../utils/data-loader';
 import type { WizardState } from '../types/wizard-state';
 import type { TechnicalGroup, ServiceSection } from '../types/services';
 import type { TextureInput } from '../engine/texture-rules';
-import type { CartLine } from '../types/cart';
 import { computeFullCart } from '../engine/cart-calculator';
-import { computeTextureCart } from '../engine/texture-rules';
 import { getCommercialName } from '../utils/product-names';
 import { effectiveAmbiente } from '../engine/effective-ambiente';
 
 export interface TechnicalGroupEnriched extends TechnicalGroup {
   _textureInput?: TextureInput;
-  _textureCartLines?: CartLine[];
 }
 
 function extractDestination(description: string): string | null {
@@ -83,7 +80,6 @@ export function computeTechnicalGroups(
     let description = textureLine;
     if (colorLabel) description += ` — ${colorLabel}`;
     if (zoneLabel) description += ` — ${zoneLabel}`;
-    const texResult = computeTextureCart(store, textureInput);
     return {
       id: `texture::${textureLine}::${colorLabel ?? ''}::${zoneLabel ?? 'all'}`,
       product_id: textureLine,
@@ -96,7 +92,6 @@ export function computeTechnicalGroups(
       qty_raw: area_mq,
       unit: 'mq',
       _textureInput: textureInput,
-      _textureCartLines: texResult.cart_lines,
     };
   }
 

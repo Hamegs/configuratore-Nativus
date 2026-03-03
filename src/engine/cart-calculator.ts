@@ -614,11 +614,20 @@ function buildDocciaPiattoLines(store: DataStore, state: WizardState): CartLine[
   return lines;
 }
 
+function stripZoneLabel(desc: string): string {
+  const parts = desc.split(' — ');
+  const last = parts[parts.length - 1];
+  if (parts.length > 1 && (last === 'Pavimento' || last.startsWith('Parete'))) {
+    return parts.slice(0, -1).join(' — ');
+  }
+  return desc;
+}
+
 function consolidateLines(lines: CartLine[]): CartLine[] {
   const map = new Map<string, CartLine>();
   for (const line of lines) {
-    // Righe con colori diversi NON vengono accorpate anche se stesso SKU
-    const key = `${line.sku_id}::${line.descrizione}`;
+    const displayDesc = line.section === 'texture' ? stripZoneLabel(line.descrizione) : line.descrizione;
+    const key = `${line.sku_id}::${displayDesc}`;
     const existing = map.get(key);
     if (existing) {
       existing.qty += line.qty;
@@ -627,7 +636,7 @@ function consolidateLines(lines: CartLine[]): CartLine[] {
         existing.qty_raw = (existing.qty_raw ?? 0) + line.qty_raw;
       }
     } else {
-      map.set(key, { ...line });
+      map.set(key, { ...line, descrizione: displayDesc });
     }
   }
   return Array.from(map.values());
