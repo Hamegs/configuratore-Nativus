@@ -17,12 +17,28 @@ export function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {(user?.role === 'rivenditore' || user?.role === 'admin' || user?.role === 'applicatore') && (
+        {(user?.role === 'applicatore' || user?.role === 'admin') && (
           <DashCard
-            title="Progetto / Configuratore"
-            description="Aggiungi ambienti, configura supporti e texture, genera il carrello con tutti i materiali."
-            to="/progetto"
+            title="Cantiere"
+            description="Configurazione tecnica completa: supporti, stratigrafie, consumi reali e procedura operativa."
+            to="/applicatore"
+            accent="dark"
+          />
+        )}
+        {(user?.role === 'rivenditore' || user?.role === 'admin') && (
+          <DashCard
+            title="Preventivo"
+            description="Configurazione commerciale: ambienti, texture, ottimizzazione confezioni e totale preventivo."
+            to="/rivenditore"
             accent="brand"
+          />
+        )}
+        {(user?.role === 'progettista' || user?.role === 'admin') && (
+          <DashCard
+            title="Specifiche Tecniche"
+            description="Documentazione progettuale: stratigrafie, DIN, specifiche tecniche senza prezzi."
+            to="/progettista"
+            accent="stone"
           />
         )}
         {user?.role === 'admin' && (
@@ -42,15 +58,20 @@ interface DashCardProps {
   title: string;
   description: string;
   to: string;
-  accent: 'brand' | 'gray';
+  accent: 'brand' | 'gray' | 'dark' | 'stone';
 }
 
 function DashCard({ title, description, to, accent }: DashCardProps) {
-  const bg = accent === 'brand' ? 'bg-brand-600 hover:bg-brand-700' : 'bg-gray-700 hover:bg-gray-800';
+  const styles = {
+    brand: 'bg-brand-600 hover:bg-brand-700',
+    gray: 'bg-gray-700 hover:bg-gray-800',
+    dark: 'bg-slate-800 hover:bg-slate-700',
+    stone: 'bg-stone-700 hover:bg-stone-600',
+  };
   return (
     <Link
       to={to}
-      className={`card flex flex-col gap-3 p-6 text-white transition-colors ${bg}`}
+      className={`card flex flex-col gap-3 p-6 text-white transition-colors ${styles[accent]}`}
     >
       <h2 className="text-lg font-semibold">{title}</h2>
       <p className="text-sm opacity-80">{description}</p>

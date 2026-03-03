@@ -12,6 +12,9 @@ import { ProjectPage } from './pages/ProjectPage';
 import { RoomWizardPage } from './pages/RoomWizardPage';
 import { ProjectCartView } from './components/project/ProjectCartView';
 import { VistaApplicatoreProgetto } from './components/views/VistaApplicatoreProgetto';
+import { ApplicatoreDashboard } from './pages/applicatore/ApplicatoreDashboard';
+import { RivenditoresDashboard } from './pages/rivenditore/RivenditoresDashboard';
+import { ProgettistaDashboard } from './pages/progettista/ProgettistaDashboard';
 
 export default function App() {
   const { restoreSession } = useAuthStore();
@@ -37,6 +40,41 @@ export default function App() {
           }
         />
 
+        {/* ── Role-specific dashboards ─────────────────────────────────────── */}
+        <Route
+          path="/applicatore"
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'applicatore']}>
+              <AppShell>
+                <ApplicatoreDashboard />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/rivenditore"
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'rivenditore']}>
+              <AppShell>
+                <RivenditoresDashboard />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/progettista"
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'progettista']}>
+              <AppShell>
+                <ProgettistaDashboard />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ── Existing routes ───────────────────────────────────────────────── */}
         <Route
           path="/configuratore"
           element={
@@ -73,7 +111,7 @@ export default function App() {
         <Route
           path="/progetto/stanza/:roomId"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'rivenditore']}>
+            <ProtectedRoute allowedRoles={['admin', 'rivenditore', 'applicatore', 'progettista']}>
               <AppShell>
                 <RoomWizardPage />
               </AppShell>

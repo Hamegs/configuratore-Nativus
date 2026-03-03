@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth-store';
+import { ROLE_TO_HOME } from '../../types/roles';
 
 const ROLE_LABELS: Record<string, string> = {
   admin: 'Admin',
   rivenditore: 'Rivenditore',
   applicatore: 'Applicatore',
+  progettista: 'Progettista',
 };
 
 export function Navbar() {
@@ -17,51 +19,94 @@ export function Navbar() {
     navigate('/login');
   }
 
+  const homeLink = user ? (ROLE_TO_HOME[user.role] ?? '/') : '/';
+
   return (
     <header className="border-b border-brand-700 bg-brand-600 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to={homeLink} className="flex items-center gap-2">
             <span className="text-xl font-bold tracking-widest text-white uppercase">Nativus</span>
             <span className="hidden text-xs text-brand-200 sm:inline font-light tracking-wide">Configuratore Ordini</span>
           </Link>
 
           {user && (
             <nav className="hidden sm:flex items-center gap-0.5">
-              <NavLink
-                to="/configuratore"
-                className={({ isActive }) =>
-                  `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-brand-700 text-white'
-                      : 'text-brand-100 hover:bg-brand-700 hover:text-white'
-                  }`
-                }
-              >
-                Configuratore
-              </NavLink>
-              {(user.role === 'admin' || user.role === 'rivenditore') && (
+              {/* Applicatore — technical dashboard */}
+              {(user.role === 'applicatore' || user.role === 'admin') && (
+                <NavLink
+                  to="/applicatore"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
+                  }
+                >
+                  Cantiere
+                </NavLink>
+              )}
+
+              {/* Rivenditore — sales dashboard */}
+              {(user.role === 'rivenditore' || user.role === 'admin') && (
+                <NavLink
+                  to="/rivenditore"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
+                  }
+                >
+                  Preventivo
+                </NavLink>
+              )}
+
+              {/* Progettista — spec dashboard */}
+              {(user.role === 'progettista' || user.role === 'admin') && (
+                <NavLink
+                  to="/progettista"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
+                  }
+                >
+                  Specifiche
+                </NavLink>
+              )}
+
+              {/* Legacy project route for admin/rivenditore */}
+              {user.role === 'admin' && (
                 <NavLink
                   to="/progetto"
                   className={({ isActive }) =>
                     `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-brand-700 text-white'
-                        : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
                     }`
                   }
                 >
                   Progetto
                 </NavLink>
               )}
+
+              {(user.role === 'admin' || user.role === 'rivenditore' || user.role === 'applicatore') && (
+                <NavLink
+                  to="/configuratore"
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                    }`
+                  }
+                >
+                  Wizard
+                </NavLink>
+              )}
+
               {user.role === 'admin' && (
                 <NavLink
                   to="/admin"
                   className={({ isActive }) =>
                     `px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-brand-700 text-white'
-                        : 'text-brand-100 hover:bg-brand-700 hover:text-white'
+                      isActive ? 'bg-brand-700 text-white' : 'text-brand-100 hover:bg-brand-700 hover:text-white'
                     }`
                   }
                 >

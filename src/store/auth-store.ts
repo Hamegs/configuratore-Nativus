@@ -5,6 +5,7 @@ const STATIC_USERS: Array<User & { password: string }> = [
   { id: '1', username: 'admin', password: 'admin123', role: 'admin', displayName: 'Amministratore' },
   { id: '2', username: 'rivenditore', password: 'riv123', role: 'rivenditore', displayName: 'Rivenditore' },
   { id: '3', username: 'applicatore', password: 'app123', role: 'applicatore', displayName: 'Applicatore' },
+  { id: '4', username: 'progettista', password: 'prog123', role: 'progettista', displayName: 'Progettista' },
 ];
 
 const SESSION_KEY = 'nativus_auth';

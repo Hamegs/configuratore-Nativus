@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/auth-store';
+import { ROLE_TO_HOME } from '../types/roles';
 
 export function LoginPage() {
   const [username, setUsername] = useState('');
@@ -10,14 +11,16 @@ export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? '/';
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     const result = login({ username, password });
     if (result.success) {
-      navigate(from, { replace: true });
+      const user = useAuthStore.getState().user;
+      const dest = from ?? (user ? ROLE_TO_HOME[user.role] ?? '/' : '/');
+      navigate(dest, { replace: true });
     } else {
       setError(result.error ?? 'Errore di accesso.');
     }
@@ -77,7 +80,7 @@ export function LoginPage() {
         </form>
 
         <p className="text-center text-xs text-gray-400">
-          Demo: admin/admin123 · rivenditore/riv123 · applicatore/app123
+          Demo: admin/admin123 · rivenditore/riv123 · applicatore/app123 · progettista/prog123
         </p>
       </div>
     </div>
