@@ -56,18 +56,21 @@ export function ProjectPage() {
       {/* ── Hero band ── */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #0d1219 0%, #171e29 45%, #1f2c3a 75%, #151c27 100%)',
           position: 'relative',
           overflow: 'hidden',
+          backgroundImage: 'url(/hero-nativus.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 40%',
+          backgroundRepeat: 'no-repeat',
+          minHeight: 200,
         }}
       >
-        {/* Dot texture */}
+        {/* Light overlay gradient for readability */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+            background: 'linear-gradient(to bottom, rgba(234,235,233,0.90) 0%, rgba(234,235,233,0.75) 60%, rgba(234,235,233,0.88) 100%)',
             pointerEvents: 'none',
           }}
         />
@@ -75,7 +78,7 @@ export function ProjectPage() {
           style={{
             maxWidth: 1280,
             margin: '0 auto',
-            padding: '40px 32px 36px',
+            padding: '48px 32px 40px',
             position: 'relative',
             zIndex: 1,
             display: 'flex',
@@ -91,7 +94,7 @@ export function ProjectPage() {
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.40)',
+                color: '#445164',
                 marginBottom: 10,
               }}
             >
@@ -99,10 +102,10 @@ export function ProjectPage() {
             </p>
             <h1
               style={{
-                fontSize: 30,
-                fontWeight: 400,
-                letterSpacing: '0.05em',
-                color: '#ffffff',
+                fontSize: 34,
+                fontWeight: 300,
+                letterSpacing: '0.04em',
+                color: '#171e29',
                 margin: 0,
                 lineHeight: 1.15,
               }}
@@ -113,7 +116,7 @@ export function ProjectPage() {
               style={{
                 marginTop: 8,
                 fontSize: 13,
-                color: 'rgba(255,255,255,0.45)',
+                color: '#445164',
                 letterSpacing: '0.02em',
               }}
             >
@@ -131,14 +134,14 @@ export function ProjectPage() {
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   background: 'transparent',
-                  border: '1.5px solid rgba(255,255,255,0.30)',
-                  color: '#ffffff',
+                  border: '1.5px solid rgba(23,30,41,0.35)',
+                  color: '#171e29',
                   padding: '10px 20px',
                   fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase',
                   cursor: 'pointer', transition: 'all 0.18s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)')}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#171e29')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(23,30,41,0.35)')}
               >
                 <ShoppingCart size={14} />
                 Carrello
@@ -149,9 +152,9 @@ export function ProjectPage() {
               onClick={() => setShowAddForm(true)}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: '#ffffff',
-                border: '1.5px solid #ffffff',
-                color: '#171e29',
+                background: '#171e29',
+                border: '1.5px solid #171e29',
+                color: '#ffffff',
                 padding: '10px 20px',
                 fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
                 cursor: 'pointer', transition: 'all 0.18s',

@@ -285,13 +285,12 @@ export function computeFullCart(
             ? 'Parete'
             : `Parete ${wallSurfaces.indexOf(surface) + 1}`;
         const protSelColor: import('../types/protettivi').ProtettivoSelection = {
-          system: state.protettivo.system,
-          finitura: state.protettivo.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : 'OPACO',
+          ...state.protettivo,
+          finitura: state.protettivo.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : state.protettivo.finitura,
           uso_superficie: usoSup,
-          opaco_colorato: state.protettivo.system === 'S',
+          opaco_colorato: true,
           colore_source: surface.protector_color?.type,
-          colore_code: surface.protector_color?.code ?? surface.protector_color?.label,
-          trasparente_finale: state.protettivo.trasparente_finale,
+          colore_code: surface.protector_color?.code ?? surface.protector_color?.label ?? state.protettivo.colore_code,
         };
         const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup, surfZone);
         all_lines.push(...protResult.cart_lines);
@@ -696,7 +695,9 @@ function stripZoneLabel(desc: string): string {
 function consolidateLines(lines: CartLine[]): CartLine[] {
   const map = new Map<string, CartLine>();
   for (const line of lines) {
-    const displayDesc = line.section === 'texture' ? stripZoneLabel(line.descrizione) : line.descrizione;
+    const displayDesc = (line.section === 'texture' || line.section === 'protettivi')
+      ? stripZoneLabel(line.descrizione)
+      : line.descrizione;
     const key = `${line.sku_id}::${displayDesc}`;
     const existing = map.get(key);
     if (existing) {
