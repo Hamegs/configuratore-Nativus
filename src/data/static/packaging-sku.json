@@ -704,15 +704,6 @@
     "note_packaging": "DA_LISTINO_XLSX"
   },
   {
-    "sku_id": "CRYSTEPO_3_7_25KG",
-    "product_id": "MAS_EP",
-    "descrizione_sku": "Crystepo 3",
-    "pack_size": 7.25,
-    "pack_unit": "kg",
-    "componenti": "",
-    "note_packaging": "DA_LISTINO_XLSX"
-  },
-  {
     "sku_id": "CRYSTEPO_50_4_4KG",
     "product_id": "CRYSTEPO_50",
     "descrizione_sku": "Crystepo 50",

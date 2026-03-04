@@ -115,16 +115,16 @@ export function computeFullCart(
           steps: applyPreparationUpgrade(store, procedure_floor.steps, state, state.mq_pavimento),
         };
         procedure_floor.steps.forEach(step => {
-          if (step.product_id && (step.qty_total ?? 0) > 0) {
-            all_raw_lines.push({
-              environment_id: '__room__',
-              product_id: step.product_id,
-              qty_raw: step.qty_total!,
-              section: 'fondo',
-              pack_unit: step.unit ?? 'kg',
-              descrizione: getCommercialName(step.product_id) ?? step.product_id,
-            });
-          }
+          if (!step.product_id || (step.qty_total ?? 0) <= 0) return;
+          if (step.product_id === 'MAS_EP') return; // operation-only: decomposed by manual compensation blocks
+          all_raw_lines.push({
+            environment_id: '__room__',
+            product_id: step.product_id,
+            qty_raw: step.qty_total!,
+            section: 'fondo',
+            pack_unit: step.unit ?? 'kg',
+            descrizione: getCommercialName(step.product_id) ?? step.product_id,
+          });
         });
       } catch (err) {
         if (err instanceof DataError) {
@@ -155,16 +155,16 @@ export function computeFullCart(
           steps: applyPreparationUpgrade(store, procedure_wall.steps, state, state.mq_pareti),
         };
         procedure_wall.steps.forEach(step => {
-          if (step.product_id && (step.qty_total ?? 0) > 0) {
-            all_raw_lines.push({
-              environment_id: '__room__',
-              product_id: step.product_id,
-              qty_raw: step.qty_total!,
-              section: 'fondo',
-              pack_unit: step.unit ?? 'kg',
-              descrizione: getCommercialName(step.product_id) ?? step.product_id,
-            });
-          }
+          if (!step.product_id || (step.qty_total ?? 0) <= 0) return;
+          if (step.product_id === 'MAS_EP') return; // operation-only: decomposed by manual compensation blocks
+          all_raw_lines.push({
+            environment_id: '__room__',
+            product_id: step.product_id,
+            qty_raw: step.qty_total!,
+            section: 'fondo',
+            pack_unit: step.unit ?? 'kg',
+            descrizione: getCommercialName(step.product_id) ?? step.product_id,
+          });
         });
       } catch (err) {
         if (err instanceof DataError) {

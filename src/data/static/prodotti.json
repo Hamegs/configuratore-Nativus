@@ -74,8 +74,9 @@
   {
     "product_id": "MAS_EP",
     "name": "Massetto epossidico",
-    "type": "Strutturale",
-    "unit": "kg/m²/cm"
+    "type": "operation",
+    "unit": "kg/m²/cm",
+    "note": "Operazione tecnica — non genera SKU diretta. Viene scomposta in FONDO_BASE (25%) + QUARZO (75%)"
   },
   {
     "product_id": "FONDO_BASE",
