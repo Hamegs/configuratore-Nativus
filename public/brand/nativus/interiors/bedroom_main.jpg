@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="it-IT" prefix="og: https://ogp.me/ns#">
+<head itemscope itemtype="http://schema.org/WebSite">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Name of web application (only should be used if the website is used as an app) -->
+<meta name="application-name" content="Nativus">
+<link rel="stylesheet" href="https://use.typekit.net/zzx3jpi.css">
+
+<!-- Theme Color for Chrome, Firefox OS and Opera -->
+<meta name="theme-color" content="#ffffff">
+
+<!-- Control the behavior of search engine crawling and indexing -->
+<meta name="robots" content="index,follow">
+<!-- All Search Engines -->
+<meta name="googlebot" content="index,follow">
+<!-- Google Specific -->
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://resinenativus.it/wp-content/themes/nativus/public/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://resinenativus.it/wp-content/themes/nativus/public/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://resinenativus.it/wp-content/themes/nativus/public/favicon-16x16.png">
+<link rel="manifest" href="https://resinenativus.it/wp-content/themes/nativus/public/site.webmanifest">
+<link rel="mask-icon" href="https://resinenativus.it/wp-content/themes/nativus/public/safari-pinned-tab.svg" color="#000000">
+<meta name="msapplication-TileColor" content="#ffffff">
+
+<script>
+var siteUrl = 'https://resinenativus.it';
+var templateUrl = 'https://resinenativus.it/wp-content/themes/nativus';
+</script>
+
+
+<!--
+LINK/SCRIPTS IUBENDA, GTAG, ETC.
+VENGONO STAMPATI IN ASSENZA DI PARSER COME AUDITS O GTMETRIX
+-->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PKGJJFHX');</script>
+<!-- End Google Tag Manager -->
+
+<!--
+<link rel="preconnect" href="https://www.google-analytics.com">
+-->
+
+			<script type="text/javascript" class="_iub_cs_skip">
+				var _iub = _iub || {};
+				_iub.csConfiguration = _iub.csConfiguration || {};
+				_iub.csConfiguration.siteId = "3588575";
+				_iub.csConfiguration.cookiePolicyId = "66873952";
+							</script>
+			<script class="_iub_cs_skip" src="https://cs.iubenda.com/autoblocking/3588575.js" fetchpriority="low"></script>
+			
+<!-- Ottimizzazione per i motori di ricerca di Rank Math - https://rankmath.com/ -->
+<title>Page Not Found - Nativus</title>
+<meta name="robots" content="follow, noindex">
+<meta property="og:locale" content="it_IT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Page Not Found - Nativus">
+<meta property="og:site_name" content="Nativus">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Not Found - Nativus">
+<script type="application/ld+json" class="rank-math-schema">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://resinenativus.it/#person","name":"Nativus","url":"https://resinenativus.it"},{"@type":"WebSite","@id":"https://resinenativus.it/#website","url":"https://resinenativus.it","name":"Nativus","publisher":{"@id":"https://resinenativus.it/#person"},"inLanguage":"it-IT"},{"@type":"WebPage","@id":"#webpage","url":"","name":"Page Not Found - Nativus","isPartOf":{"@id":"https://resinenativus.it/#website"},"inLanguage":"it-IT"}]}</script>
+<!-- /Rank Math WordPress SEO plugin -->
+
+<link rel="dns-prefetch" href="//cdn.iubenda.com">
+<link href="https://fonts.gstatic.com" crossorigin rel="preconnect">
+<style id="wp-img-auto-sizes-contain-inline-css" type="text/css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="classic-theme-styles-inline-css" type="text/css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+<style id="global-styles-inline-css" type="text/css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel="stylesheet" id="starter-css" href="https://resinenativus.it/wp-content/themes/nativus/assets/starter.css" type="text/css" media="all">
+
+<script type="text/javascript" class=" _iub_cs_skip" id="iubenda-head-inline-scripts-0">
+/* <![CDATA[ */
+var _iub = _iub || [];
+_iub.csConfiguration = {"askConsentAtCookiePolicyUpdate":true,"countryDetection":true,"enableFadp":true,"enableLgpd":true,"enableUspr":true,"floatingPreferencesButtonDisplay":"bottom-right","lgpdAppliesGlobally":false,"perPurposeConsent":true,"siteId":3588575,"whitelabel":false,"cookiePolicyId":66873952,"lang":"it", "banner":{ "acceptButtonDisplay":true,"closeButtonDisplay":false,"customizeButtonDisplay":true,"explicitWithdrawal":true,"listPurposes":true,"position":"float-top-center","rejectButtonDisplay":true,"showTitle":false }};
+
+//# sourceURL=iubenda-head-inline-scripts-0
+/* ]]> */
+</script>
+<script type="text/javascript" class=" _iub_cs_skip" src="//cdn.iubenda.com/cs/gpp/stub.js" id="iubenda-head-scripts-1-js"></script>
+<script type="text/javascript" charset="UTF-8" async="" class=" _iub_cs_skip" src="//cdn.iubenda.com/cs/iubenda_cs.js" id="iubenda-head-scripts-2-js"></script>
+<link rel="stylesheet" id="application-css" href="https://resinenativus.it/wp-content/themes/nativus/assets/application.css" type="text/css" media="all">
+
+</head>
+
+<body class="error404 wp-theme-nativus" itemscope="itemscope" itemtype="http://schema.org/WebPage" data-controller="animations modalslider scroll lazy" data-lang="it">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PKGJJFHX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="c-header" id="header" data-controller="header" data-action="scroll@window-&gt;header#hideHeader scroll@window-&gt;header#contacts">
+    <nav class="c-nav" data-header-target="nav">
+        <div class="c-nav__logo">
+            <a href="https://resinenativus.it">
+                <h1>
+                    <img src="https://resinenativus.it/wp-content/themes/nativus/assets/images/logo-black.png" alt="Nativus">
+                </h1>
+            </a>
+        </div>
+
+        <div class="c-nav__menu">
+            <ul id="main-menu-sx" class="nav__main-menu-sx">
+<li class="dropdown custom-drop menu-item-has-children nav__item">
+<i class="caret hidden-xs"></i><a href="https://resinenativus.it/azienda/">Azienda</a>
+<div class="submenu-walker">
+
+<div class="submenu-container">
+
+<ul class="dropdown-menu">
+	<li class="nav__item"><a href="https://resinenativus.it/azienda/#chisiamo">Chi siamo</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/azienda/#visione">La nostra visione</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/azienda/#certificazioni">Certificazioni</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/azienda/contatti/">Contatti</a></li>
+</ul>
+
+            <div class="custom-content" style="flex-grow:1;">
+              <div class="course">
+                <div class="image">
+                  <div class="title">
+                    <h3>Nativus</h3>
+                    <h3>Academy</h3>
+                  </div>
+                  <img src="https://resinenativus.it/wp-content/uploads/2024/02/S1-Hero-NA23_81_DSCF9367.jpg" alt="S1">
+                </div>
+                <div class="content">
+                  <p><b>S1</b></p>
+                  <p>Saper utilizzare e scegliere gli strumenti più adatti al proprio lavoro, effettuando un sopralluogo corretto e gestendo efficacemente la relazione con il cliente. Con il primo S.T.E.P. imparerai a dare il corretto valore alla tua maestranza e a realizzare un rivestimento con Sense, la texture Nativus che abbatte i tempi di applicazione.</p>
+                  <a href="https://resinenativus.it/corso/s1/" class="button"><span>Iscriviti</span></a>
+                </div>
+              </div>
+            </div>
+          
+</div>
+</div>
+</li>
+<li class="dropdown custom-drop menu-item-has-children nav__item">
+<i class="caret hidden-xs"></i><a href="https://resinenativus.it/tecnologia/">Tecnologia</a>
+<div class="submenu-walker">
+
+<div class="submenu-container">
+
+<ul class="dropdown-menu">
+	<li class="nav__item"><a href="https://resinenativus.it/tecnologia/#superficicontinue">Superfici continue</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/tecnologia/#vantaggi">Vantaggi</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/tecnologia/professionisti/">Professionisti</a></li>
+</ul>
+
+            <div class="custom-content" style="flex-grow:1;">
+              <div class="course">
+                <div class="image">
+                  <div class="title">
+                    <h3>Nativus</h3>
+                    <h3>Academy</h3>
+                  </div>
+                  <img src="https://resinenativus.it/wp-content/uploads/2024/02/S1-Hero-NA23_81_DSCF9367.jpg" alt="S1">
+                </div>
+                <div class="content">
+                  <p><b>S1</b></p>
+                  <p>Saper utilizzare e scegliere gli strumenti più adatti al proprio lavoro, effettuando un sopralluogo corretto e gestendo efficacemente la relazione con il cliente. Con il primo S.T.E.P. imparerai a dare il corretto valore alla tua maestranza e a realizzare un rivestimento con Sense, la texture Nativus che abbatte i tempi di applicazione.</p>
+                  <a href="https://resinenativus.it/corso/s1/" class="button"><span>Iscriviti</span></a>
+                </div>
+              </div>
+            </div>
+          
+</div>
+</div>
+</li>
+<li class="dropdown custom-drop menu-item-has-children nav__item">
+<i class="caret hidden-xs"></i><a href="https://resinenativus.it/collezioni/">Collezioni</a>
+<div class="submenu-walker">
+
+<div class="submenu-container">
+
+<ul class="dropdown-menu">
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/natural/">Natural</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/sense/">Sense</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/dekora/">Dekora</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/lamine/">Lamine</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/corlite/">Corlite</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/material/">Material</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/collezione/crystepo/">Crystepo</a></li>
+</ul>
+
+            <div class="custom-content" style="flex-grow:1;">
+              <div class="course">
+                <div class="image">
+                  <div class="title">
+                    <h3>Nativus</h3>
+                    <h3>Academy</h3>
+                  </div>
+                  <img src="https://resinenativus.it/wp-content/uploads/2024/02/S1-Hero-NA23_81_DSCF9367.jpg" alt="S1">
+                </div>
+                <div class="content">
+                  <p><b>S1</b></p>
+                  <p>Saper utilizzare e scegliere gli strumenti più adatti al proprio lavoro, effettuando un sopralluogo corretto e gestendo efficacemente la relazione con il cliente. Con il primo S.T.E.P. imparerai a dare il corretto valore alla tua maestranza e a realizzare un rivestimento con Sense, la texture Nativus che abbatte i tempi di applicazione.</p>
+                  <a href="https://resinenativus.it/corso/s1/" class="button"><span>Iscriviti</span></a>
+                </div>
+              </div>
+            </div>
+          
+</div>
+</div>
+</li>
+<li class="nav__item"><a href="https://resinenativus.it/progetti">Progetti</a></li>
+<li class="dropdown custom-drop menu-item-has-children nav__item">
+<i class="caret hidden-xs"></i><a href="https://resinenativus.it/scegliere/">Scegliere</a>
+<div class="submenu-walker">
+
+<div class="submenu-container">
+
+<ul class="dropdown-menu">
+	<li class="nav__item"><a href="https://resinenativus.it/scegliere/#guidapratica">Guida pratica</a></li>
+	<li class="nav__item"><a href="https://resinenativus.it/faq/">FAQ</a></li>
+</ul>
+
+            <div class="custom-content" style="flex-grow:1;">
+              <div class="course">
+                <div class="image">
+                  <div class="title">
+                    <h3>Nativus</h3>
+                    <h3>Academy</h3>
+                  </div>
+                  <img src="https://resinenativus.it/wp-content/uploads/2024/02/S1-Hero-NA23_81_DSCF9367.jpg" alt="S1">
+                </div>
+                <div class="content">
+                  <p><b>S1</b></p>
+                  <p>Saper utilizzare e scegliere gli strumenti più adatti al proprio lavoro, effettuando un sopralluogo corretto e gestendo efficacemente la relazione con il cliente. Con il primo S.T.E.P. imparerai a dare il corretto valore alla tua maestranza e a realizzare un rivestimento con Sense, la texture Nativus che abbatte i tempi di applicazione.</p>
+                  <a href="https://resinenativus.it/corso/s1/" class="button"><span>Iscriviti</span></a>
+                </div>
+              </div>
+            </div>
+          
+</div>
+</div>
+</li>
+<li class="nav__item"><a href="https://resinenativus.it/download/">Download</a></li>
+</ul>
+            <div class="right">
+                                <ul class="c-nav__lang">
+                                        <li>
+                        it                        <i class="icon-arrow"></i>
+                    </li>
+                    
+                    <ul class="submenu">
+                                                <li>
+                            <a href="https://resinenativus.it/en/">en</a>
+                        </li>
+                                                <li>
+                            <a href="https://resinenativus.it/de/">de</a>
+                        </li>
+                                                <li>
+                            <a href="https://resinenativus.it/pl/">pl</a>
+                        </li>
+                                                <li>
+                            <a href="https://resinenativus.it/fr/">fr</a>
+                        </li>
+                                            </ul>
+                </ul>
+
+                <ul id="main-menu-dx" class="nav__main-menu-dx">
+<li class="nav__item"><a href="https://resinenativus.it/academy/">Academy</a></li>
+</ul>                <a href="https://resinenativus.it/login/" class="reserved">Area riservata                </a>
+            </div>
+        </div>
+
+        <div class="c-nav__burger" data-action="click-&gt;header#toggleNav">
+            <div class="c-nav__burger-container">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="c-nav-mobile">
+        <div class="c-nav-mobile__container" data-header-target="navMobile">
+            <div class="c-nav-mobile__menu">
+                
+
+                <ul class="c-nav-mobile__main">                                        <li>
+                                                                                            <div data-submenu="1532" data-action="click-&gt;header#submenu">
+                                                    Azienda                                                    <i class="icon-arrow"></i>
+                                                </div>
+                                                                                    </li>
+                                                                            <li>
+                                                                                            <div data-submenu="307" data-action="click-&gt;header#submenu">
+                                                    Tecnologia                                                    <i class="icon-arrow"></i>
+                                                </div>
+                                                                                    </li>
+                                                                            <li>
+                                                                                            <div data-submenu="139" data-action="click-&gt;header#submenu">
+                                                    Collezioni                                                    <i class="icon-arrow"></i>
+                                                </div>
+                                                                                    </li>
+                                                                            <li>
+                                                                                            <a href="https://resinenativus.it/progetti">
+                                                    Progetti                                                </a>
+                                                                                    </li>
+                                                                            <li>
+                                                                                            <div data-submenu="144" data-action="click-&gt;header#submenu">
+                                                    Scegliere                                                    <i class="icon-arrow"></i>
+                                                </div>
+                                                                                    </li>
+                                                                            <li>
+                                                                                            <a href="https://resinenativus.it/download/">
+                                                    Download                                                </a>
+                                                                                    </li>
+                                    </ul>
+
+                                    <a href="https://resinenativus.it/academy/" class="c-button c-button--red" data-gsap-cta>
+                        <div class="c-button__bg"></div>
+                        <span>Academy</span>
+                    </a>
+                                <a href="https://resinenativus.it/login/" class="c-button c-button--bg" data-gsap-cta>
+                    <div class="c-button__bg"></div>
+                    <span>Area riservata</span>
+                </a>
+                <a href="#modal-contacts" class="c-button c-button--solid" data-gsap-cta>
+                    <div class="c-button__bg"></div>
+                    <span>Contattaci</span>
+                </a>
+
+                                <div class="c-nav-mobile__lang-title">Lingua</div>
+                <ul class="c-nav-mobile__lang">
+                                            <li>
+                            <a class=" active" href="https://resinenativus.it/">it</a>
+                        </li>
+                                            <li>
+                            <a class="" href="https://resinenativus.it/en/">en</a>
+                        </li>
+                                            <li>
+                            <a class="" href="https://resinenativus.it/de/">de</a>
+                        </li>
+                                            <li>
+                            <a class="" href="https://resinenativus.it/pl/">pl</a>
+                        </li>
+                                            <li>
+                            <a class="" href="https://resinenativus.it/fr/">fr</a>
+                        </li>
+                                    </ul>
+
+
+                                                <div class="c-nav-mobile__submenu" data-submenu="1532" data-header-target="submenu">
+                                    <ul class="c-nav-mobile__main">
+                                        <li>
+                                            <div class="back" data-submenu="1532" data-action="click-&gt;header#closeSubmenu">
+                                                <i class="icon-arrow"></i>
+                                                Torna al menu                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://resinenativus.it/azienda/">Azienda</a>
+                                        </li>
+                                                                                    <li>
+                                                    <a href="https://resinenativus.it/azienda/#chisiamo">Chi siamo</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/azienda/#visione">La nostra visione</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/azienda/#certificazioni">Certificazioni</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/azienda/contatti/">Contatti</a>
+                                                </li>
+                                                                                    </ul>
+                                </div>
+                                                            <div class="c-nav-mobile__submenu" data-submenu="307" data-header-target="submenu">
+                                    <ul class="c-nav-mobile__main">
+                                        <li>
+                                            <div class="back" data-submenu="307" data-action="click-&gt;header#closeSubmenu">
+                                                <i class="icon-arrow"></i>
+                                                Torna al menu                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://resinenativus.it/tecnologia/">Tecnologia</a>
+                                        </li>
+                                                                                    <li>
+                                                    <a href="https://resinenativus.it/tecnologia/#superficicontinue">Superfici continue</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/tecnologia/#vantaggi">Vantaggi</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/tecnologia/professionisti/">Professionisti</a>
+                                                </li>
+                                                                                    </ul>
+                                </div>
+                                                            <div class="c-nav-mobile__submenu" data-submenu="139" data-header-target="submenu">
+                                    <ul class="c-nav-mobile__main">
+                                        <li>
+                                            <div class="back" data-submenu="139" data-action="click-&gt;header#closeSubmenu">
+                                                <i class="icon-arrow"></i>
+                                                Torna al menu                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://resinenativus.it/collezioni/">Collezioni</a>
+                                        </li>
+                                                                                    <li>
+                                                    <a href="https://resinenativus.it/collezione/natural/">Natural</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/sense/">Sense</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/dekora/">Dekora</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/lamine/">Lamine</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/corlite/">Corlite</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/material/">Material</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/collezione/crystepo/">Crystepo</a>
+                                                </li>
+                                                                                    </ul>
+                                </div>
+                                                            <div class="c-nav-mobile__submenu" data-submenu="144" data-header-target="submenu">
+                                    <ul class="c-nav-mobile__main">
+                                        <li>
+                                            <div class="back" data-submenu="144" data-action="click-&gt;header#closeSubmenu">
+                                                <i class="icon-arrow"></i>
+                                                Torna al menu                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://resinenativus.it/scegliere/">Scegliere</a>
+                                        </li>
+                                                                                    <li>
+                                                    <a href="https://resinenativus.it/scegliere/#guidapratica">Guida pratica</a>
+                                                </li>
+                                                                                                <li>
+                                                    <a href="https://resinenativus.it/faq/">FAQ</a>
+                                                </li>
+                                                                                    </ul>
+                                </div>
+                                        </div>
+
+        </div>
+    </nav>
+
+</header>
+
+<a href="#modal-contacts" class="c-nav__contacts c-button c-button--solid" id="conctacts-btn">
+    <span>Contattaci</span>
+</a>
+
+<div class="c-nav__back-on-top" id="backOnTop" data-header-target="backOnTop">
+    <i class="icon-arrow"></i>
+</div>
+<main role="main">
+
+  <div style="max-width: 800px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+    <h1>Page not found</h1>
+    <a href="https://resinenativus.it">Go to home</a>
+  </div>
+
+</main>
+
+<footer class="c-footer" id="footer">
+  <div class="c-footer__container">
+    <div class="c-footer__row">
+      <div class="c-footer__col-left">
+        <div class="c-footer__col1">
+          <a href="https://resinenativus.it" class="c-footer__logo">
+            <img src="https://resinenativus.it/wp-content/themes/nativus/assets/images/logo-white.png" alt="Nativus">
+          </a>
+          
+          <div class="c-footer__info">
+            <div>
+              <p>Via Fornace Vecchia, 79</p>
+              <p>31058 Susegana (TV), IT</p>
+              <span class="divider"></span>
+              <a href="tel:+39%200438%20437502">+39 0438 437502</a>
+              <a href="mailto:info@resinenativus.it">info@resinenativus.it</a>
+            </div>
+            <div class="socials">
+                              <a href="https://www.facebook.com/nativusofficial" target="_blank">Facebook</a>
+                                            <a href="https://www.instagram.com/resinenativus/" target="_blank">Instagram</a>
+                                        </div>
+          </div>
+  
+        </div>
+      </div>
+
+      <div class="c-footer__col-center">
+        <div class="c-footer__menu c-footer__col2"><ul id="footer-menu-1" class="nav__footer-menu-1">
+<li class="nav__item"><a href="https://resinenativus.it/azienda/">Azienda</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/azienda/#chisiamo">Chi siamo</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/azienda/#visione">La visione</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/azienda/#certificazioni">Certificazioni</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/azienda/contatti/">Contatti</a></li>
+</ul></div>
+        <div class="c-footer__menu c-footer__col3"><ul id="footer-menu-2" class="nav__footer-menu-2">
+<li class="nav__item"><a href="https://resinenativus.it/tecnologia/">Tecnologia</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/tecnologia/#superficicontinue">Superfici continue</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/tecnologia/#vantaggi">Vantaggi</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/tecnologia/professionisti/">Professionisti</a></li>
+</ul></div>
+        <div class="c-footer__menu c-footer__col4"><ul id="footer-menu-3" class="nav__footer-menu-3">
+<li class="nav__item"><a href="https://resinenativus.it/collezioni/">Collezioni</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/natural/">Natural</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/sense/">Sense</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/dekora/">Dekora</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/lamine/">Lamine</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/corlite/">Corlite</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/material/">Material</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/collezione/crystepo/">Crystepo</a></li>
+</ul></div>
+        <div class="c-footer__menu c-footer__col5"><ul id="footer-menu-4" class="nav__footer-menu-4">
+<li class="nav__item"><a href="https://resinenativus.it/progetti/">Progetti</a></li>
+</ul></div>
+        <div class="c-footer__menu c-footer__col6"><ul id="footer-menu-5" class="nav__footer-menu-5">
+<li class="nav__item"><a href="https://resinenativus.it/scegliere/">Scegliere</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/scegliere/#guidapratica">Guida pratica</a></li>
+<li class="nav__item"><a href="https://resinenativus.it/faq/">FAQ</a></li>
+</ul></div>
+        <div class="c-footer__menu c-footer__col7"><ul id="footer-menu-6" class="nav__footer-menu-6">
+<li class="nav__item"><a href="https://resinenativus.it/download/">Download</a></li>
+</ul></div>
+      </div>
+
+      <div class="c-footer__col-right">
+        <div class="c-footer__col8">
+          <div class="c-footer__buttons">
+            <ul id="main-menu-dx" class="nav__main-menu-dx">
+<li class="nav__item"><a href="https://resinenativus.it/academy/">Academy</a></li>
+</ul>
+            <a href="https://resinenativus.it/login/" class="gray">
+              Area riservata            </a>
+            <a href="#modal-contacts" class="black">
+              Contattaci            </a>
+          </div>
+
+          <div class="c-footer__copy-mobile">
+            <div class="policy">
+                              <a href="https://resinenativus.it/privacy-policy/">Privacy policy</a>
+                                            <a href="https://resinenativus.it/cookie-policy/">Cookie policy</a>
+                                            <a href="https://resinenativus.it/policy-whistleblowing/">Whistleblowing policy</a>
+                          </div>
+            Nativus è un marchio Nord Resine Spa - PI 02169750268 CF e Registro Imprese 082131705585 - Capitale Sociale € 750.000,00 i.v.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="c-footer__row">
+        <div class="c-footer__col">
+            <div class="c-footer__laterlite">
+                <span>
+                    Nativus è un marchio Nord Resine Spa, società del Gruppo<br>
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" id="Livello_2" data-name="Livello 2" viewbox="0 0 678.48 190.83"><defs><style>.cls-1{fill:#fff}</style></defs><g id="Livello_1-2" data-name="Livello 1"><path d="M169.19 89.67c-6.55 1.29-12.54 3.08-17.96 5.39q-8.13 3.465-12.24 9.09t-4.11 13.35c0 7.72 2.87 13.89 8.62 18.5 5.74 4.61 12.86 6.92 21.35 6.92 13.53 0 23.25-4.18 29.16-12.55l.32 10.46h26.1c-1.29-5.47-1.93-13.84-1.93-25.1v-9.01l.32-18.82q.315-19.14-9.51-27.75t-29.16-8.61c-19.335 0-22.37 2.98-30.05 8.93-7.68 5.96-11.84 13.22-12.49 21.8h24.81c1.18-8.47 6.34-12.71 15.46-12.71 5.05 0 8.75 1.05 11.12 3.14 2.36 2.09 3.55 5.66 3.55 10.7v3.38c-9.02.64-16.81 1.61-23.36 2.9m5.32 35.22c-3.54 0-6.47-.86-8.78-2.57-2.31-1.72-3.46-3.97-3.46-6.76 0-2.25.7-4.16 2.09-5.71s3.6-2.82 6.6-3.78c3.01-.97 6.15-1.69 9.43-2.17q4.905-.72 12.81-1.53v2.09q0 20.43-18.69 20.43M222.87 54.27v18.82h13.7v43.44c0 9.76 2.01 16.25 6.04 19.47s11.57 4.83 22.63 4.83h16.92v-19.14h-7.57c-4.51 0-7.55-.64-9.1-1.93-1.56-1.29-2.34-3.92-2.34-7.88V73.1h19.01V54.28h-19.01V30.63h-26.58v23.65h-13.7ZM335.52 122.33c-5.26 0-9.8-1.55-13.61-4.67q-5.73-4.665-6.36-13.35h64.28c.86-15.55-2.8-28.21-10.96-37.97S349.48 51.7 335.2 51.7c-13 0-23.98 4.18-32.95 12.55S288.8 83.56 288.8 97.07s4.35 25.34 13.05 33.55c8.7 8.2 20.19 12.31 34.48 12.31 9.24 0 17.83-2.46 25.78-7.4 7.95-4.93 13.74-12.23 17.4-21.88h-24.49c-3.44 5.79-9.94 8.69-19.49 8.69m12.56-46.19c3.33 2.79 5.1 6.81 5.32 12.07h-37.54c.64-5.47 2.76-9.55 6.36-12.23s7.92-4.02 12.97-4.02 9.56 1.4 12.89 4.18M438.83 53.63h-1.93c-11.49.43-19.39 6.11-23.68 17.05V54.27H387.6v86.56h26.58V97.39c0-6.54 1.58-11.21 4.75-14s8.08-4.18 14.74-4.18c2.79 0 5.21.16 7.25.48v-25.9c-.43-.11-1.13-.16-2.09-.16M451.39 24.18h26.58v116.65h-26.58zM488.37 140.83h26.74V54.27h-26.74zm0-95.41h26.58V24.18h-26.58zM522.76 54.27v18.82h13.7v43.44c0 9.76 2.01 16.25 6.04 19.47s11.57 4.83 22.64 4.83h16.92v-19.14h-7.57c-4.51 0-7.55-.64-9.1-1.93-1.56-1.29-2.34-3.92-2.34-7.88V73.1h19.01V54.28h-19.01V30.63h-26.58v23.65h-13.7ZM634.05 122.33c-5.26 0-9.8-1.55-13.61-4.67q-5.73-4.665-6.36-13.35h64.28c.86-15.55-2.8-28.21-10.96-37.97S648.01 51.7 633.73 51.7c-13 0-23.98 4.18-32.95 12.55s-13.45 19.31-13.45 32.82 4.35 25.34 13.05 33.55c8.7 8.2 20.19 12.31 34.48 12.31 9.24 0 17.83-2.46 25.78-7.4 7.95-4.93 13.74-12.23 17.4-21.88h-24.49c-3.44 5.79-9.94 8.69-19.49 8.69m12.56-46.19c3.33 2.79 5.1 6.81 5.32 12.07H614.4c.64-5.47 2.76-9.55 6.36-12.23s7.92-4.02 12.97-4.02 9.56 1.4 12.89 4.18M0 20.25v140.52h108.28v-20.23H20.75V20.25z" class="cls-1"></path><path d="M20.75 0v20.23h28.87v94.88h58.44v25.72h20.22V94.88H69.84V0zM240.09 160.56v24.39h16.32v-2.96h-12.88v-21.43h-3.43Zm32.17 8.96c-1.55-1.99-3.68-2.98-6.39-2.98-2.53 0-4.63.86-6.29 2.58q-2.49 2.58-2.49 6.81c0 4.23.79 5.02 2.36 6.79s3.74 2.66 6.53 2.66q3.165 0 5.31-1.62c1.43-1.08 2.37-2.43 2.79-4.07h-3.16c-.87 2-2.52 2.99-4.94 2.99-1.46 0-2.74-.51-3.85-1.52s-1.69-2.43-1.73-4.27h13.93c.18-2.94-.5-5.4-2.05-7.38m-2.68 1.19c.94 1.02 1.43 2.21 1.48 3.58h-10.67c.13-1.7.71-2.98 1.73-3.84 1.02-.85 2.26-1.28 3.72-1.28 1.55 0 2.79.51 3.74 1.53m13.59-3.84v2.46h2.86v11.1c0 1.86.27 3.09.83 3.67q.825.87 3.45.87h2.22v-2.55H291c-.83 0-1.35-.15-1.56-.44-.22-.29-.32-.93-.32-1.91v-10.73h3.43v-2.46h-3.43v-4.54h-3.06v4.54h-2.86Zm26.85 18.1v-18.1h-3.06v9.96q0 2.895-1.2 4.41c-.79 1.01-1.93 1.51-3.42 1.51s-2.54-.45-3.04-1.36c-.51-.91-.76-2.19-.76-3.85v-10.66h-3.06v11.57q0 6.96 5.79 6.96c2.56 0 4.45-1.01 5.69-3.03v2.59zm18.44-15.43c-1.55-1.99-3.68-2.98-6.39-2.98-2.54 0-4.63.86-6.29 2.58q-2.49 2.58-2.49 6.81c0 4.23.78 5.02 2.35 6.79s3.74 2.66 6.53 2.66c2.11 0 3.88-.54 5.32-1.62s2.37-2.43 2.79-4.07h-3.16c-.88 2-2.52 2.99-4.95 2.99-1.46 0-2.74-.51-3.85-1.52s-1.69-2.43-1.73-4.27h13.93c.18-2.94-.51-5.4-2.05-7.38m-2.67 1.19c.94 1.02 1.44 2.21 1.48 3.58h-10.67c.14-1.7.71-2.98 1.73-3.84 1.02-.85 2.26-1.28 3.72-1.28 1.55 0 2.79.51 3.73 1.53m26.82-2.68c-1.26-1-2.86-1.5-4.81-1.5-2.06 0-3.78.45-5.16 1.36s-2.07 2.14-2.07 3.68.48 2.66 1.43 3.4q1.425 1.11 3.72 1.62l2.69.54c1.14.25 2.04.59 2.69 1.04s.97 1.1.97 1.95-.4 1.48-1.19 1.97c-.8.48-1.8.72-3.01.72-2.54 0-4.07-1.23-4.61-3.7h-3.23c.2 1.73.99 3.21 2.35 4.44 1.37 1.23 3.18 1.85 5.42 1.85s3.89-.5 5.28-1.5 2.08-2.37 2.08-4.12c0-1.59-.55-2.8-1.66-3.61q-1.665-1.23-4.53-1.77l-2.56-.51c-.92-.2-1.61-.49-2.07-.86s-.69-.9-.69-1.6c0-.76.38-1.34 1.14-1.72s1.65-.57 2.66-.57c2.38 0 3.8 1 4.27 2.99h3.19c-.29-1.75-1.06-3.12-2.32-4.12m9.74 2.88c1.03-1.09 2.32-1.63 3.87-1.63s2.84.56 3.87 1.66c1.03 1.11 1.55 2.8 1.55 5.06s-.52 3.87-1.56 5.01c-1.04 1.15-2.33 1.72-3.85 1.72s-2.84-.56-3.87-1.66c-1.03-1.11-1.55-2.8-1.55-5.06s.51-4.01 1.55-5.1m-4.82 5.09c0 3.05.86 5.38 2.59 7s3.76 2.42 6.09 2.42 4.36-.81 6.09-2.42c1.72-1.61 2.59-3.95 2.59-7s-.87-5.39-2.59-7c-1.73-1.61-3.76-2.42-6.09-2.42s-4.36.81-6.09 2.42-2.59 3.95-2.59 7m20.69 8.99h3.06v-24.39h-3.06zm21.84 0v-18.1h-3.06v9.96q0 2.895-1.2 4.41c-.79 1.01-1.93 1.51-3.42 1.51s-2.54-.45-3.04-1.36-.76-2.19-.76-3.85v-10.66h-3.06v11.57q0 6.96 5.79 6.96c2.56 0 4.45-1.01 5.69-3.03v2.59zm17.42 0v-2.66h-10.63l10.43-12.78v-2.66h-13.36v2.66h9.79l-10.46 12.78v2.66zm3.17 0h3.06v-18.1h-3.06zm0-20.69h3.06v-3.7h-3.06zm11.2 6.61c1.03-1.09 2.32-1.63 3.87-1.63s2.84.56 3.87 1.66c1.03 1.11 1.55 2.8 1.55 5.06s-.52 3.87-1.56 5.01c-1.04 1.15-2.33 1.72-3.85 1.72s-2.84-.56-3.87-1.66c-1.03-1.11-1.55-2.8-1.55-5.06s.52-4.01 1.55-5.1m-4.82 5.09c0 3.05.86 5.38 2.59 7s3.76 2.42 6.09 2.42 4.36-.81 6.09-2.42 2.59-3.95 2.59-7-.86-5.39-2.59-7-3.76-2.42-6.09-2.42-4.36.81-6.09 2.42-2.59 3.95-2.59 7m20.69-9.11v18.1h3.06v-9.82q0-2.895 1.26-4.41c.84-1.01 2.01-1.51 3.51-1.51 1.59 0 2.65.45 3.18 1.36s.79 2.19.79 3.85v10.53h3.06v-11.44c0-4.64-1.99-6.96-5.95-6.96-2.67 0-4.62 1.01-5.86 3.03v-2.73h-3.06Zm19.11 18.1h3.06v-18.1h-3.06zm0-20.69h3.06v-3.7h-3.06zm15.2 26.57h3.06v-8.61c1.21 2.11 3.18 3.16 5.92 3.16 2.17 0 4.01-.85 5.5-2.54s2.24-3.99 2.24-6.88-.75-5.16-2.24-6.86-3.33-2.56-5.5-2.56c-2.74 0-4.71 1.05-5.92 3.16v-2.86h-3.06zm8.21-21.66c1.59 0 2.85.6 3.79 1.8.93 1.2 1.39 2.87 1.39 5s-.47 3.8-1.39 5c-.93 1.2-2.19 1.8-3.79 1.8-1.48 0-2.73-.57-3.75-1.72-1.02-1.14-1.53-2.84-1.53-5.08s.51-3.93 1.53-5.08c1.02-1.14 2.27-1.72 3.75-1.72m25.98.35c-1.55-1.99-3.68-2.98-6.39-2.98-2.53 0-4.63.86-6.29 2.58q-2.49 2.58-2.49 6.81c0 4.23.79 5.02 2.36 6.79s3.74 2.66 6.53 2.66c2.11 0 3.88-.54 5.32-1.62 1.43-1.08 2.37-2.43 2.79-4.07h-3.16c-.88 2-2.52 2.99-4.94 2.99-1.46 0-2.74-.51-3.85-1.52s-1.69-2.43-1.73-4.27h13.93c.18-2.94-.5-5.4-2.05-7.38m-2.69 1.19c.94 1.02 1.43 2.21 1.48 3.58H504.4c.13-1.7.71-2.98 1.73-3.84 1.02-.85 2.26-1.28 3.72-1.28 1.55 0 2.79.51 3.74 1.53m16.03-3.94c-2.49.11-4.2 1.2-5.11 3.26v-3.16h-2.99v18.1h3.06v-9.49c0-1.97.35-3.39 1.04-4.26.7-.86 1.76-1.3 3.2-1.3.58 0 1.15.05 1.71.14v-3.26c-.25-.02-.55-.03-.91-.03m12.28 2.43c-1.59 1.76-2.39 4.01-2.39 6.75s.76 5.08 2.29 6.83c1.52 1.75 3.58 2.62 6.16 2.62 2.06 0 3.84-.62 5.33-1.85s2.41-2.73 2.74-4.48h-3.16c-.23 1.01-.77 1.87-1.65 2.57-.88.71-1.93 1.06-3.16 1.06-1.46 0-2.69-.59-3.7-1.77s-1.51-2.85-1.51-5.03.51-3.8 1.51-4.95c1.01-1.14 2.24-1.72 3.7-1.72 1.19 0 2.21.34 3.06 1.03q1.275 1.02 1.62 2.64h3.09c-.24-1.68-1.05-3.16-2.4-4.44q-2.04-1.92-5.16-1.92-3.975 0-6.36 2.64m21.05 1.71c1.03-1.09 2.32-1.63 3.87-1.63s2.84.56 3.87 1.66c1.03 1.11 1.55 2.8 1.55 5.06s-.52 3.87-1.56 5.01c-1.05 1.15-2.33 1.72-3.85 1.72s-2.84-.56-3.87-1.66c-1.03-1.11-1.55-2.8-1.55-5.06s.52-4.01 1.55-5.1m-4.82 5.09c0 3.05.86 5.38 2.59 7s3.76 2.42 6.09 2.42 4.36-.81 6.09-2.42 2.59-3.95 2.59-7-.86-5.39-2.59-7-3.76-2.42-6.09-2.42-4.36.81-6.09 2.42-2.59 3.95-2.59 7m31.93-7.95c-1.26-1-2.86-1.5-4.81-1.5-2.07 0-3.79.45-5.17 1.36s-2.07 2.14-2.07 3.68.47 2.66 1.43 3.4q1.425 1.11 3.72 1.62l2.69.54c1.14.25 2.04.59 2.69 1.04s.98 1.1.98 1.95-.4 1.48-1.2 1.97c-.8.48-1.8.72-3.01.72-2.53 0-4.07-1.23-4.61-3.7h-3.23c.2 1.73.99 3.21 2.35 4.44 1.37 1.23 3.17 1.85 5.42 1.85s3.89-.5 5.28-1.5 2.09-2.37 2.09-4.12c0-1.59-.56-2.8-1.67-3.61-1.11-.82-2.62-1.41-4.52-1.77l-2.56-.51c-.92-.2-1.61-.49-2.07-.86s-.69-.9-.69-1.6c0-.76.38-1.34 1.14-1.72s1.65-.57 2.66-.57c2.38 0 3.8 1 4.27 2.99h3.2c-.29-1.75-1.07-3.12-2.32-4.12m4.11-1.14v2.46h2.86v11.1c0 1.86.27 3.09.82 3.67q.825.87 3.45.87h2.22v-2.55h-1.55c-.83 0-1.35-.15-1.57-.44-.21-.29-.32-.93-.32-1.91v-10.73h3.43v-2.46h-3.43v-4.54h-3.06v4.54h-2.86Zm20.69-.1c-2.49.11-4.19 1.2-5.11 3.26v-3.16h-2.99v18.1h3.06v-9.49c0-1.97.35-3.39 1.04-4.26.7-.86 1.76-1.3 3.2-1.3.58 0 1.16.05 1.72.14v-3.26c-.25-.02-.55-.03-.91-.03m17.76 18.2v-18.1h-3.06v9.96q0 2.895-1.2 4.41c-.79 1.01-1.93 1.51-3.41 1.51s-2.54-.45-3.05-1.36-.76-2.19-.76-3.85v-10.66h-3.06v11.57q0 6.96 5.79 6.96c2.56 0 4.45-1.01 5.69-3.03v2.59zm4.51 0h3.06v-18.1h-3.06zm0-20.69h3.06v-3.7h-3.06zm15.67 2.49c-2.49.11-4.19 1.2-5.11 3.26v-3.16h-2.99v18.1h3.06v-9.49c0-1.97.35-3.39 1.04-4.26.7-.86 1.76-1.3 3.2-1.3.58 0 1.16.05 1.72.14v-3.26c-.24-.02-.55-.03-.91-.03m17.08 2.77c-1.55-1.99-3.68-2.98-6.39-2.98-2.53 0-4.63.86-6.29 2.58q-2.49 2.58-2.49 6.81c0 4.23.79 5.02 2.35 6.79 1.57 1.77 3.75 2.66 6.53 2.66 2.11 0 3.88-.54 5.32-1.62 1.43-1.08 2.37-2.43 2.79-4.07h-3.16c-.88 2-2.52 2.99-4.95 2.99-1.46 0-2.74-.51-3.85-1.52s-1.69-2.43-1.73-4.27h13.93c.18-2.94-.51-5.4-2.05-7.38m-2.66 1.19c.94 1.02 1.43 2.21 1.48 3.58h-10.66c.14-1.7.71-2.98 1.73-3.84 1.02-.85 2.26-1.28 3.72-1.28 1.55 0 2.79.51 3.73 1.53" class="cls-1"></path></g></svg>                <span>
+                    PI 02169750268 - CF e Registro Imprese 082131705585<br>
+                    Società a socio unico soggetta all'attività di direzione e coordinamento di<br>
+                    Laterlite S.p.A. ai sensi dell'art. 2497-bis c.c. - Capitale Sociale € 750.000,00 i.v.
+                </span>
+            </div>
+    
+            <div class="c-footer__copy">
+                <div class="policy">
+                                      <a href="https://resinenativus.it/privacy-policy/">Privacy policy</a>
+                                                        <a href="https://resinenativus.it/cookie-policy/">Cookie policy</a>
+                                                        <a href="https://resinenativus.it/policy-whistleblowing/">Whistleblowing policy</a>
+                                                        <a href="https://resinenativus.it/privacy-whistleblowing/">Informativa sul trattamento dei dati del segnalante</a>
+                                  </div>
+              </div>
+        </div>
+    </div>
+  </div>
+</footer>
+<div class="c-modal" id="modal-corso" data-controller="modal">
+  <div class="c-modal__overlay" data-action="click-&gt;modal#close"></div>
+  <div class="c-modal__close" data-action="click-&gt;modal#close">
+    <i class="icon-x"></i>
+  </div>
+
+  <div class="c-modal__section">
+    <div class="c-modal__content">
+      <div class="c-modal__scroll" data-modal-target="scroll">
+        <div class="c-modal-course__step1" data-modal-target="step" data-step="step1">
+          <div class="c-modal__title">
+            <h2 class="title">Entra a far parte del nostro team!</h2>
+            <p>Vuoi diventare un nuovo allievo dell’Academy?</p>
+          </div>
+
+          <div class="c-modal-course__select-title">
+            <h3>Seleziona come vuoi essere ricontattato</h3>
+          </div>
+          <div class="c-modal-course__select">
+            <div class="c-modal-course__option" data-action="click-&gt;modal#changeStep" data-current="step1" data-next="step2" data-value="email">
+<i class="icon-mail"></i> Email</div>
+            <div class="c-modal-course__option" data-action="click-&gt;modal#changeStep" data-current="step1" data-next="step2" data-value="whatsapp">
+<i class="icon-whatsapp"></i> Whatsapp</div>
+          </div>
+        </div>
+
+        <div class="c-modal-course__step2" data-modal-target="step" data-step="step2">
+          <div class="c-modal__title">
+            <h2 class="title">Entra a far parte del nostro team!</h2>
+            <p>Vuoi diventare un nuovo allievo dell’Academy?</p>
+          </div>
+  
+          <form class="c-form" data-controller="form choices" action="https://resinenativus.it/wp-admin/admin-ajax.php" enctype="multipart/form-data" method="POST">
+            <input type="hidden" name="_form" value="course">
+            <input type="hidden" name="action" value="custom_ajax_mailer">
+            <input type="hidden" name="honey" value="">
+            <input type="hidden" name="tipo_contatto" id="contatto-step" value="">
+
+            <div class="c-form__select c-form__select--full">
+              <label for="richiesta" class="c-form__label">Come possiamo aiutarti?*</label>
+              <select name="richiesta" id="richiesta" data-choices-target="select" required>
+                <option value="" disabled selected>Seleziona la richiesta</option>
+                
+                <option value="Info generali sull'academy">Info generali sull'academy</option>
+                <option value="I fondamentali">I fondamentali</option>
+                <option value="Workshop">Workshop</option>
+              </select>
+            </div>
+
+            <div class="c-form__input">
+              <label for="nome" class="c-form__label">Nome*</label>
+              <input type="text" id="nome" name="nome" placeholder="Nome" required>
+            </div>
+  
+            <div class="c-form__input">
+              <label for="cognome" class="c-form__label">Cognome*</label>
+              <input type="text" id="cognome" name="cognome" placeholder="Cognome" required>
+            </div>
+  
+            <div class="c-form__input">
+              <label for="email" class="c-form__label">Email*</label>
+              <input type="email" id="email" name="email" placeholder="Inserisci un'email valida" required>
+            </div>
+  
+            <div class="c-form__input">
+              <label for="telefono" class="c-form__label">Telefono*</label>
+              <input type="text" id="telefono" name="telefono" placeholder="Inserisci un recapito" required>
+            </div>
+
+
+            <div class="c-form__select">
+              <label for="settore" class="c-form__label">Settore aziendale*</label>
+              <select name="settore" id="settore" data-choices-target="select" required>
+                <option value="" disabled selected>Seleziona il settore</option>
+                
+                <option value="Applicatore">Applicatore</option>
+                <option value="Rivenditore">Rivenditore</option>
+                <option value="Impresario">Impresario</option>
+                <option value="Agente">Agente</option>
+              </select>
+            </div>
+
+            <div class="c-form__input">
+              <label for="azienda" class="c-form__label">Azienda*</label>
+              <input type="text" id="azienda" name="azienda" placeholder="Inserisci la tua azienda" required>
+            </div>
+
+            <div class="c-form__input">
+              <label for="partita_iva" class="c-form__label">P.IVA*</label>
+              <input type="text" id="partita_iva" name="partita_iva" placeholder="Inserisci la tua Parita IVA" required>
+            </div>
+
+            <div class="c-form__input">
+              <label for="indirizzo" class="c-form__label">Indirizzo*</label>
+              <input type="text" id="indirizzo" name="indirizzo" placeholder="Inserisci il tuo indirizzo">
+            </div>
+
+            <div class="c-form__input">
+              <label for="citta" class="c-form__label">Città*</label>
+              <input type="text" id="citta" name="citta" placeholder="Inserisci la città">
+            </div>
+
+            <div class="c-form__input">
+              <label for="cap" class="c-form__label">CAP*</label>
+              <input type="text" id="cap" name="cap" placeholder="Inserisci il codice postale">
+            </div>
+
+            <div class="c-form__input">
+              <label for="provincia" class="c-form__label">Provincia*</label>
+              <input type="text" id="provincia" name="provincia" placeholder="Inserisci la provincia">
+            </div>
+
+            <div class="c-form__select">
+            <label for="stato" class="c-form__label">Stato*</label>
+
+            <select name="stato" id="stato" data-choices-target="select" required><option value="" selected disabled>Seleziona lo stato</option>
+<option value="Afghanistan">Afghanistan</option>
+<option value="Albania">Albania</option>
+<option value="Algeria">Algeria</option>
+<option value="Andorra">Andorra</option>
+<option value="Angola">Angola</option>
+<option value="Antigua and Barbuda">Antigua and Barbuda</option>
+<option value="Argentina">Argentina</option>
+<option value="Armenia">Armenia</option>
+<option value="Australia">Australia</option>
+<option value="Austria">Austria</option>
+<option value="Azerbaijan">Azerbaijan</option>
+<option value="Bahamas">Bahamas</option>
+<option value="Bahrain">Bahrain</option>
+<option value="Bangladesh">Bangladesh</option>
+<option value="Barbados">Barbados</option>
+<option value="Belarus">Belarus</option>
+<option value="Belgium">Belgium</option>
+<option value="Belize">Belize</option>
+<option value="Benin">Benin</option>
+<option value="Bhutan">Bhutan</option>
+<option value="Bolivia">Bolivia</option>
+<option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+<option value="Botswana">Botswana</option>
+<option value="Brazil">Brazil</option>
+<option value="Brunei">Brunei</option>
+<option value="Bulgaria">Bulgaria</option>
+<option value="Burkina Faso">Burkina Faso</option>
+<option value="Burundi">Burundi</option>
+<option value="Cabo Verde">Cabo Verde</option>
+<option value="Cambodia">Cambodia</option>
+<option value="Cameroon">Cameroon</option>
+<option value="Canada">Canada</option>
+<option value="Central African Republic">Central African Republic</option>
+<option value="Chad">Chad</option>
+<option value="Chile">Chile</option>
+<option value="China">China</option>
+<option value="Colombia">Colombia</option>
+<option value="Comoros">Comoros</option>
+<option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+<option value="Costa Rica">Costa Rica</option>
+<option value="Croatia">Croatia</option>
+<option value="Cuba">Cuba</option>
+<option value="Cyprus">Cyprus</option>
+<option value="Czechia (Czech Republic)">Czechia (Czech Republic)</option>
+<option value="Denmark">Denmark</option>
+<option value="Djibouti">Djibouti</option>
+<option value="Dominica">Dominica</option>
+<option value="Dominican Republic">Dominican Republic</option>
+<option value="Ecuador">Ecuador</option>
+<option value="Egypt">Egypt</option>
+<option value="El Salvador">El Salvador</option>
+<option value="Equatorial Guinea">Equatorial Guinea</option>
+<option value="Eritrea">Eritrea</option>
+<option value="Estonia">Estonia</option>
+<option value="Eswatini (fmr. 'Swaziland')">Eswatini (fmr. 'Swaziland')</option>
+<option value="Ethiopia">Ethiopia</option>
+<option value="Fiji">Fiji</option>
+<option value="Finland">Finland</option>
+<option value="France">France</option>
+<option value="Gabon">Gabon</option>
+<option value="Gambia">Gambia</option>
+<option value="Georgia">Georgia</option>
+<option value="Germany">Germany</option>
+<option value="Ghana">Ghana</option>
+<option value="Greece">Greece</option>
+<option value="Grenada">Grenada</option>
+<option value="Guatemala">Guatemala</option>
+<option value="Guinea">Guinea</option>
+<option value="Guinea-Bissau">Guinea-Bissau</option>
+<option value="Guyana">Guyana</option>
+<option value="Haiti">Haiti</option>
+<option value="Holy See">Holy See</option>
+<option value="Honduras">Honduras</option>
+<option value="Hungary">Hungary</option>
+<option value="Iceland">Iceland</option>
+<option value="India">India</option>
+<option value="Indonesia">Indonesia</option>
+<option value="Iran">Iran</option>
+<option value="Iraq">Iraq</option>
+<option value="Ireland">Ireland</option>
+<option value="Israel">Israel</option>
+<option value="Italia">Italia</option>
+<option value="Jamaica">Jamaica</option>
+<option value="Japan">Japan</option>
+<option value="Jordan">Jordan</option>
+<option value="Kazakhstan">Kazakhstan</option>
+<option value="Kenya">Kenya</option>
+<option value="Kiribati">Kiribati</option>
+<option value="Korea, North">Korea, North</option>
+<option value="Korea, South">Korea, South</option>
+<option value="Kosovo">Kosovo</option>
+<option value="Kuwait">Kuwait</option>
+<option value="Kyrgyzstan">Kyrgyzstan</option>
+<option value="Laos">Laos</option>
+<option value="Latvia">Latvia</option>
+<option value="Lebanon">Lebanon</option>
+<option value="Lesotho">Lesotho</option>
+<option value="Liberia">Liberia</option>
+<option value="Libya">Libya</option>
+<option value="Liechtenstein">Liechtenstein</option>
+<option value="Lithuania">Lithuania</option>
+<option value="Luxembourg">Luxembourg</option>
+<option value="Madagascar">Madagascar</option>
+<option value="Malawi">Malawi</option>
+<option value="Malaysia">Malaysia</option>
+<option value="Maldives">Maldives</option>
+<option value="Mali">Mali</option>
+<option value="Malta">Malta</option>
+<option value="Marshall Islands">Marshall Islands</option>
+<option value="Mauritania">Mauritania</option>
+<option value="Mauritius">Mauritius</option>
+<option value="Mexico">Mexico</option>
+<option value="Micronesia">Micronesia</option>
+<option value="Moldova">Moldova</option>
+<option value="Monaco">Monaco</option>
+<option value="Mongolia">Mongolia</option>
+<option value="Montenegro">Montenegro</option>
+<option value="Morocco">Morocco</option>
+<option value="Mozambique">Mozambique</option>
+<option value="Myanmar (formerly Burma)">Myanmar (formerly Burma)</option>
+<option value="Namibia">Namibia</option>
+<option value="Nauru">Nauru</option>
+<option value="Nepal">Nepal</option>
+<option value="Netherlands">Netherlands</option>
+<option value="New Zealand">New Zealand</option>
+<option value="Nicaragua">Nicaragua</option>
+<option value="Niger">Niger</option>
+<option value="Nigeria">Nigeria</option>
+<option value="North Macedonia">North Macedonia</option>
+<option value="Norway">Norway</option>
+<option value="Oman">Oman</option>
+<option value="Pakistan">Pakistan</option>
+<option value="Palau">Palau</option>
+<option value="Palestine State">Palestine State</option>
+<option value="Panama">Panama</option>
+<option value="Papua New Guinea">Papua New Guinea</option>
+<option value="Paraguay">Paraguay</option>
+<option value="Peru">Peru</option>
+<option value="Philippines">Philippines</option>
+<option value="Poland">Poland</option>
+<option value="Portugal">Portugal</option>
+<option value="Qatar">Qatar</option>
+<option value="Romania">Romania</option>
+<option value="Russia">Russia</option>
+<option value="Rwanda">Rwanda</option>
+<option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+<option value="Saint Lucia">Saint Lucia</option>
+<option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+<option value="Samoa">Samoa</option>
+<option value="San Marino">San Marino</option>
+<option value="Sao Tome and Principe">Sao Tome and Principe</option>
+<option value="Saudi Arabia">Saudi Arabia</option>
+<option value="Senegal">Senegal</option>
+<option value="Serbia">Serbia</option>
+<option value="Seychelles">Seychelles</option>
+<option value="Sierra Leone">Sierra Leone</option>
+<option value="Singapore">Singapore</option>
+<option value="Slovakia">Slovakia</option>
+<option value="Slovenia">Slovenia</option>
+<option value="Solomon Islands">Solomon Islands</option>
+<option value="Somalia">Somalia</option>
+<option value="South Africa">South Africa</option>
+<option value="South Sudan">South Sudan</option>
+<option value="Spain">Spain</option>
+<option value="Sri Lanka">Sri Lanka</option>
+<option value="Sudan">Sudan</option>
+<option value="Suriname">Suriname</option>
+<option value="Sweden">Sweden</option>
+<option value="Switzerland">Switzerland</option>
+<option value="Syria">Syria</option>
+<option value="Tajikistan">Tajikistan</option>
+<option value="Tanzania">Tanzania</option>
+<option value="Thailand">Thailand</option>
+<option value="Timor-Leste">Timor-Leste</option>
+<option value="Togo">Togo</option>
+<option value="Tonga">Tonga</option>
+<option value="Trinidad and Tobago">Trinidad and Tobago</option>
+<option value="Tunisia">Tunisia</option>
+<option value="Turkey">Turkey</option>
+<option value="Turkmenistan">Turkmenistan</option>
+<option value="Tuvalu">Tuvalu</option>
+<option value="Uganda">Uganda</option>
+<option value="Ukraine">Ukraine</option>
+<option value="United Arab Emirates">United Arab Emirates</option>
+<option value="United Kingdom">United Kingdom</option>
+<option value="United States of America">United States of America</option>
+<option value="Uruguay">Uruguay</option>
+<option value="Uzbekistan">Uzbekistan</option>
+<option value="Vanuatu">Vanuatu</option>
+<option value="Venezuela">Venezuela</option>
+<option value="Vietnam">Vietnam</option>
+<option value="Yemen">Yemen</option>
+<option value="Zambia">Zambia</option>
+<option value="Zimbabwe">Zimbabwe</option></select>
+          </div>
+  
+            <div class="c-form__input c-form__input--full">
+              <label for="messaggio" class="c-form__label">Messaggio</label>
+              <textarea name="messaggio" id="messaggio"></textarea>
+            </div>
+  
+            <div class="c-form__checkbox">
+              <label for="privacy">
+                <input type="checkbox" name="privacy" id="privacy">
+                <span class="checkmark"></span>
+                <span>Acconsento al trattamento dei dati personali *</span>
+              </label>
+            </div>
+  
+            <div class="c-form__submit">
+              <button type="submit" class="c-button" data-gsap-cta>
+                <div class="c-button__bg"></div>
+                <span>Invia</span>
+              </button>
+            </div>
+  
+            <div class="c-form__feedback" data-form-target="feedback">
+              <h2 class="title">La tua richiesta è stata inviata</h2>
+              <div class="text"><p>Lorem ipsum dolor sit amet</p></div>
+              <button class="c-button" data-gsap-cta data-action="click-&gt;modal#close">
+                <div class="c-button__bg"></div>
+                <span>Torna al sito</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="c-modal" id="modal-contacts" data-controller="modal">
+  <div class="c-modal__overlay" data-action="click-&gt;modal#close"></div>
+
+  <div class="c-modal__close" data-action="click-&gt;modal#close">
+    <i class="icon-x"></i>
+  </div>
+
+  <div class="c-modal__section">  
+    <div class="c-modal__content">
+      <div class="c-modal__scroll" data-modal-target="scroll">
+        <div class="c-modal__title">
+          <h2 class="title">Contattaci</h2>
+        </div>
+
+        <form class="c-form" data-controller="form choices" action="https://resinenativus.it/wp-admin/admin-ajax.php" enctype="multipart/form-data" method="POST">
+          <input type="hidden" name="_form" value="contacts">
+          <input type="hidden" name="action" value="custom_ajax_mailer">
+          <input type="hidden" name="honey" value="">
+
+          <div class="c-form__input">
+            <label for="nome_contatto" class="c-form__label">Nome*</label>
+            <input type="text" id="nome_contatto" name="nome_contatto" placeholder="Nome" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="cognome_contatto" class="c-form__label">Cognome*</label>
+            <input type="text" id="cognome_contatto" name="cognome_contatto" placeholder="Cognome" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="email_contatto" class="c-form__label">Email*</label>
+            <input type="text" id="email_contatto" name="email_contatto" placeholder="Inserisci una mail valida" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="telefono_contatto" class="c-form__label">Telefono*</label>
+            <input type="text" id="telefono_contatto" name="telefono_contatto" placeholder="Inserisci un numero valido" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="indirizzo_contatto" class="c-form__label">Indirizzo*</label>
+            <input type="text" id="indirizzo_contatto" name="indirizzo_contatto" placeholder="Inserisci il tuo indirizzo" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="citta_contatto" class="c-form__label">Città*</label>
+            <input type="text" id="citta_contatto" name="citta_contatto" placeholder="Inserisci la città" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="cap_contatto" class="c-form__label">CAP*</label>
+            <input type="text" id="cap_contatto" name="cap_contatto" placeholder="Inserisci il codice postale" required>
+          </div>
+
+          <div class="c-form__input">
+            <label for="provincia_contatto" class="c-form__label">Provincia*</label>
+            <input type="text" id="provincia_contatto" name="provincia_contatto" placeholder="Inserisci la provincia" required>
+          </div>
+
+          <div class="c-form__select">
+            <label for="stato_contatto" class="c-form__label">Stato*</label>
+
+            <select name="stato_contatto" id="stato_contatto" data-choices-target="select" required><option value="" selected disabled>Seleziona lo stato</option>
+<option value="Afghanistan">Afghanistan</option>
+<option value="Albania">Albania</option>
+<option value="Algeria">Algeria</option>
+<option value="Andorra">Andorra</option>
+<option value="Angola">Angola</option>
+<option value="Antigua and Barbuda">Antigua and Barbuda</option>
+<option value="Argentina">Argentina</option>
+<option value="Armenia">Armenia</option>
+<option value="Australia">Australia</option>
+<option value="Austria">Austria</option>
+<option value="Azerbaijan">Azerbaijan</option>
+<option value="Bahamas">Bahamas</option>
+<option value="Bahrain">Bahrain</option>
+<option value="Bangladesh">Bangladesh</option>
+<option value="Barbados">Barbados</option>
+<option value="Belarus">Belarus</option>
+<option value="Belgium">Belgium</option>
+<option value="Belize">Belize</option>
+<option value="Benin">Benin</option>
+<option value="Bhutan">Bhutan</option>
+<option value="Bolivia">Bolivia</option>
+<option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+<option value="Botswana">Botswana</option>
+<option value="Brazil">Brazil</option>
+<option value="Brunei">Brunei</option>
+<option value="Bulgaria">Bulgaria</option>
+<option value="Burkina Faso">Burkina Faso</option>
+<option value="Burundi">Burundi</option>
+<option value="Cabo Verde">Cabo Verde</option>
+<option value="Cambodia">Cambodia</option>
+<option value="Cameroon">Cameroon</option>
+<option value="Canada">Canada</option>
+<option value="Central African Republic">Central African Republic</option>
+<option value="Chad">Chad</option>
+<option value="Chile">Chile</option>
+<option value="China">China</option>
+<option value="Colombia">Colombia</option>
+<option value="Comoros">Comoros</option>
+<option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+<option value="Costa Rica">Costa Rica</option>
+<option value="Croatia">Croatia</option>
+<option value="Cuba">Cuba</option>
+<option value="Cyprus">Cyprus</option>
+<option value="Czechia (Czech Republic)">Czechia (Czech Republic)</option>
+<option value="Denmark">Denmark</option>
+<option value="Djibouti">Djibouti</option>
+<option value="Dominica">Dominica</option>
+<option value="Dominican Republic">Dominican Republic</option>
+<option value="Ecuador">Ecuador</option>
+<option value="Egypt">Egypt</option>
+<option value="El Salvador">El Salvador</option>
+<option value="Equatorial Guinea">Equatorial Guinea</option>
+<option value="Eritrea">Eritrea</option>
+<option value="Estonia">Estonia</option>
+<option value="Eswatini (fmr. 'Swaziland')">Eswatini (fmr. 'Swaziland')</option>
+<option value="Ethiopia">Ethiopia</option>
+<option value="Fiji">Fiji</option>
+<option value="Finland">Finland</option>
+<option value="France">France</option>
+<option value="Gabon">Gabon</option>
+<option value="Gambia">Gambia</option>
+<option value="Georgia">Georgia</option>
+<option value="Germany">Germany</option>
+<option value="Ghana">Ghana</option>
+<option value="Greece">Greece</option>
+<option value="Grenada">Grenada</option>
+<option value="Guatemala">Guatemala</option>
+<option value="Guinea">Guinea</option>
+<option value="Guinea-Bissau">Guinea-Bissau</option>
+<option value="Guyana">Guyana</option>
+<option value="Haiti">Haiti</option>
+<option value="Holy See">Holy See</option>
+<option value="Honduras">Honduras</option>
+<option value="Hungary">Hungary</option>
+<option value="Iceland">Iceland</option>
+<option value="India">India</option>
+<option value="Indonesia">Indonesia</option>
+<option value="Iran">Iran</option>
+<option value="Iraq">Iraq</option>
+<option value="Ireland">Ireland</option>
+<option value="Israel">Israel</option>
+<option value="Italia">Italia</option>
+<option value="Jamaica">Jamaica</option>
+<option value="Japan">Japan</option>
+<option value="Jordan">Jordan</option>
+<option value="Kazakhstan">Kazakhstan</option>
+<option value="Kenya">Kenya</option>
+<option value="Kiribati">Kiribati</option>
+<option value="Korea, North">Korea, North</option>
+<option value="Korea, South">Korea, South</option>
+<option value="Kosovo">Kosovo</option>
+<option value="Kuwait">Kuwait</option>
+<option value="Kyrgyzstan">Kyrgyzstan</option>
+<option value="Laos">Laos</option>
+<option value="Latvia">Latvia</option>
+<option value="Lebanon">Lebanon</option>
+<option value="Lesotho">Lesotho</option>
+<option value="Liberia">Liberia</option>
+<option value="Libya">Libya</option>
+<option value="Liechtenstein">Liechtenstein</option>
+<option value="Lithuania">Lithuania</option>
+<option value="Luxembourg">Luxembourg</option>
+<option value="Madagascar">Madagascar</option>
+<option value="Malawi">Malawi</option>
+<option value="Malaysia">Malaysia</option>
+<option value="Maldives">Maldives</option>
+<option value="Mali">Mali</option>
+<option value="Malta">Malta</option>
+<option value="Marshall Islands">Marshall Islands</option>
+<option value="Mauritania">Mauritania</option>
+<option value="Mauritius">Mauritius</option>
+<option value="Mexico">Mexico</option>
+<option value="Micronesia">Micronesia</option>
+<option value="Moldova">Moldova</option>
+<option value="Monaco">Monaco</option>
+<option value="Mongolia">Mongolia</option>
+<option value="Montenegro">Montenegro</option>
+<option value="Morocco">Morocco</option>
+<option value="Mozambique">Mozambique</option>
+<option value="Myanmar (formerly Burma)">Myanmar (formerly Burma)</option>
+<option value="Namibia">Namibia</option>
+<option value="Nauru">Nauru</option>
+<option value="Nepal">Nepal</option>
+<option value="Netherlands">Netherlands</option>
+<option value="New Zealand">New Zealand</option>
+<option value="Nicaragua">Nicaragua</option>
+<option value="Niger">Niger</option>
+<option value="Nigeria">Nigeria</option>
+<option value="North Macedonia">North Macedonia</option>
+<option value="Norway">Norway</option>
+<option value="Oman">Oman</option>
+<option value="Pakistan">Pakistan</option>
+<option value="Palau">Palau</option>
+<option value="Palestine State">Palestine State</option>
+<option value="Panama">Panama</option>
+<option value="Papua New Guinea">Papua New Guinea</option>
+<option value="Paraguay">Paraguay</option>
+<option value="Peru">Peru</option>
+<option value="Philippines">Philippines</option>
+<option value="Poland">Poland</option>
+<option value="Portugal">Portugal</option>
+<option value="Qatar">Qatar</option>
+<option value="Romania">Romania</option>
+<option value="Russia">Russia</option>
+<option value="Rwanda">Rwanda</option>
+<option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+<option value="Saint Lucia">Saint Lucia</option>
+<option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+<option value="Samoa">Samoa</option>
+<option value="San Marino">San Marino</option>
+<option value="Sao Tome and Principe">Sao Tome and Principe</option>
+<option value="Saudi Arabia">Saudi Arabia</option>
+<option value="Senegal">Senegal</option>
+<option value="Serbia">Serbia</option>
+<option value="Seychelles">Seychelles</option>
+<option value="Sierra Leone">Sierra Leone</option>
+<option value="Singapore">Singapore</option>
+<option value="Slovakia">Slovakia</option>
+<option value="Slovenia">Slovenia</option>
+<option value="Solomon Islands">Solomon Islands</option>
+<option value="Somalia">Somalia</option>
+<option value="South Africa">South Africa</option>
+<option value="South Sudan">South Sudan</option>
+<option value="Spain">Spain</option>
+<option value="Sri Lanka">Sri Lanka</option>
+<option value="Sudan">Sudan</option>
+<option value="Suriname">Suriname</option>
+<option value="Sweden">Sweden</option>
+<option value="Switzerland">Switzerland</option>
+<option value="Syria">Syria</option>
+<option value="Tajikistan">Tajikistan</option>
+<option value="Tanzania">Tanzania</option>
+<option value="Thailand">Thailand</option>
+<option value="Timor-Leste">Timor-Leste</option>
+<option value="Togo">Togo</option>
+<option value="Tonga">Tonga</option>
+<option value="Trinidad and Tobago">Trinidad and Tobago</option>
+<option value="Tunisia">Tunisia</option>
+<option value="Turkey">Turkey</option>
+<option value="Turkmenistan">Turkmenistan</option>
+<option value="Tuvalu">Tuvalu</option>
+<option value="Uganda">Uganda</option>
+<option value="Ukraine">Ukraine</option>
+<option value="United Arab Emirates">United Arab Emirates</option>
+<option value="United Kingdom">United Kingdom</option>
+<option value="United States of America">United States of America</option>
+<option value="Uruguay">Uruguay</option>
+<option value="Uzbekistan">Uzbekistan</option>
+<option value="Vanuatu">Vanuatu</option>
+<option value="Venezuela">Venezuela</option>
+<option value="Vietnam">Vietnam</option>
+<option value="Yemen">Yemen</option>
+<option value="Zambia">Zambia</option>
+<option value="Zimbabwe">Zimbabwe</option></select>
+          </div>
+
+          <p class="c-form__title title">
+            Dettagli della richiesta          </p>
+
+          <div class="c-form__select c-form__select--full">
+            <label for="richiesta_contatto" class="c-form__label">Tipo di richiesta</label>
+            <select name="richiesta_contatto" id="richiesta_contatto" data-choices-target="select">
+              <option value="" disabled selected>Seleziona la richiesta</option>
+              
+              <option value="Informazioni generali">Informazioni generali</option>
+              <option value="Richiesta consulenza per un progetto">Richiesta consulenza per un progetto</option>
+              <option value="Richiesta supporto per posa o manutenzione">Richiesta supporto per posa o manutenzione</option>
+              <option value="Richiesta preventivo">Richiesta preventivo</option>
+              <option value="Ricerca rivenditore di zona">Ricerca rivenditore di zona</option>
+              <option value="Richiesta di collaborazione per progetti">Richiesta di collaborazione per progetti</option>
+            </select>
+          </div>
+
+          <div class="c-form__input c-form__input--full">
+            <label for="messaggio_contatto" class="c-form__label">Messaggio</label>
+            <textarea name="messaggio_contatto" id="messaggio_contatto"></textarea>
+          </div>
+
+          <div class="c-form__checkbox">
+            <label for="privacy_contatto">
+              <input type="checkbox" name="privacy_contatto" id="privacy_contatto">
+              <span class="checkmark"></span>
+              <span>Acconsento al trattamento dei dati personali *</span>
+            </label>
+          </div>
+
+          <div class="c-form__submit">
+            <button type="submit" class="c-button" data-gsap-cta>
+              <div class="c-button__bg"></div>
+              <span>Invia</span>
+            </button>
+          </div>
+
+          <div class="c-form__feedback" data-form-target="feedback">
+            <h2 class="title">La tua richiesta è stata inviata</h2>
+            <div class="text">
+              <p>Una persona specializzata del nostro team ti risponderà nelle prossime 24 ore.</p>
+              <p>Contattaci anche su <a href="https://wa.me/" class="h-text-underline" target="_blank">Whatsapp</a></p>
+            </div>
+            <button class="c-button" data-gsap-cta data-action="click-&gt;modal#close">
+              <div class="c-button__bg"></div>
+              <span>Torna al sito</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="c-modal c-modal--gallery" id="modal-slider" data-modalslider-target="modal">
+  <div class="c-modal__overlay" data-action="click-&gt;modalslider#close"></div>
+  <div class="c-modal__close" data-action="click-&gt;modal#close">
+    <i class="icon-x"></i>
+  </div>
+
+  <div class="c-modal__section c-modal__section--gallery">
+    <div class="c-modal__content">
+
+      <div class="c-modal__slider splide" data-modalslider-target="slider">
+        <div class="splide__track">
+          <ul class="splide__list">
+            
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="c-modal" id="modal-reserved" data-controller="modal">
+  <div class="c-modal__overlay" data-action="click-&gt;modal#close"></div>
+
+  <div class="c-modal__close" data-action="click-&gt;modal#close">
+    <i class="icon-x"></i>
+  </div>
+
+  <div class="c-modal__section">  
+    <div class="c-modal__content">
+      <div class="c-modal__scroll" data-modal-target="scroll">
+        <div class="c-modal__title">
+          <h2 class="title">Documento riservato</h2>
+        </div>
+
+        <div class="text">
+          <p>Questo documento è utilizzabile solamente dagli utenti registrati che possiedono i permessi di visualizzazione</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Google Tag Manager (noscript) --> <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWM5BDQ" height="0" width="0" style="display:none;visibility:hidden"></iframe> <!-- End Google Tag Manager (noscript) -->
+  
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/nativus/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script type="text/javascript" id="pll_cookie_script-js-after">
+/* <![CDATA[ */
+(function() {
+				var expirationDate = new Date();
+				expirationDate.setTime( expirationDate.getTime() + 31536000 * 1000 );
+				document.cookie = "pll_language=it; expires=" + expirationDate.toUTCString() + "; path=/; secure; SameSite=Lax";
+			}());
+
+//# sourceURL=pll_cookie_script-js-after
+/* ]]> */
+</script>
+<script type="text/javascript" id="rocket-browser-checker-js-after">
+/* <![CDATA[ */
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+//# sourceURL=rocket-browser-checker-js-after
+/* ]]> */
+</script>
+<script type="text/javascript" id="rocket-preload-links-js-extra">
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"/download/|/en/download-en/|/de/download-de/|/pl/strefa-pobran/|/fr/telechargement/|/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|/(index.php/)?(.*)wp-json(/.*|$)|/refer/|/go/|/recommend/|/recommends/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https://resinenativus.it","onHoverDelay":"100","rateThrottle":"3"};
+//# sourceURL=rocket-preload-links-js-extra
+/* ]]> */
+</script>
+<script type="text/javascript" id="rocket-preload-links-js-after">
+/* <![CDATA[ */
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+
+//# sourceURL=rocket-preload-links-js-after
+/* ]]> */
+</script>
+<script type="text/javascript" id="application-js-extra">
+/* <![CDATA[ */
+var ajax_call = {"ajax_url":"https://resinenativus.it/wp-admin/admin-ajax.php"};
+//# sourceURL=application-js-extra
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://resinenativus.it/wp-content/themes/nativus/assets/application.js" id="application-js"></script>
+
+</body>
+</html>
+<!-- Parsed with iubenda experimental class in 0.0092 sec. -->

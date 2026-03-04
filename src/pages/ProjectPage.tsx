@@ -1,531 +1,918 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileSpreadsheet, FileText, Plus, ShoppingCart } from 'lucide-react';
+import { Plus, ShoppingCart, Settings, ArrowRight, Trash2, CheckCircle2 } from 'lucide-react';
 import { useProjectStore } from '../store/project-store';
 import { useAuthStore } from '../store/auth-store';
-import { ROOM_TYPES } from '../types/project';
-import { loadDataStore } from '../utils/data-loader';
+import { useCartStore } from '../store/cart-store';
+import { ROOM_TYPES, type ProjectRoom } from '../types/project';
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const fmtEur = (v: number) =>
+  v.toLocaleString('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 });
+
+const ROOM_HERO: Record<string, string> = {
+  SOGGIORNO:   '/brand/nativus/interiors/living_main.jpg',
+  CUCINA:      '/brand/nativus/interiors/kitchen_main.jpg',
+  BAGNO:       '/brand/nativus/interiors/bathroom_main.jpg',
+  CAMERA:      '/brand/nativus/interiors/bedroom_main.jpg',
+  LAVANDERIA:  '/brand/nativus/interiors/bathroom_main.jpg',
+};
+const FALLBACK_HERO = '/brand/nativus/interiors/lamine_scene.jpg';
+
+const TEXTURE_PREVIEW: Record<string, string> = {
+  CRYSTEPO: '/brand/nativus/materials/crystepo_detail_01.jpg',
+  LAMINE:   '/brand/nativus/interiors/lamine_scene.jpg',
+  NATURAL:  '/brand/nativus/interiors/natural_hero.jpg',
+  SENSE:    '/brand/nativus/interiors/living_main.jpg',
+};
+
+const TEXTURE_LABEL: Record<string, string> = {
+  NATURAL: 'Natural', SENSE: 'Sense', DEKORA: 'Dekora',
+  LAMINE: 'Lamine', CRYSTEPO: 'Crystepo', MATERIAL: 'Material', CORLITE: 'Corlite',
+};
+
+const SECTION_COLORS: Record<string, string> = {
+  fondo:       '#d4c4a8',
+  texture:     '#8fa89a',
+  protettivi:  '#b8c4c2',
+  din:         '#c8b89c',
+  doccia:      '#a0b4c0',
+};
+
+function getRoomHero(room: ProjectRoom): string {
+  return ROOM_HERO[room.room_type] ?? FALLBACK_HERO;
+}
+function getTextureLine(room: ProjectRoom): string | null {
+  return (
+    room.wizard_state?.texture_line ??
+    room.wizard_state?.surfaces?.[0]?.texture_line ??
+    null
+  );
+}
+function getTexturePreview(room: ProjectRoom): string | null {
+  const l = getTextureLine(room);
+  return l ? (TEXTURE_PREVIEW[l] ?? null) : null;
+}
+function getRoomLabel(room: ProjectRoom): string {
+  return room.custom_name || (ROOM_TYPES.find(r => r.id === room.room_type)?.label ?? 'Ambiente');
+}
+function getTotalMq(room: ProjectRoom): number {
+  const s = room.wizard_state;
+  if (!s) return 0;
+  if (s.surfaces?.length) return s.surfaces.reduce((a, b) => a + (b.mq ?? 0), 0);
+  return (s.mq_pavimento ?? 0) + (s.mq_pareti ?? 0);
+}
+function getSystemLabel(room: ProjectRoom): string {
+  const l = getTextureLine(room);
+  return l ? (TEXTURE_LABEL[l] ?? l) : '';
+}
+function getStratigraphySections(room: ProjectRoom) {
+  if (!room.cart_result) return [];
+  const lines = room.cart_result.summary?.lines ?? [];
+  const seen = new Set<string>();
+  const out: { section: string; label: string }[] = [];
+  for (const l of lines) {
+    if (!l.section || seen.has(l.section)) continue;
+    seen.add(l.section);
+    const LABELS: Record<string, string> = {
+      fondo: 'Preparazione', texture: 'Texture', protettivi: 'Protettivo',
+      din: 'DIN', doccia: 'Doccia', tracce: 'Tracce',
+    };
+    out.push({ section: l.section, label: LABELS[l.section] ?? l.section });
+  }
+  return out;
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
 
 export function ProjectPage() {
-  const navigate = useNavigate();
-  const user = useAuthStore(s => s.user);
-  const { rooms, cart_built, addRoom, removeRoom, unconfigureRoom, buildCart, reset, hydrate } = useProjectStore();
+  const navigate   = useNavigate();
+  const user       = useAuthStore(s => s.user);
+  const rooms      = useProjectStore(s => s.rooms);
+  const addRoom    = useProjectStore(s => s.addRoom);
+  const removeRoom = useProjectStore(s => s.removeRoom);
+  const cartItems  = useCartStore(s => s.items);
 
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newType, setNewType] = useState('SOGGIORNO');
-  const [newName, setNewName] = useState('');
-
-  useEffect(() => { hydrate(); }, []);
-
-  useEffect(() => {
-    if (!cart_built) {
-      const store = loadDataStore();
-      buildCart(store);
-    }
-  }, [rooms, cart_built]);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(
+    rooms.length > 0 ? rooms[0].id : null,
+  );
+  const [showAddForm, setShowAddForm]   = useState(false);
+  const [newRoomName, setNewRoomName]   = useState('');
+  const [newRoomType, setNewRoomType]   = useState('SOGGIORNO');
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const configuredCount = rooms.filter(r => r.is_configured).length;
-  const totalEur = rooms.reduce((sum, r) =>
-    sum + r.cart_lines.reduce((s, l) => s + l.totale, 0), 0
+  const totalEur = rooms.reduce(
+    (sum, r) => sum + (r.cart_result?.summary?.total_eur ?? 0),
+    0,
   );
 
-  function handleAdd() {
-    const label = ROOM_TYPES.find(t => t.id === newType)?.label ?? newType;
-    const name = newName.trim() || label;
-    addRoom(newType, name);
-    setNewName('');
+  const selectedRoom = rooms.find(r => r.id === selectedRoomId) ?? null;
+
+  function handleAddRoom() {
+    if (!newRoomName.trim()) return;
+    addRoom(newRoomType, newRoomName.trim());
+    setNewRoomName('');
     setShowAddForm(false);
   }
-
-  async function handleExportRoomXlsx(roomId: string) {
-    const room = rooms.find(r => r.id === roomId);
-    if (!room) return;
-    const { exportRoomXlsx } = await import('../utils/export-xlsx');
-    exportRoomXlsx(room);
+  function handleDelete(roomId: string) {
+    removeRoom(roomId);
+    if (selectedRoomId === roomId) setSelectedRoomId(rooms.find(r => r.id !== roomId)?.id ?? null);
+    setConfirmDelete(null);
   }
 
-  async function handleExportRoomPdf(roomId: string) {
-    const room = rooms.find(r => r.id === roomId);
-    if (!room) return;
-    const { exportRoomPdf } = await import('../utils/export-pdf');
-    exportRoomPdf(room);
-  }
+  const heroImg = selectedRoom ? getRoomHero(selectedRoom) : FALLBACK_HERO;
 
   return (
-    <div>
-      {/* ── Hero band ── */}
+    <div style={{ minHeight: '100vh', background: '#f2f2f0', display: 'flex', flexDirection: 'column' }}>
+
+      {/* ── HERO BAND ─────────────────────────────────────────────────────── */}
       <div
         style={{
           position: 'relative',
+          height: 300,
           overflow: 'hidden',
-          backgroundImage: 'url(/hero-nativus.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 40%',
-          backgroundRepeat: 'no-repeat',
-          minHeight: 200,
+          transition: 'background-image 0.4s',
         }}
       >
-        {/* Light overlay gradient for readability */}
+        {/* Background photo */}
         <div
           style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(234,235,233,0.90) 0%, rgba(234,235,233,0.75) 60%, rgba(234,235,233,0.88) 100%)',
-            pointerEvents: 'none',
+            position: 'absolute', inset: 0,
+            backgroundImage: `url(${heroImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 40%',
+            filter: 'brightness(0.88)',
+            transition: 'background-image 0.35s ease',
           }}
         />
+        {/* Dark-to-transparent gradient overlay */}
         <div
           style={{
-            maxWidth: 1280,
-            margin: '0 auto',
-            padding: '48px 32px 40px',
-            position: 'relative',
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            gap: 24,
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0) 100%)',
+          }}
+        />
+        {/* Content */}
+        <div
+          style={{
+            position: 'relative', zIndex: 1,
+            maxWidth: 1400, margin: '0 auto',
+            padding: '36px 40px 0',
+            display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between',
           }}
         >
-          <div>
-            <p
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: '#445164',
-                marginBottom: 10,
-              }}
-            >
-              {user?.displayName ?? 'Progetto'}
-            </p>
-            <h1
-              style={{
-                fontSize: 34,
-                fontWeight: 300,
-                letterSpacing: '0.04em',
-                color: '#171e29',
-                margin: 0,
-                lineHeight: 1.15,
-              }}
-            >
-              I miei Progetti
-            </h1>
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 13,
-                color: '#445164',
-                letterSpacing: '0.02em',
-              }}
-            >
-              {rooms.length} {rooms.length === 1 ? 'ambiente' : 'ambienti'}
-              {configuredCount > 0 && ` · ${configuredCount} configurati`}
-              {totalEur > 0 && ` · ${fmtEur(totalEur)} totale stimato`}
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-            {configuredCount > 0 && (
+          {/* Top row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>
+                {user?.displayName ?? user?.username ?? 'Progetto'}
+              </p>
+              <h1 style={{ fontSize: 32, fontWeight: 300, letterSpacing: '0.04em', color: '#ffffff', margin: 0, lineHeight: 1.15 }}>
+                Configuratore Nativus
+              </h1>
+              <p style={{ marginTop: 6, fontSize: 13, color: 'rgba(255,255,255,0.60)', letterSpacing: '0.02em' }}>
+                {rooms.length} {rooms.length === 1 ? 'ambiente' : 'ambienti'}
+                {configuredCount > 0 && ` · ${configuredCount} configurati`}
+                {totalEur > 0 && ` · ${fmtEur(totalEur)} stimato`}
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              {cartItems.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => navigate('/progetto/carrello')}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    background: 'rgba(255,255,255,0.12)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255,255,255,0.30)',
+                    color: '#ffffff', padding: '10px 18px',
+                    fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                  }}
+                >
+                  <ShoppingCart size={14} />
+                  Carrello
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => navigate('/progetto/carrello')}
+                onClick={() => setShowAddForm(true)}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: 'transparent',
-                  border: '1.5px solid rgba(23,30,41,0.35)',
-                  color: '#171e29',
-                  padding: '10px 20px',
-                  fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase',
-                  cursor: 'pointer', transition: 'all 0.18s',
+                  background: '#ffffff', border: '1px solid #ffffff',
+                  color: '#171e29', padding: '10px 18px',
+                  fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#171e29')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(23,30,41,0.35)')}
               >
-                <ShoppingCart size={14} />
-                Carrello
+                <Plus size={13} />
+                Aggiungi ambiente
               </button>
-            )}
-            <button
-              type="button"
-              onClick={() => setShowAddForm(true)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: '#171e29',
-                border: '1.5px solid #171e29',
-                color: '#ffffff',
-                padding: '10px 20px',
-                fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
-                cursor: 'pointer', transition: 'all 0.18s',
-              }}
-            >
-              <Plus size={13} />
-              Aggiungi ambiente
-            </button>
+            </div>
           </div>
+
+          {/* Bottom row: selected room context */}
+          {selectedRoom && (
+            <div style={{ paddingBottom: 24, display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div
+                style={{
+                  width: 6, height: 6, background: selectedRoom.is_configured ? '#6dbf8a' : '#fff',
+                  borderRadius: '50%',
+                }}
+              />
+              <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.03em' }}>
+                {getRoomLabel(selectedRoom)}
+                {getTotalMq(selectedRoom) > 0 && (
+                  <span style={{ color: 'rgba(255,255,255,0.45)', marginLeft: 8, fontWeight: 300 }}>
+                    {getTotalMq(selectedRoom).toFixed(0)} m²
+                  </span>
+                )}
+              </span>
+              {getSystemLabel(selectedRoom) && (
+                <span style={{
+                  fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,0.45)',
+                  borderLeft: '1px solid rgba(255,255,255,0.20)', paddingLeft: 16,
+                }}>
+                  {getSystemLabel(selectedRoom)}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ── Content ── */}
+      {/* ── WORKSPACE ─────────────────────────────────────────────────────── */}
       <div
         style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '36px 32px',
+          flex: 1,
+          maxWidth: 1400, margin: '0 auto', width: '100%',
+          display: 'flex', gap: 0,
+          padding: '32px 40px 40px',
         }}
       >
-        {/* Add form */}
-        {showAddForm && (
-          <div
-            style={{
-              background: '#ffffff',
-              border: '1.5px solid #e8e8e6',
-              padding: '24px 28px',
-              marginBottom: 28,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            }}
-          >
-            <p className="surtitle" style={{ marginBottom: 16 }}>Nuovo ambiente</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' }}>
-              <div>
-                <label className="label-text">Tipo ambiente</label>
-                <select
-                  className="select-field"
-                  style={{ width: 200 }}
-                  value={newType}
-                  onChange={e => setNewType(e.target.value)}
-                >
-                  {ROOM_TYPES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="label-text">Nome personalizzato <span style={{ color: '#b8b8b4', fontWeight: 400, textTransform: 'none' }}>(opzionale)</span></label>
-                <input
-                  type="text"
-                  className="input-field"
-                  style={{ width: 220 }}
-                  placeholder={ROOM_TYPES.find(t => t.id === newType)?.label}
-                  value={newName}
-                  onChange={e => setNewName(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleAdd()}
-                />
-              </div>
-              <button type="button" className="btn-primary" onClick={handleAdd}>
-                Aggiungi
-              </button>
-              <button type="button" className="btn-secondary" onClick={() => setShowAddForm(false)}>
-                Annulla
-              </button>
-            </div>
+        {/* ── LEFT: Space map ───────────────────────────────────────── */}
+        <div
+          style={{
+            width: 380, flexShrink: 0,
+            display: 'flex', flexDirection: 'column', gap: 0,
+            marginRight: 32,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#445164' }}>
+              Mappa ambienti
+            </span>
+            <span style={{ fontSize: 11, color: '#8c9aaa' }}>
+              {rooms.length} {rooms.length === 1 ? 'spazio' : 'spazi'}
+            </span>
           </div>
-        )}
 
-        {/* Empty state */}
-        {rooms.length === 0 && (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '80px 32px',
-              textAlign: 'center',
-            }}
-          >
+          {rooms.length === 0 ? (
             <div
               style={{
-                width: 48,
-                height: 48,
-                background: '#171e29',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 20,
+                border: '1.5px dashed #c8cac6',
+                padding: '40px 24px', textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'border-color 0.18s',
               }}
-            >
-              <Plus size={20} color="#ffffff" />
-            </div>
-            <p style={{ fontSize: 16, fontWeight: 500, color: '#171e29', letterSpacing: '0.04em', marginBottom: 8 }}>
-              Nessun ambiente
-            </p>
-            <p style={{ fontSize: 13, color: '#9a9a96', lineHeight: 1.6 }}>
-              Aggiungi il primo ambiente per iniziare la configurazione.
-            </p>
-            <button
-              type="button"
-              className="btn-primary"
-              style={{ marginTop: 24 }}
               onClick={() => setShowAddForm(true)}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = '#171e29')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#c8cac6')}
             >
-              + Aggiungi ambiente
-            </button>
-          </div>
-        )}
-
-        {/* Room grid */}
-        {rooms.length > 0 && (
-          <>
+              <Plus size={20} style={{ margin: '0 auto 10px', color: '#8c9aaa' }} />
+              <p style={{ fontSize: 12, color: '#8c9aaa', letterSpacing: '0.04em' }}>
+                Aggiungi il primo ambiente
+              </p>
+            </div>
+          ) : (
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                gap: 16,
+                gridTemplateColumns: '1fr 1fr',
+                gap: 8,
               }}
             >
-              {rooms.map(room => {
-                const typeLabel = ROOM_TYPES.find(t => t.id === room.room_type)?.label ?? room.room_type;
-                const roomEur = room.cart_lines.reduce((s, l) => s + l.totale, 0);
-                return (
-                  <RoomCard
-                    key={room.id}
-                    room={room}
-                    typeLabel={typeLabel}
-                    roomEur={roomEur}
-                    onConfigure={() => navigate(`/progetto/stanza/${room.id}`)}
-                    onExportXlsx={() => handleExportRoomXlsx(room.id)}
-                    onExportPdf={() => handleExportRoomPdf(room.id)}
-                    onUnconfigure={() => unconfigureRoom(room.id)}
-                    onRemove={() => removeRoom(room.id)}
-                  />
-                );
-              })}
-            </div>
-
-            {/* Footer actions */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 40,
-                paddingTop: 24,
-                borderTop: '1px solid #e8e8e6',
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => { if (confirm('Azzerare tutto il progetto?')) reset(); }}
+              {rooms.map(room => (
+                <SpaceBlock
+                  key={room.id}
+                  room={room}
+                  selected={room.id === selectedRoomId}
+                  onSelect={() => setSelectedRoomId(room.id)}
+                  onDelete={() => setConfirmDelete(room.id)}
+                />
+              ))}
+              {/* Add tile */}
+              <div
+                onClick={() => setShowAddForm(true)}
                 style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#c0392b',
-                  fontSize: 12,
-                  letterSpacing: '0.04em',
-                  cursor: 'pointer',
-                  padding: 0,
+                  border: '1.5px dashed #c8cac6',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexDirection: 'column', gap: 6,
+                  minHeight: 130, cursor: 'pointer',
+                  color: '#8c9aaa', fontSize: 11, letterSpacing: '0.04em',
+                  transition: 'border-color 0.18s, color 0.18s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = '#171e29';
+                  e.currentTarget.style.color = '#171e29';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = '#c8cac6';
+                  e.currentTarget.style.color = '#8c9aaa';
                 }}
               >
-                Azzera progetto
-              </button>
-              <p style={{ fontSize: 11, color: '#b8b8b4', letterSpacing: '0.04em' }}>
-                Il carrello si aggiorna automaticamente.
-              </p>
+                <Plus size={16} />
+                Aggiungi
+              </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
+
+        {/* ── RIGHT: Configuration panel ───────────────────────────── */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {!selectedRoom ? (
+            <EmptyState onAdd={() => setShowAddForm(true)} />
+          ) : (
+            <RoomDetailPanel
+              room={selectedRoom}
+              onConfigure={() => navigate(`/progetto/stanza/${selectedRoom.id}`)}
+              onDelete={() => setConfirmDelete(selectedRoom.id)}
+            />
+          )}
+        </div>
       </div>
+
+      {/* ── ADD ROOM MODAL ────────────────────────────────────────────────── */}
+      {showAddForm && (
+        <AddRoomModal
+          name={newRoomName}
+          roomType={newRoomType}
+          onNameChange={setNewRoomName}
+          onTypeChange={setNewRoomType}
+          onConfirm={handleAddRoom}
+          onCancel={() => { setShowAddForm(false); setNewRoomName(''); }}
+        />
+      )}
+
+      {/* ── DELETE CONFIRM ────────────────────────────────────────────────── */}
+      {confirmDelete && (
+        <ConfirmModal
+          message="Eliminare questo ambiente? La configurazione verrà persa."
+          onConfirm={() => handleDelete(confirmDelete)}
+          onCancel={() => setConfirmDelete(null)}
+        />
+      )}
     </div>
   );
 }
 
-/* ── Room card ─────────────────────────────────────────────────────────────── */
+// ─── SpaceBlock ───────────────────────────────────────────────────────────────
 
-interface RoomCardProps {
-  room: ReturnType<typeof useProjectStore.getState>['rooms'][0];
-  typeLabel: string;
-  roomEur: number;
-  onConfigure: () => void;
-  onExportXlsx: () => void;
-  onExportPdf: () => void;
-  onUnconfigure: () => void;
-  onRemove: () => void;
+interface SpaceBlockProps {
+  room: ProjectRoom;
+  selected: boolean;
+  onSelect: () => void;
+  onDelete: () => void;
 }
 
-function RoomCard({
-  room, typeLabel, roomEur,
-  onConfigure, onExportXlsx, onExportPdf, onUnconfigure, onRemove,
-}: RoomCardProps) {
-  const configured = room.is_configured;
+function SpaceBlock({ room, selected, onSelect, onDelete }: SpaceBlockProps) {
+  const texPreview = getTexturePreview(room);
+  const mq         = getTotalMq(room);
+  const systemLbl  = getSystemLabel(room);
+  const label      = getRoomLabel(room);
 
   return (
     <div
+      onClick={onSelect}
       style={{
+        position: 'relative',
         background: '#ffffff',
-        border: configured ? '1.5px solid #c8d6c8' : '1.5px solid #e8e8e6',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 0,
-        transition: 'box-shadow 0.18s',
+        border: selected ? '2px solid #171e29' : '1.5px solid #e4e5e1',
+        cursor: 'pointer',
+        overflow: 'hidden',
+        minHeight: mq > 30 ? 190 : mq > 12 ? 160 : 130,
+        transition: 'border-color 0.15s, box-shadow 0.15s',
+        boxShadow: selected ? '0 2px 12px rgba(23,30,41,0.12)' : 'none',
+        display: 'flex', flexDirection: 'column',
       }}
     >
-      {/* Card header */}
-      <div
-        style={{
-          padding: '18px 20px 14px',
-          borderBottom: '1px solid #f2f2f0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-        }}
-      >
-        <div>
-          <p className="surtitle" style={{ marginBottom: 4 }}>{typeLabel}</p>
-          <h3
-            style={{
-              fontSize: 15,
-              fontWeight: 500,
-              color: '#171e29',
-              letterSpacing: '0.03em',
-              margin: 0,
-            }}
-          >
-            {room.custom_name || typeLabel}
-          </h3>
-        </div>
-        <span
+      {/* Texture thumbnail strip */}
+      {texPreview && (
+        <div
           style={{
-            fontSize: 9,
-            fontWeight: 600,
-            letterSpacing: '0.10em',
-            textTransform: 'uppercase',
-            padding: '3px 9px',
-            border: configured ? '1px solid #c8d6c8' : '1px solid #e8e8e6',
-            background: configured ? '#f0f7f0' : '#f7f7f5',
-            color: configured ? '#2d6a2d' : '#9a9a96',
+            height: 56,
+            backgroundImage: `url(${texPreview})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.92) saturate(0.85)',
+            flexShrink: 0,
           }}
-        >
-          {configured ? 'Configurato' : 'Da configurare'}
-        </span>
-      </div>
+        />
+      )}
+      {!texPreview && (
+        <div
+          style={{
+            height: 8,
+            background: room.is_configured ? '#c8d8c8' : '#e4e5e1',
+            flexShrink: 0,
+          }}
+        />
+      )}
 
-      {/* Card body */}
-      <div style={{ padding: '14px 20px', flex: 1 }}>
-        {configured && room.wizard_state ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {room.wizard_state.mq_pavimento > 0 && (
-              <Row label="Pavimento" value={`${room.wizard_state.mq_pavimento} m²`} />
-            )}
-            {room.wizard_state.mq_pareti > 0 && (
-              <Row label="Pareti" value={`${room.wizard_state.mq_pareti} m²`} />
-            )}
-            {room.wizard_state.texture_line && (
-              <Row label="Texture" value={`${room.wizard_state.texture_line}${room.wizard_state.texture_style ? ' · ' + room.wizard_state.texture_style : ''}`} />
-            )}
-            {room.computation_errors.length > 0 && (
-              <p style={{ fontSize: 11, color: '#d97706', fontWeight: 500, marginTop: 4 }}>
-                ⚠ {room.computation_errors.length} avviso/i tecnico/i
-              </p>
-            )}
-            {roomEur > 0 && (
-              <p
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: '#171e29',
-                  marginTop: 8,
-                  letterSpacing: '0.02em',
-                }}
-              >
-                {fmtEur(roomEur)}
-              </p>
+      {/* Content */}
+      <div style={{ padding: '10px 12px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 4 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', color: '#171e29', margin: 0, lineHeight: 1.3 }}>
+              {label}
+            </p>
+            {room.is_configured && (
+              <CheckCircle2 size={13} style={{ color: '#6dbf8a', flexShrink: 0, marginTop: 1 }} />
             )}
           </div>
-        ) : (
-          <p style={{ fontSize: 12, color: '#b8b8b4', letterSpacing: '0.02em' }}>
-            Clicca "Configura" per impostare texture e protettivi.
+          {mq > 0 && (
+            <p style={{ fontSize: 11, color: '#8c9aaa', margin: '3px 0 0', letterSpacing: '0.02em' }}>
+              {mq.toFixed(0)} m²
+            </p>
+          )}
+        </div>
+
+        {systemLbl && (
+          <p style={{
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: '#445164', margin: '8px 0 0',
+          }}>
+            {systemLbl}
+          </p>
+        )}
+        {!room.is_configured && !systemLbl && (
+          <p style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c8cac6', margin: '8px 0 0' }}>
+            Da configurare
           </p>
         )}
       </div>
 
-      {/* Card footer actions */}
+      {/* Delete button (shows on hover via CSS handled via inline mouse events) */}
+      <button
+        type="button"
+        onClick={e => { e.stopPropagation(); onDelete(); }}
+        style={{
+          position: 'absolute', top: 6, right: 6,
+          background: 'rgba(255,255,255,0.85)',
+          border: 'none', cursor: 'pointer',
+          width: 22, height: 22,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          opacity: selected ? 0.7 : 0,
+          transition: 'opacity 0.15s',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = selected ? '0.7' : '0')}
+      >
+        <Trash2 size={11} style={{ color: '#c0392b' }} />
+      </button>
+    </div>
+  );
+}
+
+// ─── RoomDetailPanel ──────────────────────────────────────────────────────────
+
+interface RoomDetailPanelProps {
+  room: ProjectRoom;
+  onConfigure: () => void;
+  onDelete: () => void;
+}
+
+function RoomDetailPanel({ room, onConfigure, onDelete }: RoomDetailPanelProps) {
+  const heroImg    = getRoomHero(room);
+  const label      = getRoomLabel(room);
+  const systemLbl  = getSystemLabel(room);
+  const texPreview = getTexturePreview(room);
+  const mq         = getTotalMq(room);
+  const strat      = getStratigraphySections(room);
+  const typeInfo   = ROOM_TYPES.find(r => r.id === room.room_type);
+  const totalEur   = room.cart_result?.summary?.total_eur ?? 0;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+      {/* ── Room hero card ── */}
       <div
         style={{
-          padding: '12px 20px',
-          borderTop: '1px solid #f2f2f0',
-          display: 'flex',
-          gap: 8,
-          flexWrap: 'wrap',
+          position: 'relative', overflow: 'hidden',
+          height: 220,
+          background: '#e4e5e1',
         }}
       >
-        <button
-          type="button"
-          className="btn-primary"
-          style={{ flex: 1, minWidth: 100, minHeight: 40, fontSize: 11 }}
-          onClick={onConfigure}
-        >
-          {configured ? 'Ri-configura' : 'Configura'}
-        </button>
-        {configured && (
-          <>
-            <IconBtn title="Esporta Excel" onClick={onExportXlsx}>
-              <FileSpreadsheet size={13} />
-            </IconBtn>
-            <IconBtn title="Esporta PDF" onClick={onExportPdf}>
-              <FileText size={13} />
-            </IconBtn>
-            <IconBtn title="Azzera configurazione" onClick={onUnconfigure}>
-              ✕
-            </IconBtn>
-          </>
-        )}
-        <button
-          type="button"
-          onClick={onRemove}
+        <div
           style={{
-            background: 'transparent',
-            border: '1.5px solid #e8e8e6',
-            color: '#c0392b',
-            padding: '0 12px',
-            fontSize: 11,
-            fontWeight: 500,
-            cursor: 'pointer',
-            minHeight: 40,
-            transition: 'all 0.15s',
+            position: 'absolute', inset: 0,
+            backgroundImage: `url(${heroImg})`,
+            backgroundSize: 'cover', backgroundPosition: 'center 35%',
+            filter: 'brightness(0.82) saturate(0.90)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 55%)',
+          }}
+        />
+        <div style={{ position: 'absolute', bottom: 20, left: 24, right: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12 }}>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', margin: '0 0 4px' }}>
+                {typeInfo?.label ?? room.room_type}
+              </p>
+              <h2 style={{ fontSize: 22, fontWeight: 400, letterSpacing: '0.04em', color: '#ffffff', margin: 0, lineHeight: 1.2 }}>
+                {label}
+              </h2>
+              {mq > 0 && (
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: '4px 0 0' }}>
+                  {mq.toFixed(1)} m² · {systemLbl || 'Sistema da configurare'}
+                </p>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                type="button"
+                onClick={onDelete}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  background: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(4px)',
+                  border: '1px solid rgba(255,255,255,0.20)',
+                  color: 'rgba(255,255,255,0.75)', padding: '8px 14px',
+                  fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                }}
+              >
+                <Trash2 size={11} />
+                Elimina
+              </button>
+              <button
+                type="button"
+                onClick={onConfigure}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: '#ffffff', border: '1px solid #ffffff',
+                  color: '#171e29', padding: '8px 18px',
+                  fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                }}
+              >
+                {room.is_configured ? (
+                  <><Settings size={12} /> Modifica</>
+                ) : (
+                  <><ArrowRight size={12} /> Configura</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Two-column info cards ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+
+        {/* Stratigraphy preview */}
+        <div
+          style={{
+            background: '#ffffff', border: '1px solid #e4e5e1',
+            padding: '20px 20px 22px',
           }}
         >
-          Rimuovi
-        </button>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#445164', margin: '0 0 16px' }}>
+            Stratigrafia
+          </p>
+          {strat.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {strat.map(({ section, label: lbl }) => (
+                <div key={section} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 3, height: 28, flexShrink: 0,
+                      background: SECTION_COLORS[section] ?? '#c8cac6',
+                    }}
+                  />
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 500, color: '#171e29', margin: 0 }}>{lbl}</p>
+                    {section === 'texture' && systemLbl && (
+                      <p style={{ fontSize: 10, color: '#8c9aaa', margin: 0 }}>{systemLbl}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : room.is_configured ? (
+            <p style={{ fontSize: 12, color: '#8c9aaa' }}>Stratigrafia disponibile dopo calcolo</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {['Preparazione', 'Texture', 'Protettivo'].map(lbl => (
+                <div key={lbl} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 3, height: 28, background: '#e4e5e1' }} />
+                  <p style={{ fontSize: 11, color: '#c8cac6', margin: 0, letterSpacing: '0.02em' }}>{lbl}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Material preview + cost */}
+        <div
+          style={{
+            background: '#ffffff', border: '1px solid #e4e5e1',
+            overflow: 'hidden',
+            display: 'flex', flexDirection: 'column',
+          }}
+        >
+          {texPreview ? (
+            <div
+              style={{
+                height: 90,
+                backgroundImage: `url(${texPreview})`,
+                backgroundSize: 'cover', backgroundPosition: 'center',
+                filter: 'brightness(0.90) saturate(0.85)',
+                flexShrink: 0,
+              }}
+            />
+          ) : (
+            <div style={{ height: 90, background: '#f2f2f0', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <p style={{ fontSize: 10, color: '#c8cac6', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Texture</p>
+            </div>
+          )}
+          <div style={{ padding: '14px 18px', flex: 1 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#445164', margin: '0 0 6px' }}>
+              Sistema decorativo
+            </p>
+            {systemLbl ? (
+              <p style={{ fontSize: 15, fontWeight: 400, color: '#171e29', margin: 0, letterSpacing: '0.03em' }}>
+                {systemLbl}
+              </p>
+            ) : (
+              <p style={{ fontSize: 12, color: '#8c9aaa', margin: 0 }}>Non selezionato</p>
+            )}
+            {totalEur > 0 && (
+              <p style={{ fontSize: 18, fontWeight: 300, color: '#171e29', margin: '12px 0 0', letterSpacing: '0.02em' }}>
+                {fmtEur(totalEur)}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Configure CTA (if not configured) ── */}
+      {!room.is_configured && (
+        <div
+          style={{
+            background: '#171e29',
+            padding: '28px 32px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}
+        >
+          <div>
+            <p style={{ fontSize: 14, fontWeight: 400, letterSpacing: '0.03em', color: '#ffffff', margin: 0 }}>
+              Configura {label}
+            </p>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', margin: '4px 0 0' }}>
+              Seleziona supporto, texture e protettivo per generare il preventivo.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onConfigure}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 10,
+              background: 'transparent', border: '1px solid rgba(255,255,255,0.35)',
+              color: '#ffffff', padding: '12px 24px',
+              fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+              transition: 'border-color 0.18s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = '#ffffff')}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)')}
+          >
+            Avvia configurazione
+            <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* ── Configured summary ── */}
+      {room.is_configured && room.cart_result && (
+        <div
+          style={{
+            background: '#ffffff', border: '1px solid #e4e5e1',
+            padding: '20px 24px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <CheckCircle2 size={18} style={{ color: '#6dbf8a' }} />
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 500, color: '#171e29', margin: 0, letterSpacing: '0.03em' }}>
+                Configurazione completata
+              </p>
+              {totalEur > 0 && (
+                <p style={{ fontSize: 11, color: '#8c9aaa', margin: '2px 0 0' }}>
+                  Stima materiali: <strong style={{ color: '#171e29' }}>{fmtEur(totalEur)}</strong>
+                </p>
+              )}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onConfigure}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'transparent', border: '1.5px solid #d4d4d2',
+              color: '#171e29', padding: '10px 18px',
+              fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+            }}
+          >
+            <Settings size={11} />
+            Modifica
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── EmptyState ────────────────────────────────────────────────────────────────
+
+function EmptyState({ onAdd }: { onAdd: () => void }) {
+  return (
+    <div
+      style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        minHeight: 360, textAlign: 'center', padding: '40px 24px',
+        background: '#ffffff', border: '1px solid #e4e5e1',
+      }}
+    >
+      <div
+        style={{
+          width: 56, height: 56, marginBottom: 20,
+          backgroundImage: 'url(/brand/nativus/materials/crystepo_detail_02.jpg)',
+          backgroundSize: 'cover', backgroundPosition: 'center',
+          filter: 'brightness(0.85) saturate(0.7)',
+        }}
+      />
+      <p style={{ fontSize: 16, fontWeight: 300, letterSpacing: '0.04em', color: '#171e29', margin: '0 0 8px' }}>
+        Nessun ambiente selezionato
+      </p>
+      <p style={{ fontSize: 12, color: '#8c9aaa', margin: '0 0 28px', lineHeight: 1.6 }}>
+        Aggiungi un ambiente dalla mappa spaziale<br />per iniziare la configurazione.
+      </p>
+      <button
+        type="button"
+        onClick={onAdd}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: '#171e29', border: 'none',
+          color: '#ffffff', padding: '12px 24px',
+          fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+        }}
+      >
+        <Plus size={13} />
+        Aggiungi ambiente
+      </button>
+    </div>
+  );
+}
+
+// ─── AddRoomModal ─────────────────────────────────────────────────────────────
+
+interface AddRoomModalProps {
+  name: string;
+  roomType: string;
+  onNameChange: (v: string) => void;
+  onTypeChange: (v: string) => void;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+function AddRoomModal({ name, roomType, onNameChange, onTypeChange, onConfirm, onCancel }: AddRoomModalProps) {
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1000,
+        background: 'rgba(23,30,41,0.60)', backdropFilter: 'blur(4px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+      onClick={e => { if (e.target === e.currentTarget) onCancel(); }}
+    >
+      <div style={{ background: '#ffffff', width: '100%', maxWidth: 480, padding: '36px 40px' }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#445164', margin: '0 0 20px' }}>
+          Nuovo ambiente
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#445164', display: 'block', marginBottom: 8 }}>
+              Nome
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={e => onNameChange(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') onConfirm(); }}
+              placeholder="es. Bagno piano 1"
+              autoFocus
+              style={{
+                width: '100%', boxSizing: 'border-box',
+                border: '1.5px solid #d4d4d2', background: '#f9f9f7',
+                padding: '12px 14px', fontSize: 14, color: '#171e29',
+                outline: 'none',
+              }}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#445164', display: 'block', marginBottom: 8 }}>
+              Tipo ambiente
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+              {ROOM_TYPES.map(rt => (
+                <button
+                  key={rt.id}
+                  type="button"
+                  onClick={() => onTypeChange(rt.id)}
+                  style={{
+                    padding: '10px 8px',
+                    border: rt.id === roomType ? '2px solid #171e29' : '1.5px solid #d4d4d2',
+                    background: rt.id === roomType ? '#171e29' : '#ffffff',
+                    color: rt.id === roomType ? '#ffffff' : '#171e29',
+                    fontSize: 11, fontWeight: 500, letterSpacing: '0.04em',
+                    cursor: 'pointer', textAlign: 'center',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {rt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 8 }}>
+            <button
+              type="button"
+              onClick={onCancel}
+              style={{
+                background: 'transparent', border: '1.5px solid #d4d4d2',
+                color: '#445164', padding: '10px 20px',
+                fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+              }}
+            >
+              Annulla
+            </button>
+            <button
+              type="button"
+              onClick={onConfirm}
+              disabled={!name.trim()}
+              style={{
+                background: '#171e29', border: '1.5px solid #171e29',
+                color: '#ffffff', padding: '10px 24px',
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+                opacity: name.trim() ? 1 : 0.35,
+              }}
+            >
+              Crea ambiente
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+// ─── ConfirmModal ─────────────────────────────────────────────────────────────
+
+function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onConfirm: () => void; onCancel: () => void }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6b6b67' }}>
-      <span>{label}</span>
-      <span style={{ color: '#171e29', fontWeight: 500 }}>{value}</span>
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1000,
+        background: 'rgba(23,30,41,0.55)', backdropFilter: 'blur(4px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+      onClick={e => { if (e.target === e.currentTarget) onCancel(); }}
+    >
+      <div style={{ background: '#ffffff', maxWidth: 380, width: '100%', padding: '32px 36px' }}>
+        <p style={{ fontSize: 13, color: '#171e29', margin: '0 0 24px', lineHeight: 1.6 }}>{message}</p>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button type="button" onClick={onCancel}
+            style={{
+              flex: 1, padding: '10px', background: 'transparent',
+              border: '1.5px solid #d4d4d2', color: '#445164',
+              fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+            }}>
+            Annulla
+          </button>
+          <button type="button" onClick={onConfirm}
+            style={{
+              flex: 1, padding: '10px', background: '#c0392b',
+              border: '1.5px solid #c0392b', color: '#ffffff',
+              fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+            }}>
+            Elimina
+          </button>
+        </div>
+      </div>
     </div>
   );
-}
-
-function IconBtn({ title, onClick, children }: { title: string; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      title={title}
-      onClick={onClick}
-      style={{
-        background: '#f7f7f5',
-        border: '1.5px solid #e8e8e6',
-        color: '#6b6b67',
-        width: 40,
-        minHeight: 40,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        transition: 'all 0.15s',
-        fontSize: 12,
-      }}
-    >
-      {children}
-    </button>
-  );
-}
-
-function fmtEur(n: number): string {
-  return n.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 }

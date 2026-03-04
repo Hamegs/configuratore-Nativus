@@ -1,9 +1,9 @@
+/* ── Hanken Grotesk — premium editorial font ────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ── Hanken Grotesk — premium editorial font ────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   html {
@@ -346,5 +346,145 @@
     font-size: 12px;
     font-weight: 500;
     flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────────── NV COMPONENT SYSTEM */
+
+  /* nv-card: white card with soft shadow */
+  .nv-card {
+    background: #ffffff;
+    border: 1px solid #e4e5e1;
+    box-shadow: 0 1px 4px rgba(23,30,41,0.04);
+    transition: box-shadow 0.18s;
+  }
+  .nv-card:hover {
+    box-shadow: 0 3px 12px rgba(23,30,41,0.08);
+  }
+
+  /* nv-panel: section panel with light bg */
+  .nv-panel {
+    background: #f8f8f6;
+    border: 1px solid #e4e5e1;
+  }
+
+  /* nv-space-block: room block for space map */
+  .nv-space-block {
+    background: #ffffff;
+    border: 1.5px solid #e4e5e1;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .nv-space-block:hover {
+    border-color: #8c9aaa;
+    box-shadow: 0 2px 8px rgba(23,30,41,0.07);
+  }
+  .nv-space-block.selected {
+    border: 2px solid #171e29;
+    box-shadow: 0 2px 12px rgba(23,30,41,0.12);
+  }
+
+  /* nv-btn-primary */
+  .nv-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #171e29;
+    border: 1.5px solid #171e29;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .nv-btn-primary:hover:not(:disabled) { background: #0d1219; }
+  .nv-btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* nv-btn-secondary */
+  .nv-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    border: 1.5px solid #d4d4d2;
+    color: #171e29;
+    padding: 12px 24px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    white-space: nowrap;
+  }
+  .nv-btn-secondary:hover:not(:disabled) { border-color: #171e29; }
+
+  /* nv-badge */
+  .nv-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .nv-badge-dark  { background: #171e29; color: #ffffff; }
+  .nv-badge-stone { background: #e4e5e1; color: #445164; }
+  .nv-badge-green { background: #d4edda; color: #1d6534; }
+
+  /* nv-hero: full-width editorial hero band */
+  .nv-hero {
+    position: relative;
+    overflow: hidden;
+    background: #0d1219;
+  }
+  .nv-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 40%;
+    filter: brightness(0.85);
+  }
+  .nv-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%);
+  }
+  .nv-hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* nv-stratigraphy: layered bar preview */
+  .nv-strat-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+  .nv-strat-line {
+    width: 3px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  /* nv-material-card */
+  .nv-material-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .nv-material-card__thumb {
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.90) saturate(0.85);
   }
 }
