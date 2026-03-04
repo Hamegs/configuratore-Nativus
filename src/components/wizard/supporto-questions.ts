@@ -116,6 +116,33 @@ const Q_PARQUET_COMP: SubQuestion = {
   ],
 };
 
+const Q_PARQUET_AREA: SubQuestion = {
+  key: 'parquet_area_mq', label: 'Superficie da compensare (m²)', type: 'number',
+};
+
+const Q_PARQUET_THICKNESS: SubQuestion = {
+  key: 'parquet_thickness_mm', label: 'Spessore da compensare (mm)', type: 'number',
+};
+
+// ── Hollow-tile compensation ──────────────────────────────────────────────────
+
+const Q_HOLLOW_AREA: SubQuestion = {
+  key: 'hollow_area_mq', label: 'Superficie piastrelle da rimuovere (m²)', type: 'number',
+};
+
+const Q_HOLLOW_THICKNESS: SubQuestion = {
+  key: 'tile_thickness_mm', label: 'Spessore piastrella (mm)', type: 'number',
+};
+
+const Q_HOLLOW_COMP: SubQuestion = {
+  key: 'hollow_comp', label: 'Sistema di compensazione quota', type: 'select',
+  options: [
+    { value: '', label: '— Seleziona —' },
+    { value: 'AS', label: 'Autolivellante AS' },
+    { value: 'EP', label: 'Massetto epossidico' },
+  ],
+};
+
 // ── Piastrella con tracce ─────────────────────────────────────────────────────
 const Q_TRACCE_MQ_PAV: SubQuestion = {
   key: 'mq_tracce', label: 'Superficie tracce pavimento (m²)', type: 'number',
@@ -171,7 +198,7 @@ const DEFAULT_FIELD_Q: Record<string, SubQuestion> = {
 // Non-DT extras: fields not in the decision table but needed by the engine
 // (parquet comp uses resolveCompRule; fughe/crepe_ml are for texture calc)
 const SUPPORT_EXTRAS: Record<string, SubQuestion[]> = {
-  F_PAR_RM:       [Q_PARQUET_COMP],
+  F_PAR_RM:       [Q_PARQUET_COMP, Q_PARQUET_AREA, Q_PARQUET_THICKNESS],
   F_MAS:          [Q_CREPE_ML],
   F_CLS:          [Q_CREPE_ML],
   W_TILE:         [Q_FUGHE_RESIDUE],
@@ -223,6 +250,7 @@ export function buildQuestionsForSupport(
   isDin: boolean,
   isShower: boolean,
   decisionTable: DecisionRule[],
+  currentSub?: Partial<SubAnswers>,
 ): SubQuestion[] {
   if (!supportId || !envId) return [];
 
@@ -236,7 +264,19 @@ export function buildQuestionsForSupport(
 
   const extras = SUPPORT_EXTRAS[supportId] ?? [];
 
-  return [...dtQuestions, ...extras];
+  const conditionalExtras: SubQuestion[] = [];
+
+  // Section E — Hollow-tile: add extra questions based on current hollow answer
+  if (supportId.startsWith('F_TILE') || supportId === 'F_TV') {
+    const hollow = currentSub?.hollow;
+    if (hollow === 'SOME') {
+      conditionalExtras.push(Q_HOLLOW_AREA, Q_HOLLOW_THICKNESS);
+    } else if (hollow === 'ALL') {
+      conditionalExtras.push(Q_HOLLOW_COMP, Q_HOLLOW_THICKNESS);
+    }
+  }
+
+  return [...dtQuestions, ...extras, ...conditionalExtras];
 }
 
 // Supports that use resolveCompRule (no DT entry needed — handled specially in cart-calculator)
@@ -281,12 +321,13 @@ export function areSubAnswersComplete(
   decisionTable: DecisionRule[],
 ): boolean {
   if (!supportId || !envId) return false;
-  const questions = buildQuestionsForSupport(supportId, envId, isDin, isShower, decisionTable);
+  const questions = buildQuestionsForSupport(supportId, envId, isDin, isShower, decisionTable, sub);
   return questions.every(q => {
     if (q.optional) return true;
     const val = sub[q.key as keyof SubAnswers];
     if (q.type === 'yesno') return val === true || val === false;
     if (q.type === 'select') return typeof val === 'string' && val !== '';
+    if (q.type === 'number') return val !== null && val !== undefined && Number(val) > 0;
     return true;
   });
 }

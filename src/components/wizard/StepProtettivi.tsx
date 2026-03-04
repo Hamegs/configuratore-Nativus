@@ -14,8 +14,11 @@ type ColorSource = 'NATURAL_24' | 'RAL' | 'NCS' | 'PANTONE_C' | 'ALTRO';
 export function StepProtettivi() {
   const state = useWizardStore();
   const {
-    protettivo, setProtettivo, texture_line, mq_pavimento, active_blocks, nextStep, prevStep,
+    protettivo, setProtettivo, texture_line, mq_pavimento, mq_pareti, active_blocks, nextStep, prevStep,
     surfaces, protector_mode, finish_type, setProtectorMode, setFinishType, updateSurface,
+    split_protettivi, setSplitProtettivi,
+    protettivo_floor, setProtettivoFloor,
+    protettivo_wall, setProtettivoWall,
   } = state;
 
   const isShower = isEffectiveShower(state);
@@ -264,12 +267,107 @@ export function StepProtettivi() {
         </section>
       )}
 
+      {/* Section D — Split protettivi floor/wall (only when both present) */}
+      {mq_pavimento > 0 && (mq_pareti ?? 0) > 0 && surfaces.length === 0 && !isSpecial && (
+        <section className="card p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-semibold text-gray-800">Protettivo separato per pavimento e pareti</h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Attiva per assegnare sistemi protettivi diversi a pavimento e pareti.
+              </p>
+            </div>
+            <label className="relative inline-flex cursor-pointer items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={split_protettivi}
+                onChange={e => {
+                  setSplitProtettivi(e.target.checked);
+                  if (!e.target.checked) { setProtettivoFloor(null); setProtettivoWall(null); }
+                }}
+                className="sr-only peer"
+              />
+              <span className={`h-6 w-11 rounded-full border-2 transition-colors ${split_protettivi ? 'bg-brand-600 border-brand-600' : 'bg-gray-200 border-gray-300'} peer-focus:ring-2 peer-focus:ring-brand-300`} />
+              <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform ${split_protettivi ? 'translate-x-5' : 'translate-x-0'}`} />
+              <span className="ml-3 font-medium text-gray-700">{split_protettivi ? 'Attivo' : 'Non attivo'}</span>
+            </label>
+          </div>
+
+          {split_protettivi && (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 pt-2">
+              <SurfaceProtettivoCard
+                label={`Pavimento — ${mq_pavimento} m²`}
+                availableSystems={availableSystems}
+                current={protettivo_floor ?? sel}
+                onChange={setProtettivoFloor}
+              />
+              <SurfaceProtettivoCard
+                label={`Pareti — ${mq_pareti} m²`}
+                availableSystems={availableSystems}
+                current={protettivo_wall ?? sel}
+                onChange={setProtettivoWall}
+              />
+            </div>
+          )}
+        </section>
+      )}
+
       <StepNavigation canContinue={isValid} onNext={nextStep} onPrev={prevStep} />
     </div>
   );
 }
 
-// ── ProtettivoColorSection ────────────────────────────────────────────────────
+// ── SurfaceProtettivoCard ─────────────────────────────────────────────────────
+function SurfaceProtettivoCard({
+  label, availableSystems, current, onChange,
+}: {
+  label: string;
+  availableSystems: ProtectionSystem[];
+  current: ProtettivoSelection;
+  onChange: (v: ProtettivoSelection) => void;
+}) {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-3">
+      <p className="text-sm font-semibold text-gray-700">{label}</p>
+
+      <div>
+        <p className="text-xs text-gray-500 mb-1.5">Sistema</p>
+        <div className="flex gap-2 flex-wrap">
+          {availableSystems.map(s => (
+            <label key={s}
+              className={`flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
+                current.system === s ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
+              }`}
+            >
+              <input type="radio" checked={current.system === s}
+                onChange={() => onChange({ ...current, system: s })} className="sr-only" />
+              {s === 'H2O' ? 'Base acqua (H₂O)' : 'Solvente (S)'}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-xs text-gray-500 mb-1.5">Finitura</p>
+        <div className="flex gap-2 flex-wrap">
+          {(['OPACO', 'LUCIDO'] as const).map(f => (
+            <label key={f}
+              className={`flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
+                current.finitura === f ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
+              }`}
+            >
+              <input type="radio" checked={current.finitura === f}
+                onChange={() => onChange({ ...current, finitura: f })} className="sr-only" />
+              {f === 'OPACO' ? 'Opaco' : 'Lucido'}
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── ProtettivoColorSection ─────────────────────────────────────────────────────
 function ProtettivoColorSection({
   source, code, onChange,
 }: {

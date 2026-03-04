@@ -128,7 +128,8 @@ export function StepSupporto() {
 
   function renderQuestions(supportId: string | null, sub: SubAnswers, setAnswer: (k: keyof SubAnswers, v: never) => void) {
     if (!supportId) return null;
-    const qs = buildQuestionsForSupport(supportId, envId, isDin, isShower, dt);
+    // Pass current sub so conditional hollow/parquet questions appear dynamically
+    const qs = buildQuestionsForSupport(supportId, envId, isDin, isShower, dt, sub);
     if (qs.length === 0) return (
       <p key={`qs-${supportId}`} className="text-xs text-gray-400 italic mt-2">
         Nessuna condizione aggiuntiva richiesta per questo supporto.
@@ -136,6 +137,12 @@ export function StepSupporto() {
     );
     return (
       <div key={`qs-${supportId}`} className="space-y-3 mt-4">
+        {sub.hollow === 'ALL' && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <strong>Attenzione:</strong> Tutte le piastrelle battono a vuoto. Si raccomanda la demolizione completa.
+            Indicare il sistema di compensazione quota e lo spessore da recuperare.
+          </div>
+        )}
         {qs.map(q => (
           <SubQuestionRow
             key={q.key}

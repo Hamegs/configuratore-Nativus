@@ -12,6 +12,7 @@ export interface SubAnswers {
   humidity_band?: string;
   cohesion?: string | boolean;
   tile_bedding?: string;
+  /** Hollow-tile status: 'NO_OR_FEW' | 'SOME' | 'ALL' */
   hollow?: string;
   piatto_doccia?: string;
   fughe_residue?: string;
@@ -20,6 +21,13 @@ export interface SubAnswers {
   mq_tracce?: number | null;
   spessore_mm_tracce?: number | null;
   tracce_riempimento?: 'RAS_FONDO_FINO' | 'MALTA_ANTIRITIRO' | null;
+  // Hollow-tile compensation (Section E)
+  hollow_area_mq?: number | null;     // area of detached tiles (m²), used when hollow = 'SOME'
+  tile_thickness_mm?: number | null;  // tile thickness (mm), used when hollow = 'SOME' | 'ALL'
+  hollow_comp?: 'AS' | 'EP' | null;   // compensation system when hollow = 'ALL'
+  // Parquet removal compensation (Section F)
+  parquet_area_mq?: number | null;    // area to compensate (m²)
+  parquet_thickness_mm?: number | null; // height to compensate (mm)
 }
 
 // ── Multi-superficie ──────────────────────────────────────────────────────────
@@ -95,6 +103,10 @@ export interface WizardState {
   protettivo: ProtettivoSelection | null;
   protector_mode: 'TRASPARENTE' | 'COLOR';  // globale per ambiente
   finish_type: 'OPACO' | 'LUCIDO';          // globale per ambiente
+  /** When true, floor and wall use independent protective systems */
+  split_protettivi: boolean;
+  protettivo_floor: ProtettivoSelection | null;  // floor-specific; null → uses protettivo
+  protettivo_wall: ProtettivoSelection | null;   // wall-specific; null → uses protettivo
 
   // Step 5 — DIN (condizionale)
   din_inputs: DinInputValues | null;

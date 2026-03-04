@@ -175,6 +175,49 @@ export function computeFullCart(
     }
   }
 
+  // ─── Section E/F: Hollow-tile + Parquet compensation raw lines ───────────
+  // Must be added BEFORE fondoConsolidated so they merge with other fondo products.
+  const EP_DENSITY_KG_PER_M2_MM = 1.8;  // 1800 kg/m³ epoxy screed density
+  const AS_DENSITY_KG_PER_M2_MM = 1.8;  // 1800 kg/m³ autolivellante density
+
+  const sub = state.sub_answers_floor;
+
+  // Section E — Hollow-tile compensation
+  if (sub.hollow === 'SOME' && (sub.hollow_area_mq ?? 0) > 0 && (sub.tile_thickness_mm ?? 0) > 0) {
+    const qty_raw = (sub.hollow_area_mq as number) * (sub.tile_thickness_mm as number) * EP_DENSITY_KG_PER_M2_MM;
+    all_raw_lines.push({
+      environment_id: '__room__', product_id: 'MAS_EP',
+      qty_raw, section: 'fondo', pack_unit: 'kg',
+      descrizione: 'Massetto Epossidico — compensazione vuoti parziali',
+    });
+  }
+
+  if (sub.hollow === 'ALL' && (sub.tile_thickness_mm ?? 0) > 0) {
+    const compensArea = state.mq_pavimento;
+    const productId = sub.hollow_comp === 'AS' ? 'AUTO_AS' : 'MAS_EP';
+    const density = sub.hollow_comp === 'AS' ? AS_DENSITY_KG_PER_M2_MM : EP_DENSITY_KG_PER_M2_MM;
+    const label = sub.hollow_comp === 'AS' ? 'Autolivellante AS — compensazione quota' : 'Massetto Epossidico — compensazione quota';
+    const qty_raw = compensArea * (sub.tile_thickness_mm as number) * density;
+    all_raw_lines.push({
+      environment_id: '__room__', product_id: productId,
+      qty_raw, section: 'fondo', pack_unit: 'kg',
+      descrizione: label,
+    });
+  }
+
+  // Section F — Parquet removal compensation
+  if (sub.parquet_comp && (sub.parquet_area_mq ?? 0) > 0 && (sub.parquet_thickness_mm ?? 0) > 0) {
+    const productId = sub.parquet_comp === 'AS' ? 'AUTO_AS' : 'MAS_EP';
+    const density = sub.parquet_comp === 'AS' ? AS_DENSITY_KG_PER_M2_MM : EP_DENSITY_KG_PER_M2_MM;
+    const label = sub.parquet_comp === 'AS' ? 'Autolivellante AS — compensazione quota parquet' : 'Massetto Epossidico — compensazione quota parquet';
+    const qty_raw = (sub.parquet_area_mq as number) * (sub.parquet_thickness_mm as number) * density;
+    all_raw_lines.push({
+      environment_id: '__room__', product_id: productId,
+      qty_raw, section: 'fondo', pack_unit: 'kg',
+      descrizione: label,
+    });
+  }
+
   // ─── Package fondo (floor + wall) — unico punto Math.ceil per preparazione ─
   // Consolidate first so identical products (e.g. RETE_160 on floor + wall) are
   // summed before Math.ceil is applied — avoids over-packaging (e.g. 30m²+20m²
@@ -316,11 +359,36 @@ export function computeFullCart(
       protStepDescriptions = protResult.step_descriptions;
     }
   } else if (state.protettivo) {
-    // ── Backward compat — singolo protettivo globale ───────────────────────
-    const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line as TexLine, texArea, usoSup);
-    all_lines.push(...protResult.cart_lines);
-    protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
-    protStepDescriptions = protResult.step_descriptions;
+    // ── Section D: Split protettivi floor/wall OR backward compat global ──────
+    if (state.split_protettivi && state.mq_pavimento > 0 && (state.mq_pareti ?? 0) > 0) {
+      const protFloor = state.protettivo_floor ?? state.protettivo;
+      const protWall  = state.protettivo_wall  ?? state.protettivo;
+      const isSame = protFloor.system === protWall.system && protFloor.finitura === protWall.finitura;
+
+      if (isSame) {
+        // Same system: merge areas into a single calculation
+        const protResult = computeProtettiviCart(store, protFloor, state.texture_line as TexLine, texArea, usoSup);
+        all_lines.push(...protResult.cart_lines);
+        protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+        protStepDescriptions = protResult.step_descriptions;
+      } else {
+        // Different systems: two independent calculations
+        const floorResult = computeProtettiviCart(store, protFloor, state.texture_line as TexLine, state.mq_pavimento, usoSup, 'Pavimento');
+        all_lines.push(...floorResult.cart_lines);
+        floorResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+        if (protStepDescriptions.length === 0) protStepDescriptions = floorResult.step_descriptions;
+
+        const wallResult = computeProtettiviCart(store, protWall, state.texture_line as TexLine, state.mq_pareti ?? 0, 'PARETE_FUORI_BAGNO', 'Pareti');
+        all_lines.push(...wallResult.cart_lines);
+        wallResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+      }
+    } else {
+      // Single protettivo for all surfaces (original behaviour)
+      const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line as TexLine, texArea, usoSup);
+      all_lines.push(...protResult.cart_lines);
+      protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+      protStepDescriptions = protResult.step_descriptions;
+    }
   }
 
 

@@ -61,6 +61,9 @@ const INITIAL_STATE: WizardState = {
   protettivo: null,
   protector_mode: 'TRASPARENTE' as const,
   finish_type: 'OPACO' as const,
+  split_protettivi: false,
+  protettivo_floor: null,
+  protettivo_wall: null,
   // DIN legacy (backward compat)
   din_inputs: null,
   // Engine output
@@ -126,6 +129,9 @@ interface WizardStore extends WizardState {
   setProtettivo: (v: ProtettivoSelection | null) => void;
   setProtectorMode: (v: 'TRASPARENTE' | 'COLOR') => void;
   setFinishType: (v: 'OPACO' | 'LUCIDO') => void;
+  setSplitProtettivi: (v: boolean) => void;
+  setProtettivoFloor: (v: ProtettivoSelection | null) => void;
+  setProtettivoWall: (v: ProtettivoSelection | null) => void;
   // Legacy
   setDinInputs: (v: DinInputValues | null) => void;
 }
@@ -394,6 +400,10 @@ export const useWizardStore = create<WizardStore>((set) => ({
   })),
 
   setFinishType: (v) => set({ finish_type: v }),
+
+  setSplitProtettivi: (v) => set({ split_protettivi: v }),
+  setProtettivoFloor: (v) => set({ protettivo_floor: v }),
+  setProtettivoWall: (v) => set({ protettivo_wall: v }),
 
   setRas2kUpgrade: (v) => set({ ras2k_upgrade: v }),
   setPreparationUpgrade: (v) => set({ preparation_upgrade: v }),
