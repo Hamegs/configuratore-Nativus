@@ -663,14 +663,50 @@ export function computeTechnicalSchedule(store: DataStore, state: WizardState): 
 
   // ─── Protettivo ────────────────────────────────────────────────────────────
   try {
+    type TexLine = import('../types/enums').TextureLineId;
+    type ProtSel = import('../types/protettivi').ProtettivoSelection;
     const usoSup = deriveUsoSuperficie(state);
-    const protResult = computeProtettiviCart(store, state.protettivo, state.texture_line, texArea, usoSup);
-    const protProducts = protResult.step_descriptions.map(s => ({
-      name: s.name,
-      step_order: s.step_order,
-    }));
-    if (protProducts.length > 0) {
-      sections.push({ title: 'PROTETTIVO', products: protProducts });
+    const allProtSteps: Array<{ name: string; step_order: number }> = [];
+
+    if (state.protector_mode === 'COLOR' && state.surfaces && state.surfaces.length > 0) {
+      // Per-surface COLOR mode: build step descriptions for each surface
+      const seen = new Set<string>();
+      for (const surface of state.surfaces) {
+        const effectiveTex = (surface.texture_line ?? state.texture_line) as TexLine;
+        if (!effectiveTex) continue;
+        const surfUso2: typeof usoSup = surface.type === 'FLOOR'
+          ? usoSup
+          : (isEffectiveShower(state) ? 'BAGNO_DOCCIA' : 'PARETE_FUORI_BAGNO');
+        const surfZone = surface.type === 'FLOOR' ? 'Pavimento' : 'Parete';
+        const colorSel: ProtSel = {
+          ...state.protettivo!,
+          finitura: state.protettivo!.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : state.protettivo!.finitura,
+          uso_superficie: surfUso2,
+          opaco_colorato: true,
+          colore_source: surface.protector_color?.type,
+          colore_code: surface.protector_color?.code ?? state.protettivo!.colore_code,
+        };
+        const r = computeProtettiviCart(store, colorSel, effectiveTex, surface.mq, surfUso2, surfZone);
+        r.step_descriptions.forEach(s => {
+          const key = `${s.name}::${surfZone}`;
+          if (!seen.has(key)) { seen.add(key); allProtSteps.push({ name: s.name, step_order: s.step_order }); }
+        });
+      }
+    } else {
+      // Standard or backward-compat: use global protettivo, enriched for COLOR mode
+      const stdSel: ProtSel = {
+        ...state.protettivo!,
+        opaco_colorato: state.protector_mode === 'COLOR' || !!state.protettivo!.opaco_colorato,
+        finitura: (state.protector_mode === 'COLOR' && state.protettivo!.system === 'H2O')
+          ? 'PROTEGGO_COLOR_OPACO'
+          : state.protettivo!.finitura,
+      };
+      const r = computeProtettiviCart(store, stdSel, state.texture_line as TexLine, texArea, usoSup);
+      r.step_descriptions.forEach(s => allProtSteps.push({ name: s.name, step_order: s.step_order }));
+    }
+
+    if (allProtSteps.length > 0) {
+      sections.push({ title: 'PROTETTIVO', products: allProtSteps });
     }
   } catch { /* noop */ }
 
