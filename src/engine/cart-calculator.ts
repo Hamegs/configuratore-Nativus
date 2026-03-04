@@ -1,7 +1,7 @@
 import type { DataStore } from '../utils/data-loader';
 import type { CartLine, CartFee, CartHardNote, CartSummary, CartProcedureStep, RawCartLine } from '../types/cart';
 import type { TextureInput } from './texture-rules';
-import { packageLines } from './raw-cart-engine';
+import { packageLines, consolidateRawGlobal } from './raw-cart-engine';
 import type { WizardState } from '../types/wizard-state';
 import { matchDecisionTable, buildRuleInputFromWizard, resolveCompRule } from './decision-table';
 import { resolveStepsForRule } from './step-resolver';
@@ -176,8 +176,11 @@ export function computeFullCart(
   }
 
   // ─── Package fondo (floor + wall) — unico punto Math.ceil per preparazione ─
-  // floor/wall raw lines già in all_raw_lines, ora producono CartLine per display
-  all_lines.push(...packageLines(store, all_raw_lines.filter(l => l.section === 'fondo'), 'CONFEZIONI_GRANDI'));
+  // Consolidate first so identical products (e.g. RETE_160 on floor + wall) are
+  // summed before Math.ceil is applied — avoids over-packaging (e.g. 30m²+20m²
+  // being treated as 1+1 packs instead of the optimal Math.ceil(50/50)=1 pack).
+  const fondoConsolidated = consolidateRawGlobal(all_raw_lines.filter(l => l.section === 'fondo'));
+  all_lines.push(...packageLines(store, fondoConsolidated, 'CONFEZIONI_GRANDI'));
 
   // ─── Texture ─────────────────────────────────────────────────────────────
   // Modello multi-superficie: calcola per ogni Surface; fallback singola texture se surfaces è vuoto.
