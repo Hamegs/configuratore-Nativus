@@ -2,7 +2,7 @@ import type { DataStore } from '../utils/data-loader';
 import type { PackagedItem, ServiceSection } from '../types/services';
 import type { PackagingStrategy } from '../types/project';
 import type { TechnicalGroupEnriched } from './technical';
-import { computePackagingOptions, bestOption } from '../engine/packaging-optimizer';
+import { computePackagingOptions, bestOption, computeOptimalMix } from '../engine/packaging-optimizer';
 import { computeTextureCart } from '../engine/texture-rules';
 import { DataError } from '../engine/errors';
 import { getCommercialName } from '../utils/product-names';
@@ -120,11 +120,36 @@ export function computePackagedItems(
         console.warn('[computePackagedItems] qty_raw=0 per:', agg.product_id);
         continue;
       }
+      const nomeCommerciale = getCommercialName(agg.product_id) ?? agg.description;
+
+      if (mode === 'MINIMO_SFRIDO') {
+        const mixItems = computeOptimalMix(agg.qty_raw, skus, store.listino);
+        for (const item of mixItems) {
+          items.push({
+            row_id: crypto.randomUUID(),
+            product_id: agg.product_id,
+            sku_id: item.sku_id,
+            nomeCommerciale,
+            description: agg.description,
+            destination: agg.destination,
+            section: agg.section,
+            qty_packs: item.qty_packs,
+            pack_size: item.pack_size,
+            pack_unit: item.pack_unit,
+            prezzo_unitario: item.prezzo_unitario,
+            totale: item.subtotale,
+            from_rooms: fromRooms,
+            status: 'active',
+            source: 'auto',
+          });
+        }
+        continue;
+      }
+
       const options = computePackagingOptions(agg.qty_raw, skus, store.listino);
       const best = bestOption(options, mode);
       if (!best) continue;
 
-      const nomeCommerciale = getCommercialName(agg.product_id) ?? agg.description;
       items.push({
         row_id: crypto.randomUUID(),
         product_id: agg.product_id,

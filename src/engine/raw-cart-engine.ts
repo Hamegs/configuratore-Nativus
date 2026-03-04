@@ -13,7 +13,7 @@ import type { DataStore } from '../utils/data-loader';
 import type { RawCartLine, CartLine } from '../types/cart';
 import type { PackagingStrategy } from '../types/project';
 import type { TextureInput } from './texture-rules';
-import { computePackagingOptions, bestOption } from './packaging-optimizer';
+import { computePackagingOptions, bestOption, computeOptimalMix } from './packaging-optimizer';
 import { computeTextureCart } from './texture-rules';
 import { getCommercialName } from '../utils/product-names';
 
@@ -168,7 +168,6 @@ export function packageLines(
       console.warn('[packageLines] qty_raw ≤ 0 for:', raw.product_id);
       continue;
     }
-    console.log('[PACKAGING] product:', raw.product_id, 'qty_raw:', raw.qty_raw);
     const validSkus = store.packagingSku.filter(
       s => s.product_id === raw.product_id && (s.pack_size ?? 0) > 0,
     );
@@ -176,14 +175,35 @@ export function packageLines(
       console.warn('[packageLines] No valid SKU for:', raw.product_id);
       continue;
     }
+    const desc = raw.descrizione ?? getCommercialName(raw.product_id) ?? raw.product_id;
+
+    // MINIMO_SFRIDO: greedy large-first mix — may produce multiple lines per product
+    if (strategy === 'MINIMO_SFRIDO') {
+      const mixItems = computeOptimalMix(raw.qty_raw, validSkus, store.listino);
+      for (const item of mixItems) {
+        result.push({
+          sku_id: item.sku_id,
+          descrizione: desc,
+          qty: item.qty_packs,
+          prezzo_unitario: item.prezzo_unitario,
+          totale: item.subtotale,
+          product_id: raw.product_id,
+          section: raw.section,
+          qty_raw: raw.qty_raw,
+          pack_size: item.pack_size,
+          pack_unit: item.pack_unit,
+        });
+      }
+      continue;
+    }
+
+    // All other strategies: single best SKU
     const opts = computePackagingOptions(raw.qty_raw, validSkus, store.listino);
     const best = bestOption(opts, strategy);
-    console.log('[PACKAGING RESULT]', best);
     if (!best) continue;
-
     result.push({
       sku_id: best.sku_id,
-      descrizione: raw.descrizione ?? getCommercialName(raw.product_id) ?? raw.product_id,
+      descrizione: desc,
       qty: best.qty_packs,
       prezzo_unitario: best.prezzo_unitario,
       totale: best.totale,

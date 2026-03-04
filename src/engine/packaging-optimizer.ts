@@ -12,6 +12,15 @@ export interface PackagingOption {
   sfrido: number;
 }
 
+export interface PackagingMixItem {
+  sku_id: string;
+  pack_size: number;
+  pack_unit: string;
+  qty_packs: number;
+  prezzo_unitario: number;
+  subtotale: number;
+}
+
 export function computePackagingOptions(
   qty_raw: number,
   skus: PackagingSku[],
@@ -37,11 +46,103 @@ export function computePackagingOptions(
   });
 }
 
+/**
+ * Compute the optimal combination of package sizes to minimize waste.
+ *
+ * Algorithm (priority order):
+ *   1. Minimize waste (total supplied − required)
+ *   2. Minimize total number of packages
+ *   3. Prefer larger packages
+ *
+ * Phase 1 — greedy large-first: use as many large packs as possible
+ *   without exceeding the required quantity.
+ * Phase 2 — cover remainder: pick the single SKU size that covers the
+ *   remaining quantity with the least waste; on tie prefer the larger size.
+ *
+ * Returns one entry per pack size used (may be multiple entries when
+ * a combination of sizes is optimal, e.g. 1×20kg + 3×1kg for 23 kg).
+ */
+export function computeOptimalMix(
+  qty_raw: number,
+  skus: PackagingSku[],
+  listino: ListinoSku[],
+): PackagingMixItem[] {
+  const valid = skus.filter(s => (s.pack_size ?? 0) > 0);
+  if (valid.length === 0 || qty_raw <= 0) return [];
+
+  const sorted = [...valid].sort((a, b) => (b.pack_size as number) - (a.pack_size as number));
+
+  if (sorted.length === 1) {
+    const sku = sorted[0];
+    const qty_packs = Math.ceil(qty_raw / sku.pack_size!);
+    const price = listino.find(l => l.sku_id === sku.sku_id)?.prezzo_listino ?? 0;
+    return [{
+      sku_id: sku.sku_id,
+      pack_size: sku.pack_size!,
+      pack_unit: sku.pack_unit,
+      qty_packs,
+      prezzo_unitario: price,
+      subtotale: qty_packs * price,
+    }];
+  }
+
+  const mix = new Map<string, number>();
+  let remaining = qty_raw;
+
+  // Phase 1: use floor(remaining / size) of each size, large first
+  for (const sku of sorted) {
+    if (remaining <= 1e-9) break;
+    const qty = Math.floor(remaining / sku.pack_size!);
+    if (qty > 0) {
+      mix.set(sku.sku_id, (mix.get(sku.sku_id) ?? 0) + qty);
+      remaining = +(remaining - qty * sku.pack_size!).toFixed(9);
+    }
+  }
+
+  // Phase 2: cover remaining with the SKU that produces the least waste
+  if (remaining > 1e-9) {
+    let bestSku: PackagingSku | null = null;
+    let bestWaste = Infinity;
+    for (const sku of sorted) {
+      const qty = Math.ceil(remaining / sku.pack_size!);
+      const waste = +(qty * sku.pack_size! - remaining).toFixed(9);
+      // Less waste wins; on tie the largest size wins (sorted desc, so first match keeps priority)
+      if (waste < bestWaste) {
+        bestWaste = waste;
+        bestSku = sku;
+      }
+    }
+    if (bestSku) {
+      const qty = Math.ceil(remaining / bestSku.pack_size!);
+      mix.set(bestSku.sku_id, (mix.get(bestSku.sku_id) ?? 0) + qty);
+    }
+  }
+
+  return sorted
+    .filter(sku => (mix.get(sku.sku_id) ?? 0) > 0)
+    .map(sku => {
+      const qty_packs = mix.get(sku.sku_id)!;
+      const price = listino.find(l => l.sku_id === sku.sku_id)?.prezzo_listino ?? 0;
+      return {
+        sku_id: sku.sku_id,
+        pack_size: sku.pack_size!,
+        pack_unit: sku.pack_unit,
+        qty_packs,
+        prezzo_unitario: price,
+        subtotale: qty_packs * price,
+      };
+    });
+}
+
 export function bestOption(options: PackagingOption[], strategy: PackagingStrategy): PackagingOption | null {
   if (options.length === 0) return null;
   switch (strategy) {
     case 'MINIMO_SFRIDO':
-      return options.slice().sort((a, b) => a.sfrido - b.sfrido || a.totale - b.totale)[0];
+      // Single-SKU fallback: pick the one with least waste, then fewest packs, then largest size.
+      // The multi-SKU optimal mix is handled by computeOptimalMix / packageLines.
+      return options.slice().sort((a, b) =>
+        a.sfrido - b.sfrido || a.qty_packs - b.qty_packs || b.pack_size - a.pack_size,
+      )[0];
     case 'ECONOMICO':
       return options.slice().sort((a, b) => a.totale - b.totale)[0];
     case 'CONFEZIONI_GRANDI':
@@ -92,6 +193,30 @@ export function buildCartFromAggregated(
         { product_id: agg.product_id },
       );
     }
+
+    if (strategy === 'MINIMO_SFRIDO') {
+      const mixItems = computeOptimalMix(agg.qty_raw, skus, listino);
+      for (const item of mixItems) {
+        rows.push({
+          row_id: crypto.randomUUID(),
+          product_id: agg.product_id,
+          sku_id: item.sku_id,
+          descrizione: agg.descrizione,
+          qty_packs: item.qty_packs,
+          pack_size: item.pack_size,
+          pack_unit: item.pack_unit,
+          prezzo_unitario: item.prezzo_unitario,
+          totale: item.subtotale,
+          source: 'auto',
+          status: 'active',
+          is_override: false,
+          section: agg.section,
+          from_rooms: agg.from_rooms,
+        });
+      }
+      continue;
+    }
+
     const opts = computePackagingOptions(agg.qty_raw, skus, listino);
     const best = bestOption(opts, strategy);
     if (!best) continue;
