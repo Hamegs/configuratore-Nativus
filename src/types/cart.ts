@@ -10,6 +10,8 @@ export interface CartLine {
   qty_raw?: number;
   pack_size?: number;
   pack_unit?: string;
+  destination?: string;
+  color_label?: string;
 }
 
 /**

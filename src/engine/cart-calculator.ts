@@ -321,22 +321,30 @@ export function computeFullCart(
     if (state.protector_mode === 'COLOR') {
       // Per-surface: ogni superficie ha il proprio colore protettivo
       for (const surface of state.surfaces) {
-        if (!surface.texture_line) continue;
+        const effectiveTexture = surface.texture_line ?? state.texture_line;
+        if (!effectiveTexture) continue;
         const surfZone = surface.type === 'FLOOR'
           ? 'Pavimento'
           : wallSurfaces.length === 1
             ? 'Parete'
             : `Parete ${wallSurfaces.indexOf(surface) + 1}`;
+        // uso_superficie corretto per tipo superficie
+        const surfUso = surface.type === 'FLOOR'
+          ? usoSup
+          : (state.presenza_doccia ? 'BAGNO_DOCCIA' : 'PARETE_FUORI_BAGNO') as typeof usoSup;
+        const colorLabel = surface.protector_color?.label ?? surface.protector_color?.code ?? state.protettivo.colore_code ?? undefined;
         const protSelColor: import('../types/protettivi').ProtettivoSelection = {
           ...state.protettivo,
           finitura: state.protettivo.system === 'H2O' ? 'PROTEGGO_COLOR_OPACO' : state.protettivo.finitura,
-          uso_superficie: usoSup,
+          uso_superficie: surfUso,
           opaco_colorato: true,
           colore_source: surface.protector_color?.type,
           colore_code: surface.protector_color?.code ?? surface.protector_color?.label ?? state.protettivo.colore_code,
         };
-        const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup, surfZone);
-        all_lines.push(...protResult.cart_lines);
+        const protResult = computeProtettiviCart(store, protSelColor, effectiveTexture as TexLine, surface.mq, surfUso, surfZone);
+        // enrich cart lines with destination + color_label for correct consolidation
+        const enriched = protResult.cart_lines.map(l => ({ ...l, destination: surfZone, color_label: colorLabel }));
+        all_lines.push(...enriched);
         protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
         protStepDescriptions.push(...protResult.step_descriptions);
       }
@@ -768,7 +776,8 @@ function consolidateLines(lines: CartLine[]): CartLine[] {
     const displayDesc = (line.section === 'texture' || line.section === 'protettivi')
       ? stripZoneLabel(line.descrizione)
       : line.descrizione;
-    const key = `${line.sku_id}::${displayDesc}`;
+    // Include section + destination in key: prevents floor/wall protettivi from merging
+    const key = `${line.sku_id}::${line.section}::${line.destination ?? ''}::${displayDesc}`;
     const existing = map.get(key);
     if (existing) {
       existing.qty += line.qty;
