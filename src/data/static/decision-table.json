@@ -2194,5 +2194,29 @@
     "hollow": null,
     "fughe_residue": null,
     "priority": 10
+  },
+  {
+    "rule_id": "W_TILE_ORD_PERF",
+    "support_id": "W_TILE",
+    "env_id": "ORD",
+    "din": "0",
+    "zona_doccia": "0",
+    "humidity_band": null,
+    "cohesion": "LEV_OK",
+    "cracks": null,
+    "tile_bedding": null,
+    "hollow": null
+  },
+  {
+    "rule_id": "W_TILE_ORD_NPERF",
+    "support_id": "W_TILE",
+    "env_id": "ORD",
+    "din": "0",
+    "zona_doccia": "0",
+    "humidity_band": null,
+    "cohesion": "LEV_NOK",
+    "cracks": null,
+    "tile_bedding": null,
+    "hollow": null
   }
 ]

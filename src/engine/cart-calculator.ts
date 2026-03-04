@@ -183,39 +183,36 @@ export function computeFullCart(
   const sub = state.sub_answers_floor;
 
   // Section E — Hollow-tile compensation
+  // Epoxy screed is decomposed: FONDO_BASE (binder 25%) + QUARZO_0_7_1_2 (aggregate 75%)
   if (sub.hollow === 'SOME' && (sub.hollow_area_mq ?? 0) > 0 && (sub.tile_thickness_mm ?? 0) > 0) {
-    const qty_raw = (sub.hollow_area_mq as number) * (sub.tile_thickness_mm as number) * EP_DENSITY_KG_PER_M2_MM;
-    all_raw_lines.push({
-      environment_id: '__room__', product_id: 'MAS_EP',
-      qty_raw, section: 'fondo', pack_unit: 'kg',
-      descrizione: 'Massetto Epossidico — compensazione vuoti parziali',
-    });
+    const qtyTotal = (sub.hollow_area_mq as number) * (sub.tile_thickness_mm as number) * EP_DENSITY_KG_PER_M2_MM;
+    all_raw_lines.push({ environment_id: '__room__', product_id: 'FONDO_BASE', qty_raw: qtyTotal * 0.25, section: 'fondo', pack_unit: 'kg', descrizione: 'Fondo Base — massetto ep. vuoti parziali (legante)' });
+    all_raw_lines.push({ environment_id: '__room__', product_id: 'QUARZO_0_7_1_2', qty_raw: qtyTotal * 0.75, section: 'fondo', pack_unit: 'kg', descrizione: 'Quarzo 0,7-1,2 — massetto ep. vuoti parziali (aggregato)' });
   }
 
   if (sub.hollow === 'ALL' && (sub.tile_thickness_mm ?? 0) > 0) {
     const compensArea = state.mq_pavimento;
-    const productId = sub.hollow_comp === 'AS' ? 'AUTO_AS' : 'MAS_EP';
-    const density = sub.hollow_comp === 'AS' ? AS_DENSITY_KG_PER_M2_MM : EP_DENSITY_KG_PER_M2_MM;
-    const label = sub.hollow_comp === 'AS' ? 'Autolivellante AS — compensazione quota' : 'Massetto Epossidico — compensazione quota';
-    const qty_raw = compensArea * (sub.tile_thickness_mm as number) * density;
-    all_raw_lines.push({
-      environment_id: '__room__', product_id: productId,
-      qty_raw, section: 'fondo', pack_unit: 'kg',
-      descrizione: label,
-    });
+    const thickness = sub.tile_thickness_mm as number;
+    if (sub.hollow_comp === 'AS') {
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'AUTO_AS', qty_raw: compensArea * thickness * AS_DENSITY_KG_PER_M2_MM, section: 'fondo', pack_unit: 'kg', descrizione: 'Autolivellante AS — compensazione quota' });
+    } else {
+      const qtyTotal = compensArea * thickness * EP_DENSITY_KG_PER_M2_MM;
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'FONDO_BASE', qty_raw: qtyTotal * 0.25, section: 'fondo', pack_unit: 'kg', descrizione: 'Fondo Base — massetto ep. compensazione quota (legante)' });
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'QUARZO_0_7_1_2', qty_raw: qtyTotal * 0.75, section: 'fondo', pack_unit: 'kg', descrizione: 'Quarzo 0,7-1,2 — massetto ep. compensazione quota (aggregato)' });
+    }
   }
 
   // Section F — Parquet removal compensation
   if (sub.parquet_comp && (sub.parquet_area_mq ?? 0) > 0 && (sub.parquet_thickness_mm ?? 0) > 0) {
-    const productId = sub.parquet_comp === 'AS' ? 'AUTO_AS' : 'MAS_EP';
-    const density = sub.parquet_comp === 'AS' ? AS_DENSITY_KG_PER_M2_MM : EP_DENSITY_KG_PER_M2_MM;
-    const label = sub.parquet_comp === 'AS' ? 'Autolivellante AS — compensazione quota parquet' : 'Massetto Epossidico — compensazione quota parquet';
-    const qty_raw = (sub.parquet_area_mq as number) * (sub.parquet_thickness_mm as number) * density;
-    all_raw_lines.push({
-      environment_id: '__room__', product_id: productId,
-      qty_raw, section: 'fondo', pack_unit: 'kg',
-      descrizione: label,
-    });
+    const thickness = sub.parquet_thickness_mm as number;
+    const area = sub.parquet_area_mq as number;
+    if (sub.parquet_comp === 'AS') {
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'AUTO_AS', qty_raw: area * thickness * AS_DENSITY_KG_PER_M2_MM, section: 'fondo', pack_unit: 'kg', descrizione: 'Autolivellante AS — compensazione quota parquet' });
+    } else {
+      const qtyTotal = area * thickness * EP_DENSITY_KG_PER_M2_MM;
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'FONDO_BASE', qty_raw: qtyTotal * 0.25, section: 'fondo', pack_unit: 'kg', descrizione: 'Fondo Base — massetto ep. parquet (legante)' });
+      all_raw_lines.push({ environment_id: '__room__', product_id: 'QUARZO_0_7_1_2', qty_raw: qtyTotal * 0.75, section: 'fondo', pack_unit: 'kg', descrizione: 'Quarzo 0,7-1,2 — massetto ep. parquet (aggregato)' });
+    }
   }
 
   // ─── Package fondo (floor + wall) — unico punto Math.ceil per preparazione ─
@@ -341,7 +338,7 @@ export function computeFullCart(
         const protResult = computeProtettiviCart(store, protSelColor, surface.texture_line as TexLine, surface.mq, usoSup, surfZone);
         all_lines.push(...protResult.cart_lines);
         protResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
-        if (protStepDescriptions.length === 0) protStepDescriptions = protResult.step_descriptions;
+        protStepDescriptions.push(...protResult.step_descriptions);
       }
     } else {
       // TRASPARENTE: calcolo unico sull'area totale
@@ -376,11 +373,12 @@ export function computeFullCart(
         const floorResult = computeProtettiviCart(store, protFloor, state.texture_line as TexLine, state.mq_pavimento, usoSup, 'Pavimento');
         all_lines.push(...floorResult.cart_lines);
         floorResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
-        if (protStepDescriptions.length === 0) protStepDescriptions = floorResult.step_descriptions;
+        protStepDescriptions.push(...floorResult.step_descriptions);
 
         const wallResult = computeProtettiviCart(store, protWall, state.texture_line as TexLine, state.mq_pareti ?? 0, 'PARETE_FUORI_BAGNO', 'Pareti');
         all_lines.push(...wallResult.cart_lines);
         wallResult.hard_alerts.forEach(a => all_alerts.push({ code: 'PROT_ALERT', text: a, severity: 'hard' }));
+        protStepDescriptions.push(...wallResult.step_descriptions);
       }
     } else {
       // Single protettivo for all surfaces (original behaviour)
@@ -707,7 +705,8 @@ export function computeTracceLines(store: DataStore, state: WizardState): CartLi
     const spessore = sub.spessore_mm_tracce ?? 0;
     if (mq > 0 && spessore > 0) {
       const kgMasEp = (mq * spessore / 1000) * 1800;
-      pushLine(store, lines, 'MAS_EP', kgMasEp, 'fondo');
+      pushLine(store, lines, 'FONDO_BASE', kgMasEp * 0.25, 'fondo');
+      pushLine(store, lines, 'QUARZO_0_7_1_2', kgMasEp * 0.75, 'fondo');
     }
   }
 
