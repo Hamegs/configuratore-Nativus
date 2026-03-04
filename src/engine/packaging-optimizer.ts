@@ -21,6 +21,18 @@ export interface PackagingMixItem {
   subtotale: number;
 }
 
+/**
+ * Compute single-SKU packaging options for a raw quantity.
+ *
+ * The same formula `packs = Math.ceil(qty_raw / pack_size)` applies to all
+ * coverage types — the caller is responsible for ensuring qty_raw is in the
+ * correct unit:
+ *   - coverage_type 'weight'  → qty_raw in kg,  pack_size in kg
+ *   - coverage_type 'surface' → qty_raw in m²,  pack_size in m²
+ *     (mesh/rete: 1 linear meter = 1 m² since roll width = 1 m)
+ *   - coverage_type 'volume'  → qty_raw in L,   pack_size in L
+ *   - coverage_type 'units'   → qty_raw in pcs, pack_size in pcs
+ */
 export function computePackagingOptions(
   qty_raw: number,
   skus: PackagingSku[],

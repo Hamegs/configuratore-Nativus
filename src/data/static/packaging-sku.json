@@ -292,18 +292,20 @@
     "product_id": "RETE_160",
     "descrizione_sku": "Rete di vetro da 160 g/mq",
     "pack_size": 50,
-    "pack_unit": "m",
+    "pack_unit": "mq",
     "componenti": "",
-    "note_packaging": "DA_LISTINO_XLSX"
+    "note_packaging": "DA_LISTINO_XLSX",
+    "coverage_type": "surface"
   },
   {
     "sku_id": "RETE_DI_VETRO_DA_75_G_MQ_100M",
     "product_id": "RETE_75",
     "descrizione_sku": "Rete di vetro da 75 g/mq",
     "pack_size": 100,
-    "pack_unit": "m",
+    "pack_unit": "mq",
     "componenti": "",
-    "note_packaging": "DA_LISTINO_XLSX"
+    "note_packaging": "DA_LISTINO_XLSX",
+    "coverage_type": "surface"
   },
   {
     "sku_id": "KIT_2_MQ_COLORABILE_NATURAL_CHROMO_2M2",
