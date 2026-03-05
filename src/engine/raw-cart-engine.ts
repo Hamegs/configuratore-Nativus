@@ -89,9 +89,11 @@ export function consolidateRawGlobal(rawLines: RawCartLine[]): RawCartLine[] {
         texMap.set(key, { ...line, environment_id: 'global' });
       }
     } else {
-      // Global merge: destination is intentionally ignored so identical products
-      // across rooms (e.g. same rasante in Pavimento vs Parete) are summed.
-      const key = `${line.product_id}::${line.section}`;
+      // For protettivi: include destination + color_label so different surfaces/colors stay separate.
+      // For all other sections (fondo, din, etc.): merge globally by product_id + section.
+      const key = line.section === 'protettivi'
+        ? `${line.product_id}::protettivi::${line.destination ?? ''}::${line.color_label ?? ''}`
+        : `${line.product_id}::${line.section}`;
       const existing = nonTexMap.get(key);
       if (existing) {
         existing.qty_raw += line.qty_raw;
@@ -192,6 +194,8 @@ export function packageLines(
           qty_raw: raw.qty_raw,
           pack_size: item.pack_size,
           pack_unit: item.pack_unit,
+          destination: raw.destination,
+          color_label: raw.color_label,
         });
       }
       continue;
@@ -212,6 +216,8 @@ export function packageLines(
       qty_raw: raw.qty_raw,
       pack_size: best.pack_size,
       pack_unit: best.pack_unit,
+      destination: raw.destination,
+      color_label: raw.color_label,
     });
   }
 

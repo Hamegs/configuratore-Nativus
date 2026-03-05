@@ -446,6 +446,8 @@ export function computeFullCart(
       section: line.section,
       pack_unit: line.pack_unit ?? 'kg',
       descrizione: line.descrizione,
+      destination: line.destination,
+      color_label: line.color_label,
     });
   }
   console.log('[computeFullCart] RAW lines total:', all_raw_lines.length, all_raw_lines.map(l => `${l.section}:${l.product_id}:${l.qty_raw.toFixed(2)}`));
