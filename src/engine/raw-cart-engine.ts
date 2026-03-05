@@ -71,6 +71,7 @@ export function consolidateRawByEnvironment(
  * For non-texture: groups by product_id + section + destination.
  */
 export function consolidateRawGlobal(rawLines: RawCartLine[]): RawCartLine[] {
+  console.log('[RAW BEFORE CONSOLIDATION]', rawLines.map(l => ({ product_id: l.product_id, section: l.section, destination: l.destination, color_label: l.color_label, qty_raw: l.qty_raw })));
   const texMap = new Map<string, RawCartLine>();
   const nonTexMap = new Map<string, RawCartLine>();
 
@@ -103,7 +104,9 @@ export function consolidateRawGlobal(rawLines: RawCartLine[]): RawCartLine[] {
     }
   }
 
-  return [...Array.from(nonTexMap.values()), ...Array.from(texMap.values())];
+  const consolidated = [...Array.from(nonTexMap.values()), ...Array.from(texMap.values())];
+  console.log('[RAW AFTER CONSOLIDATION]', consolidated.map(l => ({ product_id: l.product_id, section: l.section, destination: l.destination, color_label: l.color_label, qty_raw: l.qty_raw })));
+  return consolidated;
 }
 
 // ─── Layer 2/3 — THE ONLY Math.ceil location ──────────────────────────────────
@@ -120,6 +123,7 @@ export function packageLines(
   rawLines: RawCartLine[],
   strategy: PackagingStrategy,
 ): CartLine[] {
+  console.log('[RAW BEFORE PACKAGING]', rawLines.map(l => ({ product_id: l.product_id, section: l.section, destination: l.destination, color_label: l.color_label, qty_raw: l.qty_raw })));
   const result: CartLine[] = [];
 
   // ── Texture ─────────────────────────────────────────────────────────────────

@@ -814,8 +814,10 @@ function consolidateLines(lines: CartLine[]): CartLine[] {
     const displayDesc = (line.section === 'texture' || line.section === 'protettivi')
       ? stripZoneLabel(line.descrizione)
       : line.descrizione;
-    // Include section + destination in key: prevents floor/wall protettivi from merging
-    const key = `${line.sku_id}::${line.section}::${line.destination ?? ''}::${displayDesc}`;
+    // Key: product_id + section + destination + color_label
+    // Prevents floor/wall or different-color protettivi from merging.
+    // Same product_id + destination + color_label = safe to merge.
+    const key = `${line.product_id ?? line.sku_id}::${line.section}::${line.destination ?? ''}::${line.color_label ?? ''}`;
     const existing = map.get(key);
     if (existing) {
       existing.qty += line.qty;
