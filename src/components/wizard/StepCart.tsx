@@ -6,6 +6,7 @@ import { computePackagedItems } from '../../services/packaging';
 import { useCartStore } from '../../store/cart-store';
 import { loadDataStore } from '../../utils/data-loader';
 import { formatEur } from '../../utils/format';
+import { formatColorLabel } from '../../utils/color-system';
 import { StepHeader, StepNavigation } from './StepAmbiente';
 import type { CartResult } from '../../engine/cart-calculator';
 import type { PackagingStrategy } from '../../types/project';
@@ -74,14 +75,14 @@ function buildCartGroups(items: PackagedItem[]): CartGroup[] {
   return Array.from(map.values());
 }
 
-function extractColorFromDescription(desc: string, nomeCommerciale: string): string | null {
-  const stripped = desc.replace(nomeCommerciale, '').trim();
-  if (!stripped || stripped === desc) {
-    const parts = desc.split(' — ');
-    if (parts.length >= 2) return parts.slice(1).join(' — ');
-    return null;
+function resolveColorText(group: CartGroup): string | null {
+  if (group.color_label) return formatColorLabel(group.color_label);
+  const parts = group.description.split(' — ');
+  if (parts.length >= 2) {
+    const colorPart = parts.slice(1).join(' — ');
+    return formatColorLabel(colorPart) || null;
   }
-  return stripped.replace(/^[\s—]+/, '').trim() || null;
+  return null;
 }
 
 export function StepCart({ onComplete }: StepCartProps) {
@@ -197,9 +198,7 @@ export function StepCart({ onComplete }: StepCartProps) {
             <tbody>
               {(groupsBySection[sec] ?? []).map(group => {
                 const isSinglePack = group.packs.length === 1;
-                const colorText = group.color_label
-                  ? group.color_label
-                  : extractColorFromDescription(group.description, group.nomeCommerciale);
+                const colorText = resolveColorText(group);
                 const firstPack = group.packs[0];
 
                 if (isSinglePack) {

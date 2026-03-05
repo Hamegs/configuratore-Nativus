@@ -6,6 +6,15 @@ import { loadDataStore } from '../../utils/data-loader';
 import type { PackagingStrategy, ProjectCartRow, ConsolidationMode } from '../../types/project';
 import { computePackagingOptions } from '../../engine/packaging-optimizer';
 import { formatEur } from '../../utils/format';
+import { formatColorLabel } from '../../utils/color-system';
+
+const SECTION_PRIORITY: Record<string, number> = {
+  fondo:      1,
+  texture:    2,
+  protettivi: 3,
+  din:        4,
+  speciale:   5,
+};
 
 const CONSOLIDATION_MODES: { id: ConsolidationMode; label: string; desc: string }[] = [
   { id: 'OPTIMIZED', label: 'Ottimizzata globalmente',  desc: 'Aggrega i materiali tra ambienti, poi calcola le confezioni' },
@@ -43,10 +52,14 @@ function SectionBadge({ section }: { section: string }) {
 }
 
 function RowTitle({ row }: { row: ProjectCartRow }) {
+  const segments = row.descrizione.split(' — ');
+  const formattedDesc = segments
+    .map((seg, i) => (i === 0 ? seg : formatColorLabel(seg)))
+    .join(' — ');
   return (
     <div>
       <p className="font-medium text-gray-800 text-sm leading-tight">
-        {row.descrizione}
+        {formattedDesc}
         {row.pack_size > 0 && (
           <span className="ml-1 text-gray-500 font-normal">— {row.pack_size} {row.pack_unit}</span>
         )}
@@ -93,7 +106,12 @@ export function ProjectCartView() {
 
   const isManual = strategy === 'MANUALE';
   const configuredRooms = rooms.filter(r => r.is_configured);
-  const activeRows = cart.filter(r => r.status === 'active');
+  const activeRows = [...cart.filter(r => r.status === 'active')].sort((a, b) => {
+    const pa = SECTION_PRIORITY[a.section] ?? 99;
+    const pb = SECTION_PRIORITY[b.section] ?? 99;
+    if (pa !== pb) return pa - pb;
+    return a.product_id?.localeCompare(b.product_id ?? '') ?? 0;
+  });
   const excludedRows = cart.filter(r => r.status === 'excluded');
   const totalActive = activeRows.reduce((a, r) => a + r.totale, 0);
 
@@ -558,13 +576,19 @@ export function ProjectCartView() {
         <div className="card p-4 space-y-2">
           <h2 className="font-semibold text-sm text-gray-700">Riepilogo per ambiente</h2>
           {configuredRooms.map(room => {
-            const roomTotal = room.cart_lines.reduce((a, l) => a + (l.qty * (l.prezzo_unitario ?? 0)), 0);
             const displayName = room.custom_name || room.room_type;
+            const roomTotal = consolidation_mode === 'SEPARATE'
+              ? activeRows
+                  .filter(r => r.from_rooms?.includes(displayName))
+                  .reduce((a, r) => a + r.totale, 0)
+              : null;
             return (
               <div key={room.id} className="flex items-center justify-between text-sm py-1.5 border-b border-gray-50 last:border-0 gap-2">
                 <span className="text-gray-700 font-medium flex-1">{displayName}</span>
                 <span className="text-gray-500 text-xs">{room.cart_lines.length} prodotti</span>
-                <span className="font-semibold text-gray-800 w-24 text-right">{formatEur(roomTotal)}</span>
+                <span className="font-semibold text-gray-800 w-24 text-right">
+                  {roomTotal !== null ? formatEur(roomTotal) : '—'}
+                </span>
                 <button type="button" title="Esporta Excel" className="p-1 text-stone-400 hover:text-stone-700" onClick={() => handleExportRoomXlsx(room.id)}>
                   <FileSpreadsheet size={14} />
                 </button>
