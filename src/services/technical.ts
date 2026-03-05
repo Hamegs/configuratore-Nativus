@@ -54,6 +54,7 @@ export function computeTechnicalGroups(
       description: line.descrizione,
       section: line.section as ServiceSection,
       destination,
+      color_label: line.color_label ?? undefined,
       qty_raw,
       unit: line.pack_unit ?? 'kg',
     });

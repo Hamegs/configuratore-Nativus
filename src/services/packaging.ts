@@ -84,6 +84,7 @@ export function computePackagedItems(
     section: ServiceSection;
     destination: string | null;
     description: string;
+    color_label?: string;
     qty_raw: number;
     unit: string;
   };
@@ -91,7 +92,7 @@ export function computePackagedItems(
   const aggMap = new Map<string, AggEntry>();
   for (const group of groups) {
     if (group.section === 'texture') continue;
-    const key = `${group.product_id}::${group.section}::${group.destination ?? ''}`;
+    const key = `${group.product_id}::${group.section}::${group.destination ?? ''}::${group.color_label ?? ''}`;
     const existing = aggMap.get(key);
     if (existing) {
       existing.qty_raw += group.qty_raw;
@@ -101,6 +102,7 @@ export function computePackagedItems(
         section: group.section,
         destination: group.destination,
         description: group.description,
+        color_label: group.color_label,
         qty_raw: group.qty_raw,
         unit: group.unit,
       });
