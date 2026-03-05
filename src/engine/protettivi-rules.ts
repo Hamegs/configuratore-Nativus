@@ -87,7 +87,7 @@ export function computeProtettiviCart(
 
   // ─── H2O System ────────────────────────────────────────────────────────
   if (isH2O) {
-    if (line !== 'LAMINE' && line !== 'CORLITE') {
+    if (line !== 'LAMINE' && line !== 'CORLITE' && !opaco_colorato) {
       const fixConsumption = (line === 'DEKORA' || line === 'MATERIAL') ? 100 : 50;
       const fixKg = (fixConsumption / 1000) * area_mq;
       const fixSku = area_mq <= 2.5 ? 'PROTEGGO_FIX_H2O_1LITRO' : 'PROTEGGO_FIX_H2O_2_5LT';
@@ -280,7 +280,7 @@ export function computeProtettiviCart(
       return { cart_lines: [], step_descriptions: [], hard_alerts: alerts };
     }
 
-    if (line !== 'LAMINE' && line !== 'CORLITE') {
+    if (line !== 'LAMINE' && line !== 'CORLITE' && !opaco_colorato) {
       const fixS = (line === 'DEKORA') ? 80 : 60;
       const fixKg = (fixS / 1000) * area_mq;
       const fixSku = area_mq <= 5 ? 'PROTEGGO_FIX_S_1_1KG' : 'PROTEGGO_FIX_S_2_4_95KG';
