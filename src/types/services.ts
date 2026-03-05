@@ -20,6 +20,7 @@ export interface PackagedItem {
   nomeCommerciale: string;
   description: string;
   destination: string | null;
+  color_label?: string;
   section: ServiceSection;
   qty_packs: number;
   pack_size: number;

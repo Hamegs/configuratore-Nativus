@@ -33,7 +33,7 @@ export function computeTechnicalGroups(
       store.packagingSku.find(s => s.sku_id === line.sku_id)?.product_id ??
       line.sku_id;
     const nomeCommerciale = getCommercialName(product_id) ?? line.descrizione;
-    const destination = extractDestination(line.descrizione);
+    const destination = line.destination ?? extractDestination(line.descrizione);
 
     let qty_raw: number;
     if (line.qty_raw !== undefined) {

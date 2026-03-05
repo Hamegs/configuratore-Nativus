@@ -37,6 +37,53 @@ const SECTION_LABELS: Record<string, string> = {
 };
 const SECTION_ORDER = ['fondo', 'texture', 'protettivi', 'din', 'speciale'];
 
+interface CartGroup {
+  key: string;
+  product_id: string;
+  section: string;
+  destination: string | null;
+  color_label: string | undefined;
+  nomeCommerciale: string;
+  description: string;
+  packs: PackagedItem[];
+  total: number;
+}
+
+function buildCartGroups(items: PackagedItem[]): CartGroup[] {
+  const map = new Map<string, CartGroup>();
+  for (const item of items) {
+    const key = `${item.product_id}::${item.section}::${item.destination ?? ''}::${item.color_label ?? ''}::${item.description}`;
+    const existing = map.get(key);
+    if (existing) {
+      existing.packs.push(item);
+      existing.total += item.totale;
+    } else {
+      map.set(key, {
+        key,
+        product_id: item.product_id,
+        section: item.section,
+        destination: item.destination,
+        color_label: item.color_label,
+        nomeCommerciale: item.nomeCommerciale,
+        description: item.description,
+        packs: [item],
+        total: item.totale,
+      });
+    }
+  }
+  return Array.from(map.values());
+}
+
+function extractColorFromDescription(desc: string, nomeCommerciale: string): string | null {
+  const stripped = desc.replace(nomeCommerciale, '').trim();
+  if (!stripped || stripped === desc) {
+    const parts = desc.split(' — ');
+    if (parts.length >= 2) return parts.slice(1).join(' — ');
+    return null;
+  }
+  return stripped.replace(/^[\s—]+/, '').trim() || null;
+}
+
 export function StepCart({ onComplete }: StepCartProps) {
   const state = useWizardStore();
   const store = loadDataStore();
@@ -72,16 +119,17 @@ export function StepCart({ onComplete }: StepCartProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups, strategy]);
 
-  const itemsBySection = useMemo(() => {
-    const map: Partial<Record<string, PackagedItem[]>> = {};
-    for (const item of items) {
-      if (!map[item.section]) map[item.section] = [];
-      map[item.section]!.push(item);
+  const groupsBySection = useMemo(() => {
+    const allGroups = buildCartGroups(items.filter(i => i.status === 'active'));
+    const map: Partial<Record<string, CartGroup[]>> = {};
+    for (const g of allGroups) {
+      if (!map[g.section]) map[g.section] = [];
+      map[g.section]!.push(g);
     }
     return map;
   }, [items]);
 
-  const total  = items.reduce((acc, i) => acc + i.totale, 0);
+  const total  = items.filter(i => i.status === 'active').reduce((acc, i) => acc + i.totale, 0);
   const alerts = cartResult?.computation_errors ?? [];
 
   function handleConfirm() {
@@ -134,7 +182,7 @@ export function StepCart({ onComplete }: StepCartProps) {
         </div>
       )}
 
-      {SECTION_ORDER.filter(sec => (itemsBySection[sec]?.length ?? 0) > 0).map(sec => (
+      {SECTION_ORDER.filter(sec => (groupsBySection[sec]?.length ?? 0) > 0).map(sec => (
         <div key={sec} className="card overflow-hidden">
           <div className="tbl-head">{SECTION_LABELS[sec] ?? sec}</div>
           <table className="w-full text-sm">
@@ -147,25 +195,90 @@ export function StepCart({ onComplete }: StepCartProps) {
               </tr>
             </thead>
             <tbody>
-              {(itemsBySection[sec] ?? []).map(item => (
-                <tr key={item.row_id} className="tbl-row">
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-brand-800">{item.nomeCommerciale}</p>
-                    {item.description !== item.nomeCommerciale && (
-                      <p className="text-xs text-brand-500 mt-0.5">{item.description}</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right font-semibold text-brand-700">
-                    {item.qty_packs} × {item.pack_size} {item.pack_unit}
-                  </td>
-                  <td className="px-4 py-3 text-right text-brand-600 hidden sm:table-cell">
-                    {item.prezzo_unitario > 0 ? formatEur(item.prezzo_unitario) : '—'}
-                  </td>
-                  <td className="px-4 py-3 text-right font-bold price-text">
-                    {item.totale > 0 ? formatEur(item.totale) : '—'}
-                  </td>
-                </tr>
-              ))}
+              {(groupsBySection[sec] ?? []).map(group => {
+                const isSinglePack = group.packs.length === 1;
+                const colorText = group.color_label
+                  ? group.color_label
+                  : extractColorFromDescription(group.description, group.nomeCommerciale);
+                const firstPack = group.packs[0];
+
+                if (isSinglePack) {
+                  return (
+                    <tr key={group.key} className="tbl-row">
+                      <td className="px-4 py-3">
+                        <p className="font-medium text-brand-800">{group.nomeCommerciale}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {colorText && (
+                            <span className="inline-block rounded bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700">
+                              {colorText}
+                            </span>
+                          )}
+                          {group.destination && (
+                            <span className="inline-block rounded bg-sand-200 px-2 py-0.5 text-xs font-medium text-brand-600">
+                              {group.destination}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-right font-semibold text-brand-700">
+                        {firstPack.qty_packs} × {firstPack.pack_size} {firstPack.pack_unit}
+                      </td>
+                      <td className="px-4 py-3 text-right text-brand-600 hidden sm:table-cell">
+                        {firstPack.prezzo_unitario > 0 ? formatEur(firstPack.prezzo_unitario) : '—'}
+                      </td>
+                      <td className="px-4 py-3 text-right font-bold price-text">
+                        {group.total > 0 ? formatEur(group.total) : '—'}
+                      </td>
+                    </tr>
+                  );
+                }
+
+                return (
+                  <React.Fragment key={group.key}>
+                    <tr className="bg-sand-50 border-t border-sand-200">
+                      <td colSpan={4} className="px-4 pt-3 pb-1">
+                        <p className="font-semibold text-brand-800">{group.nomeCommerciale}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {colorText && (
+                            <span className="inline-block rounded bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700">
+                              {colorText}
+                            </span>
+                          )}
+                          {group.destination && (
+                            <span className="inline-block rounded bg-sand-200 px-2 py-0.5 text-xs font-medium text-brand-600">
+                              {group.destination}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                    {group.packs.map((pack, idx) => (
+                      <tr key={pack.row_id} className="tbl-row">
+                        <td className="px-4 py-2 pl-8 text-brand-500 text-xs">
+                          Confezione {idx + 1}
+                        </td>
+                        <td className="px-4 py-2 text-right font-semibold text-brand-700">
+                          {pack.qty_packs} × {pack.pack_size} {pack.pack_unit}
+                        </td>
+                        <td className="px-4 py-2 text-right text-brand-600 hidden sm:table-cell">
+                          {pack.prezzo_unitario > 0 ? formatEur(pack.prezzo_unitario) : '—'}
+                        </td>
+                        <td className="px-4 py-2 text-right text-brand-600">
+                          {pack.totale > 0 ? formatEur(pack.totale) : '—'}
+                        </td>
+                      </tr>
+                    ))}
+                    <tr className="border-b border-sand-200">
+                      <td colSpan={3} className="px-4 py-2 pl-8 text-xs text-brand-500 text-right">
+                        Subtotale
+                      </td>
+                      <td className="px-4 py-2 text-right font-bold price-text">
+                        {group.total > 0 ? formatEur(group.total) : '—'}
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

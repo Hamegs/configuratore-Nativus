@@ -80,7 +80,10 @@ export function computeProtettiviCart(
 
   function colorAndZone(desc: string): string {
     let d = desc;
-    if (sel.colore_code) d += ` — ${sel.colore_code}`;
+    if (sel.colore_code) {
+      const prefix = sel.colore_source ? `${sel.colore_source} ` : '';
+      d += ` — ${prefix}${sel.colore_code}`;
+    }
     if (zone_label) d += ` — ${zone_label}`;
     return d;
   }
