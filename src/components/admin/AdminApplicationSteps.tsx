@@ -1,191 +1,262 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Pencil, Check, X, ChevronUp, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Pencil, Check, X } from 'lucide-react';
 import { useAdminStore } from '../../store/admin-store';
-import type { ApplicationStep } from '../../types/cms';
+import type { ApplicationStepManual } from '../../types/cms';
+import { loadDataStore } from '../../utils/data-loader';
+import type { StepLibraryEntry } from '../../types/step';
+
+const STEP_TYPE_LABELS: Record<string, string> = {
+  MECH: 'Meccanico',
+  PRIMER: 'Primer',
+  BASE: 'Base',
+  TEXTURE: 'Texture',
+  PROT: 'Protettivo',
+  REPAIR: 'Riparazione',
+  FIX: 'Fix',
+};
 
 export function AdminApplicationSteps() {
   const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
-  const [items, setItems] = useState<ApplicationStep[]>(() =>
-    [...(cms.applicationSteps ?? [])].sort((a, b) => a.order - b.order)
-  );
+  const [steps, setSteps] = useState<StepLibraryEntry[]>([]);
+  const [manualsMap, setManualsMap] = useState<Record<string, ApplicationStepManual>>({});
   const [editId, setEditId] = useState<string | null>(null);
-  const [draft, setDraft] = useState<Partial<ApplicationStep>>({});
-  const [filterProduct, setFilterProduct] = useState('');
+  const [draft, setDraft] = useState<Partial<ApplicationStepManual>>({});
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    setItems([...(cms.applicationSteps ?? [])].sort((a, b) => a.order - b.order));
-  }, [cms.applicationSteps]);
+    const store = loadDataStore();
+    setSteps(store.stepLibrary);
+    const map: Record<string, ApplicationStepManual> = {};
+    for (const m of cms.stepManuals) map[m.step_id] = m;
+    setManualsMap(map);
+  }, [cms.stepManuals]);
 
-  const displayed = filterProduct
-    ? items.filter(i => i.product_id.toLowerCase().includes(filterProduct.toLowerCase()))
-    : items;
+  const saveManual = useCallback((manual: ApplicationStepManual) => {
+    const updated = { ...manualsMap, [manual.step_id]: manual };
+    setManualsMap(updated);
+    saveCMS({ stepManuals: Object.values(updated) });
+  }, [manualsMap, saveCMS]);
 
-  function startNew() {
-    const id = crypto.randomUUID();
-    const maxOrder = items.reduce((m, i) => Math.max(m, i.order), -1);
-    setEditId(id);
-    setDraft({ id, product_id: '', order: maxOrder + 1, step_name: '', consumption: '', drying_time: '', overcoating_time: '', tool_ids: [], cleaning_method: '', technical_notes: '' });
-  }
-
-  function startEdit(item: ApplicationStep) {
-    setEditId(item.id);
-    setDraft({ ...item });
+  function startEdit(step: StepLibraryEntry) {
+    const existing = manualsMap[step.step_id] ?? {
+      step_id: step.step_id,
+      tool_ids: [],
+      cleaning_method: '',
+      technical_notes: '',
+      reference_images: [],
+    };
+    setEditId(step.step_id);
+    setDraft({ ...existing });
   }
 
   function commit() {
-    if (!draft.id || !draft.product_id?.trim() || !draft.step_name?.trim()) return;
-    const full: ApplicationStep = {
-      id: draft.id,
-      product_id: draft.product_id!,
-      order: draft.order ?? 0,
-      step_name: draft.step_name!,
-      consumption: draft.consumption ?? '',
-      drying_time: draft.drying_time ?? '',
-      overcoating_time: draft.overcoating_time ?? '',
+    if (!draft.step_id) return;
+    const manual: ApplicationStepManual = {
+      step_id: draft.step_id,
       tool_ids: draft.tool_ids ?? [],
       cleaning_method: draft.cleaning_method ?? '',
       technical_notes: draft.technical_notes ?? '',
+      reference_images: draft.reference_images ?? [],
     };
-    const updated = items.some(i => i.id === full.id)
-      ? items.map(i => i.id === full.id ? full : i)
-      : [...items, full];
-    const sorted = updated.sort((a, b) => a.order - b.order);
-    setItems(sorted);
-    saveCMS({ applicationSteps: sorted });
+    saveManual(manual);
     setEditId(null);
     setDraft({});
   }
 
-  function remove(id: string) {
-    const updated = items.filter(i => i.id !== id);
-    setItems(updated);
-    saveCMS({ applicationSteps: updated });
-  }
+  const displayed = filter
+    ? steps.filter(s =>
+        s.step_id.toLowerCase().includes(filter.toLowerCase()) ||
+        s.name.toLowerCase().includes(filter.toLowerCase()) ||
+        (s.product_id ?? '').toLowerCase().includes(filter.toLowerCase())
+      )
+    : steps;
 
-  function moveOrder(id: string, dir: 'up' | 'down') {
-    const idx = items.findIndex(i => i.id === id);
-    if (idx < 0) return;
-    const swap = dir === 'up' ? idx - 1 : idx + 1;
-    if (swap < 0 || swap >= items.length) return;
-    const updated = [...items];
-    const temp = updated[idx].order;
-    updated[idx] = { ...updated[idx], order: updated[swap].order };
-    updated[swap] = { ...updated[swap], order: temp };
-    const sorted = updated.sort((a, b) => a.order - b.order);
-    setItems(sorted);
-    saveCMS({ applicationSteps: sorted });
-  }
+  const tools = cms.tools;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-        <input
-          type="search"
-          placeholder="Filtra per product_id…"
-          className="input-field"
-          style={{ maxWidth: 200, fontSize: 12 }}
-          value={filterProduct}
-          onChange={e => setFilterProduct(e.target.value)}
-        />
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#8c9aaa' }}>{items.length} step</span>
-          <button type="button" className="btn-secondary text-xs" onClick={startNew} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Plus size={12} /> Aggiungi step
-          </button>
-        </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <p style={{ fontSize: 12, color: '#445164', margin: 0 }}>
+        I passi applicativi sono definiti dal motore (step-library.json). Qui puoi aggiungere strumenti, metodi di pulizia e note tecniche manuali.
+      </p>
+
+      <input
+        type="search"
+        placeholder="Cerca step (nome, ID, prodotto)…"
+        className="input-field"
+        style={{ maxWidth: 320, fontSize: 12 }}
+        value={filter}
+        onChange={e => setFilter(e.target.value)}
+      />
+
+      <div style={{ fontSize: 11, color: '#8c9aaa' }}>
+        {displayed.length} / {steps.length} passi ·{' '}
+        {Object.keys(manualsMap).length} arricchiti manualmente
       </div>
 
-      {editId && !items.some(i => i.id === editId) && (
-        <StepEditBlock draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
-      )}
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {displayed.map((item, idx) =>
-          editId === item.id ? (
-            <StepEditBlock key={item.id} draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
+        {displayed.map(step => {
+          const manual = manualsMap[step.step_id];
+          const hasManual = !!manual && (
+            manual.technical_notes || manual.cleaning_method || manual.tool_ids.length > 0
+          );
+          return editId === step.step_id ? (
+            <StepEditBlock
+              key={step.step_id}
+              step={step}
+              draft={draft}
+              tools={tools}
+              onChange={setDraft}
+              onCommit={commit}
+              onCancel={() => { setEditId(null); setDraft({}); }}
+            />
           ) : (
-            <div key={item.id} style={{ background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6, padding: '10px 14px', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <button type="button" onClick={() => moveOrder(item.id, 'up')} disabled={idx === 0} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8c9aaa', padding: 0 }}><ChevronUp size={12} /></button>
-                <button type="button" onClick={() => moveOrder(item.id, 'down')} disabled={idx === displayed.length - 1} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8c9aaa', padding: 0 }}><ChevronDown size={12} /></button>
-              </div>
+            <div
+              key={step.step_id}
+              style={{
+                background: '#fff',
+                border: hasManual ? '1px solid #b8c4c2' : '1px solid #e2e4e0',
+                borderRadius: 6,
+                padding: '10px 14px',
+                display: 'flex', alignItems: 'flex-start', gap: 12,
+              }}
+            >
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#171e29' }}>{item.step_name}</span>
-                  <code style={{ fontSize: 10, background: '#f2f2f0', padding: '1px 5px', borderRadius: 3, color: '#445164' }}>{item.product_id}</code>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#171e29' }}>{step.name}</span>
+                  <code style={{ fontSize: 9, background: '#f2f2f0', padding: '1px 5px', borderRadius: 3, color: '#445164' }}>
+                    {step.step_id}
+                  </code>
+                  {step.step_type_id && (
+                    <span style={{ fontSize: 9, padding: '1px 6px', borderRadius: 3, background: '#eef2ef', color: '#3a7060', fontWeight: 600 }}>
+                      {STEP_TYPE_LABELS[step.step_type_id] ?? step.step_type_id}
+                    </span>
+                  )}
+                  {step.product_id && (
+                    <code style={{ fontSize: 9, color: '#8c9aaa' }}>→ {step.product_id}</code>
+                  )}
                 </div>
-                <div style={{ fontSize: 11, color: '#8c9aaa', marginTop: 3, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                  {item.consumption && <span>Consumo: {item.consumption}</span>}
-                  {item.drying_time && <span>Asciugatura: {item.drying_time}</span>}
-                  {item.overcoating_time && <span>Rivestimento: {item.overcoating_time}</span>}
-                </div>
-                {item.technical_notes && <p style={{ fontSize: 11, color: '#445164', marginTop: 4 }}>{item.technical_notes}</p>}
+                {hasManual && (
+                  <div style={{ marginTop: 4, display: 'flex', gap: 10, flexWrap: 'wrap', fontSize: 11, color: '#445164' }}>
+                    {manual.tool_ids.length > 0 && (
+                      <span>Strumenti: {manual.tool_ids.map(tid => tools.find(t => t.id === tid)?.name ?? tid).join(', ')}</span>
+                    )}
+                    {manual.cleaning_method && <span>Pulizia: {manual.cleaning_method}</span>}
+                    {manual.technical_notes && (
+                      <span style={{ color: '#8c9aaa' }}>{manual.technical_notes.slice(0, 60)}{manual.technical_notes.length > 60 ? '…' : ''}</span>
+                    )}
+                  </div>
+                )}
               </div>
-              <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-                <button type="button" className="btn-secondary text-xs" onClick={() => startEdit(item)} style={{ display: 'flex', gap: 4 }}><Pencil size={11} /></button>
-                <button type="button" onClick={() => remove(item.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c94040' }}><Trash2 size={13} /></button>
-              </div>
+              <button
+                type="button"
+                className="btn-secondary text-xs"
+                onClick={() => startEdit(step)}
+                style={{ display: 'flex', gap: 4, flexShrink: 0 }}
+              >
+                <Pencil size={11} /> {hasManual ? 'Modifica' : 'Arricchisci'}
+              </button>
             </div>
-          )
-        )}
+          );
+        })}
       </div>
     </div>
   );
 }
 
-type StepField = keyof ApplicationStep;
-
 function StepEditBlock({
+  step,
   draft,
+  tools,
   onChange,
   onCommit,
   onCancel,
 }: {
-  draft: Partial<ApplicationStep>;
-  onChange: (d: Partial<ApplicationStep>) => void;
+  step: StepLibraryEntry;
+  draft: Partial<ApplicationStepManual>;
+  tools: { id: string; name: string; icon_media_id: string }[];
+  onChange: (d: Partial<ApplicationStepManual>) => void;
   onCommit: () => void;
   onCancel: () => void;
 }) {
-  function field(key: StepField, label: string, placeholder = '') {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</label>
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={(draft[key] as string) ?? ''}
-          onChange={e => onChange({ ...draft, [key]: e.target.value })}
-          className="input-field"
-          style={{ fontSize: 12 }}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div style={{ background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{ background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#171e29' }}>{step.name}</span>
+        <code style={{ fontSize: 10, color: '#8c9aaa' }}>{step.step_id}</code>
+      </div>
+
+      <div>
+        <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 6 }}>
+          Strumenti necessari
+        </label>
+        {tools.length === 0 ? (
+          <p style={{ fontSize: 11, color: '#8c9aaa', fontStyle: 'italic' }}>
+            Nessuno strumento configurato. Aggiungili nella scheda "Strumenti".
+          </p>
+        ) : (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {tools.map(tool => {
+              const selected = (draft.tool_ids ?? []).includes(tool.id);
+              return (
+                <button
+                  key={tool.id}
+                  type="button"
+                  onClick={() => {
+                    const ids = draft.tool_ids ?? [];
+                    onChange({ ...draft, tool_ids: selected ? ids.filter(i => i !== tool.id) : [...ids, tool.id] });
+                  }}
+                  style={{
+                    padding: '4px 12px', fontSize: 11, borderRadius: 4,
+                    background: selected ? '#171e29' : '#f2f2f0',
+                    color: selected ? '#fff' : '#445164',
+                    border: '1px solid ' + (selected ? '#171e29' : '#d4d6d2'),
+                    cursor: 'pointer',
+                  }}
+                >
+                  {tool.name}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        {field('product_id', 'Product ID', 'es. PR_SW')}
-        {field('step_name', 'Nome step', 'es. Applicazione Primer')}
-        {field('consumption', 'Consumo', 'es. 0.2 kg/m²')}
-        {field('drying_time', 'Tempo asciugatura', 'es. 4h a 20°C')}
-        {field('overcoating_time', 'Tempo rivestimento', 'es. 24h')}
-        {field('cleaning_method', 'Pulizia strumenti', 'es. acqua')}
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 4 }}>
+            Pulizia strumenti
+          </label>
+          <input
+            type="text"
+            placeholder="es. acqua, solvente"
+            value={draft.cleaning_method ?? ''}
+            onChange={e => onChange({ ...draft, cleaning_method: e.target.value })}
+            className="input-field"
+            style={{ fontSize: 12, width: '100%' }}
+          />
+        </div>
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 4 }}>
+            Note tecniche
+          </label>
+          <input
+            type="text"
+            placeholder="Note aggiuntive per l'applicatore"
+            value={draft.technical_notes ?? ''}
+            onChange={e => onChange({ ...draft, technical_notes: e.target.value })}
+            className="input-field"
+            style={{ fontSize: 12, width: '100%' }}
+          />
+        </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Note tecniche</label>
-        <textarea
-          placeholder="Note aggiuntive per l'applicatore"
-          value={draft.technical_notes ?? ''}
-          onChange={e => onChange({ ...draft, technical_notes: e.target.value })}
-          className="input-field"
-          rows={2}
-          style={{ fontSize: 12, resize: 'vertical' }}
-        />
-      </div>
+
       <div style={{ display: 'flex', gap: 8 }}>
-        <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}><Check size={12} /> Salva</button>
-        <button type="button" className="btn-secondary text-xs" onClick={onCancel}><X size={12} /></button>
+        <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}>
+          <Check size={12} /> Salva
+        </button>
+        <button type="button" className="btn-secondary text-xs" onClick={onCancel}>
+          <X size={12} />
+        </button>
       </div>
     </div>
   );

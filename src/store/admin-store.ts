@@ -3,8 +3,8 @@ import type { StepLibraryEntry } from '../types/step';
 import type { StepMapEntry } from '../types/regole';
 import type { PackagingSku, ListinoSku } from '../types/packaging';
 import type {
-  EnvironmentConfig, SupportConfig, Tool, ApplicationStep,
-  StratigraphyManual, StratigraphyVersion, OperationalSheetTemplate,
+  EnvironmentMediaConfig, SupportMediaConfig, StratigraphyMediaConfig,
+  ApplicationStepManual, Tool, OperationalSheetTemplate,
 } from '../types/cms';
 import { invalidateCache } from '../utils/data-loader';
 import { setCommercialNameOverrides } from '../utils/product-names';
@@ -29,12 +29,11 @@ export interface AdminOverrides {
 }
 
 export interface AdminCMS {
-  environmentConfigs: EnvironmentConfig[];
-  supportConfigs: SupportConfig[];
+  environmentMedia: EnvironmentMediaConfig[];
+  supportMedia: SupportMediaConfig[];
+  stratigraphyMedia: StratigraphyMediaConfig[];
+  stepManuals: ApplicationStepManual[];
   tools: Tool[];
-  applicationSteps: ApplicationStep[];
-  stratigraphyManuals: StratigraphyManual[];
-  stratigraphyVersions: StratigraphyVersion[];
   operationalSheetTemplates: OperationalSheetTemplate[];
 }
 
@@ -78,12 +77,11 @@ function writeStorage(overrides: AdminOverrides) {
 }
 
 const DEFAULT_CMS: AdminCMS = {
-  environmentConfigs: [],
-  supportConfigs: [],
+  environmentMedia: [],
+  supportMedia: [],
+  stratigraphyMedia: [],
+  stepManuals: [],
   tools: [],
-  applicationSteps: [],
-  stratigraphyManuals: [],
-  stratigraphyVersions: [],
   operationalSheetTemplates: [],
 };
 

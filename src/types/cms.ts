@@ -1,62 +1,50 @@
-export interface EnvironmentConfig {
-  id: string;
-  name: string;
+/**
+ * CMS layer — media and documentation annotations on top of engine data.
+ * The engine (decision-table, step-library, prodotti, etc.) remains the
+ * single source of truth for system logic, products and quantities.
+ * The CMS only manages: images, icons, manuals and documentation.
+ */
+
+/** Attach images to an environment defined in ambienti.json */
+export interface EnvironmentMediaConfig {
+  environment_id: string;
   media_ids: string[];
 }
 
-export interface SupportConfig {
-  id: string;
-  name: string;
-  description: string;
+/** Attach images / references to a support defined in supporti.json */
+export interface SupportMediaConfig {
+  support_id: string;
   media_ids: string[];
+}
+
+/**
+ * Attach stratigraphy diagram images to a support × system × environment
+ * combination already computed by the engine.
+ */
+export interface StratigraphyMediaConfig {
+  id: string;
+  support_id: string;
+  system_name: string;
+  environment_type: string;
+  media_ids: string[];
+}
+
+/**
+ * Manual enrichment for an existing step_id from step-library.json.
+ * Adds tool references, cleaning info and technical notes.
+ */
+export interface ApplicationStepManual {
+  step_id: string;
+  tool_ids: string[];
+  cleaning_method: string;
+  technical_notes: string;
+  reference_images: string[];
 }
 
 export interface Tool {
   id: string;
   name: string;
   icon_media_id: string;
-}
-
-export interface ApplicationStep {
-  id: string;
-  product_id: string;
-  order: number;
-  step_name: string;
-  consumption: string;
-  drying_time: string;
-  overcoating_time: string;
-  tool_ids: string[];
-  cleaning_method: string;
-  technical_notes: string;
-}
-
-export type StratigraphyPhaseLabel = 'A' | 'B' | 'C';
-
-export interface StratigraphyPhase {
-  id: string;
-  phase: StratigraphyPhaseLabel;
-  label: string;
-  product_ids: string[];
-}
-
-export interface StratigraphyManual {
-  id: string;
-  name: string;
-  support_id: string;
-  texture_system: string;
-  environment_type: string;
-  media_ids: string[];
-  phases: StratigraphyPhase[];
-}
-
-export interface StratigraphyVersion {
-  id: string;
-  manual_id: string;
-  version: string;
-  snapshot: StratigraphyManual;
-  createdAt: string;
-  createdBy: string;
-  notes: string;
 }
 
 export type OperationalAudience = 'APPLICATORE' | 'DISTRIBUTORE' | 'PROGETTISTA';

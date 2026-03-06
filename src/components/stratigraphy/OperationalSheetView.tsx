@@ -4,6 +4,7 @@ import type { CartResult } from '../../engine/cart-calculator';
 import type { CartLine } from '../../types/cart';
 import { useAdminStore } from '../../store/admin-store';
 import type { OperationalAudience, OperationalField } from '../../types/cms';
+import { loadDataStore } from '../../utils/data-loader';
 
 interface Props {
   audience: OperationalAudience;
@@ -41,23 +42,38 @@ export function OperationalSheetView({ audience, cartResult, cartLines, projectN
   const template = cms.operationalSheetTemplates.find(t => t.audience === audience);
   const visibleFields: OperationalField[] = template?.visible_fields ?? DEFAULT_VISIBLE[audience];
 
-  const appStepsMap = new Map(cms.applicationSteps.map(s => [s.product_id, s]));
+  const appStepsMap = new Map(cms.stepManuals.map(s => [s.step_id, s]));
   const toolsMap = new Map(cms.tools.map(t => [t.id, t]));
+
+  const store = React.useMemo(() => {
+    try { return loadDataStore(); } catch { return null; }
+  }, []);
+
+  const productStepMap = React.useMemo(() => {
+    const map = new Map<string, string>();
+    if (store) {
+      for (const entry of store.stepLibrary) {
+        if (entry.product_id) map.set(entry.product_id, entry.step_id);
+      }
+    }
+    return map;
+  }, [store]);
 
   const lines = cartLines.length ? cartLines : (cartResult?.summary?.lines ?? []);
 
   const rows = lines.map(line => {
     const pid = line.product_id ?? line.sku_id;
-    const step = pid ? appStepsMap.get(pid) : undefined;
-    const toolNames = (step?.tool_ids ?? []).map(tid => toolsMap.get(tid)?.name ?? tid).join(', ');
+    const stepId = pid ? productStepMap.get(pid) : undefined;
+    const manual = stepId ? appStepsMap.get(stepId) : undefined;
+    const toolNames = (manual?.tool_ids ?? []).map(tid => toolsMap.get(tid)?.name ?? tid).join(', ');
     return {
       product_id: pid,
-      material: step?.step_name ?? line.descrizione ?? pid,
-      consumption: step?.consumption ?? (line.qty != null && line.pack_unit ? `${line.qty} ${line.pack_unit}` : ''),
-      application_times: [step?.drying_time, step?.overcoating_time].filter(Boolean).join(' / '),
+      material: line.descrizione ?? pid,
+      consumption: (line.qty != null && line.pack_unit ? `${line.qty} ${line.pack_unit}` : ''),
+      application_times: '',
       tools: toolNames,
-      cleaning: step?.cleaning_method ?? '',
-      technical_notes: step?.technical_notes ?? line.note ?? '',
+      cleaning: manual?.cleaning_method ?? '',
+      technical_notes: manual?.technical_notes ?? line.note ?? '',
       pricing: line.totale != null ? line.totale.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }) : '',
     };
   });

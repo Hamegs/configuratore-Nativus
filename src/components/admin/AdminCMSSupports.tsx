@@ -1,111 +1,177 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Pencil, Check, X } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAdminStore } from '../../store/admin-store';
-import type { SupportConfig } from '../../types/cms';
+import type { SupportMediaConfig } from '../../types/cms';
+import { loadDataStore } from '../../utils/data-loader';
+import { listMediaByCategory, getMediaBlob } from '../../store/media-store';
+import type { MediaItemMeta } from '../../types/media';
+import type { Supporto } from '../../types/supporto';
 
-export function AdminCMSSupports() {
-  const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
-  const [items, setItems] = useState<SupportConfig[]>(() => cms.supportConfigs ?? []);
-  const [editId, setEditId] = useState<string | null>(null);
-  const [draft, setDraft] = useState<Partial<SupportConfig>>({});
+function SupportMediaSelector({
+  selected,
+  onChange,
+}: {
+  selected: string[];
+  onChange: (ids: string[]) => void;
+}) {
+  const [items, setItems] = useState<MediaItemMeta[]>([]);
+  const [thumbs, setThumbs] = useState<Record<string, string>>({});
 
-  useEffect(() => { setItems(cms.supportConfigs ?? []); }, [cms.supportConfigs]);
+  useEffect(() => {
+    listMediaByCategory('supports').then(list => {
+      setItems(list);
+      list.forEach(async item => {
+        const url = await getMediaBlob('supports', item.id);
+        if (url) setThumbs(prev => ({ ...prev, [item.id]: url }));
+      });
+    });
+  }, []);
 
-  function startNew() {
-    const id = crypto.randomUUID();
-    setEditId(id);
-    setDraft({ id, name: '', description: '', media_ids: [] });
+  if (!items.length) {
+    return (
+      <p style={{ fontSize: 11, color: '#8c9aaa', fontStyle: 'italic' }}>
+        Nessuna immagine disponibile. Carica immagini nella scheda "Media" → categoria "Supporti".
+      </p>
+    );
   }
 
-  function startEdit(item: SupportConfig) {
-    setEditId(item.id);
-    setDraft({ ...item });
-  }
-
-  function commit() {
-    if (!draft.id || !draft.name?.trim()) return;
-    const updated = items.some(i => i.id === draft.id)
-      ? items.map(i => i.id === draft.id ? { ...i, ...draft } as SupportConfig : i)
-      : [...items, { id: draft.id!, name: draft.name!, description: draft.description ?? '', media_ids: draft.media_ids ?? [] }];
-    setItems(updated);
-    saveCMS({ supportConfigs: updated });
-    setEditId(null);
-    setDraft({});
-  }
-
-  function remove(id: string) {
-    const updated = items.filter(i => i.id !== id);
-    setItems(updated);
-    saveCMS({ supportConfigs: updated });
+  function toggle(id: string) {
+    onChange(selected.includes(id) ? selected.filter(s => s !== id) : [...selected, id]);
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: 11, color: '#8c9aaa' }}>{items.length} supporti configurati</span>
-        <button type="button" className="btn-secondary text-xs" onClick={startNew} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Plus size={12} /> Aggiungi supporto
-        </button>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {editId && !items.some(i => i.id === editId) && (
-          <SupportEditBlock draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
-        )}
-        {items.map(item =>
-          editId === item.id ? (
-            <SupportEditBlock key={item.id} draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+      {items.map(item => (
+        <div
+          key={item.id}
+          onClick={() => toggle(item.id)}
+          title={item.name}
+          style={{
+            width: 80, height: 60, borderRadius: 4, overflow: 'hidden', cursor: 'pointer',
+            border: selected.includes(item.id) ? '2px solid #171e29' : '2px solid #e2e4e0',
+            opacity: selected.includes(item.id) ? 1 : 0.6,
+            background: '#f2f2f0', flexShrink: 0,
+            transition: 'opacity 0.15s, border-color 0.15s',
+          }}
+        >
+          {thumbs[item.id] ? (
+            <img src={thumbs[item.id]} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
-            <div key={item.id} style={{ background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6, padding: '10px 14px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-              <div>
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{item.name}</span>
-                {item.description && <p style={{ fontSize: 11, color: '#445164', marginTop: 2 }}>{item.description}</p>}
-              </div>
-              <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-                <button type="button" className="btn-secondary text-xs" onClick={() => startEdit(item)} style={{ display: 'flex', gap: 4 }}><Pencil size={11} /> Modifica</button>
-                <button type="button" onClick={() => remove(item.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c94040' }}><Trash2 size={14} /></button>
-              </div>
-            </div>
-          )
-        )}
-      </div>
+            <div style={{ width: '100%', height: '100%', background: '#eaeae8' }} />
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
-function SupportEditBlock({
-  draft,
-  onChange,
-  onCommit,
-  onCancel,
-}: {
-  draft: Partial<SupportConfig>;
-  onChange: (d: Partial<SupportConfig>) => void;
-  onCommit: () => void;
-  onCancel: () => void;
-}) {
+export function AdminCMSSupports() {
+  const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
+  const [supporti, setSupporti] = useState<Supporto[]>([]);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [localMedia, setLocalMedia] = useState<Record<string, string[]>>({});
+  const [filter, setFilter] = useState<'ALL' | 'FLOOR' | 'WALL'>('ALL');
+
+  useEffect(() => {
+    const store = loadDataStore();
+    setSupporti(store.supporti);
+    const map: Record<string, string[]> = {};
+    for (const cfg of cms.supportMedia) {
+      map[cfg.support_id] = cfg.media_ids;
+    }
+    setLocalMedia(map);
+  }, [cms.supportMedia]);
+
+  const save = useCallback((supportId: string, mediaIds: string[]) => {
+    const allIds = supporti.map(s => s.support_id);
+    const updated: SupportMediaConfig[] = allIds.map(sid => ({
+      support_id: sid,
+      media_ids: sid === supportId ? mediaIds : (localMedia[sid] ?? []),
+    }));
+    saveCMS({ supportMedia: updated });
+    setLocalMedia(prev => ({ ...prev, [supportId]: mediaIds }));
+  }, [supporti, localMedia, saveCMS]);
+
+  const displayed = filter === 'ALL' ? supporti : supporti.filter(s => s.macro_id === filter);
+
+  const MACRO_LABEL: Record<string, string> = { FLOOR: 'Pavimento', WALL: 'Parete' };
+
   return (
-    <div style={{ background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <input
-        type="text"
-        placeholder="Nome supporto"
-        value={draft.name ?? ''}
-        onChange={e => onChange({ ...draft, name: e.target.value })}
-        className="input-field"
-        style={{ fontSize: 13 }}
-      />
-      <textarea
-        placeholder="Descrizione"
-        value={draft.description ?? ''}
-        onChange={e => onChange({ ...draft, description: e.target.value })}
-        className="input-field"
-        rows={2}
-        style={{ fontSize: 12, resize: 'vertical' }}
-      />
-      <div style={{ display: 'flex', gap: 8 }}>
-        <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}><Check size={12} /> Salva</button>
-        <button type="button" className="btn-secondary text-xs" onClick={onCancel}><X size={12} /></button>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <p style={{ fontSize: 12, color: '#445164', margin: 0 }}>
+        I supporti sono definiti dal motore (supporti.json). Qui puoi associare immagini e riferimenti tecnici.
+      </p>
+
+      <div style={{ display: 'flex', gap: 6 }}>
+        {(['ALL', 'FLOOR', 'WALL'] as const).map(f => (
+          <button
+            key={f}
+            type="button"
+            onClick={() => setFilter(f)}
+            style={{
+              padding: '4px 12px', fontSize: 11, fontWeight: filter === f ? 700 : 400,
+              background: filter === f ? '#171e29' : '#f2f2f0',
+              color: filter === f ? '#fff' : '#445164',
+              border: '1px solid ' + (filter === f ? '#171e29' : '#d4d6d2'),
+              borderRadius: 4, cursor: 'pointer',
+            }}
+          >
+            {f === 'ALL' ? 'Tutti' : MACRO_LABEL[f]}
+          </button>
+        ))}
       </div>
+
+      {displayed.map(sup => {
+        const mediaIds = localMedia[sup.support_id] ?? [];
+        const isOpen = expandedId === sup.support_id;
+        return (
+          <div
+            key={sup.support_id}
+            style={{ background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6, overflow: 'hidden' }}
+          >
+            <div
+              onClick={() => setExpandedId(isOpen ? null : sup.support_id)}
+              style={{
+                padding: '10px 16px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                background: isOpen ? '#fafaf8' : '#fff',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{sup.name}</span>
+                <code style={{ fontSize: 10, background: '#f2f2f0', padding: '1px 6px', borderRadius: 3, color: '#445164' }}>
+                  {sup.support_id}
+                </code>
+                <span style={{ fontSize: 10, padding: '1px 8px', borderRadius: 3, fontWeight: 600,
+                  background: sup.macro_id === 'FLOOR' ? '#f5f0e8' : '#eef1f0',
+                  color: sup.macro_id === 'FLOOR' ? '#8a6a30' : '#3a6070',
+                }}>
+                  {MACRO_LABEL[sup.macro_id] ?? sup.macro_id}
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                {mediaIds.length > 0 && (
+                  <span style={{ fontSize: 11, color: '#6dbf8a', fontWeight: 600 }}>
+                    {mediaIds.length} immagini
+                  </span>
+                )}
+                <span style={{ fontSize: 12, color: '#8c9aaa' }}>{isOpen ? '▲' : '▼'}</span>
+              </div>
+            </div>
+
+            {isOpen && (
+              <div style={{ padding: '14px 16px', borderTop: '1px solid #f0f0ee' }}>
+                <p style={{ fontSize: 11, fontWeight: 600, color: '#445164', marginBottom: 10 }}>
+                  Immagini di riferimento tecnico
+                </p>
+                <SupportMediaSelector
+                  selected={mediaIds}
+                  onChange={ids => save(sup.support_id, ids)}
+                />
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
