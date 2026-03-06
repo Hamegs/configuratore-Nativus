@@ -2,10 +2,15 @@ import { create } from 'zustand';
 import type { StepLibraryEntry } from '../types/step';
 import type { StepMapEntry } from '../types/regole';
 import type { PackagingSku, ListinoSku } from '../types/packaging';
+import type {
+  EnvironmentConfig, SupportConfig, Tool, ApplicationStep,
+  StratigraphyManual, StratigraphyVersion, OperationalSheetTemplate,
+} from '../types/cms';
 import { invalidateCache } from '../utils/data-loader';
 import { setCommercialNameOverrides } from '../utils/product-names';
 
 const LS_KEY = 'nativus_admin_overrides';
+const CMS_LS_KEY = 'nativus_admin_cms';
 
 export interface AdminOverrides {
   stepLibrary?: StepLibraryEntry[];
@@ -23,8 +28,19 @@ export interface AdminOverrides {
   colorOverrides?: Record<string, { is_active?: boolean; label?: string }>;
 }
 
+export interface AdminCMS {
+  environmentConfigs: EnvironmentConfig[];
+  supportConfigs: SupportConfig[];
+  tools: Tool[];
+  applicationSteps: ApplicationStep[];
+  stratigraphyManuals: StratigraphyManual[];
+  stratigraphyVersions: StratigraphyVersion[];
+  operationalSheetTemplates: OperationalSheetTemplate[];
+}
+
 export interface AdminStore {
   overrides: AdminOverrides;
+  cms: AdminCMS;
   isDirty: boolean;
   loadFromStorage: () => void;
   saveStepLibrary: (items: StepLibraryEntry[]) => void;
@@ -40,6 +56,7 @@ export interface AdminStore {
   saveTextureStyles: (items: Array<Record<string, unknown>>) => void;
   saveLaminePatterns: (items: Array<Record<string, unknown>>) => void;
   saveColorOverrides: (overrides: Record<string, { is_active?: boolean; label?: string }>) => void;
+  saveCMS: (cms: Partial<AdminCMS>) => void;
   resetAll: () => void;
 }
 
@@ -60,6 +77,33 @@ function writeStorage(overrides: AdminOverrides) {
   }
 }
 
+const DEFAULT_CMS: AdminCMS = {
+  environmentConfigs: [],
+  supportConfigs: [],
+  tools: [],
+  applicationSteps: [],
+  stratigraphyManuals: [],
+  stratigraphyVersions: [],
+  operationalSheetTemplates: [],
+};
+
+function readCMS(): AdminCMS {
+  try {
+    const raw = localStorage.getItem(CMS_LS_KEY);
+    return raw ? { ...DEFAULT_CMS, ...(JSON.parse(raw) as Partial<AdminCMS>) } : { ...DEFAULT_CMS };
+  } catch {
+    return { ...DEFAULT_CMS };
+  }
+}
+
+function writeCMS(cms: AdminCMS) {
+  try {
+    localStorage.setItem(CMS_LS_KEY, JSON.stringify(cms));
+  } catch {
+    console.warn('Admin store: impossibile scrivere CMS su localStorage');
+  }
+}
+
 function makeSimpleSaver(key: keyof AdminOverrides) {
   return (items: unknown) => {
     return (set: (s: Partial<{ overrides: AdminOverrides; isDirty: boolean }>) => void, get: () => { overrides: AdminOverrides }) => {
@@ -73,11 +117,13 @@ function makeSimpleSaver(key: keyof AdminOverrides) {
 
 export const useAdminStore = create<AdminStore>((set, get) => ({
   overrides: {},
+  cms: { ...DEFAULT_CMS },
   isDirty: false,
 
   loadFromStorage: () => {
     const overrides = readStorage();
-    set({ overrides, isDirty: false });
+    const cms = readCMS();
+    set({ overrides, cms, isDirty: false });
     invalidateCache();
     setCommercialNameOverrides(overrides.commercialNames ?? {});
   },
@@ -173,9 +219,16 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     invalidateCache();
   },
 
+  saveCMS: (partial) => {
+    const cms = { ...get().cms, ...partial };
+    writeCMS(cms);
+    set({ cms, isDirty: false });
+  },
+
   resetAll: () => {
     try { localStorage.removeItem(LS_KEY); } catch { /* noop */ }
-    set({ overrides: {}, isDirty: false });
+    try { localStorage.removeItem(CMS_LS_KEY); } catch { /* noop */ }
+    set({ overrides: {}, cms: { ...DEFAULT_CMS }, isDirty: false });
     invalidateCache();
     setCommercialNameOverrides({});
   },

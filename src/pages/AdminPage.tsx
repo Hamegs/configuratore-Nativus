@@ -6,16 +6,57 @@ import { AdminStratigrafie } from '../components/admin/AdminStratigrafie';
 import { AdminExport } from '../components/admin/AdminExport';
 import { AdminProdotti } from '../components/admin/AdminProdotti';
 import { AdminRiepilogo } from '../components/admin/AdminRiepilogo';
+import { AdminMedia } from '../components/admin/AdminMedia';
+import { AdminCMSEnvironments } from '../components/admin/AdminCMSEnvironments';
+import { AdminCMSSupports } from '../components/admin/AdminCMSSupports';
+import { AdminCMSTools } from '../components/admin/AdminCMSTools';
+import { AdminApplicationSteps } from '../components/admin/AdminApplicationSteps';
+import { AdminStratigraphyManual } from '../components/admin/AdminStratigraphyManual';
+import { AdminOperationalSheets } from '../components/admin/AdminOperationalSheets';
 
-type Tab = 'riepilogo' | 'stratigrafie' | 'listino' | 'prodotti' | 'export';
+type Tab =
+  | 'riepilogo'
+  | 'stratigrafie'
+  | 'listino'
+  | 'prodotti'
+  | 'export'
+  | 'media'
+  | 'environments'
+  | 'supports'
+  | 'tools'
+  | 'steps'
+  | 'manuals'
+  | 'sheets';
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'riepilogo', label: 'Riepilogo' },
-  { id: 'stratigrafie', label: 'Stratigrafie' },
-  { id: 'listino', label: 'Listino' },
-  { id: 'prodotti', label: 'Prodotti' },
-  { id: 'export', label: 'Export Dati' },
+const TABS: { id: Tab; label: string; group?: string }[] = [
+  { id: 'riepilogo', label: 'Riepilogo', group: 'engine' },
+  { id: 'stratigrafie', label: 'Stratigrafie', group: 'engine' },
+  { id: 'listino', label: 'Listino', group: 'engine' },
+  { id: 'prodotti', label: 'Prodotti', group: 'engine' },
+  { id: 'export', label: 'Export', group: 'engine' },
+  { id: 'media', label: 'Media', group: 'cms' },
+  { id: 'environments', label: 'Ambienti CMS', group: 'cms' },
+  { id: 'supports', label: 'Supporti CMS', group: 'cms' },
+  { id: 'tools', label: 'Strumenti', group: 'cms' },
+  { id: 'steps', label: 'Passi app.', group: 'cms' },
+  { id: 'manuals', label: 'Manuali strat.', group: 'cms' },
+  { id: 'sheets', label: 'Schede op.', group: 'cms' },
 ];
+
+const TAB_TITLES: Record<Tab, string> = {
+  riepilogo: 'Riepilogo dati',
+  stratigrafie: 'Stratigrafie',
+  listino: 'Listino prezzi',
+  prodotti: 'Prodotti',
+  export: 'Export dati',
+  media: 'Libreria media',
+  environments: 'Configurazione ambienti',
+  supports: 'Tipi supporto',
+  tools: 'Strumenti applicazione',
+  steps: 'Passi applicazione',
+  manuals: 'Manuali stratigrafici',
+  sheets: 'Schede operative',
+};
 
 export function AdminPage() {
   const [tab, setTab] = useState<Tab>('riepilogo');
@@ -23,7 +64,7 @@ export function AdminPage() {
   const [error, setError] = useState<string | null>(null);
   const { overrides, loadFromStorage, resetAll } = useAdminStore();
 
-  useEffect(() => { loadFromStorage(); }, []);
+  useEffect(() => { loadFromStorage(); }, [loadFromStorage]);
 
   let store: ReturnType<typeof loadDataStore>;
   try {
@@ -76,17 +117,20 @@ export function AdminPage() {
   ].filter(Boolean).join(', ');
 
   function navigateTo(targetTab: string) {
-    if (['riepilogo', 'stratigrafie', 'listino', 'prodotti', 'export'].includes(targetTab)) {
+    if (TABS.some(t => t.id === targetTab)) {
       setTab(targetTab as Tab);
     }
   }
+
+  const engineTabs = TABS.filter(t => t.group === 'engine');
+  const cmsTabs = TABS.filter(t => t.group === 'cms');
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Pannello Admin</h1>
-          <p className="mt-1 text-sm text-gray-500">Gestione stratigrafie, listino e parametri di sistema.</p>
+          <p className="mt-1 text-sm text-gray-500">Gestione motore, listino, media e contenuti CMS.</p>
         </div>
         <div className="flex gap-2 items-center">
           {info && <span className="text-xs text-green-600 font-medium">{info}</span>}
@@ -106,9 +150,32 @@ export function AdminPage() {
         </div>
       )}
 
-      <div className="border-b border-gray-200">
-        <nav className="flex gap-0 -mb-px">
-          {TABS.map(t => (
+      <div style={{ borderBottom: '1px solid #e2e4e0' }}>
+        <div style={{ marginBottom: 4 }}>
+          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8c9aaa', paddingLeft: 2 }}>Motore &amp; Dati</span>
+        </div>
+        <nav style={{ display: 'flex', gap: 0, marginBottom: -1, flexWrap: 'wrap' }}>
+          {engineTabs.map(t => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+                tab === t.id
+                  ? 'border-brand-600 text-brand-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
+
+        <div style={{ marginTop: 12, marginBottom: 4 }}>
+          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8c9aaa', paddingLeft: 2 }}>CMS Contenuti</span>
+        </div>
+        <nav style={{ display: 'flex', gap: 0, marginBottom: -1, flexWrap: 'wrap' }}>
+          {cmsTabs.map(t => (
             <button
               key={t.id}
               type="button"
@@ -125,11 +192,22 @@ export function AdminPage() {
         </nav>
       </div>
 
-      {tab === 'riepilogo' && <AdminRiepilogo store={store} onNavigateTab={navigateTo} />}
-      {tab === 'stratigrafie' && <AdminStratigrafie store={store} />}
-      {tab === 'listino' && <AdminListino store={store} />}
-      {tab === 'prodotti' && <AdminProdotti store={store} />}
-      {tab === 'export' && <AdminExport />}
+      <div>
+        <h2 style={{ fontSize: 16, fontWeight: 600, color: '#171e29', marginBottom: 16 }}>{TAB_TITLES[tab]}</h2>
+
+        {tab === 'riepilogo' && <AdminRiepilogo store={store} onNavigateTab={navigateTo} />}
+        {tab === 'stratigrafie' && <AdminStratigrafie store={store} />}
+        {tab === 'listino' && <AdminListino store={store} />}
+        {tab === 'prodotti' && <AdminProdotti store={store} />}
+        {tab === 'export' && <AdminExport />}
+        {tab === 'media' && <AdminMedia />}
+        {tab === 'environments' && <AdminCMSEnvironments />}
+        {tab === 'supports' && <AdminCMSSupports />}
+        {tab === 'tools' && <AdminCMSTools />}
+        {tab === 'steps' && <AdminApplicationSteps />}
+        {tab === 'manuals' && <AdminStratigraphyManual />}
+        {tab === 'sheets' && <AdminOperationalSheets />}
+      </div>
     </div>
   );
 }

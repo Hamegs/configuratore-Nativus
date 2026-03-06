@@ -2,6 +2,14 @@ import type { WizardState } from './wizard-state';
 import type { CartLine, RawCartLine } from './cart';
 import type { CartResult } from '../engine/cart-calculator';
 
+export interface ProjectMeta {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 export const ROOM_TYPES = [
   { id: 'SOGGIORNO',  label: 'Soggiorno',   env_default: 'ORD', icon: '🛋️' },
   { id: 'CUCINA',     label: 'Cucina',       env_default: 'ORD', icon: '🍳' },

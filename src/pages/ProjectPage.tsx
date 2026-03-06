@@ -5,6 +5,7 @@ import { useProjectStore } from '../store/project-store';
 import { useAuthStore } from '../store/auth-store';
 import { useCartStore } from '../store/cart-store';
 import { ROOM_TYPES, type ProjectRoom } from '../types/project';
+import { StratigraphyViewer } from '../components/stratigraphy/StratigraphyViewer';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -490,7 +491,6 @@ function RoomDetailPanel({ room, onConfigure, onDelete }: RoomDetailPanelProps) 
   const systemLbl  = getSystemLabel(room);
   const texPreview = getTexturePreview(room);
   const mq         = getTotalMq(room);
-  const strat      = getStratigraphySections(room);
   const typeInfo   = ROOM_TYPES.find(r => r.id === room.room_type);
   const totalEur   = room.cart_result?.summary?.total_eur ?? 0;
 
@@ -583,37 +583,10 @@ function RoomDetailPanel({ room, onConfigure, onDelete }: RoomDetailPanelProps) 
           <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#445164', margin: '0 0 16px' }}>
             Stratigrafia
           </p>
-          {strat.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {strat.map(({ section, label: lbl }) => (
-                <div key={section} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div
-                    style={{
-                      width: 3, height: 28, flexShrink: 0,
-                      background: SECTION_COLORS[section] ?? '#c8cac6',
-                    }}
-                  />
-                  <div>
-                    <p style={{ fontSize: 11, fontWeight: 500, color: '#171e29', margin: 0 }}>{lbl}</p>
-                    {section === 'texture' && systemLbl && (
-                      <p style={{ fontSize: 10, color: '#8c9aaa', margin: 0 }}>{systemLbl}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : room.is_configured ? (
-            <p style={{ fontSize: 12, color: '#8c9aaa' }}>Stratigrafia disponibile dopo calcolo</p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {['Preparazione', 'Texture', 'Protettivo'].map(lbl => (
-                <div key={lbl} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 3, height: 28, background: '#e4e5e1' }} />
-                  <p style={{ fontSize: 11, color: '#c8cac6', margin: 0, letterSpacing: '0.02em' }}>{lbl}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          <StratigraphyViewer
+            cartResult={room.cart_result ?? null}
+            cartLines={room.cart_result?.summary?.lines ?? []}
+          />
         </div>
 
         {/* Material preview + cost */}
