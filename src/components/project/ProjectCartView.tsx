@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileSpreadsheet, FileText } from 'lucide-react';
+import { FileSpreadsheet, FileText, Layers } from 'lucide-react';
 import { useProjectStore } from '../../store/project-store';
 import { loadDataStore } from '../../utils/data-loader';
 import type { PackagingStrategy, ProjectCartRow, ConsolidationMode } from '../../types/project';
@@ -594,6 +594,9 @@ export function ProjectCartView() {
                 </button>
                 <button type="button" title="Esporta PDF" className="p-1 text-stone-400 hover:text-stone-700" onClick={() => handleExportRoomPdf(room.id)}>
                   <FileText size={14} />
+                </button>
+                <button type="button" title="Stratigrafia e documenti" className="p-1 text-stone-400 hover:text-brand-700" onClick={() => navigate(`/progetto/documenti/${room.id}`)}>
+                  <Layers size={14} />
                 </button>
               </div>
             );

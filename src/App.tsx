@@ -9,6 +9,7 @@ import { AdminPage } from './pages/AdminPage';
 import { ProjectPage } from './pages/ProjectPage';
 import { RoomWizardPage } from './pages/RoomWizardPage';
 import { ProjectCartView } from './components/project/ProjectCartView';
+import { DocumentsPage } from './pages/DocumentsPage';
 
 export default function App() {
   const { restoreSession } = useAuthStore();
@@ -56,6 +57,17 @@ export default function App() {
             <ProtectedRoute>
               <AppShell>
                 <ProjectCartView />
+              </AppShell>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/progetto/documenti/:roomId"
+          element={
+            <ProtectedRoute>
+              <AppShell>
+                <DocumentsPage />
               </AppShell>
             </ProtectedRoute>
           }

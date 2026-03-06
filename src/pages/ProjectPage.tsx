@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ShoppingCart, Settings, ArrowRight, Trash2, CheckCircle2 } from 'lucide-react';
+import { Plus, ShoppingCart, Settings, ArrowRight, Trash2, CheckCircle2, FileText } from 'lucide-react';
 import { useProjectStore } from '../store/project-store';
 import { useAuthStore } from '../store/auth-store';
 import { useCartStore } from '../store/cart-store';
@@ -339,6 +339,7 @@ export function ProjectPage() {
             <RoomDetailPanel
               room={selectedRoom}
               onConfigure={() => navigate(`/progetto/stanza/${selectedRoom.id}`)}
+              onDocuments={() => navigate(`/progetto/documenti/${selectedRoom.id}`)}
               onDelete={() => setConfirmDelete(selectedRoom.id)}
             />
           )}
@@ -482,10 +483,11 @@ function SpaceBlock({ room, selected, onSelect, onDelete }: SpaceBlockProps) {
 interface RoomDetailPanelProps {
   room: ProjectRoom;
   onConfigure: () => void;
+  onDocuments: () => void;
   onDelete: () => void;
 }
 
-function RoomDetailPanel({ room, onConfigure, onDelete }: RoomDetailPanelProps) {
+function RoomDetailPanel({ room, onConfigure, onDocuments, onDelete }: RoomDetailPanelProps) {
   const heroImg    = getRoomHero(room);
   const label      = getRoomLabel(room);
   const systemLbl  = getSystemLabel(room);
@@ -690,19 +692,36 @@ function RoomDetailPanel({ room, onConfigure, onDelete }: RoomDetailPanelProps) 
               )}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onConfigure}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: 'transparent', border: '1.5px solid #d4d4d2',
-              color: '#171e29', padding: '10px 18px',
-              fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
-            }}
-          >
-            <Settings size={11} />
-            Modifica
-          </button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {room.is_configured && (
+              <button
+                type="button"
+                onClick={onDocuments}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: 'transparent', border: '1.5px solid #d4d4d2',
+                  color: '#445164', padding: '10px 18px',
+                  fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+                }}
+              >
+                <FileText size={11} />
+                Documenti
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onConfigure}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: 'transparent', border: '1.5px solid #d4d4d2',
+                color: '#171e29', padding: '10px 18px',
+                fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+              }}
+            >
+              <Settings size={11} />
+              Modifica
+            </button>
+          </div>
         </div>
       )}
     </div>
