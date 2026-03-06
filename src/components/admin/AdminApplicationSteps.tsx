@@ -250,6 +250,53 @@ function StepEditBlock({
         </div>
       </div>
 
+      <div style={{ borderTop: '1px dashed #d4d6d2', paddingTop: 10 }}>
+        <p style={{ fontSize: 10, color: '#8c9aaa', margin: '0 0 8px', fontStyle: 'italic' }}>
+          Dati per il manuale stratigrafico — lasciali vuoti per usare i valori del motore
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+          <div>
+            <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 4 }}>
+              Consumo/mq
+            </label>
+            <input
+              type="text"
+              placeholder={step.qty != null ? `${step.qty} ${step.unit ?? ''}/mq (auto)` : 'es. 0.20 kg/mq'}
+              value={draft.consumption_per_mq ?? ''}
+              onChange={e => onChange({ ...draft, consumption_per_mq: e.target.value || undefined })}
+              className="input-field"
+              style={{ fontSize: 12, width: '100%' }}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 4 }}>
+              Tempi asciugatura
+            </label>
+            <input
+              type="text"
+              placeholder="es. 4/6 h, 12 h, 24 h"
+              value={draft.drying_time ?? ''}
+              onChange={e => onChange({ ...draft, drying_time: e.target.value || undefined })}
+              className="input-field"
+              style={{ fontSize: 12, width: '100%' }}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 4 }}>
+              Rivestimento successivo
+            </label>
+            <input
+              type="text"
+              placeholder="es. 6 h, 24 h"
+              value={draft.overcoating_time ?? ''}
+              onChange={e => onChange({ ...draft, overcoating_time: e.target.value || undefined })}
+              className="input-field"
+              style={{ fontSize: 12, width: '100%' }}
+            />
+          </div>
+        </div>
+      </div>
+
       <div style={{ display: 'flex', gap: 8 }}>
         <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}>
           <Check size={12} /> Salva

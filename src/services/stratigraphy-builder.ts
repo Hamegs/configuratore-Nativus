@@ -33,6 +33,8 @@ export interface StratigraphyLayer {
   tool_names: string[];
   cleaning_method: string;
   technical_notes: string;
+  consumption_per_mq: string | null;
+  overcoat_time: string | null;
   diluizione?: string;
   hard_alerts: string[];
 }
@@ -93,7 +95,7 @@ export function buildStratigraphyDocument(
 
     const stepId: string | null = (step as StepDefinition).step_id ?? null;
     const manual = stepId ? stepManualsMap.get(stepId) : undefined;
-    void stepLibMap;
+    const libEntry = stepId ? stepLibMap.get(stepId) : undefined;
 
     const asPrep = step as StepDefinition;
     const asTex = step as CartProcedureStep;
@@ -114,6 +116,20 @@ export function buildStratigraphyDocument(
 
     const toolIds = manual?.tool_ids ?? [];
 
+    // Consumption per mq: CMS override > step library qty
+    const engineQty = libEntry?.qty;
+    const engineUnit = libEntry?.unit ?? asPrep.unit;
+    const consumptionPerMq = manual?.consumption_per_mq
+      ?? (engineQty != null && engineUnit ? `${engineQty} ${engineUnit}/mq` : null);
+
+    // Overcoating / drying time: CMS override > StepDefinition fields
+    const minO = asPrep.min_overcoat;
+    const maxO = asPrep.max_overcoat;
+    const engineOvercoat = minO
+      ? (maxO ? `${minO}/${maxO} h` : `${minO} h`)
+      : null;
+    const overcoatTime = manual?.drying_time ?? engineOvercoat;
+
     layers.push({
       phase,
       phase_label: PHASE_LABELS[phase],
@@ -127,6 +143,8 @@ export function buildStratigraphyDocument(
       tool_names: toolIds.map(id => toolsMap.get(id) ?? id),
       cleaning_method: manual?.cleaning_method ?? '',
       technical_notes: manual?.technical_notes ?? '',
+      consumption_per_mq: consumptionPerMq,
+      overcoat_time: overcoatTime,
       diluizione: (asTex as CartProcedureStep).diluizione,
       hard_alerts: (asTex as CartProcedureStep).hard_alerts ?? [],
     });
@@ -171,6 +189,8 @@ export function buildStratigraphyDocument(
         tool_names: [],
         cleaning_method: '',
         technical_notes: '',
+        consumption_per_mq: null,
+        overcoat_time: null,
         hard_alerts: [],
       });
     }

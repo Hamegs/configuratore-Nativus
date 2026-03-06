@@ -39,6 +39,9 @@ export interface ApplicationStepManual {
   cleaning_method: string;
   technical_notes: string;
   reference_images: string[];
+  consumption_per_mq?: string;
+  drying_time?: string;
+  overcoating_time?: string;
 }
 
 export interface Tool {
