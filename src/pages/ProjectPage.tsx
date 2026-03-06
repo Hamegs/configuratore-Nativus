@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, ShoppingCart, Settings, ArrowRight, Trash2, CheckCircle2, FileText } from 'lucide-react';
 import { useProjectStore } from '../store/project-store';
@@ -6,6 +6,8 @@ import { useAuthStore } from '../store/auth-store';
 import { useCartStore } from '../store/cart-store';
 import { ROOM_TYPES, type ProjectRoom } from '../types/project';
 import { StratigraphyViewer } from '../components/stratigraphy/StratigraphyViewer';
+import { useAdminStore } from '../store/admin-store';
+import { getMediaBlob } from '../store/media-store';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -488,10 +490,37 @@ interface RoomDetailPanelProps {
 }
 
 function RoomDetailPanel({ room, onConfigure, onDocuments, onDelete }: RoomDetailPanelProps) {
-  const heroImg    = getRoomHero(room);
+  const staticHero = getRoomHero(room);
   const label      = getRoomLabel(room);
   const systemLbl  = getSystemLabel(room);
   const texPreview = getTexturePreview(room);
+
+  const cmsMediaCfg = useAdminStore(s => s.cms.environmentMedia);
+  const cmsHeroRef  = useRef<string | null>(null);
+  const [cmsHeroUrl, setCmsHeroUrl] = useState<string | null>(null);
+  const envId = room.wizard_state?.ambiente ?? null;
+
+  useEffect(() => {
+    let cancelled = false;
+    if (envId) {
+      const cfg = cmsMediaCfg.find(e => e.environment_id === envId);
+      const firstId = cfg?.media_ids[0];
+      if (firstId) {
+        getMediaBlob('environments', firstId).then(url => {
+          if (!cancelled && url) {
+            if (cmsHeroRef.current) URL.revokeObjectURL(cmsHeroRef.current);
+            cmsHeroRef.current = url;
+            setCmsHeroUrl(url);
+          }
+        });
+        return () => { cancelled = true; };
+      }
+    }
+    setCmsHeroUrl(null);
+    return () => { cancelled = true; };
+  }, [envId, cmsMediaCfg]);
+
+  const heroImg = cmsHeroUrl ?? staticHero;
   const mq         = getTotalMq(room);
   const typeInfo   = ROOM_TYPES.find(r => r.id === room.room_type);
   const totalEur   = room.cart_result?.summary?.total_eur ?? 0;

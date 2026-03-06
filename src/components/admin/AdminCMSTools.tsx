@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Pencil, Check, X } from 'lucide-react';
+import { Plus, Trash2, Pencil, Check, X, Image as ImageIcon } from 'lucide-react';
 import { useAdminStore } from '../../store/admin-store';
 import type { Tool } from '../../types/cms';
+import { getMediaBlob } from '../../store/media-store';
+import { MediaPickerModal } from './MediaPickerModal';
+
+function ToolIcon({ mediaId }: { mediaId: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!mediaId) { setUrl(null); return; }
+    getMediaBlob('tools', mediaId).then(u => setUrl(u));
+  }, [mediaId]);
+
+  if (!url) return (
+    <div style={{ width: 32, height: 32, borderRadius: 4, background: '#f2f2f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <ImageIcon size={14} color="#b0b8c4" />
+    </div>
+  );
+  return <img src={url} alt="" style={{ width: 32, height: 32, objectFit: 'contain', borderRadius: 4, border: '1px solid #e2e4e0' }} />;
+}
 
 export function AdminCMSTools() {
   const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
   const [items, setItems] = useState<Tool[]>(() => cms.tools ?? []);
   const [editId, setEditId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Partial<Tool>>({});
+  const [showIconPicker, setShowIconPicker] = useState(false);
 
   useEffect(() => { setItems(cms.tools ?? []); }, [cms.tools]);
 
@@ -24,9 +43,10 @@ export function AdminCMSTools() {
 
   function commit() {
     if (!draft.id || !draft.name?.trim()) return;
+    const tool: Tool = { id: draft.id!, name: draft.name!, icon_media_id: draft.icon_media_id ?? '' };
     const updated = items.some(i => i.id === draft.id)
-      ? items.map(i => i.id === draft.id ? { ...i, ...draft } as Tool : i)
-      : [...items, { id: draft.id!, name: draft.name!, icon_media_id: draft.icon_media_id ?? '' }];
+      ? items.map(i => i.id === draft.id ? tool : i)
+      : [...items, tool];
     setItems(updated);
     saveCMS({ tools: updated });
     setEditId(null);
@@ -43,46 +63,98 @@ export function AdminCMSTools() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontSize: 11, color: '#8c9aaa' }}>{items.length} strumenti configurati</span>
-        <button type="button" className="btn-secondary text-xs" onClick={startNew} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <button
+          type="button" className="btn-secondary text-xs"
+          onClick={startNew}
+          style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+        >
           <Plus size={12} /> Aggiungi strumento
         </button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {editId && !items.some(i => i.id === editId) && (
-          <ToolEditBlock draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
+          <ToolEditBlock
+            draft={draft} onChange={setDraft} onCommit={commit}
+            onCancel={() => { setEditId(null); setDraft({}); }}
+            onOpenIconPicker={() => setShowIconPicker(true)}
+          />
         )}
         {items.map(item =>
           editId === item.id ? (
-            <ToolEditBlock key={item.id} draft={draft} onChange={setDraft} onCommit={commit} onCancel={() => { setEditId(null); setDraft({}); }} />
+            <ToolEditBlock
+              key={item.id} draft={draft} onChange={setDraft} onCommit={commit}
+              onCancel={() => { setEditId(null); setDraft({}); }}
+              onOpenIconPicker={() => setShowIconPicker(true)}
+            />
           ) : (
-            <div key={item.id} style={{ background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{item.name}</span>
+            <div
+              key={item.id}
+              style={{
+                background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6,
+                padding: '10px 14px', display: 'flex', alignItems: 'center',
+                justifyContent: 'space-between', gap: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                {item.icon_media_id ? (
+                  <ToolIcon mediaId={item.icon_media_id} />
+                ) : (
+                  <div style={{ width: 32, height: 32, borderRadius: 4, background: '#f2f2f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ImageIcon size={14} color="#b0b8c4" />
+                  </div>
+                )}
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{item.name}</span>
+              </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button type="button" className="btn-secondary text-xs" onClick={() => startEdit(item)} style={{ display: 'flex', gap: 4 }}><Pencil size={11} /> Modifica</button>
-                <button type="button" onClick={() => remove(item.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c94040' }}><Trash2 size={14} /></button>
+                <button
+                  type="button" className="btn-secondary text-xs"
+                  onClick={() => startEdit(item)}
+                  style={{ display: 'flex', gap: 4 }}
+                >
+                  <Pencil size={11} /> Modifica
+                </button>
+                <button
+                  type="button"
+                  onClick={() => remove(item.id)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c94040' }}
+                >
+                  <Trash2 size={14} />
+                </button>
               </div>
             </div>
           )
         )}
       </div>
+
+      {showIconPicker && (
+        <MediaPickerModal
+          category="tools"
+          selected={draft.icon_media_id ? [draft.icon_media_id] : []}
+          maxSelect={1}
+          title="Seleziona icona strumento"
+          onConfirm={ids => { setDraft(d => ({ ...d, icon_media_id: ids[0] ?? '' })); setShowIconPicker(false); }}
+          onClose={() => setShowIconPicker(false)}
+        />
+      )}
     </div>
   );
 }
 
 function ToolEditBlock({
-  draft,
-  onChange,
-  onCommit,
-  onCancel,
+  draft, onChange, onCommit, onCancel, onOpenIconPicker,
 }: {
   draft: Partial<Tool>;
   onChange: (d: Partial<Tool>) => void;
   onCommit: () => void;
   onCancel: () => void;
+  onOpenIconPicker: () => void;
 }) {
   return (
-    <div style={{ background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{
+      background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6,
+      padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12,
+    }}>
       <input
         type="text"
         placeholder="Nome strumento (es. Spatola in acciaio)"
@@ -91,17 +163,49 @@ function ToolEditBlock({
         className="input-field"
         style={{ fontSize: 13 }}
       />
-      <input
-        type="text"
-        placeholder="Media ID icona (dalla libreria media)"
-        value={draft.icon_media_id ?? ''}
-        onChange={e => onChange({ ...draft, icon_media_id: e.target.value })}
-        className="input-field"
-        style={{ fontSize: 12 }}
-      />
+
+      <div>
+        <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 8 }}>
+          Icona
+        </label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {draft.icon_media_id ? (
+            <>
+              <ToolIcon mediaId={draft.icon_media_id} />
+              <button
+                type="button" className="btn-secondary text-xs"
+                onClick={onOpenIconPicker}
+              >
+                Cambia icona
+              </button>
+              <button
+                type="button"
+                onClick={() => onChange({ ...draft, icon_media_id: '' })}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c94040', display: 'flex' }}
+                title="Rimuovi icona"
+              >
+                <X size={14} />
+              </button>
+            </>
+          ) : (
+            <button
+              type="button" className="btn-secondary text-xs"
+              onClick={onOpenIconPicker}
+              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            >
+              <ImageIcon size={12} /> Scegli icona dalla libreria
+            </button>
+          )}
+        </div>
+      </div>
+
       <div style={{ display: 'flex', gap: 8 }}>
-        <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}><Check size={12} /> Salva</button>
-        <button type="button" className="btn-secondary text-xs" onClick={onCancel}><X size={12} /></button>
+        <button type="button" className="btn-primary text-xs" onClick={onCommit} style={{ display: 'flex', gap: 4 }}>
+          <Check size={12} /> Salva
+        </button>
+        <button type="button" className="btn-secondary text-xs" onClick={onCancel}>
+          <X size={12} />
+        </button>
       </div>
     </div>
   );

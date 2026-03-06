@@ -47,6 +47,11 @@ export interface Tool {
   icon_media_id: string;
 }
 
+export interface TextureMediaConfig {
+  texture_id: string;
+  media_ids: string[];
+}
+
 export type OperationalAudience = 'APPLICATORE' | 'DISTRIBUTORE' | 'PROGETTISTA';
 
 export type OperationalField =

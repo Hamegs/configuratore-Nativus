@@ -4,7 +4,7 @@ import type { StepMapEntry } from '../types/regole';
 import type { PackagingSku, ListinoSku } from '../types/packaging';
 import type {
   EnvironmentMediaConfig, SupportMediaConfig, StratigraphyMediaConfig,
-  ApplicationStepManual, Tool, OperationalSheetTemplate,
+  ApplicationStepManual, Tool, OperationalSheetTemplate, TextureMediaConfig,
 } from '../types/cms';
 import { invalidateCache } from '../utils/data-loader';
 import { setCommercialNameOverrides } from '../utils/product-names';
@@ -35,6 +35,7 @@ export interface AdminCMS {
   stepManuals: ApplicationStepManual[];
   tools: Tool[];
   operationalSheetTemplates: OperationalSheetTemplate[];
+  textureMedia: TextureMediaConfig[];
 }
 
 export interface AdminStore {
@@ -83,6 +84,7 @@ const DEFAULT_CMS: AdminCMS = {
   stepManuals: [],
   tools: [],
   operationalSheetTemplates: [],
+  textureMedia: [],
 };
 
 function readCMS(): AdminCMS {

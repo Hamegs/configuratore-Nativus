@@ -1,60 +1,35 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Trash2, Pencil, Check, X } from 'lucide-react';
+import { Plus, Trash2, Pencil, Check, X, Image as ImageIcon } from 'lucide-react';
 import { useAdminStore } from '../../store/admin-store';
 import type { StratigraphyMediaConfig } from '../../types/cms';
 import { loadDataStore } from '../../utils/data-loader';
-import { listMediaByCategory, getMediaBlob } from '../../store/media-store';
+import { getMediaBlob } from '../../store/media-store';
 import type { MediaItemMeta } from '../../types/media';
+import { MediaPickerModal } from './MediaPickerModal';
 
-function StratigraphyImageSelector({
-  selected,
-  onChange,
-}: {
-  selected: string[];
-  onChange: (ids: string[]) => void;
-}) {
-  const [items, setItems] = useState<MediaItemMeta[]>([]);
-  const [thumbs, setThumbs] = useState<Record<string, string>>({});
+function AssignedStratigraphyThumbs({ mediaIds }: { mediaIds: string[] }) {
+  const [urls, setUrls] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    listMediaByCategory('stratigraphies').then(list => {
-      setItems(list);
-      list.forEach(async item => {
-        const url = await getMediaBlob('stratigraphies', item.id);
-        if (url) setThumbs(prev => ({ ...prev, [item.id]: url }));
-      });
+    mediaIds.forEach(async id => {
+      const url = await getMediaBlob('stratigraphies', id);
+      if (url) setUrls(prev => ({ ...prev, [id]: url }));
     });
-  }, []);
+  }, [mediaIds]);
 
-  if (!items.length) {
-    return (
-      <p style={{ fontSize: 11, color: '#8c9aaa', fontStyle: 'italic' }}>
-        Nessuna immagine disponibile. Carica in "Media" → "Stratigrafie".
-      </p>
-    );
-  }
-
-  function toggle(id: string) {
-    onChange(selected.includes(id) ? selected.filter(s => s !== id) : [...selected, id]);
-  }
+  if (!mediaIds.length) return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <ImageIcon size={13} style={{ color: '#b0b8c4' }} />
+      <span style={{ fontSize: 11, color: '#8c9aaa', fontStyle: 'italic' }}>Nessuna immagine selezionata</span>
+    </div>
+  );
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-      {items.map(item => (
-        <div
-          key={item.id}
-          onClick={() => toggle(item.id)}
-          title={item.name}
-          style={{
-            width: 80, height: 60, borderRadius: 4, overflow: 'hidden', cursor: 'pointer',
-            border: selected.includes(item.id) ? '2px solid #171e29' : '2px solid #e2e4e0',
-            opacity: selected.includes(item.id) ? 1 : 0.6,
-            background: '#f2f2f0', flexShrink: 0,
-            transition: 'opacity 0.15s, border-color 0.15s',
-          }}
-        >
-          {thumbs[item.id] ? (
-            <img src={thumbs[item.id]} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+      {mediaIds.map(id => (
+        <div key={id} style={{ width: 72, height: 54, borderRadius: 4, overflow: 'hidden', border: '1px solid #d4d6d2', background: '#f2f2f0', flexShrink: 0 }}>
+          {urls[id] ? (
+            <img src={urls[id]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', background: '#eaeae8' }} />
           )}
@@ -63,6 +38,8 @@ function StratigraphyImageSelector({
     </div>
   );
 }
+
+void (null as unknown as MediaItemMeta);
 
 export function AdminStratigraphyManual() {
   const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
@@ -215,6 +192,8 @@ function EditBlock({
   onCommit: () => void;
   onCancel: () => void;
 }) {
+  const [showPicker, setShowPicker] = useState(false);
+
   return (
     <div style={{ background: '#f8f9f7', border: '1px solid #c8cac6', borderRadius: 6, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
@@ -259,10 +238,25 @@ function EditBlock({
         <label style={{ fontSize: 10, fontWeight: 600, color: '#445164', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: 8 }}>
           Immagini stratigrafiche
         </label>
-        <StratigraphyImageSelector
-          selected={draft.media_ids ?? []}
-          onChange={ids => onChange({ ...draft, media_ids: ids })}
-        />
+        <AssignedStratigraphyThumbs mediaIds={draft.media_ids ?? []} />
+        <button
+          type="button"
+          className="btn-secondary text-xs"
+          onClick={() => setShowPicker(true)}
+          style={{ marginTop: 10, display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <ImageIcon size={12} />
+          {(draft.media_ids?.length ?? 0) === 0 ? 'Seleziona immagini' : 'Modifica selezione'}
+        </button>
+        {showPicker && (
+          <MediaPickerModal
+            category="stratigraphies"
+            selected={draft.media_ids ?? []}
+            title="Immagini stratigrafia"
+            onConfirm={ids => { onChange({ ...draft, media_ids: ids }); setShowPicker(false); }}
+            onClose={() => setShowPicker(false)}
+          />
+        )}
       </div>
 
       <div style={{ display: 'flex', gap: 8 }}>

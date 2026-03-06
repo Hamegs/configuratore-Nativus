@@ -12,6 +12,8 @@ import { AdminCMSSupports } from '../components/admin/AdminCMSSupports';
 import { AdminCMSTools } from '../components/admin/AdminCMSTools';
 import { AdminApplicationSteps } from '../components/admin/AdminApplicationSteps';
 import { AdminStratigraphyManual } from '../components/admin/AdminStratigraphyManual';
+import { AdminCMSTextures } from '../components/admin/AdminCMSTextures';
+
 import { AdminOperationalSheets } from '../components/admin/AdminOperationalSheets';
 
 type Tab =
@@ -26,7 +28,8 @@ type Tab =
   | 'tools'
   | 'steps'
   | 'manuals'
-  | 'sheets';
+  | 'sheets'
+  | 'textures';
 
 const TABS: { id: Tab; label: string; group?: string }[] = [
   { id: 'riepilogo', label: 'Riepilogo', group: 'engine' },
@@ -41,6 +44,7 @@ const TABS: { id: Tab; label: string; group?: string }[] = [
   { id: 'steps', label: 'Passi app.', group: 'cms' },
   { id: 'manuals', label: 'Manuali strat.', group: 'cms' },
   { id: 'sheets', label: 'Schede op.', group: 'cms' },
+  { id: 'textures', label: 'Texture CMS', group: 'cms' },
 ];
 
 const TAB_TITLES: Record<Tab, string> = {
@@ -56,6 +60,7 @@ const TAB_TITLES: Record<Tab, string> = {
   steps: 'Passi applicazione',
   manuals: 'Manuali stratigrafici',
   sheets: 'Schede operative',
+  textures: 'Texture — immagini preview',
 };
 
 export function AdminPage() {
@@ -207,6 +212,7 @@ export function AdminPage() {
         {tab === 'steps' && <AdminApplicationSteps />}
         {tab === 'manuals' && <AdminStratigraphyManual />}
         {tab === 'sheets' && <AdminOperationalSheets />}
+        {tab === 'textures' && <AdminCMSTextures />}
       </div>
     </div>
   );

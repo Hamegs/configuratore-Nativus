@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Image as ImageIcon, Plus } from 'lucide-react';
 import { useAdminStore } from '../../store/admin-store';
-import type { EnvironmentMediaConfig } from '../../types/cms';
+import type { TextureMediaConfig } from '../../types/cms';
 import { loadDataStore } from '../../utils/data-loader';
 import { getMediaBlob } from '../../store/media-store';
-import type { Ambiente } from '../../types/enums';
 import { MediaPickerModal } from './MediaPickerModal';
+
+interface TextureLineEntry {
+  line_id: string;
+  name: string;
+  [key: string]: unknown;
+}
 
 function AssignedThumbs({ mediaIds }: { mediaIds: string[] }) {
   const [urls, setUrls] = useState<Record<string, string>>({});
 
   useEffect(() => {
     mediaIds.forEach(async id => {
-      const url = await getMediaBlob('environments', id);
+      const url = await getMediaBlob('textures', id);
       if (url) setUrls(prev => ({ ...prev, [id]: url }));
     });
   }, [mediaIds]);
@@ -32,19 +37,15 @@ function AssignedThumbs({ mediaIds }: { mediaIds: string[] }) {
         <div
           key={id}
           style={{
-            width: 64, height: 48, borderRadius: 4, overflow: 'hidden', flexShrink: 0,
+            width: 64, height: 64, borderRadius: 4, overflow: 'hidden', flexShrink: 0,
             border: i === 0 ? '2px solid #6dbf8a' : '1px solid #d4d6d2',
-            background: '#f2f2f0', position: 'relative',
+            background: '#f2f2f0',
           }}
-          title={i === 0 ? 'Cover / preview principale nel configuratore' : `Immagine ${i + 1}`}
         >
           {urls[id] ? (
             <img src={urls[id]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', background: '#eaeae8' }} />
-          )}
-          {i === 0 && (
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: '#6dbf8a' }} />
           )}
         </div>
       ))}
@@ -52,49 +53,56 @@ function AssignedThumbs({ mediaIds }: { mediaIds: string[] }) {
   );
 }
 
-export function AdminCMSEnvironments() {
+export function AdminCMSTextures() {
   const { cms, saveCMS } = useAdminStore(s => ({ cms: s.cms, saveCMS: s.saveCMS }));
-  const [ambienti, setAmbienti] = useState<Ambiente[]>([]);
+  const [lines, setLines] = useState<TextureLineEntry[]>([]);
   const [localMedia, setLocalMedia] = useState<Record<string, string[]>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [pickerFor, setPickerFor] = useState<string | null>(null);
 
   useEffect(() => {
     const store = loadDataStore();
-    setAmbienti(store.ambienti);
+    setLines((store.textureLines ?? []) as unknown as TextureLineEntry[]);
     const map: Record<string, string[]> = {};
-    for (const cfg of cms.environmentMedia) {
-      map[cfg.environment_id] = cfg.media_ids;
+    for (const cfg of (cms.textureMedia ?? [])) {
+      map[cfg.texture_id] = cfg.media_ids;
     }
     setLocalMedia(map);
-  }, [cms.environmentMedia]);
+  }, [cms.textureMedia]);
 
-  const save = useCallback((envId: string, mediaIds: string[]) => {
-    const updated: EnvironmentMediaConfig[] = ambienti.map(a => ({
-      environment_id: a.env_id,
-      media_ids: a.env_id === envId ? mediaIds : (localMedia[a.env_id] ?? []),
+  const save = useCallback((textureId: string, mediaIds: string[]) => {
+    const allIds = lines.map(l => l.line_id);
+    const updated: TextureMediaConfig[] = allIds.map(tid => ({
+      texture_id: tid,
+      media_ids: tid === textureId ? mediaIds : (localMedia[tid] ?? []),
     }));
-    saveCMS({ environmentMedia: updated });
-    setLocalMedia(prev => ({ ...prev, [envId]: mediaIds }));
-  }, [ambienti, localMedia, saveCMS]);
+    saveCMS({ textureMedia: updated });
+    setLocalMedia(prev => ({ ...prev, [textureId]: mediaIds }));
+  }, [lines, localMedia, saveCMS]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       <p style={{ fontSize: 12, color: '#445164', margin: '0 0 4px' }}>
-        Assegna immagini di preview agli ambienti del configuratore.
-        La <strong>prima immagine</strong> selezionata diventa la cover nella scheda ambiente.
+        Assegna immagini di preview ai sistemi texture.
+        Le immagini vengono usate nelle schede materiale e nella stratigrafia.
       </p>
 
-      {ambienti.map(amb => {
-        const mediaIds = localMedia[amb.env_id] ?? [];
-        const isOpen = expandedId === amb.env_id;
+      {lines.length === 0 && (
+        <p style={{ fontSize: 12, color: '#8c9aaa', fontStyle: 'italic' }}>
+          Nessun sistema texture trovato nel motore.
+        </p>
+      )}
+
+      {lines.map(line => {
+        const mediaIds = localMedia[line.line_id] ?? [];
+        const isOpen = expandedId === line.line_id;
         return (
           <div
-            key={amb.env_id}
+            key={line.line_id}
             style={{ background: '#fff', border: '1px solid #e2e4e0', borderRadius: 6, overflow: 'hidden' }}
           >
             <div
-              onClick={() => setExpandedId(isOpen ? null : amb.env_id)}
+              onClick={() => setExpandedId(isOpen ? null : line.line_id)}
               style={{
                 padding: '10px 16px', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
@@ -102,9 +110,9 @@ export function AdminCMSEnvironments() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{amb.name}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#171e29' }}>{line.name}</span>
                 <code style={{ fontSize: 9, background: '#f2f2f0', padding: '1px 5px', borderRadius: 3, color: '#445164' }}>
-                  {amb.env_id}
+                  {line.line_id}
                 </code>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -121,7 +129,7 @@ export function AdminCMSEnvironments() {
                 <button
                   type="button"
                   className="btn-secondary text-xs"
-                  onClick={() => setPickerFor(amb.env_id)}
+                  onClick={() => setPickerFor(line.line_id)}
                   style={{ display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start' }}
                 >
                   <Plus size={12} />
@@ -135,9 +143,9 @@ export function AdminCMSEnvironments() {
 
       {pickerFor && (
         <MediaPickerModal
-          category="environments"
+          category="textures"
           selected={localMedia[pickerFor] ?? []}
-          title={`Immagini — ${ambienti.find(a => a.env_id === pickerFor)?.name ?? pickerFor}`}
+          title={`Immagini — ${lines.find(l => l.line_id === pickerFor)?.name ?? pickerFor}`}
           onConfirm={ids => { save(pickerFor, ids); setPickerFor(null); }}
           onClose={() => setPickerFor(null)}
         />
